@@ -1,20 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import CreateLesson from './screen/CreateLesson/CreateLesson';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text style={{fontSize: 100}}>Hello</Text>
-      <StatusBar style="auto" />
-    </View>
+    <CreateLesson />
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
