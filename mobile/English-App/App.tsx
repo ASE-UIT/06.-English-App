@@ -1,10 +1,11 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import CreateLesson from './screen/CreateLesson/CreateLesson';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import Home from "./src/screens/Home";
 
 export default function App() {
   return (
-    <CreateLesson />
+    <View>
+      <Home />
+    </View>
   );
 }
-
