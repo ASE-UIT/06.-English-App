@@ -35,12 +35,13 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+          APP_SECRET: ${{ secrets.APP_SECRET }}
         run: |
           echo "${PRIVATE_KEY}" > key.pem
           echo "${APP_SECRET}" > .env
-          chmod 600 key.pem
-          chmod 600 .env 
+          chmod 600 key.pem .env
           scp -i key.pem .env $EC2_USER@$EC2_HOST:/path/on/ec2/.env
+          echo "Begin ssh"
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << 'EOF'
             echo "Pulling Docker image..."
             docker pull $DOCKER_HUB_USERNAME/nestjs-app:latest || { echo "Failed to pull image"; exit 1; }
@@ -51,4 +52,5 @@ jobs:
             echo "Starting new container..."
             docker run --env-file /path/on/ec2/.env -d --name nestjs-app -p 3000:3000 $DOCKER_HUB_USERNAME/nestjs-app:latest
           EOF
+          echo "Finish ssh"
           rm key.pem .env
