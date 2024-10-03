@@ -1,12 +1,11 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Home from "./src/screens/Home";
-import Test from "./src/screens/TestScreen/Test";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+
+import SelectionFormat from "./src/components/SelectionQuestion/SelectionFormat";
 
 export default function App() {
   return (
-    <View className=" bg-black">
-
-    </View>
+    <SafeAreaView className="w-full h-full pl-4 pt-16">
+      <SelectionFormat />
+    </SafeAreaView>
   );
 }
