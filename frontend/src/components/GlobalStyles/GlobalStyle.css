@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -16,15 +17,8 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-#App {
-  width: 100%;
-  height: 100%;
-}
-
-#root {
-  width: 100vw;
-  height: 100vh;
-  overflow: auto;
+* {
+  box-sizing: border-box;
 }
 
 a {
@@ -42,10 +36,6 @@ body {
   max-width: 100vw;
   max-height: auto;
   position: relative;
-}
-
-html {
-  min-width: 100%;
 }
 
 h1 {
@@ -84,3 +74,18 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* html {
+
+} */
+
+body {
+  font-family: "Inter", sans-serif;
+  text-rendering: optimizeSpeed;
+}
+/* 
+@layer components {
+    * {
+        @apply 
+    }
+} */
