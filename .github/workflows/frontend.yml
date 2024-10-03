@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend
-          npm install
+          npm install --legacy-peer-deps 
 
       - name: Build React App
         run: |
