@@ -1,7 +1,10 @@
 import { View, Text, ScrollView } from "react-native";
 import MultipleChoiceQuestion from "./MultipleChoiceQuestion";
+import QuestionHeading from "../QuestionHeading";
+import QuestionSubHeading from "../QuestionSubHeading";
 
-export default function SelectionFormat() {
+export default function MultipleChoiceFormat() {
+  // hardcoded questions data
   const questions = [
     {
       question:
@@ -21,11 +24,8 @@ export default function SelectionFormat() {
   ];
   return (
     <ScrollView className="flex gap-2">
-      <Text className="heading text-green-600 text-2xl">Question 6-8</Text>
-      <Text className="description text-black text-lg">
-        Choose the correct letter A,B,C or D. {"\n"}Write the correct letter in
-        boxes 1-{questions.length} on your answer sheet.
-      </Text>
+      <QuestionHeading from={1} to={questions.length} />
+      <QuestionSubHeading from={1} to={questions.length} />
       <View className="questions-container">
         {questions.map((question, index) => (
           <MultipleChoiceQuestion
