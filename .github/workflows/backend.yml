@@ -53,4 +53,4 @@ jobs:
             docker run --env-file /path/on/ec2/env -d --name nestjs-app -p 3000:3000 maikusobu/nestjs-app:latest
           EOF
           echo "Finish ssh"
-          rm key.pem .env
+          rm key.pem env
