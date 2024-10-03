@@ -42,7 +42,7 @@ jobs:
           chmod 600 key.pem env
           scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
           echo "Begin ssh"
-          ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST DOCKER_HUB_USERNAME=$DOCKER_HUB_USERNAME << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << EOF
             echo "Pulling Docker image..."
             docker pull maikusobu/nestjs-app:latest || { echo "Failed to pull image"; exit 1; }
             echo "Stopping old container..."
