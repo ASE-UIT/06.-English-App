@@ -42,15 +42,15 @@ jobs:
           chmod 600 key.pem env
           scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
           echo "Begin ssh"
-          ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST DOCKER_HUB_USERNAME=$DOCKER_HUB_USERNAME << 'EOF'
             echo "Pulling Docker image..."
-            docker pull $DOCKER_HUB_USERNAME/nestjs-app:latest || { echo "Failed to pull image"; exit 1; }
+            docker pull maikusobu/nestjs-app:latest || { echo "Failed to pull image"; exit 1; }
             echo "Stopping old container..."
             docker stop nestjs-app || true
             echo "Removing old container..."
             docker rm nestjs-app || true
             echo "Starting new container..."
-            docker run --env-file /path/on/ec2/env -d --name nestjs-app -p 3000:3000 $DOCKER_HUB_USERNAME/nestjs-app:latest
+            docker run --env-file /path/on/ec2/env -d --name nestjs-app -p 3000:3000 maikusobu/nestjs-app:latest
           EOF
           echo "Finish ssh"
           rm key.pem .env
