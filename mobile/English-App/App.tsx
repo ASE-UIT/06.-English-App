@@ -1,6 +1,5 @@
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
-import MultipleChoiceFormat from "./src/components/SelectionQuestion/MultipleChoiceFormat";
 import { Button } from '@rneui/themed';
 export default function App() {
   return (
