@@ -1,12 +1,14 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Home from "./src/screens/Home";
-import Test from "./src/screens/TestScreen/Test";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
+import MultipleChoiceFormat from "./src/components/SelectionQuestion/MultipleChoiceFormat";
+import { Button } from '@rneui/themed';
 export default function App() {
   return (
-    <View className=" bg-black">
-
-    </View>
+    <SafeAreaView className="w-full h-full pl-4 pt-16">
+      {/* <MultipleChoiceFormat /> */}
+      <Button title="Solid" />
+      <Button title="Outline" type="outline" />
+      <Button title="Clear" type="clear" />
+    </SafeAreaView>
   );
 }
