@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { ComboboxDemo } from "@/components/ui/combobox"
+// import { ComboboxDemo } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Question from "../Components/Question"
@@ -21,7 +21,7 @@ const MultipleChoice = () => {
         setNumberOfQuestion((prev) => prev - 1)
     }
     return (
-        <div>
+        <div className="rounded-lg border-2 border-gray-200 px-[14px]">
             <div>
                 <div>
                     {!question.length &&

@@ -47,7 +47,7 @@ export const SectionMain = ({children}: {children: React.ReactNode}) => {
   )
 
   return (
-    <div className="h-screen w-full rounded-md border-2 border-borderContent">
+    <div className="h-full w-full flex flex-col rounded-md border-2 border-borderContent">
       <div className="flex items-center justify-between bg-sectionHeaderBg px-[43px] pb-[35px] pt-[31px]">
         <div className="flex items-center">
           <LuStar stroke="black" size={20} />
@@ -105,7 +105,7 @@ export const SectionMain = ({children}: {children: React.ReactNode}) => {
           <BiTrashAlt size={20} strokeWidth={1} className="mr-[42px] cursor-pointer font-bold" />
         </div>
       </div>
-      <div>
+      <div className="py-[17px] px-[31px]">
         {children}
       </div>
     </div>
