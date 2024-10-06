@@ -1,7 +1,7 @@
-export const Sidebar = () => { 
-    return (
-        <aside className="w-64 h-full bg-gray-800 text-white">
-            <div>Sidebar</div>
-        </aside>
-    )
+export const Sidebar = () => {
+  return (
+    <aside className="h-full w-64 bg-gray-800 text-white">
+      <div>Sidebar</div>
+    </aside>
+  )
 }

@@ -17,7 +17,7 @@ import { useSectionSlice } from "@/features/section/store"
 import React, { useCallback, useEffect, useMemo } from "react"
 import { getSectionValue } from "@/features/section/helpers/common"
 
-export const SectionMain = ({children}: {children: React.ReactNode}) => {
+export const SectionMain = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
   const currentSection = useSelector(selectSectionCurrent)
@@ -47,7 +47,7 @@ export const SectionMain = ({children}: {children: React.ReactNode}) => {
   )
 
   return (
-    <div className="h-screen w-full rounded-md border-2 border-borderContent">
+    <div className="flex h-full w-full flex-col rounded-md border-2 border-borderContent">
       <div className="flex items-center justify-between bg-sectionHeaderBg px-[43px] pb-[35px] pt-[31px]">
         <div className="flex items-center">
           <LuStar stroke="black" size={20} />
@@ -105,9 +105,7 @@ export const SectionMain = ({children}: {children: React.ReactNode}) => {
           <BiTrashAlt size={20} strokeWidth={1} className="mr-[42px] cursor-pointer font-bold" />
         </div>
       </div>
-      <div>
-        {children}
-      </div>
+      <div className="px-[31px] py-[17px]">{children}</div>
     </div>
   )
 }
