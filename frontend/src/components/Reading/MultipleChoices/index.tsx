@@ -24,13 +24,9 @@ const MultipleChoice = () => {
         <div>
             <div>
                 <div>
-                    <Label>Section 2</Label>
-                    <ComboboxDemo />
-                </div>
-                <div>
                     {!question.length &&
                         <div>
-                            <Label>Number of questions</Label>
+                            <Label className="text-[black]">Number of questions</Label>
                             <div className="flex justify-between">
                                 <div>
                                     <Input type="number" value={numberOfQuestion} onChange={handleChange} />
