@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSelector } from "@reduxjs/toolkit"
-import _ from "lodash"
+const _ = require("lodash")
 import { User } from "../interface"
 
 export const initialState: User = {
@@ -9,8 +9,7 @@ export const initialState: User = {
 }
 
 const selectDomain = (state: { user: any }) => state.user || initialState
-const selectPath = (state: any, path: any) => path
-
+const selectPath = (path: any) => path
 export const selectUser = createSelector([selectDomain], (state) => state.data ?? {})
 export const selectActiveUnit = createSelector([selectUser], (state) => state.activeUnit ?? {})
 export const selectViewUnit = createSelector([selectUser], (state) => state.viewUnit ?? {})
