@@ -10,8 +10,12 @@ const publicRoutes = [
   },
   {
     path: routes.ReadingMultipleChoices,
-    component: <Reading><MultipleChoice></MultipleChoice></Reading>
-  }
+    component: (
+      <Reading>
+        <MultipleChoice></MultipleChoice>
+      </Reading>
+    ),
+  },
 ]
 const protectedRoutes = [
   // {
@@ -20,7 +24,11 @@ const protectedRoutes = [
   // },
   {
     path: routes.Lecture,
-    component: <Lecture><MultipleChoice></MultipleChoice></Lecture>,
+    component: (
+      <Lecture>
+        <MultipleChoice></MultipleChoice>
+      </Lecture>
+    ),
   },
 ]
 export { publicRoutes, protectedRoutes }
