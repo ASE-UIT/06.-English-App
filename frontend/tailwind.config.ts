@@ -25,6 +25,13 @@ const config = {
         "neg-05": "-0.5%",
       },
       colors: {
+        headerIcon: "#5D5FEF",
+        sectionHeaderBg: "rgba(252, 221, 236, 0.50)",
+        currentBg: "#fff5fa",
+        fuschia: "#ef5da8",
+        content: "#1E1E1E",
+        typeContent: "#757575",
+        borderContent: "#A5A6F6",
         navContentBg: "#f0efefb8",
         navTitle: "#00b14f",
         placeHolder: "#94A3B8",
