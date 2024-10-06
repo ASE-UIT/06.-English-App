@@ -27,7 +27,7 @@ const MultipleChoice = () => {
                     {!question.length &&
                         <div className="ml-[108px] mt-[52px]">
                             <Label className="text-[black]">Number of questions</Label>
-                            <div className="flex gap-3">
+                            <div className="flex gap-[20px]">
                                 <div className="min-w-[500px]">
                                     <Input className="bg-inherit text-[black] " type="number" value={numberOfQuestion} onChange={handleChange} />
                                     <Button className="bg-[#f178b6] mt-[21px] " onClick={handleQuestion}>
