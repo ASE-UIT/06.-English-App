@@ -25,18 +25,18 @@ const MultipleChoice = () => {
             <div>
                 <div>
                     {!question.length &&
-                        <div>
+                        <div className="ml-[108px] mt-[52px]">
                             <Label className="text-[black]">Number of questions</Label>
-                            <div className="flex justify-between">
-                                <div>
-                                    <Input type="number" value={numberOfQuestion} onChange={handleChange} />
-                                    <Button onClick={handleQuestion}>
+                            <div className="flex gap-3">
+                                <div className="min-w-[500px]">
+                                    <Input className="bg-inherit text-[black] " type="number" value={numberOfQuestion} onChange={handleChange} />
+                                    <Button className="bg-[#f178b6] mt-[21px] " onClick={handleQuestion}>
                                         OK
                                     </Button>
                                 </div>
                                 <div>
-                                    <Button onClick={handleAddButton}>+</Button>
-                                    <Button onClick={handleRemoveButton}>-</Button>
+                                    <Button className="bg-customPink text-[black]" onClick={handleAddButton}>+</Button>
+                                    <Button className="bg-customPink text-[black]" onClick={handleRemoveButton}>-</Button>
                                 </div>
                             </div>
                         </div>
