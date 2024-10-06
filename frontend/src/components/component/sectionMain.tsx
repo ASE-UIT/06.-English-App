@@ -25,8 +25,8 @@ export const SectionMain = () => {
   const pickType = useSelector(selectPickType)
   const sectionValue = useMemo(() => getSectionValue(currentSection, section), [currentSection, section])
   useEffect(() => {
-    console.log("updatelaiPick")
-    dispatch(sectionActions.changeType(sectionValue))
+    console.log("updatelaiPick", sectionValue)
+    if (sectionValue) dispatch(sectionActions.changeType(sectionValue))
   }, [dispatch, sectionActions, sectionValue])
   console.log("pickType", pickType)
   // const [typeChange, setTypeChange] = useState(sectionValue)
@@ -64,7 +64,7 @@ export const SectionMain = () => {
             <SelectContent>
               <SelectGroup>
                 {FIELD.map((i) => (
-                  <SelectItem key={i.key} value={i.text}>
+                  <SelectItem key={i.text} value={i.text}>
                     {i.text}
                   </SelectItem>
                 ))}
@@ -98,6 +98,7 @@ export const SectionMain = () => {
                 type: pickType,
               }
               dispatch(sectionActions.loadSectionData(newSectionData))
+              dispatch(sectionActions.changeCurrentSection(currentSection))
             }}
             className="mr-[42px] cursor-pointer font-bold"
           />

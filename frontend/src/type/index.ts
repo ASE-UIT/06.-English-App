@@ -5,6 +5,5 @@ export interface reduxState {
 }
 
 export interface Field {
-  key: string
   text: string
 }
