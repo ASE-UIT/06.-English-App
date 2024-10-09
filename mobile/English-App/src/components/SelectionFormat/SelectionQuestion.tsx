@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
-import { ListItem } from "@rneui/themed";
-import { ListItemAccordion } from "@rneui/base/dist/ListItem/ListItem.Accordion";
+import {Dropdown} from 'react-native-element-dropdown';
+import DropdownComponent from "../DropdownComponent";
 
 type SelectionFormatProps = {
   id: number;
@@ -12,25 +12,9 @@ type SelectionFormatProps = {
 const SelectionQuestion = ({ id, question, options }: SelectionFormatProps) => {
   const [expanded, setExpanded] = React.useState(false);
   return (
-    <View>
+    <View className=" flex flex-row">
       <Text className="text-lg">{id}.</Text>
-      <ListItemAccordion
-        isExpanded={expanded}
-        onPress={() => setExpanded(!expanded)}
-        noIcon
-        noRotation
-        bottomDivider
-        className=" flex-shrink"
-      >
-        {options.map((option, i) => (
-          <ListItem key={i}>
-            <ListItem.Content>
-              <ListItem.Title>{option}</ListItem.Title>
-            </ListItem.Content>
-          </ListItem>
-        ))}
-      </ListItemAccordion>
-
+      <DropdownComponent />
       <Text className="text-lg">{question}</Text>
     </View>
   );
