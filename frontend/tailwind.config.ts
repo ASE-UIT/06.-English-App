@@ -31,6 +31,7 @@ const config = {
         primaryColor: "#0F172A",
         secondaryColor: "#64748B",
         backgroundColor: "#F1F5F9",
+        headerBackground: "gradient-to-b from-[#fdebf4] to-[#FEFCFC]",
         title: "#1E293B",
         categorized: "#0EA5E9",
         border: "hsl(var(--border))",
@@ -40,6 +41,9 @@ const config = {
         foreground: "hsl(var(--foreground))",
         primary: "#0F172A",
         secondary: "#64748B",
+        header_pink: "rgba(252, 221, 236, 0.58)",
+        header_white: "#FEFCFC",
+        icon_color: "#5d5fef",
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
