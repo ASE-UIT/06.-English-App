@@ -1,20 +1,12 @@
 import MultipleChoice from "@/components/Reading/MultipleChoices"
+import TrueFalseNotGiven from "@/components/Reading/TFNG"
 import { routes } from "@/config"
 import { Home } from "@/pages/main-layout/Home"
-import { Reading } from "@/pages/main-layout/Reading"
 import { Lecture } from "@/pages/protected-route/lecture"
 const publicRoutes = [
   {
     path: routes.Home,
     component: <Home></Home>,
-  },
-  {
-    path: routes.ReadingMultipleChoices,
-    component: (
-      <Reading>
-        <MultipleChoice></MultipleChoice>
-      </Reading>
-    ),
   },
 ]
 const protectedRoutes = [
@@ -23,12 +15,20 @@ const protectedRoutes = [
   //   component: <Chat></Chat>,
   // },
   {
-    path: routes.Lecture,
+    path: routes.ReadingMultipleChoices,
     component: (
       <Lecture>
         <MultipleChoice></MultipleChoice>
       </Lecture>
     ),
   },
+  {
+    path: routes.ReadingTFNG,
+    component: (
+      <Lecture>
+        <TrueFalseNotGiven></TrueFalseNotGiven>
+      </Lecture>
+    )
+  }
 ]
 export { publicRoutes, protectedRoutes }

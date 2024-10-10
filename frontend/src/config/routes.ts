@@ -1,5 +1,8 @@
 export const routes = {
   Home: "/",
   Lecture: "/lecture",
-  ReadingMultipleChoices: "/reading/multiplechoices",
+  Reading: "lecture/reading",
+  ReadingMultipleChoices: "/lecture/reading/multiple-choices",
+  ReadingTFNG:"/lecture/reading/true-false-notgiven",
+  ReadingNoteCompletion: "/lecture/reading/note-completion"
 }

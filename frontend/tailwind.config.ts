@@ -24,6 +24,9 @@ const config = {
       letterSpacing: {
         "neg-05": "-0.5%",
       },
+      height: {
+        inherit: 'inherit',
+      },
       colors: {
         headerIcon: "#5D5FEF",
         sectionHeaderBg: "rgba(252, 221, 236, 0.50)",
@@ -39,6 +42,7 @@ const config = {
         secondaryColor: "#64748B",
         backgroundColor: "#F1F5F9",
         title: "#1E293B",
+        backgroundLine: "#AEAEB2",
         categorized: "#0EA5E9",
         customPink: "#FCDDEC4D",
         border: "hsl(var(--border))",
