@@ -25,7 +25,7 @@ export default function MultipleChoiceFormat() {
   return (
     <ScrollView className="flex gap-2">
       <QuestionHeading from={1} to={questions.length} />
-      <QuestionSubHeading from={1} to={questions.length} />
+      <QuestionSubHeading text="Select the correct answer for each question" />
       <View className="questions-container">
         {questions.map((question, index) => (
           <MultipleChoiceQuestion

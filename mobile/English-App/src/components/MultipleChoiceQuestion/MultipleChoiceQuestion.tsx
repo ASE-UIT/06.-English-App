@@ -14,7 +14,7 @@ export default function MultipleChoiceQuestion({
 
   return (
     <View className="question">
-      <Text className="question-text text-black text-lg font-bold">
+      <Text className="question-text text-[#7879F1] text-base">
         {number}.{question}
       </Text>
       <View className="options mb-3">
@@ -35,7 +35,7 @@ export default function MultipleChoiceQuestion({
               color="#000"
               uncheckedColor="#000"
             />
-            <Text className="option-text text-black  text-lg">{option}</Text>
+            <Text className="option-text text-black text-lg">{option}</Text>
           </View>
         ))}
       </View>
