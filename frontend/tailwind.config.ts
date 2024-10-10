@@ -20,6 +20,21 @@ const config = {
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        "gradient-conic-t": "conic-gradient(from 0deg at 50% 50%, var(--tw-gradient-stops))",
+        // "gradient-conic-l": "conic-gradient(from 90deg at 50% 50%, var(--tw-gradient-stops))",
+        // "gradient-middel": "linear-gradient(180deg, white 0%, rgba(252, 221, 236, 0.61) 50%, white 70%)",
+      },
+      width: {
+        "login-image": "600px",
+        "register-table": "600px",
+      },
+      height: {
+        "login-image": "700px",
+        "register-table": "800px",
+      },
+      fontSize: {
+        "title": "48px",
+        "default": "24px",
       },
       letterSpacing: {
         "neg-05": "-0.5%",
@@ -31,7 +46,6 @@ const config = {
         primaryColor: "#0F172A",
         secondaryColor: "#64748B",
         backgroundColor: "#F1F5F9",
-        headerBackground: "gradient-to-b from-[#fdebf4] to-[#FEFCFC]",
         title: "#1E293B",
         categorized: "#0EA5E9",
         border: "hsl(var(--border))",
