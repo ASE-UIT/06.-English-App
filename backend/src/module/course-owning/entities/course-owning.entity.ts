@@ -1,14 +1,17 @@
 import { CourseViewing } from 'src/module/course-viewing/entities/course-viewing.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { Base } from '../../base/base.entity';
+import { Student } from '../../user/entities/student.entity';
 
 @Entity()
-export class CourseOwning {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-  @Column()
-  courseId: string;
-  @Column()
-  studentId: string;
+export class CourseOwning extends Base {
+  @ManyToOne(() => Student, (student) => student.courseOwnings)
   @Column()
   expiredDate: Date;
   @Column()

@@ -33,6 +33,8 @@ interface DatabaseConfig {
             database: dbConfig.database,
             synchronize: true,
             entities: [`${__dirname}/../**/**.entity{.ts,.js}`],
+            logging: true,
+            logger: 'advanced-console',
           });
           await dataSource.initialize();
           console.log('Database connected successfully');

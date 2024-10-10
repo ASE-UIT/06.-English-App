@@ -1,14 +1,13 @@
 import { PAYMENT_METHOD } from 'src/util/constants';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
+import { Base } from '../../base/base.entity';
+import { Student } from '../../user/entities/student.entity';
 
 @Entity()
-export class CourseBuying {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+export class CourseBuying extends Base {
   @Column()
   courseId: string;
-  @Column()
-  studentId: string;
+
   @Column({
     type: 'enum',
     enum: PAYMENT_METHOD,
