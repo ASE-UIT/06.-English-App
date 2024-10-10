@@ -7,7 +7,7 @@ export default function QuestionHeading({
   to: number;
 }) {
   return (
-    <Text className="heading text-green-600 text-2xl">
+    <Text className="heading text-primary text-3xl font-semibold ">
       Question {from}-{to}
     </Text>
   );
