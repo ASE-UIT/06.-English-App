@@ -3,7 +3,6 @@ import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { User } from './user.entity';
 import { CourseOwning } from '../../course-owning/entities/course-owning.entity';
 import { CourseBuying } from '../../course-buying/entities/course-buying.entity';
-import { CourseProgress } from '../../course-progress/entities/course-progress.entity';
 
 @Entity()
 export class Student extends Base {

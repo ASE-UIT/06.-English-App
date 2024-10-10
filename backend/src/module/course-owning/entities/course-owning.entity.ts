@@ -1,11 +1,5 @@
 import { CourseViewing } from 'src/module/course-viewing/entities/course-viewing.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Student } from '../../user/entities/student.entity';
 
@@ -18,4 +12,6 @@ export class CourseOwning extends Base {
   active: boolean;
   @OneToMany(() => CourseViewing, (courseViewing) => courseViewing.courseOwning)
   courseViewings: CourseViewing[];
+  @ManyToOne(() => Student, (student) => student.courseOwnings)
+  student: Student;
 }
