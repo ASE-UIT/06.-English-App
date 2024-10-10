@@ -1,0 +1,9 @@
+export enum STATUS {
+  NOT_STARTED = 'NOT_STARTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+}
+export enum PAYMENT_METHOD {
+  QR_CODE = 'QR_CODE',
+  E_WALLET = 'E_WALLET',
+}
