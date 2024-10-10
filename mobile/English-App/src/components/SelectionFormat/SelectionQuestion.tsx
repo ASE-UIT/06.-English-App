@@ -13,7 +13,7 @@ const SelectionQuestion = ({ id, question, options }: SelectionFormatProps) => {
   const [expanded, setExpanded] = React.useState(false);
   return (
     <View className=" flex flex-row">
-      <Text className="text-lg">{id}.</Text>
+      <Text className="text-lg text-primaryLight">{id}.</Text>
       <DropdownComponent />
       <Text className="text-lg">{question}</Text>
     </View>
