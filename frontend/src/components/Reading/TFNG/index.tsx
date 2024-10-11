@@ -1,9 +1,8 @@
 import { useState } from "react"
 import InputQuestion from "../Components/InputQuestion"
 import Answer from "../Components/Answer"
-import { SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@radix-ui/react-select"
 import { TFNGENUM } from "@/config/option"
-import { Select } from "@/components/Layout/Components/ui/Select"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue  } from "@/components/Layout/Components/ui/Select"
 
 interface TFNGQuestion {
     question: string

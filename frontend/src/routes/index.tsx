@@ -12,12 +12,6 @@ const publicRoutes = [
     component: <Home></Home>,
   },
   {
-    path: routes.ReadingMultipleChoices,
-    component: (
-        <MultipleChoice></MultipleChoice>
-    ),
-  },
-  {
     path: routes.Login,
     component: <LoginPage></LoginPage>,
     layout: EmptyLayout,

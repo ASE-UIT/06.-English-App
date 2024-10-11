@@ -118,7 +118,7 @@ export const SectionMain = ({ children }: { children: React.ReactNode }) => {
             <BiTrashAlt size={20} strokeWidth={1} className="mr-[42px] cursor-pointer font-bold" />
           </div>
         </div>
-        <div className="px-[31px] py-[17px]">{children}</div>
+        <div className="px-[31px] py-[40px]">{children}</div>
       </div>
       <div className="w-full flex items-center justify-end mt-[83px] mr-[90px] gap-4">
         <Button onClick={() => {
