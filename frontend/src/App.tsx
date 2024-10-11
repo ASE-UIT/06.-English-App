@@ -11,7 +11,7 @@ function App() {
           <Routes>
             {publicRoutes.map((route, index) => {
               const Page = route.component
-              const Layout = DefaultLayout
+              const Layout = route.layout == null ? DefaultLayout : route.layout
               return <Route key={index} path={route.path} element={<Layout>{Page}</Layout>} />
             })}
             {protectedRoutes.map((route, index) => {

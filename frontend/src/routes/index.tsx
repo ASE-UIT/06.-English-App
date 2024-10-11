@@ -4,11 +4,24 @@ import TrueFalseNotGiven from "@/components/Reading/TFNG"
 import { routes } from "@/config"
 import { Home } from "@/pages/main-layout/Home"
 import { Lecture } from "@/pages/protected-route/lecture"
+import { LoginPage } from "@/pages/LoginPage/LoginPage"
+import EmptyLayout  from "@/components/Layout/EmptyLayout/EmptyLayout"
 const publicRoutes = [
   {
     path: routes.Home,
     component: <Home></Home>,
   },
+  {
+    path: routes.ReadingMultipleChoices,
+    component: (
+        <MultipleChoice></MultipleChoice>
+    ),
+  },
+  {
+    path: routes.Login,
+    component: <LoginPage></LoginPage>,
+    layout: EmptyLayout,
+  }
 ]
 const protectedRoutes = [
   // {
