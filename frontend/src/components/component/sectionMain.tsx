@@ -14,11 +14,11 @@ import { LuStar } from "react-icons/lu"
 import { useDispatch, useSelector } from "react-redux"
 import { FIELD } from "@/config/option"
 import { useSectionSlice } from "@/features/section/store"
-import { useCallback, useEffect, useMemo } from "react"
+import React, { useCallback, useEffect, useMemo } from "react"
 import { getSectionValue } from "@/features/section/helpers/common"
 import { Button } from "../Layout/Components/ui/Button"
 
-export const SectionMain = () => {
+export const SectionMain = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
   const currentSection = useSelector(selectSectionCurrent)
@@ -94,7 +94,8 @@ export const SectionMain = () => {
               className="mr-[26.45px] cursor-pointer"
             />
             <MdOutlineArrowDownward
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation()
                 handleMovement("bottom")
               }}
               stroke="#5D5FEF"
@@ -117,9 +118,11 @@ export const SectionMain = () => {
             <BiTrashAlt size={20} strokeWidth={1} className="mr-[42px] cursor-pointer font-bold" />
           </div>
         </div>
+        <div className="px-[31px] py-[17px]">{children}</div>
       </div>
       <div className="w-full flex items-center justify-end mt-[83px] mr-[90px] gap-4">
         <Button onClick={() => {
+          handleMovement("top")
           dispatch(sectionActions.changeCurrentSection(currentSection - 1))
         }} className={`${checkPossibleClick("decrement") ? 'border-2 border-fuschia rounded-lg py-3 px-[14px] bg-white hover:bg-fuschia' : "bg-white border-2 border-fuschia rounded-lg py-3 px-[14px] pointer-events-none"}`}>
           <MdOutlineArrowBack stroke="black" fill="black" size={20}/>

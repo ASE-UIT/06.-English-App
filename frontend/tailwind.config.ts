@@ -40,6 +40,7 @@ const config = {
         backgroundColor: "#F1F5F9",
         title: "#1E293B",
         categorized: "#0EA5E9",
+        customPink: "#FCDDEC4D",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
