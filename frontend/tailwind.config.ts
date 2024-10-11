@@ -28,10 +28,6 @@ const config = {
         "login-image": "600px",
         "register-table": "600px",
       },
-      height: {
-        "login-image": "700px",
-        "register-table": "800px",
-      },
       fontSize: {
         "title": "48px",
         "default": "24px",
