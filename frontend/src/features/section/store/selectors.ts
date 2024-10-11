@@ -9,7 +9,7 @@ export const initialState: Section = {
   pickType: "",
   data: {
     1: {
-      type: "multiple_choice",
+      type: "Multiple choices",
     },
   },
 }
