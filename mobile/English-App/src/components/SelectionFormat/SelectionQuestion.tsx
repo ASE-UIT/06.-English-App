@@ -1,6 +1,6 @@
 import { View, Text } from "react-native";
 import React from "react";
-import {Dropdown} from 'react-native-element-dropdown';
+import { Dropdown } from "react-native-element-dropdown";
 import DropdownComponent from "../DropdownComponent";
 
 type SelectionFormatProps = {
@@ -12,10 +12,12 @@ type SelectionFormatProps = {
 const SelectionQuestion = ({ id, question, options }: SelectionFormatProps) => {
   const [expanded, setExpanded] = React.useState(false);
   return (
-    <View className=" flex flex-row">
-      <Text className="text-lg text-primaryLight">{id}.</Text>
+    <View className=" flex flex-row  items-start">
+      <Text className=" text-primaryLight text-lg">{id}.</Text>
       <DropdownComponent />
-      <Text className="text-lg">{question}</Text>
+      <Text className="question flex self-end text-lg flex-shrink mr-2 ">
+        {question}
+      </Text>
     </View>
   );
 };

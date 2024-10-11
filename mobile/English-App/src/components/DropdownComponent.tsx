@@ -44,6 +44,7 @@ const styles = StyleSheet.create({
   },
   placeholder:{
     width:100,
+
     textAlign: 'center',
     borderWidth:1,
     borderRadius:10,
