@@ -28,10 +28,6 @@ const config = {
         "login-image": "600px",
         "register-table": "600px",
       },
-      height: {
-        "login-image": "700px",
-        "register-table": "800px",
-      },
       fontSize: {
         "title": "48px",
         "default": "24px",
@@ -53,7 +49,6 @@ const config = {
         navContentBg: "#f0efefb8",
         navTitle: "#00b14f",
         placeHolder: "#94A3B8",
-        fuschia: "#ef5da8",
         primaryColor: "#0F172A",
         secondaryColor: "#64748B",
         backgroundColor: "#F1F5F9",
