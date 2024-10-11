@@ -14,3 +14,15 @@ export const FIELD: Field[] = [
     text: "Setence completion",
   },
 ]
+
+export const TFNGENUM : Field[] = [
+  {
+    text: "True",
+  },
+  {
+    text: "False",
+  },
+  {
+    text: "Not Given",
+  },
+]

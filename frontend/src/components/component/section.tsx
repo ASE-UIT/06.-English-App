@@ -13,7 +13,7 @@ export const Section = () => {
   console.log("sectionCurrent", sectionCurrent)
   Object.entries(section ?? {}).forEach(([key, value]) => console.log("section", key, " ", value))
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center bg-white">
       <div className="flex min-h-[625px] min-w-[439px] flex-col rounded-md border-2 border-borderContent bg-white p-[30px]">
         <p className="w-full border-b-2 border-borderContent pb-3 text-[32px] text-content">Content</p>
         {Object.entries(section ?? {}).map(([key, value]) => {
