@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 export const LoginPage = () => {
     return (
         <>
-            <div className="w-screen h-screen flex bg-gradient-to-b from-white via-pink-200 to-white mx-auto">
-                <img src={LoginImage} alt="" className='w-login-image h-login-image mr-16'/>
+            <div className="w-full h-full flex bg-gradient-to-b from-white via-pink-200 to-white mx-auto">
+                <img src={LoginImage} alt="" className='w-[600px] h-[700px] object-cover mr-16'/>
                 <div className='w-register-table h-register-table flex flex-col justify-between'>
-                    <span className='text-title text-[#5d5fef] font-bold'>Create an account</span>
+                    <span className='text-[48px] text-headerIcon font-bold'>Create an account</span>
 
                     <div>
                         <span className='text-default font-normal text-black'>Already have an acount? </span>

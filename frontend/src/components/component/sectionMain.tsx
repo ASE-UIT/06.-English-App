@@ -19,6 +19,7 @@ import { getSectionValue } from "@/features/section/helpers/common"
 import { Button } from "../Layout/Components/ui/Button"
 
 export const SectionMain = ({ children }: { children: React.ReactNode }) => {
+  console.log("Children",children)
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
   const currentSection = useSelector(selectSectionCurrent)
