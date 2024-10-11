@@ -39,7 +39,17 @@ const config = {
       letterSpacing: {
         "neg-05": "-0.5%",
       },
+      height: {
+        inherit: 'inherit',
+      },
       colors: {
+        headerIcon: "#5D5FEF",
+        sectionHeaderBg: "rgba(252, 221, 236, 0.50)",
+        currentBg: "#fff5fa",
+        fuschia: "#ef5da8",
+        content: "#1E1E1E",
+        typeContent: "#757575",
+        borderContent: "#A5A6F6",
         navContentBg: "#f0efefb8",
         navTitle: "#00b14f",
         placeHolder: "#94A3B8",
@@ -48,7 +58,9 @@ const config = {
         secondaryColor: "#64748B",
         backgroundColor: "#F1F5F9",
         title: "#1E293B",
+        backgroundLine: "#AEAEB2",
         categorized: "#0EA5E9",
+        customPink: "#FCDDEC4D",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

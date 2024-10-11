@@ -3,3 +3,7 @@ export interface reduxState {
     user: string
   }
 }
+
+export interface Field {
+  text: string
+}
