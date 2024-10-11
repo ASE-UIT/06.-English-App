@@ -5,5 +5,6 @@ export const routes = {
   ReadingMultipleChoices: "/lecture/reading/multiple-choices",
   Login: "/login",
   ReadingTFNG:"/lecture/reading/true-false-notgiven",
-  ReadingNoteCompletion: "/lecture/reading/note-completion"
+  ReadingNoteCompletion: "/lecture/reading/note-completion",
+  Register: "/register",
 }
