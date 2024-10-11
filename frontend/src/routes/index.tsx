@@ -2,7 +2,8 @@ import { routes } from "@/config"
 import { Home } from "@/pages/main-layout/Home"
 import { Chat } from "@/pages/protected-route/chat"
 import { LoginPage } from "@/pages/LoginPage/LoginPage"
-import EmptyLayout  from "@/components/Layout/EmptyLayout/EmptyLayout"
+import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
+import LoginRegisterLayout  from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
 const publicRoutes = [
   {
     path: routes.Home,
@@ -11,7 +12,12 @@ const publicRoutes = [
   {
     path: routes.Login,
     component: <LoginPage></LoginPage>,
-    layout: EmptyLayout,
+    layout: LoginRegisterLayout,
+  },
+  {
+    path: routes.Register,
+    component: <RegisterPage></RegisterPage>,
+    layout: LoginRegisterLayout,
   }
 ]
 const protectedRoutes = [
