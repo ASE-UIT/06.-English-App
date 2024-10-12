@@ -58,4 +58,4 @@ const NoteCompletion = () => {
         </div>
     )
 }
-export default NoteCompletion;
+export default NoteCompletion

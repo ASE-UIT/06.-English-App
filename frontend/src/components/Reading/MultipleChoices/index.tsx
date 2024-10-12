@@ -21,11 +21,11 @@ const MultipleChoice = () => {
     setNumberOfQuestion((prev) => prev - 1)
   }
   return (
-    <div className="px-[14px]">
+    <div className="w-full">
       <div>
         <div>
           {!question.length && (
-            <div className="ml-[108px] mt-[52px]">
+            <div className="ml-[66px] mt-[52px]">
               <Label className="text-[black]">Number of questions</Label>
               <div className="flex gap-3">
                 <div className="min-w-[500px]">
@@ -35,15 +35,23 @@ const MultipleChoice = () => {
                     value={numberOfQuestion}
                     onChange={handleChange}
                   />
-                  <Button className="mt-[21px] bg-[#f178b6]" onClick={handleQuestion}>
-                    OK
-                  </Button>
+                  <div className="flex w-full justify-end">
+                    <Button className="mt-[21px] bg-[#f178b6]" onClick={handleQuestion}>
+                      OK
+                    </Button>
+                  </div>
                 </div>
                 <div>
-                  <Button className="bg-customPink text-[black]" onClick={handleAddButton}>
+                  <Button
+                    className="border-none bg-customPink text-[black] hover:bg-fuschia hover:text-white"
+                    onClick={handleAddButton}
+                  >
                     +
                   </Button>
-                  <Button className="bg-customPink text-[black]" onClick={handleRemoveButton}>
+                  <Button
+                    className="border-none bg-customPink text-[black] hover:bg-fuschia hover:text-white"
+                    onClick={handleRemoveButton}
+                  >
                     -
                   </Button>
                 </div>
