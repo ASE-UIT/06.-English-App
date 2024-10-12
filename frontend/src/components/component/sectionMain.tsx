@@ -1,4 +1,4 @@
-import { selectPickType, selectSectionCurrent, selectSections } from "@/features/section/store/selectors"
+import { selectPickType, selectSectionCurrent, selectSectionData, selectSections } from "@/features/section/store/selectors"
 import { MdOutlineArrowUpward, MdOutlineArrowDownward, MdOutlineArrowBack, MdOutlineArrowForward } from "react-icons/md"
 import { FiCopy } from "react-icons/fi"
 import { BiTrashAlt } from "react-icons/bi"
@@ -14,12 +14,14 @@ import { LuStar } from "react-icons/lu"
 import { useDispatch, useSelector } from "react-redux"
 import { FIELD } from "@/config/option"
 import { useSectionSlice } from "@/features/section/store"
-import React, { useCallback, useEffect, useMemo } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { getSectionValue } from "@/features/section/helpers/common"
 import { Button } from "../Layout/Components/ui/Button"
+import MultipleChoice from "../Reading/MultipleChoices"
+import TrueFalseNotGiven from "../Reading/TFNG"
+import NoteCompletion from "../Reading/NoteCompletion"
 
-export const SectionMain = ({ children }: { children: React.ReactNode }) => {
-  console.log("Children",children)
+export const SectionMain = () => {
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
   const currentSection = useSelector(selectSectionCurrent)
@@ -27,16 +29,8 @@ export const SectionMain = ({ children }: { children: React.ReactNode }) => {
   const pickType = useSelector(selectPickType)
   const sectionValue = useMemo(() => getSectionValue(currentSection, section), [currentSection, section])
   useEffect(() => {
-    console.log("updatelaiPick", sectionValue)
     if (sectionValue) dispatch(sectionActions.changeType(sectionValue))
   }, [dispatch, sectionActions, sectionValue])
-  console.log("pickType", pickType)
-  // const [typeChange, setTypeChange] = useState(sectionValue)
-  // useEffect(() => {
-  //     setTypeChange(sectionValue)
-  // },[sectionValue])
-  console.log("currentSection", currentSection)
-  console.log("section", Object.keys(section ?? {}).length)
   const checkPossibleClick = useCallback(
     (typeClick: string) => {
       if (typeClick === "increment") {
@@ -48,15 +42,31 @@ export const SectionMain = ({ children }: { children: React.ReactNode }) => {
     [currentSection, section],
   )
 
+  const currentSectionData = useSelector((state)=> selectSectionData(state, currentSection))
+  console.log("currentSectionData",currentSectionData)
   const handleMovement = (type: string) => {
     if (type === "top")
     {
-      console.log("Dichuyenlentren")
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
     else
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
   }
+
+  const children = useMemo(() => {
+    switch (currentSectionData.type) {
+      case 'Multiple choices':
+        return <MultipleChoice/>
+      case 'T/F/NG':
+        return <TrueFalseNotGiven/>
+      case 'Note completion':
+        return <NoteCompletion/>
+      case 'Setence completion':
+        return <NoteCompletion />
+      default:
+        return <div/>
+    }
+  },[currentSectionData.type])
 
   return (
     <div className="h-full w-full flex flex-col">
@@ -119,9 +129,9 @@ export const SectionMain = ({ children }: { children: React.ReactNode }) => {
             <BiTrashAlt size={20} strokeWidth={1} className="mr-[42px] cursor-pointer font-bold" />
           </div>
         </div>
-        <div className="px-[31px] py-[17px]">{children}</div>
+        <div className="px-[31px] py-[17px]">{ children}</div>
       </div>
-      <div className="w-full flex items-center justify-end mt-[83px] mr-[90px] gap-4">
+      <div className="w-full flex items-center justify-end mt-[83px] pr-[71px] gap-4">
         <Button onClick={() => {
           handleMovement("top")
           dispatch(sectionActions.changeCurrentSection(currentSection - 1))
@@ -131,7 +141,7 @@ export const SectionMain = ({ children }: { children: React.ReactNode }) => {
         </Button>
         <Button onClick={() => {
           dispatch(sectionActions.changeCurrentSection(currentSection + 1))
-        }} className={`${checkPossibleClick("increment") ? 'rounded-lg bg-fuschia py-3 px[28.5px]': 'pointer-events-none rounded-lg bg-fuschia py-3 px[28.5px]'}`}>
+        }} className={`${checkPossibleClick("increment") ? 'rounded-lg bg-fuschia py-3 px-[28.5px]': 'pointer-events-none rounded-lg bg-fuschia py-3 px-[28.5px]'}`}>
           <span className="text-white mr-2">Next</span>
           <MdOutlineArrowForward stroke="white" size={20}/>          
         </Button>

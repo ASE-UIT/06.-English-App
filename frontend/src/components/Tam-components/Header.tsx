@@ -1,7 +1,8 @@
-import { HiOutlineArrowNarrowLeft, HiUpload,  } from "react-icons/hi";
+import { HiOutlineArrowNarrowLeft} from "react-icons/hi";
 import { FiUpload } from "react-icons/fi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import { IoEyeOutline,IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { useLocation } from "react-router";
 
 // import { ButtonGroup } from "primitives"
 // import { Button } from "primitives"
@@ -9,6 +10,7 @@ import { IoEyeOutline,IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 // import { IconEye } from "icons"
 
 function Header() {
+    const param = useLocation()
     return ( <>
         <header className = "w-screen h-52 bg-gradient-to-b from-[#fdebf4] to-[#FEFCFC]" >
             <div className="flex py-10 w-full h-full justify-between items-baseline">
@@ -23,7 +25,7 @@ function Header() {
                         </div>
 
 
-                            <p className="text-xl text-black opacity-50">Dashboard/My Course/IELTS 001/Create exercises/</p>  
+                        <p className="text-xl text-black opacity-50">{param.pathname}</p>  
                             <span className="text-xl text-black">Create Reading Exercise</span>
                             <div className="flex">
                                 <button className="flex items-center bg-transparent rounded-lg p-0 mr-3">
