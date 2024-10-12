@@ -35,17 +35,23 @@ const MultipleChoice = () => {
                     value={numberOfQuestion}
                     onChange={handleChange}
                   />
-                  <div className="w-full flex justify-end">
+                  <div className="flex w-full justify-end">
                     <Button className="mt-[21px] bg-[#f178b6]" onClick={handleQuestion}>
                       OK
                     </Button>
                   </div>
                 </div>
                 <div>
-                  <Button className="bg-customPink text-[black] hover:bg-fuschia hover:text-white border-none" onClick={handleAddButton}>
+                  <Button
+                    className="border-none bg-customPink text-[black] hover:bg-fuschia hover:text-white"
+                    onClick={handleAddButton}
+                  >
                     +
                   </Button>
-                  <Button className="bg-customPink text-[black] hover:bg-fuschia hover:text-white border-none" onClick={handleRemoveButton}>
+                  <Button
+                    className="border-none bg-customPink text-[black] hover:bg-fuschia hover:text-white"
+                    onClick={handleRemoveButton}
+                  >
                     -
                   </Button>
                 </div>

@@ -15,7 +15,7 @@ export const FIELD: Field[] = [
   },
 ]
 
-export const TFNGENUM : Field[] = [
+export const TFNGENUM: Field[] = [
   {
     text: "True",
   },

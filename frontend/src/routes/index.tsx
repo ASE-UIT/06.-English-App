@@ -6,7 +6,7 @@ import { Home } from "@/pages/main-layout/Home"
 import { Lecture } from "@/pages/protected-route/lecture"
 import { LoginPage } from "@/pages/LoginPage/LoginPage"
 import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
-import LoginRegisterLayout  from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
+import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
 const publicRoutes = [
   {
     path: routes.Home,
@@ -21,12 +21,12 @@ const publicRoutes = [
     path: routes.Register,
     component: <RegisterPage></RegisterPage>,
     layout: LoginRegisterLayout,
-  }
+  },
 ]
 const protectedRoutes = [
   {
     path: routes.Reading,
-    component: <Lecture></Lecture>
+    component: <Lecture></Lecture>,
   },
   // {
   //   path: routes.ReadingMultipleChoices,

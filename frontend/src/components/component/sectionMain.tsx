@@ -1,4 +1,9 @@
-import { selectPickType, selectSectionCurrent, selectSectionData, selectSections } from "@/features/section/store/selectors"
+import {
+  selectPickType,
+  selectSectionCurrent,
+  selectSectionData,
+  selectSections,
+} from "@/features/section/store/selectors"
 import { MdOutlineArrowUpward, MdOutlineArrowDownward, MdOutlineArrowBack, MdOutlineArrowForward } from "react-icons/md"
 import { FiCopy } from "react-icons/fi"
 import { BiTrashAlt } from "react-icons/bi"
@@ -42,34 +47,31 @@ export const SectionMain = () => {
     [currentSection, section],
   )
 
-  const currentSectionData = useSelector((state)=> selectSectionData(state, currentSection))
-  console.log("currentSectionData",currentSectionData)
+  const currentSectionData = useSelector((state) => selectSectionData(state, currentSection))
+  console.log("currentSectionData", currentSectionData)
   const handleMovement = (type: string) => {
-    if (type === "top")
-    {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
-    else
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })
+    if (type === "top") {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    } else window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })
   }
 
   const children = useMemo(() => {
     switch (currentSectionData.type) {
-      case 'Multiple choices':
-        return <MultipleChoice/>
-      case 'T/F/NG':
-        return <TrueFalseNotGiven/>
-      case 'Note completion':
-        return <NoteCompletion/>
-      case 'Setence completion':
+      case "Multiple choices":
+        return <MultipleChoice />
+      case "T/F/NG":
+        return <TrueFalseNotGiven />
+      case "Note completion":
+        return <NoteCompletion />
+      case "Setence completion":
         return <NoteCompletion />
       default:
-        return <div/>
+        return <div />
     }
-  },[currentSectionData.type])
+  }, [currentSectionData.type])
 
   return (
-    <div className="h-full w-full flex flex-col">
+    <div className="flex h-full w-full flex-col">
       <div className="h-full w-full rounded-md border-2 border-borderContent">
         <div className="flex items-center justify-between bg-sectionHeaderBg px-[43px] pb-[35px] pt-[31px]">
           <div className="flex items-center">
@@ -111,7 +113,7 @@ export const SectionMain = () => {
               }}
               stroke="#5D5FEF"
               size={20}
-              className= "mr-[42px] cursor-pointer"
+              className="mr-[42px] cursor-pointer"
             />
             <FiCopy
               size={20}
@@ -129,21 +131,27 @@ export const SectionMain = () => {
             <BiTrashAlt size={20} strokeWidth={1} className="mr-[42px] cursor-pointer font-bold" />
           </div>
         </div>
-        <div className="px-[31px] py-[17px]">{ children}</div>
+        <div className="px-[31px] py-[17px]">{children}</div>
       </div>
-      <div className="w-full flex items-center justify-end mt-[83px] pr-[71px] gap-4">
-        <Button onClick={() => {
-          handleMovement("top")
-          dispatch(sectionActions.changeCurrentSection(currentSection - 1))
-        }} className={`${checkPossibleClick("decrement") ? 'border-2 border-fuschia rounded-lg py-3 px-[14px] bg-white hover:bg-fuschia' : "bg-white border-2 border-fuschia rounded-lg py-3 px-[14px] pointer-events-none"}`}>
-          <MdOutlineArrowBack stroke="black" fill="black" size={20}/>
-          <span className="text-black ml-2">Previous</span>
+      <div className="mt-[83px] flex w-full items-center justify-end gap-4 pr-[71px]">
+        <Button
+          onClick={() => {
+            handleMovement("top")
+            dispatch(sectionActions.changeCurrentSection(currentSection - 1))
+          }}
+          className={`${checkPossibleClick("decrement") ? "rounded-lg border-2 border-fuschia bg-white px-[14px] py-3 hover:bg-fuschia" : "pointer-events-none rounded-lg border-2 border-fuschia bg-white px-[14px] py-3"}`}
+        >
+          <MdOutlineArrowBack stroke="black" fill="black" size={20} />
+          <span className="ml-2 text-black">Previous</span>
         </Button>
-        <Button onClick={() => {
-          dispatch(sectionActions.changeCurrentSection(currentSection + 1))
-        }} className={`${checkPossibleClick("increment") ? 'rounded-lg bg-fuschia py-3 px-[28.5px]': 'pointer-events-none rounded-lg bg-fuschia py-3 px-[28.5px]'}`}>
-          <span className="text-white mr-2">Next</span>
-          <MdOutlineArrowForward stroke="white" size={20}/>          
+        <Button
+          onClick={() => {
+            dispatch(sectionActions.changeCurrentSection(currentSection + 1))
+          }}
+          className={`${checkPossibleClick("increment") ? "rounded-lg bg-fuschia px-[28.5px] py-3" : "pointer-events-none rounded-lg bg-fuschia px-[28.5px] py-3"}`}
+        >
+          <span className="mr-2 text-white">Next</span>
+          <MdOutlineArrowForward stroke="white" size={20} />
         </Button>
       </div>
     </div>
