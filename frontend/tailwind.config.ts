@@ -28,19 +28,17 @@ const config = {
         "login-image": "600px",
         "register-table": "600px",
       },
-      height: {
-        "login-image": "700px",
-        "register-table": "800px",
-      },
       fontSize: {
-        "title": "48px",
-        "default": "24px",
+        title: "48px",
+        default: "24px",
       },
       letterSpacing: {
         "neg-05": "-0.5%",
       },
       height: {
-        inherit: 'inherit',
+        inherit: "inherit",
+        "login-image": "700px",
+        "register-table": "800px",
       },
       colors: {
         headerIcon: "#5D5FEF",

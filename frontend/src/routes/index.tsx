@@ -1,22 +1,16 @@
-import MultipleChoice from "@/components/Reading/MultipleChoices"
-import NoteCompletion from "@/components/Reading/NoteCompletion"
-import TrueFalseNotGiven from "@/components/Reading/TFNG"
+// import MultipleChoice from "@/components/Reading/MultipleChoices"
+// import NoteCompletion from "@/components/Reading/NoteCompletion"
+// import TrueFalseNotGiven from "@/components/Reading/TFNG"
 import { routes } from "@/config"
 import { Home } from "@/pages/main-layout/Home"
 import { Lecture } from "@/pages/protected-route/lecture"
 import { LoginPage } from "@/pages/LoginPage/LoginPage"
 import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
-import LoginRegisterLayout  from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
+import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
 const publicRoutes = [
   {
     path: routes.Home,
     component: <Home></Home>,
-  },
-  {
-    path: routes.ReadingMultipleChoices,
-    component: (
-        <MultipleChoice></MultipleChoice>
-    ),
   },
   {
     path: routes.Login,
@@ -27,36 +21,36 @@ const publicRoutes = [
     path: routes.Register,
     component: <RegisterPage></RegisterPage>,
     layout: LoginRegisterLayout,
-  }
+  },
 ]
 const protectedRoutes = [
+  {
+    path: routes.Reading,
+    component: <Lecture></Lecture>,
+  },
   // {
-  //   path: routes.Chat,
-  //   component: <Chat></Chat>,
+  //   path: routes.ReadingMultipleChoices,
+  //   component: (
+  //     <Lecture>
+  //       <MultipleChoice></MultipleChoice>
+  //     </Lecture>
+  //   ),
   // },
-  {
-    path: routes.ReadingMultipleChoices,
-    component: (
-      <Lecture>
-        <MultipleChoice></MultipleChoice>
-      </Lecture>
-    ),
-  },
-  {
-    path: routes.ReadingTFNG,
-    component: (
-      <Lecture>
-        <TrueFalseNotGiven></TrueFalseNotGiven>
-      </Lecture>
-    )
-  },
-  {
-    path: routes.ReadingNoteCompletion,
-    component: (
-      <Lecture>
-        <NoteCompletion></NoteCompletion>
-      </Lecture>
-    )
-  }
+  // {
+  //   path: routes.ReadingTFNG,
+  //   component: (
+  //     <Lecture>
+  //       <TrueFalseNotGiven></TrueFalseNotGiven>
+  //     </Lecture>
+  //   )
+  // },
+  // {
+  //   path: routes.ReadingNoteCompletion,
+  //   component: (
+  //     <Lecture>
+  //       <NoteCompletion></NoteCompletion>
+  //     </Lecture>
+  //   )
+  // }
 ]
 export { publicRoutes, protectedRoutes }
