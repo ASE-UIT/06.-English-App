@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -14,86 +14,86 @@ export default function SpeakingExercise() {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
 
-//   useEffect(() => {
-//     return () => {
-//       if (recording) {
-//         recording.stopAndUnloadAsync();
-//       }
-//       if (sound) {
-//         sound.unloadAsync();
-//       }
-//     };
-//   }, [recording, sound]);
+  useEffect(() => {
+    return () => {
+      if (recording) {
+        recording.stopAndUnloadAsync();
+      }
+      if (sound) {
+        sound.unloadAsync();
+      }
+    };
+  }, [recording, sound]);
 
-//   async function startRecording() {
-//     try {
-//       await Audio.requestPermissionsAsync();
-//       await Audio.setAudioModeAsync({
-//         allowsRecordingIOS: true,
-//         playsInSilentModeIOS: true,
-//       });
+  async function startRecording() {
+    try {
+      await Audio.requestPermissionsAsync();
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
 
-//       const { recording } = await Audio.Recording.createAsync(
-//         Audio.RecordingOptionsPresets.HIGH_QUALITY
-//       );
-//       setRecording(recording);
-//       setIsRecording(true);
-//     } catch (err) {
-//       console.error('Failed to start recording', err);
-//     }
-//   }
+      const { recording } = await Audio.Recording.createAsync(
+        Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
+      setRecording(recording);
+      setIsRecording(true);
+    } catch (err) {
+      console.error('Failed to start recording', err);
+    }
+  }
 
-//   async function stopRecording() {
-//     if (!recording) {
-//       return;
-//     }
+  async function stopRecording() {
+    if (!recording) {
+      return;
+    }
 
-//     setIsRecording(false);
-//     await recording.stopAndUnloadAsync();
-//     const uri = recording.getURI();
-//     setRecordingUri(uri);
-//     setRecording(null);
-//     console.log('Recording saved at', uri);
-//   }
+    setIsRecording(false);
+    await recording.stopAndUnloadAsync();
+    const uri = recording.getURI();
+    setRecordingUri(uri);
+    setRecording(null);
+    console.log('Recording saved at', uri);
+  }
 
-//   async function playRecording() {
-//     if (!recordingUri) {
-//       return;
-//     }
+  async function playRecording() {
+    if (!recordingUri) {
+      return;
+    }
 
-//     const { sound } = await Audio.Sound.createAsync({ uri: recordingUri });
-//     setSound(sound);
-//     setIsPlaying(true);
-//     await sound.playAsync();
-//     sound.setOnPlaybackStatusUpdate((status) => {
-//       if (status.isLoaded) {
-//         if (status.durationMillis) {
-//           setProgress(status.positionMillis / status.durationMillis);
-//         }
-//         if (status.durationMillis !== undefined) {
-//           setDuration(status.durationMillis);
-//         }
-//         if (status.didJustFinish) {
-//           setIsPlaying(false);
-//         }
-//       }
-//     });
-//   }
+    const { sound } = await Audio.Sound.createAsync({ uri: recordingUri });
+    setSound(sound);
+    setIsPlaying(true);
+    await sound.playAsync();
+    sound.setOnPlaybackStatusUpdate((status) => {
+      if (status.isLoaded) {
+        if (status.durationMillis) {
+          setProgress(status.positionMillis / status.durationMillis);
+        }
+        if (status.durationMillis !== undefined) {
+          setDuration(status.durationMillis);
+        }
+        if (status.didJustFinish) {
+          setIsPlaying(false);
+        }
+      }
+    });
+  }
 
-//   async function pauseRecording() {
-//     if (sound) {
-//       await sound.pauseAsync();
-//       setIsPlaying(false);
-//     }
-//   }
+  async function pauseRecording() {
+    if (sound) {
+      await sound.pauseAsync();
+      setIsPlaying(false);
+    }
+  }
 
-//   async function replayRecording() {
-//     if (sound) {
-//       await sound.setPositionAsync(0);
-//       await sound.playAsync();
-//       setIsPlaying(true);
-//     }
-//   }
+  async function replayRecording() {
+    if (sound) {
+      await sound.setPositionAsync(0);
+      await sound.playAsync();
+      setIsPlaying(true);
+    }
+  }
 
   return (
     <View className="flex-1 justify-center items-center bg-gray-100 p-4">
@@ -130,7 +130,7 @@ export default function SpeakingExercise() {
                 <Icon name="play" size={32} color="black" />
               )}
             </TouchableOpacity>
-            <Slider
+            {/* <Slider
               value={progress}
               onValueChange={(value: number) => {
                 if (sound) {
@@ -138,7 +138,7 @@ export default function SpeakingExercise() {
                 }
               }}
               className="mt-4"
-            />
+            /> */}
             <TouchableOpacity
               onPress={replayRecording}
               className="bg-red-500 rounded-full p-4 self-center mt-4"
