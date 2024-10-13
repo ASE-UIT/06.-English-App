@@ -1,14 +1,10 @@
 import { PAYMENT_METHOD } from 'src/util/constants';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { Base } from '../../base/base.entity';
+import { Student } from '../../user/entities/student.entity';
+import { Course } from 'src/module/course/entities/course.entity';
 @Entity()
-export class CourseBuying {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-  @Column()
-  courseId: string;
-  @Column()
-  studentId: string;
+export class CourseBuying extends Base {
   @Column({
     type: 'enum',
     enum: PAYMENT_METHOD,
@@ -19,4 +15,8 @@ export class CourseBuying {
   key: string;
   @Column('boolean', { default: true })
   active: boolean;
+  @ManyToOne(() => Student, (student) => student.courseBuyings)
+  student: Student;
+  @ManyToOne(() => Course, (course) => course.courseBuyings)
+  course: Course;
 }
