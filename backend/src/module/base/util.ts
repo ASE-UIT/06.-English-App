@@ -18,3 +18,10 @@ export enum Medias {
   VIDEO = 'video',
   AUDIO = 'audio',
 }
+
+export enum State {
+  DRAFT = 'draft',
+  SUBMITTED = 'submitted',
+  BLOCKED = 'blocked',
+  PUBLISHED = 'published',
+}
