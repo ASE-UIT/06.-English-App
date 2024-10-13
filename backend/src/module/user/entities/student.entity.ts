@@ -3,8 +3,10 @@ import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { User } from './user.entity';
 import { CourseOwning } from '../../course-owning/entities/course-owning.entity';
 import { CourseBuying } from '../../course-buying/entities/course-buying.entity';
-import { CourseProgress } from '../../course-progress/entities/course-progress.entity';
 import { CourseReviewing } from 'src/module/course-reviewing/entities/course-reviewing.entity';
+import { StudentAnswer } from 'src/module/student-answer/entities/student-answer.entity';
+import { FeedBack } from 'src/module/feed-back/entities/feed-back.entity';
+import { CourseViewing } from 'src/module/course-viewing/entities/course-viewing.entity';
 
 @Entity()
 export class Student extends Base {
@@ -15,6 +17,15 @@ export class Student extends Base {
   courseOwnings: CourseOwning[];
   @OneToMany(() => CourseBuying, (courseBuying) => courseBuying.student)
   courseBuyings: CourseBuying[];
-  @OneToMany(() => CourseReviewing, (courseReviewing) => courseReviewing.student)
+  @OneToMany(
+    () => CourseReviewing,
+    (courseReviewing) => courseReviewing.student,
+  )
   courseReviewings: CourseReviewing[];
+  @OneToMany(() => StudentAnswer, (studentAnswer) => studentAnswer.student)
+  studentAnswers: StudentAnswer[];
+  @OneToMany(() => CourseViewing, (courseViewing) => courseViewing.student)
+  courseViewings: CourseViewing[];
+  @OneToMany(() => FeedBack, (feedBack) => feedBack.student)
+  feedBacks: FeedBack[];
 }

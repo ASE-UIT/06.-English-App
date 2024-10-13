@@ -1,8 +1,8 @@
 import { PAYMENT_METHOD } from 'src/util/constants';
-import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Student } from '../../user/entities/student.entity';
-
+import { Course } from 'src/module/course/entities/course.entity';
 @Entity()
 export class CourseBuying extends Base {
   @Column({
@@ -17,4 +17,6 @@ export class CourseBuying extends Base {
   active: boolean;
   @ManyToOne(() => Student, (student) => student.courseBuyings)
   student: Student;
+  @ManyToOne(() => Course, (course) => course.courseBuyings)
+  course: Course;
 }

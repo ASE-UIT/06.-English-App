@@ -4,7 +4,8 @@ import { UpdateAnswerDto } from './dto/update-answer.dto';
 
 @Injectable()
 export class AnswerService {
-  create(createAnswerDto: CreateAnswerDto) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  create(_createAnswerDto: CreateAnswerDto) {
     return 'This action adds a new answer';
   }
 
@@ -16,7 +17,8 @@ export class AnswerService {
     return `This action returns a #${id} answer`;
   }
 
-  update(id: number, updateAnswerDto: UpdateAnswerDto) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  update(id: number, _updateAnswerDto: UpdateAnswerDto) {
     return `This action updates a #${id} answer`;
   }
 

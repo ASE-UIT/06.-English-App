@@ -7,7 +7,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Base extends BaseEntity {
+export abstract class Base extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
   @CreateDateColumn()
