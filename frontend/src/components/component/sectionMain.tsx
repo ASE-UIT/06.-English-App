@@ -131,7 +131,7 @@ export const SectionMain = () => {
             <BiTrashAlt size={20} strokeWidth={1} className="mr-[42px] cursor-pointer font-bold" />
           </div>
         </div>
-        <div className="px-[31px] py-[17px]">{children}</div>
+        <div className="px-[31px] py-[40px]">{children}</div>
       </div>
       <div className="mt-[83px] flex w-full items-center justify-end gap-4 pr-[71px]">
         <Button

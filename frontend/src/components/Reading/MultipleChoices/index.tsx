@@ -61,7 +61,7 @@ const MultipleChoice = () => {
           {question.length > 0 && (
             <div>
               <ul>
-                {question.map((q, i) => (
+                {question.map((_q, i) => (
                   <li key={i}>
                     <Question index={i + 1} />
                   </li>
