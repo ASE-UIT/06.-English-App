@@ -4,7 +4,7 @@ import React from 'react'
 const Home = () => {
   return (
     <View>
-      <Text style={{fontSize: 100}}>Home</Text>
+      
     </View>
   )
 }
