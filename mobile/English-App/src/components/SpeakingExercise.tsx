@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-// import Slider from '@react-native-community/slider';
+import Slider from '@react-native-community/slider';
 import { Audio } from 'expo-av';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -130,7 +130,7 @@ export default function SpeakingExercise() {
                 <Icon name="play" size={32} color="black" />
               )}
             </TouchableOpacity>
-            {/* <Slider
+            <Slider
               value={progress}
               onValueChange={(value: number) => {
                 if (sound) {
@@ -138,7 +138,7 @@ export default function SpeakingExercise() {
                 }
               }}
               className="mt-4"
-            /> */}
+            />
             <TouchableOpacity
               onPress={replayRecording}
               className="bg-red-500 rounded-full p-4 self-center mt-4"
