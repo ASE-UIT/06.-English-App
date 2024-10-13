@@ -1,16 +1,17 @@
-import { Medias } from 'src/module/base/util';
 import { Base } from '../../base/base.entity';
-import { Column, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { Lesson } from './lesson.entity';
+import { MEDIAS } from '../../../util/constants';
 
+@Entity()
 export class LessonMedia extends Base {
   @Column()
   url: string;
   @Column({
     type: 'enum',
-    enum: Medias,
+    enum: MEDIAS,
   })
-  type: Medias;
+  type: MEDIAS;
   @ManyToOne(() => Lesson, (lesson) => lesson.lessonMedias)
   lesson: Lesson;
 }

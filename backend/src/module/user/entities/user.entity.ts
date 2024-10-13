@@ -1,14 +1,14 @@
+import { USER_ROLES } from 'src/util/constants';
 import { Base } from '../../base/base.entity';
 import { Column, Entity } from 'typeorm';
-import { UserRoles } from '../../base/util';
 
 @Entity()
 export class User extends Base {
   @Column({
     type: 'enum',
-    enum: UserRoles,
+    enum: USER_ROLES,
   })
-  role: UserRoles;
+  role: USER_ROLES;
   @Column()
   firstName: string;
   @Column()

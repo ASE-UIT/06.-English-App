@@ -1,9 +1,11 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
-import { Types } from '../../base/util';
-import { LessonMedia } from './lesson_media.entity';
-import { LessonVocabulary } from './lesson_vocabulary.entity';
+import { LessonMedia } from './lesson-media.entity';
+import { LessonVocabulary } from './lesson-vocabulary.entity';
 import { Grammar } from '../../grammar/entities/grammar.entity';
+import { TYPES } from '../../../util/constants';
+import { Section } from 'src/module/section/entities/section.entity';
+import { Course } from 'src/module/course/entities/course.entity';
 
 @Entity()
 export class Lesson extends Base {
@@ -15,9 +17,9 @@ export class Lesson extends Base {
   content: string;
   @Column({
     type: 'enum',
-    enum: Types,
+    enum: TYPES,
   })
-  type: Types;
+  type: TYPES;
 
   @OneToMany(() => LessonMedia, (lessonMedia) => lessonMedia.lesson, {
     cascade: true,
@@ -32,6 +34,10 @@ export class Lesson extends Base {
     },
   )
   lessonVocabularies?: LessonVocabulary[];
+  @OneToMany(() => Section, (section) => section.lesson)
+  sections?: Section[];
   @ManyToMany(() => Grammar, (grammar) => grammar.lessons)
   grammars?: Grammar[];
+  @ManyToOne(() => Course, (course) => course.lessons)
+  course: Course;
 }
