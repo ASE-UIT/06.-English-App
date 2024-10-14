@@ -3,6 +3,7 @@ export enum STATUS {
   IN_PROGRESS = 'IN_PROGRESS',
   DONE = 'DONE',
 }
+
 export enum PAYMENT_METHOD {
   QR_CODE = 'QR_CODE',
   E_WALLET = 'E_WALLET',
@@ -19,4 +20,32 @@ export enum SECTION_TYPE {
   READING = 'READING',
   LISTENING = 'LISTENING',
   VOCABULARY = 'VOCABULARY',
+}
+
+export enum USER_ROLES {
+  ADMIN = 'ADMIN',
+  STUDENT = 'STUDENT',
+  TEACHER = 'TEACHER',
+}
+
+export enum TYPES {
+  LISTENING = 'LISTENING',
+  READING = 'READING',
+  WRITING = 'WRITING',
+  SPEAKING = 'SPEAKING',
+  GRAMMAR = 'GRAMMAR',
+  VOCABULARY = 'VOCABULARY',
+}
+
+export enum MEDIAS {
+  IMAGE = 'IMAGE',
+  VIDEO = 'VIDEO',
+  AUDIO = 'AUDIO',
+}
+
+export enum STATE {
+  DRAFT = 'DRAFT',
+  SUBMITTED = 'SUBMITTED',
+  BLOCKED = 'BLOCKED',
+  PUBLISHED = 'PUBLISHED',
 }
