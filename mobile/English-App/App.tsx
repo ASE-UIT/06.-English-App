@@ -1,11 +1,28 @@
-import { SafeAreaView } from "react-native";
+import React from "react";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTabsNavigator from "./src/components/BottomTabsNavigator";
+import MainHeader from "./src/components/MainHeader";
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <BottomTabsNavigator />
-    </NavigationContainer>
+    <SafeAreaView style={styles.container}>
+      <MainHeader title="English App" />
+      <NavigationContainer>
+        <View style={styles.content}>
+          <BottomTabsNavigator />
+        </View>
+      </NavigationContainer>
+    </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  content: {
+    flex: 1,
+  },
+});
