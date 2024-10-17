@@ -1,5 +1,11 @@
 import { SafeAreaView } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import BottomTabsNavigator from "./src/components/BottomTabsNavigator";
 
 export default function App() {
-  return <SafeAreaView className="w-full h-full  pt-16"></SafeAreaView>;
+  return (
+    <NavigationContainer>
+      <BottomTabsNavigator />
+    </NavigationContainer>
+  );
 }

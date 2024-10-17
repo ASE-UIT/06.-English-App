@@ -11,6 +11,7 @@
   "dependencies": {
     "@expo/metro-runtime": "~3.2.3",
     "@react-native-community/slider": "4.5.2",
+    "@react-navigation/material-bottom-tabs": "^6.2.29",
     "@rneui/base": "^0.0.0-edge.2",
     "@rneui/themed": "^0.0.0-edge.2",
     "expo": "^51.0.0",
