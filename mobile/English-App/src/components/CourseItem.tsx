@@ -4,11 +4,11 @@ import { Icon, LinearProgress } from 'react-native-elements'
 
 export default function CourseItem({ srcImg, title, teacherName, progress, rated = 5 }:  { srcImg: string, title: string, teacherName: string, progress: number, rated: number }) {
   return (
-    <View className='container max-w-[310px] gap-3 flex flex-row items-center mx-auto '>
+    <View className='flex flex-row max-h-[80px] h-full items-center container max-w-[320px] gap-3 mx-auto mb-4'>
         <View className='w-[10%] mr-3'>
-            <Image className='block aspect-square max-w-[50px] w-full max-h-[50px] h-full object-cover object-center' src={srcImg} />
+            <Image className=' aspect-square max-w-[50px] w-full max-h-[50px] h-full object-cover object-center' src={srcImg} />
         </View>
-        <View className='w-[80%] flex flex-col  gap-[6px]'>
+        <View className='w-[80%] flex flex-col gap-[6px] '>
             <View className='flex-row items-center justify-between'>
                 <Text className='text-sm font-bold w-[90%]'>{title}</Text>
                 <Icon className='' color={'#5D5FEF'} name='more-vert' type='material' size={15} onPress={() => {}}/>
