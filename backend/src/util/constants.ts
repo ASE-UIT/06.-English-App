@@ -1,3 +1,17 @@
+export const END_POINTS = {
+  BASE: '/api',
+  AUTH: {
+    BASE: '/auth',
+    SIGN_IN: '/sign-in',
+    SIGN_UP: '/sign-up',
+    SIGN_OUT: '/sign-out',
+    FORGOT_PASSWORD: '/forgot-password',
+    CONFIRM_FORGOT_PASSWORD: '/confirm-forgot-password',
+    CONFIRM_SIGN_UP: '/confirm-sign-up',
+  },
+};
+export const TIMEOUT = 5000;
+
 export enum STATUS {
   NOT_STARTED = 'NOT_STARTED',
   IN_PROGRESS = 'IN_PROGRESS',
