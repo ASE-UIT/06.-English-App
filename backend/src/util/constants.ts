@@ -6,11 +6,15 @@ export const END_POINTS = {
     SIGN_UP: '/sign-up',
     SIGN_OUT: '/sign-out',
     FORGOT_PASSWORD: '/forgot-password',
+    GOOGLE_SIGN_IN: '/google-sign-in',
+    FACEBOOK_SIGN_IN: '/facebook-sign-in',
+    CALL_BACK: '/callback',
     CONFIRM_FORGOT_PASSWORD: '/confirm-forgot-password',
     CONFIRM_SIGN_UP: '/confirm-sign-up',
   },
 };
 export const TIMEOUT = 5000;
+export const AUTH_FLOW = 'ADMIN_USER_PASSWORD_AUTH';
 
 export enum STATUS {
   NOT_STARTED = 'NOT_STARTED',

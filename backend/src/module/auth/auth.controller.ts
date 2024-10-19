@@ -7,9 +7,10 @@ import {
   Param,
   Delete,
   Res,
+  Req,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { InjectMapper, MapPipe } from '@automapper/nestjs';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { Mapper } from '@automapper/core';
@@ -60,6 +61,18 @@ export class AuthController {
   @Post(END_POINTS.AUTH.CONFIRM_SIGN_UP)
   async confirmSignUp(@Body() confirmSignUpDto: ConfirmSignUpDto) {
     return this.cognitoService.confirmSignUp(confirmSignUpDto);
+  }
+
+  @Public()
+  @Get(END_POINTS.AUTH.GOOGLE_SIGN_IN)
+  googleSignIn(@Res() response: Response) {
+    return this.cognitoService.redirectUrl(response, 'Google');
+  }
+
+  @Public()
+  @Get(END_POINTS.AUTH.GOOGLE_SIGN_IN + END_POINTS.AUTH.CALL_BACK)
+  async googleSignInCallback(@Req() req: Request, @Res() response: Response) {
+    return this.cognitoService.handleOauth(req, response);
   }
 
   @Post(END_POINTS.AUTH.SIGN_OUT)

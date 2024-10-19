@@ -8,23 +8,51 @@ import {
   ResendConfirmationCodeCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { RegisterCognitoDto } from './dto/register-cognito.dto';
 import { SignInCognitoDto } from './dto/sign-in-cognito.dto';
 import { ConfirmSignUpDto } from './dto/confirm-sign-up.dto';
+import { ConfigService } from '@nestjs/config';
+import { AUTH_FLOW } from '../../util/constants';
+import { Request, Response } from 'express';
+import { HttpService } from '@nestjs/axios';
+import { firstValueFrom } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 @Injectable()
 export class CognitoService {
   private cognitoClient: CognitoIdentityProviderClient;
-  private userPoolId: string = process.env.COGNITO_USER_POOL_ID;
-  private clientId: string = process.env.COGNITO_CLIENT_ID;
+  private readonly userPoolId: string;
+  private readonly clientId: string;
+  private readonly cognitoDomain: string;
+  private readonly cognitoRedirectUri: string;
+  private readonly cognitoClientSecret: string;
+  private readonly client: string;
 
-  constructor() {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly httpService: HttpService,
+  ) {
+    this.userPoolId = this.configService.get<string>('userPoolId');
+    this.clientId = this.configService.get<string>('audience');
+    this.cognitoDomain = this.configService.get<string>('cognitoDomain');
+    this.cognitoClientSecret = this.configService.get<string>(
+      'cognitoClientSecret',
+    );
+    this.client = this.configService.get<string>('client');
+    this.cognitoRedirectUri =
+      this.configService.get<string>('cognitoRedirectUri');
     this.cognitoClient = new CognitoIdentityProviderClient({
-      region: process.env.AWS_REGION,
+      region: this.configService.get<string>('region'),
       credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        accessKeyId: this.configService.get<string>('accessKeyId'),
+        secretAccessKey: this.configService.get<string>('secretAccessKey'),
       },
     });
   }
@@ -58,7 +86,7 @@ export class CognitoService {
     const command = new AdminInitiateAuthCommand({
       UserPoolId: this.userPoolId,
       ClientId: this.clientId,
-      AuthFlow: 'ADMIN_USER_PASSWORD_AUTH',
+      AuthFlow: AUTH_FLOW,
       AuthParameters: {
         USERNAME: cognitoSignInDto.username,
         PASSWORD: cognitoSignInDto.password,
@@ -77,6 +105,56 @@ export class CognitoService {
       return { accessToken, userSub, refreshToken };
     } catch (error) {
       throw new BadRequestException(error.message, error.statusCode);
+    }
+  }
+
+  redirectUrl(res: Response, provider: string) {
+    const authUrl = `${this.cognitoDomain}/oauth2/authorize?identity_provider=${provider}&client_id=${this.clientId}&response_type=code&redirect_uri=${this.cognitoRedirectUri}&scope=openid+profile+email`;
+    console.log(authUrl);
+    res.redirect(authUrl);
+  }
+
+  async handleOauth(code: string) {
+    try {
+      const tokenResponse = await firstValueFrom(
+        this.httpService
+          .post(
+            `${this.cognitoDomain}/oauth2/token`,
+            new URLSearchParams({
+              grant_type: 'authorization_code',
+              client_id: this.clientId,
+              client_secret: this.cognitoClientSecret,
+              code: code,
+              redirect_uri: this.cognitoRedirectUri,
+            }),
+            {
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            },
+          )
+          .pipe(
+            catchError((error) => {
+              throw new HttpException(
+                error.response.data,
+                error.response.status,
+              );
+            }),
+          ),
+      );
+
+      const accessToken = tokenResponse.data.access_token;
+      const refreshToken = tokenResponse.data.refresh_token;
+      const idToken = tokenResponse.data.id_token;
+      const userInfoResponse = await firstValueFrom(
+        this.httpService.get(`${this.cognitoDomain}/oauth2/userInfo`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        }),
+      );
+
+      const userInfo = userInfoResponse.data;
+      console.log(userInfo, accessToken, refreshToken, idToken);
+      return { userInfo, accessToken, refreshToken, idToken };
+    } catch (error) {
+      throw new HttpException(error.response.data, error.response.status);
     }
   }
 

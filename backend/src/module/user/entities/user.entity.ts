@@ -28,5 +28,8 @@ export class User extends Base {
   birthDate: Date;
   @AutoMap()
   @Column()
+  avatarURL: string;
+  @AutoMap()
+  @Column()
   awsCognitoId: string;
 }
