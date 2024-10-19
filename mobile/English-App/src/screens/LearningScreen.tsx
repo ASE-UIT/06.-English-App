@@ -35,9 +35,9 @@ export default function LearningScreen() {
             <Button title='Favorited' type={buttonSelected === 'Favorited' ?  'solid' : 'outline'} className='rounded-[30px] px-3 py-[14px]' buttonStyle={{backgroundColor: buttonSelected === 'Favorited' ? '#EF5DA8' : 'transparent',}} titleStyle={{color: buttonSelected === 'Favorited' ? '#ffffff' : '#000000'}}
                     onPress={() => setButtonSelected('Favorited')}>Favorited</Button>
         </View>
-        <View className='w-full flex flex-col gap-2 items-center mt-4'>
+        <View className='w-full flex flex-col gap-2 items-center mt-5'>
             {dataForCourseItem.map((course, index) => (
-                <CourseItem key={index} srcImg={course.srcImg} title={course.title} teacherName={course.teacherName} progress={course.progress} rated={course.rated} />
+                <CourseItem key={index} srcImg={course.srcImg} title={course.title} teacherName={course.teacherName} progress={course.progress} rated={course.rated} onPressItem={() => {}} />
             ))}
         </View>
     </View>
