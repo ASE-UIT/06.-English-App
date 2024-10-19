@@ -8,11 +8,11 @@ const width = Dimensions.get("window").width;
 const FlashCard = () => {
   return (
     <View
-      className="items-center bg-[#F5F5F5]"
+      className="items-center flex bg-[#F5F5F5]"
       style={{ width: width, height: height }}
     >
       {/* Header */}
-      <View className=" relative  w-full h-[164px] bg-primary rounded-bl-3xl rounded-br-3xl ">
+      <View className=" relative left-0 top-0  w-full h-[164px] bg-primary rounded-bl-3xl rounded-br-3xl ">
         <View className="flex flex-row items-center">
           <IconButton
             icon="arrow-left"
@@ -20,24 +20,40 @@ const FlashCard = () => {
             className="ml-2"
             iconColor="white"
           />
-
           <Text className="text-white text-3xl font-semibold font-['Work Sans']">
             Vocabulary
           </Text>
         </View>
+        
+        
       </View>
       {/* Body */}
       <View
-        className=" h-[420px] relative bg-white rounded-b-3xl flex items-center justify-center "
-        style={{ width: width - 80 }}
+        className=" absolute z-[2] flex-col    bg-white rounded-3xl flex items-center justify-center  "
+        style={{ width: width - 80,top:100,height: height - 450 }}
       >
-        <Text className="text-black text-2xl font-medium font-['Work Sans']">
-          luxury(n)
-        </Text>
+        <View className="flex-row  justify-between w-full self-start" >
+            <IconButton
+              icon="repeat"
+              size={32}
+              className="ml-2"
+              onPress={() => console.log("Repeat")}
+              iconColor="black"/>
+                <IconButton
+                onPress={() => console.log("Bookmark")}
+              icon="star-outline"
+              size={32}
+              className="ml-2"
+              iconColor="black"/>
+        </View>
+        <View className="flex-auto justify-center" >
+          <Text className="text-black text-2xl font-medium  font-['Work Sans'] text-center ">luxury(n)</Text>
+        </View>
       </View>
+    
 
       {/* Progress Bar */}
-      <View className="mt-[50px]">
+      <View style={{marginTop:height-450}}>
         <ProgressBar
           progress={0.5}
           color="#5D5FEF"
@@ -51,7 +67,7 @@ const FlashCard = () => {
         mode="contained"
         buttonColor="#5D5FEF"
         style={styles.button}
-        className="mt-[50px]"
+        className="mt-[30px]"
         children="NEXT CARD"
         onPress={() => console.log("Next Card")}
         labelStyle={styles.label}
