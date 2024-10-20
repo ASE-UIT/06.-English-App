@@ -1,6 +1,4 @@
-// import React from "react"
-import React from "react";
-import Header from "@/components/Tam-components/Header";
+import Header from "@/components/Tam-components/Header"
 
 export const Home = () => {
   return (
@@ -8,5 +6,5 @@ export const Home = () => {
       <Header />
       <div className="w-screen bg-red-400">Hello</div>
     </>
-  );
-};
+  )
+}
