@@ -9,6 +9,9 @@ import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
 import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
 import { CreateCourse } from "@/components/Course/CreateCourse"
 import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
+import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
+import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
+
 const publicRoutes = [
   {
     path: routes.Home,
@@ -24,6 +27,14 @@ const publicRoutes = [
     path: routes.Register,
     component: <RegisterPage></RegisterPage>,
     layout: LoginRegisterLayout,
+  },
+  {
+    path: routes.Privacy,
+    component: <PrivacyPolicyPage></PrivacyPolicyPage>,
+  },
+  {
+    path: routes.TermsOfService,
+    component: <TermsOfServicePage></TermsOfServicePage>,
   },
 ]
 const protectedRoutes = [

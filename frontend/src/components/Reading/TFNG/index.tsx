@@ -31,8 +31,8 @@ const initialQuestions = [
   },
 ]
 const TrueFalseNotGiven = () => {
-  const [numberOfQuestion, setNumberOfQuestion] = useState()
-  const [questions, setQuestions] = useState<TFNGQuestion[]>(initialQuestions)
+  // const [numberOfQuestion, setNumberOfQuestion] = useState()
+  const [questions] = useState<TFNGQuestion[]>(initialQuestions)
 
   return (
     <div>
