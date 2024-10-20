@@ -13,6 +13,12 @@ module.exports = {
           blue1: '#5D5FEF',
           blue2: '#7879F1',
           blue3: '#A5A6F6',
+          primary:'#5D5FEF',
+            primaryLight:'#7879F1',
+            primaryExtraLight:'A5A6F6',
+            secondary:'#EF5DA8',
+            secondaryLight:'#F178B6',
+            secondaryExtraLight:'#FCDDEC',
         },
         fontFamily: {
           sans: ['WorkSans_400Regular', 'sans-serif'],
