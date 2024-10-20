@@ -9,13 +9,15 @@ import { RegisterCognitoDto } from './dto/register-cognito.dto';
 import { User as UserReq } from '../../common/decorators/user.decorator';
 import { User } from '../user/entities/user.entity';
 import { SignInCognitoDto } from './dto/sign-in-cognito.dto';
-import { END_POINTS } from '../../utils/constants';
+import { DOCUMENTATION, END_POINTS } from '../../utils/constants';
 import { Public } from '../../common/decorators/public.decorator';
 import { ConfirmSignUpDto } from './dto/confirm-sign-up.dto';
 import { UserDto } from '../user/dto/userD.dto';
 import { IUser } from '../../common/guards/at.guard';
 import { ResponseObject } from '../../utils/objects';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiTags(DOCUMENTATION.TAGS.AUTH)
 @Controller(END_POINTS.AUTH.BASE)
 export class AuthController {
   constructor(
@@ -26,6 +28,7 @@ export class AuthController {
 
   @Public()
   @Post(END_POINTS.AUTH.SIGN_UP)
+  @ApiOperation({ summary: 'Register a new user' })
   async signUp(@Body() registerAuthDto: RegisterAuthDto) {
     const registerCognitoDto = this.mapper.map(
       registerAuthDto,
@@ -41,6 +44,9 @@ export class AuthController {
 
   @Public()
   @Post(END_POINTS.AUTH.OAUTH2_CREATE)
+  @ApiOperation({
+    summary: 'Create a user with OAuth2 account not found in DB',
+  })
   async oauth2Create(@Body() userDto: UserDto) {
     const userCreated = this.mapper.map(userDto, UserDto, User);
     const res = await this.authService.create(userCreated);
@@ -49,6 +55,7 @@ export class AuthController {
 
   @Public()
   @Post(END_POINTS.AUTH.SIGN_IN)
+  @ApiOperation({ summary: 'Sign in a user' })
   async signIn(
     @Body() signInCognitoDto: SignInCognitoDto,
     @Res() response: Response,
@@ -61,12 +68,17 @@ export class AuthController {
 
   @Public()
   @Post(END_POINTS.AUTH.CONFIRM_SIGN_UP)
+  @ApiOperation({ summary: "Confirm a user's email after signing up" })
   async confirmSignUp(@Body() confirmSignUpDto: ConfirmSignUpDto) {
-    return this.cognitoService.confirmSignUp(confirmSignUpDto);
+    const res = await this.cognitoService.confirmSignUp(confirmSignUpDto);
+    return ResponseObject.create("User's email confirmed", res);
   }
 
   @Public()
   @Get(END_POINTS.AUTH.CALL_BACK)
+  @ApiOperation({
+    summary: 'Callback for signing in with OAuth (Google, Facebook)',
+  })
   async googleSignInCallback(
     @Query('code') code: string,
     @Res() response: Response,
@@ -78,6 +90,7 @@ export class AuthController {
   }
 
   @Post(END_POINTS.AUTH.SIGN_OUT)
+  @ApiOperation({ summary: 'Sign out a user' })
   async signOut(@UserReq() user: IUser, @Res() response: Response) {
     this.authService.removeRefreshToken(response);
     await this.cognitoService.signOut(user.userName);

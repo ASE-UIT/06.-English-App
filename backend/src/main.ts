@@ -10,7 +10,7 @@ import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { LoggingInterceptor } from './common/interceptors/logger.interceptor';
 import { SwaggerModule } from '@nestjs/swagger';
-import documention from './config/documentation';
+import docs from './config/documentation';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,7 +18,7 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   const port = configService.get<number>('port');
   const env = configService.get<string>('env');
-  const document = SwaggerModule.createDocument(app, documention, {
+  const document = SwaggerModule.createDocument(app, docs, {
     operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
     ignoreGlobalPrefix: true,
   });
