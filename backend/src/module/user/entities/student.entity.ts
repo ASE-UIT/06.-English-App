@@ -1,5 +1,5 @@
 import { Base } from '../../base/base.entity';
-import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { User } from './user.entity';
 import { CourseOwning } from '../../course-owning/entities/course-owning.entity';
 import { CourseBuying } from '../../course-buying/entities/course-buying.entity';
@@ -28,4 +28,6 @@ export class Student extends Base {
   courseViewings: CourseViewing[];
   @OneToMany(() => FeedBack, (feedBack) => feedBack.student)
   feedBacks: FeedBack[];
+  @Column()
+  school: string;
 }

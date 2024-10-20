@@ -6,15 +6,16 @@ import {
   ConfirmSignUpCommand,
   ForgotPasswordCommand,
   ResendConfirmationCodeCommand,
+  AdminUserGlobalSignOutCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
+
 import {
   BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
   NotFoundException,
-  Req,
   Res,
 } from '@nestjs/common';
 import { RegisterCognitoDto } from './dto/register-cognito.dto';
@@ -123,10 +124,6 @@ export class CognitoService {
     res.redirect(authUrl);
   }
 
-  async checkOauth2UserInDatabase(userInfo: any) {}
-
-  async createOauth2User(userInfo: any) {}
-
   async handleOauth(code: string) {
     try {
       const tokenResponse = await firstValueFrom(
@@ -157,15 +154,13 @@ export class CognitoService {
       );
       const accessToken = tokenResponse.data.access_token;
       const refreshToken = tokenResponse.data.refresh_token;
-      const idToken = tokenResponse.data.id_token;
       const userInfoResponse = await firstValueFrom(
         this.httpService.get(`${this.cognitoDomain}/oauth2/userInfo`, {
           headers: { Authorization: `Bearer ${accessToken}` },
         }),
       );
       const userInfo = userInfoResponse.data;
-      const result = { userInfo, accessToken, refreshToken, idToken };
-      return { result };
+      return { userInfo, accessToken, refreshToken };
     } catch (error) {
       throw new BadRequestException(error.message);
     }
@@ -212,7 +207,7 @@ export class CognitoService {
     try {
       return await this.cognitoClient.send(command);
     } catch (error) {
-      throw error;
+      throw new BadRequestException(error.message);
     }
   }
 
@@ -225,11 +220,22 @@ export class CognitoService {
     try {
       return await this.cognitoClient.send(command);
     } catch (error) {
-      throw error;
+      throw new BadRequestException(error.message);
     }
   }
 
-  async signOut(@Res() response: Response) {}
+  async signOut(username: string) {
+    const command = new AdminUserGlobalSignOutCommand({
+      UserPoolId: this.userPoolId,
+      Username: username,
+    });
+
+    try {
+      return await this.cognitoClient.send(command);
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
+  }
 
   private decodeJwt(token: string): any {
     const [header, payload, signature] = token.split('.');

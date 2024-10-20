@@ -7,7 +7,7 @@ export class ResponseObject {
     this.result = result;
   }
 
-  public static create(message: string, result: Record<string, any>) {
+  public static create(message?: string, result?: Record<string, any>) {
     return new ResponseObject(message, result);
   }
 }

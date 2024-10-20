@@ -6,6 +6,7 @@ export const END_POINTS = {
     SIGN_UP: '/sign-up',
     SIGN_OUT: '/sign-out',
     FORGOT_PASSWORD: '/forgot-password',
+    OAUTH2_CREATE: '/oauth2-create',
     CALL_BACK: '/callback',
     CONFIRM_FORGOT_PASSWORD: '/confirm-forgot-password',
     CONFIRM_SIGN_UP: '/confirm-sign-up',
@@ -22,6 +23,19 @@ export enum STATUS {
   NOT_STARTED = 'NOT_STARTED',
   IN_PROGRESS = 'IN_PROGRESS',
   DONE = 'DONE',
+}
+
+export enum DEGREE {
+  BACHELOR = 'BACHELOR',
+  MASTER = 'MASTER',
+  DOCTOR = 'DOCTOR',
+  UNKNOWN = 'UNKNOWN',
+}
+
+export enum GENDER {
+  MALE,
+  FEMALE,
+  UNKNOWN,
 }
 
 export enum PAYMENT_METHOD {
