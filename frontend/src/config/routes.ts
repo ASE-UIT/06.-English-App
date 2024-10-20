@@ -7,4 +7,5 @@ export const routes = {
   ReadingTFNG: "/lecture/reading/true-false-notgiven",
   ReadingNoteCompletion: "/lecture/reading/note-completion",
   Register: "/register",
+  CreateCourse: "/course/create-course"
 }
