@@ -13,16 +13,9 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <MainHeader title="English App" />
-      <NavigationContainer>
-        <View style={styles.content}>
-          <Writing_task taskNumber={1} question="Wite about your country" />
-          <Writing_submit />
-          <SignUp />
+
           <LearningScreen />
-          <FlashCard />
-          <BottomTabsNavigator />
-        </View>
-      </NavigationContainer>
+
     </SafeAreaView>
   );
 }

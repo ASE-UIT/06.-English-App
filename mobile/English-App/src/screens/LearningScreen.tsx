@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 import CourseItem from '../components/CourseItem'
 import { Button } from 'react-native-elements'
 
@@ -23,7 +23,7 @@ const dataForCourseItem = [
 export default function LearningScreen() {
   const [buttonSelected, setButtonSelected] = React.useState('All')
   return (
-    <View className='w-full px-[24px] py-6'>
+    <ScrollView className='w-full px-[24px] py-6'>
         <Text className='font-semibold text-base text-[#5D5FEF] mb-4'>My Courses</Text>
         <View className='w-full flex flex-row items-center justify-between'>
             <Button title='All' type={buttonSelected === 'All' ?  'solid' : 'outline'} className='rounded-[30px] px-3 py-[14px]' buttonStyle={{backgroundColor: buttonSelected === 'All' ? '#EF5DA8' : 'transparent'}} titleStyle={{color: buttonSelected === 'All' ? '#ffffff' : '#000000'}}
@@ -40,6 +40,6 @@ export default function LearningScreen() {
                 <CourseItem key={index} srcImg={course.srcImg} title={course.title} teacherName={course.teacherName} progress={course.progress} rated={course.rated} onPressItem={() => {}} />
             ))}
         </View>
-    </View>
+    </ScrollView>
   )
 }
