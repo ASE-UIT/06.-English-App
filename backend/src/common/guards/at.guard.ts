@@ -10,6 +10,11 @@ import * as jwksClient from 'jwks-rsa';
 import { Reflector } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 
+export interface IUser {
+  userAwsId: string;
+  userName: string;
+}
+
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
   private client: jwksClient.JwksClient;
@@ -23,7 +28,9 @@ export class JwtAuthGuard implements CanActivate {
     private readonly configService: ConfigService,
   ) {
     this.client = jwksClient({
-      jwksUri: this.configService.get<string>('cognitoClient'),
+      jwksUri:
+        this.configService.get<string>('cognitoClient') +
+        '/.well-known/jwks.json',
     });
     this.userPoolId = this.configService.get<string>('userPoolId');
     this.region = this.configService.get<string>('region');
@@ -47,10 +54,14 @@ export class JwtAuthGuard implements CanActivate {
     }
 
     try {
-      request['user'] = await this.verifyToken(token);
+      const res = await this.verifyToken(token);
+      request['user'] = {
+        userAwsId: res.sub,
+        userName: res.username,
+      } as IUser;
       return true;
     } catch (error) {
-      throw new UnauthorizedException('Invalid or expired token');
+      throw new UnauthorizedException(error.message);
     }
   }
 
@@ -75,7 +86,7 @@ export class JwtAuthGuard implements CanActivate {
 
     const kid = decodedHeader.header.kid;
     const signingKey = await this.getSigningKey(kid);
-
+    console.log(this.audience);
     return new Promise((resolve, reject) => {
       jwt.verify(
         token,
@@ -83,7 +94,6 @@ export class JwtAuthGuard implements CanActivate {
         {
           algorithms: ['RS256'],
           issuer: this.cognitoClient,
-          audience: this.audience,
         },
         (err, decoded) => {
           if (err) {

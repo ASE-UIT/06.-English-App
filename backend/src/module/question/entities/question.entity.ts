@@ -4,7 +4,7 @@ import { QuestionGroup } from 'src/module/question-group/entities/question-group
 import { QuestionMedia } from 'src/module/question-media/entities/question-media.entity';
 import { Section } from 'src/module/section/entities/section.entity';
 import { StudentAnswer } from 'src/module/student-answer/entities/student-answer.entity';
-import { QUESTION_TYPE } from 'src/util/constants';
+import { QUESTION_TYPE } from 'src/utils/constants';
 import {
   Column,
   Entity,
@@ -35,5 +35,4 @@ export class Question extends Base {
   order: number;
   @OneToMany(() => QuestionMedia, (questionMedia) => questionMedia.question)
   questionMedias: QuestionMedia[];
-  
 }

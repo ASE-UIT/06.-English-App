@@ -8,6 +8,7 @@ import {
   Delete,
   Res,
   Req,
+  Query,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
@@ -18,7 +19,7 @@ import { CognitoService } from './cognito.service';
 import { RegisterCognitoDto } from './dto/register-cognito.dto';
 import { User } from '../user/entities/user.entity';
 import { SignInCognitoDto } from './dto/sign-in-cognito.dto';
-import { END_POINTS } from '../../util/constants';
+import { END_POINTS } from '../../utils/constants';
 import { Public } from '../../common/decorators/public.decorator';
 import { ConfirmSignUpDto } from './dto/confirm-sign-up.dto';
 
@@ -32,7 +33,7 @@ export class AuthController {
 
   @Public()
   @Post(END_POINTS.AUTH.SIGN_UP)
-  async create(@Body() registerAuthDto: RegisterAuthDto) {
+  async signUp(@Body() registerAuthDto: RegisterAuthDto) {
     const registerCognitoDto = this.mapper.map(
       registerAuthDto,
       RegisterAuthDto,
@@ -53,8 +54,9 @@ export class AuthController {
   ) {
     const { accessToken, userSub, refreshToken } =
       await this.cognitoService.signIn(signinCognitoDto);
-    this.authService.setRefreshToken(response, refreshToken);
-    return { accessToken, userSub };
+    // this.authService.setRefreshToken(response, refreshToken);
+    const result = { accessToken, userSub };
+    return { message: 'User signed in', result };
   }
 
   @Public()
@@ -64,15 +66,9 @@ export class AuthController {
   }
 
   @Public()
-  @Get(END_POINTS.AUTH.GOOGLE_SIGN_IN)
-  googleSignIn(@Res() response: Response) {
-    return this.cognitoService.redirectUrl(response, 'Google');
-  }
-
-  @Public()
-  @Get(END_POINTS.AUTH.GOOGLE_SIGN_IN + END_POINTS.AUTH.CALL_BACK)
-  async googleSignInCallback(@Req() req: Request, @Res() response: Response) {
-    return this.cognitoService.handleOauth(req, response);
+  @Get(END_POINTS.AUTH.CALL_BACK)
+  async googleSignInCallback(@Query('code') code: string) {
+    return this.cognitoService.handleOauth(code);
   }
 
   @Post(END_POINTS.AUTH.SIGN_OUT)

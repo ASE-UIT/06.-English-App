@@ -1,4 +1,4 @@
-import { USER_ROLES } from 'src/util/constants';
+import { USER_ROLES } from 'src/utils/constants';
 import { Base } from '../../base/base.entity';
 import { Column, Entity } from 'typeorm';
 import { AutoMap } from '@automapper/classes';

@@ -7,7 +7,7 @@ import { CourseViewing } from 'src/module/course-viewing/entities/course-viewing
 import { FeedBack } from 'src/module/feed-back/entities/feed-back.entity';
 import { Lesson } from 'src/module/lesson/entities/lesson.entity';
 import { Teacher } from 'src/module/user/entities/teacher.entity';
-import { STATE } from 'src/util/constants';
+import { STATE } from 'src/utils/constants';
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
 
 @Entity()
