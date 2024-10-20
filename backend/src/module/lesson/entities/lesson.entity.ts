@@ -3,7 +3,7 @@ import { Base } from '../../base/base.entity';
 import { LessonMedia } from './lesson-media.entity';
 import { LessonVocabulary } from './lesson-vocabulary.entity';
 import { Grammar } from '../../grammar/entities/grammar.entity';
-import { TYPES } from '../../../util/constants';
+import { TYPES } from '../../../utils/constants';
 import { Section } from 'src/module/section/entities/section.entity';
 import { Course } from 'src/module/course/entities/course.entity';
 

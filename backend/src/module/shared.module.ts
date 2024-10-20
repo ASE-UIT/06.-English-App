@@ -3,7 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [AuthModule],
-  exports: [AuthModule],
+  imports: [AuthModule, UserModule],
+  exports: [AuthModule, UserModule],
 })
 export class SharedModule {}

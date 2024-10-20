@@ -10,31 +10,30 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from '../../common/decorators/user.decorator';
+import { User as UserEntity } from './entities/user.entity';
+import { DOCUMENTATION, END_POINTS } from '../../utils/constants';
+import { ResponseObject } from '../../utils/objects';
+import { IUser } from '../../common/guards/at.guard';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { UserDto } from './dto/userD.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@Controller('user')
+@ApiBearerAuth()
+@ApiTags(DOCUMENTATION.TAGS.USER)
+@Controller(END_POINTS.USER.BASE)
 export class UserController {
   constructor(
     private readonly userService: UserService,
-    private readonly mapper,
+    @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
-  @Get()
-  findAll() {
-    return this.userService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Get(END_POINTS.USER.ME)
+  @ApiOperation({ summary: 'Get user information' })
+  async getMe(@User() user: IUser) {
+    const res = await this.userService.findMe(user.userAwsId);
+    const userDto = this.mapper.map(res, UserEntity, UserDto);
+    return ResponseObject.create('User retrieved', userDto);
   }
 }

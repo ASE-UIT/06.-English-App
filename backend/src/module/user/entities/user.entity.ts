@@ -1,4 +1,4 @@
-import { USER_ROLES } from 'src/util/constants';
+import { USER_ROLES } from 'src/utils/constants';
 import { Base } from '../../base/base.entity';
 import { Column, Entity } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
@@ -26,6 +26,9 @@ export class User extends Base {
   @AutoMap()
   @Column()
   birthDate: Date;
+  @AutoMap()
+  @Column()
+  avatarURL: string;
   @AutoMap()
   @Column()
   awsCognitoId: string;

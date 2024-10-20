@@ -1,7 +1,7 @@
 import { Base } from '../../base/base.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Lesson } from './lesson.entity';
-import { MEDIAS } from '../../../util/constants';
+import { MEDIAS } from '../../../utils/constants';
 
 @Entity()
 export class LessonMedia extends Base {

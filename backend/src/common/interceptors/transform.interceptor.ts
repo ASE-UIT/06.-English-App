@@ -26,7 +26,7 @@ export class TransformInterceptor<T>
         const response = context.switchToHttp().getResponse();
         return {
           statusCode: response.statusCode,
-          message: data.message || 'Success',
+          message: data?.message || 'Success',
           data: data?.result || {},
         };
       }),

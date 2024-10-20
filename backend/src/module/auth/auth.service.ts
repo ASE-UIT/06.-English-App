@@ -11,8 +11,8 @@ export class AuthService {
 
   async create(user: User) {
     try {
-      await this.dataSource.transaction(async (manager) => {
-        await manager.save(user);
+      const res = await this.dataSource.transaction(async (manager) => {
+        const res = await manager.save(user);
         switch (user.role) {
           case 'TEACHER':
             const teacher = new Teacher();
@@ -27,7 +27,9 @@ export class AuthService {
           default:
             throw new Error('Invalid role');
         }
+        return res;
       });
+      return res;
     } catch (error) {
       throw new HttpException(error.message, 500);
     }
