@@ -9,6 +9,8 @@ import { JwtAuthGuard } from './common/guards/at.guard';
 import { TimeoutInterceptor } from './common/interceptors/timeout.interceptor';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { LoggingInterceptor } from './common/interceptors/logger.interceptor';
+import { SwaggerModule } from '@nestjs/swagger';
+import documention from './config/documentation';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +18,10 @@ async function bootstrap() {
   const reflector = app.get(Reflector);
   const port = configService.get<number>('port');
   const env = configService.get<string>('env');
+  const document = SwaggerModule.createDocument(app, documention, {
+    operationIdFactory: (controllerKey: string, methodKey: string) => methodKey,
+    ignoreGlobalPrefix: true,
+  });
   app.enableCors({
     origin: true,
     credentials: true,
@@ -35,8 +41,9 @@ async function bootstrap() {
   }
   // app.useGlobalInterceptors(new TimeoutInterceptor());
   app.useGlobalInterceptors(new TransformInterceptor());
+  SwaggerModule.setup('docs', app, document);
   await app.listen(port || 3001);
-  console.log(`Application is running on: ${await app.getUrl()}`);
+  console.log(`Server running on http://localhost:${port || 3001}/docs`);
 }
 
 bootstrap();

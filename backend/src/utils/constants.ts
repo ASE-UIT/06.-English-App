@@ -16,6 +16,16 @@ export const END_POINTS = {
     ME: '/me',
   },
 };
+export const DOCUMENTATION = {
+  TITLE: 'ENGDIGO API',
+  DESCRIPTION: 'IT SHOULD BE CLEAR TO YOU',
+  VERSION: '1.0',
+  PREFIX: 'api',
+  TAGS: {
+    AUTH: 'AUTH',
+    USER: 'USER',
+  },
+};
 export const TIMEOUT = 5000;
 export const AUTH_FLOW = 'ADMIN_USER_PASSWORD_AUTH';
 
