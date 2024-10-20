@@ -1,7 +1,7 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ScrollView } from "react-native";
 import { content } from "../../tailwind.config";
-import MultipleChoiceFormat from "./MultipleChoiceFormat/MultipleChoiceFormat";
-import MultiSelectFormat from "./MultiSelectFormat/MultiSelectFormat";
+import MultipleChoiceFormat from "../components/MultipleChoiceFormat/MultipleChoiceFormat";
+import MultiSelectFormat from "../components/MultiSelectFormat/MultiSelectFormat";
 export default function ReadingExercise() {
   // hard-coded data for now
   const section = {
@@ -12,7 +12,7 @@ export default function ReadingExercise() {
       "https://i.pinimg.com/enabled_lo/564x/78/0d/ba/780dba42c7666143e8dc301588ed8750.jpg",
   };
   return (
-    <View
+    <ScrollView
       className="reading-exercise flex gap-4"
       style={{ paddingHorizontal: 10 }}
     >
@@ -26,6 +26,6 @@ export default function ReadingExercise() {
         <MultipleChoiceFormat />
         <MultiSelectFormat />
       </View>
-    </View>
+    </ScrollView>
   );
 }
