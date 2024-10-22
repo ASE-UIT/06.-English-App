@@ -3,10 +3,12 @@ export interface Section {
   handling: boolean
   current: number
   pickType: string
+  sectionId: string
+  text: string
   data: {
     [key: number]: {
       type: string
-    }
+    }, 
   }
 }
 

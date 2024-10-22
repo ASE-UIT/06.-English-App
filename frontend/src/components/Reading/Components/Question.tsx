@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
+
 interface Answer {
   text: string
   isCorrect: boolean
@@ -23,12 +24,12 @@ interface Question {
 const Question = ({ index }: { index: number }) => {
   const [question, setQuestion] = useState<string>("")
   const [numberOfAnswer, setNumberOfAnswer] = useState(4)
-  const [answers, setAnswers] = useState<Answer[]>(Array(numberOfAnswer).fill({ text: "A", isCorrect: false }))
+  const [answers, setAnswers] = useState<Answer[]>(Array(numberOfAnswer).fill({ text: "", isCorrect: false }))
   const [multipleAnswers, setMultipleAnswers] = useState(false)
   const handleAddAnswer = () => {
     setNumberOfAnswer((prev) => prev + 1)
     const newAnswers = [...answers]
-    newAnswers.push({ text: "A", isCorrect: false })
+    newAnswers.push({ text: "", isCorrect: false })
     setAnswers(newAnswers)
   }
   const handleRemoveAnswer = (index: number) => {
@@ -81,16 +82,16 @@ const Question = ({ index }: { index: number }) => {
 
               <ul className="mr-[25px] flex flex-col gap-[28px]">
                 {answers.map((answer, index) => (
-                  <li className="flex items-center justify-self-center" key={index}>
+                  <li className="flex items-center justify-between" key={index}>
                     <Answer content={answer.text} index={index} />
                     <Button className="h-full bg-transparent text-[#A5A6F6]" onClick={() => handleRemoveAnswer(index)}>
                       X
                     </Button>
                     {multipleAnswers ? (
-                      <Checkbox className="bg-inherit" />
+                      <Checkbox className="bg-inherit h-[40px] w-[40px]" />
                     ) : (
-                      <RadioGroup defaultValue="comfortable">
-                        <div className="flex items-center space-x-2">
+                      <RadioGroup defaultValue="comfortable bg-inherit rounded-full" >
+                        <div className="flex items-center space-x-2 h-[40px] w-[40px]">
                           <RadioGroupItem className="bg-inherit" value="default" id="r1" />
                           <Label htmlFor="r1">Default</Label>
                         </div>
@@ -98,7 +99,7 @@ const Question = ({ index }: { index: number }) => {
                     )}
                   </li>
                 ))}
-                <div className="mb-[20px] flex w-full justify-center align-middle">
+                <div className="mb-[20px] flex w-full justify-center align-middle max-w-[780px]">
                   <div className="w-full min-w-[240px] rounded-lg border-[1px] bg-customPink px-[16px] py-2">
                     <Input className="border-none bg-inherit text-[#AEAEB2]" type="text" placeholder="Type here" />
                   </div>
