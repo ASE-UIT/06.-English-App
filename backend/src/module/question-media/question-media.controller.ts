@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { QuestionMediaService } from './question-media.service';
 import { CreateQuestionMediaDto } from './dto/create-question-media.dto';
 import { UpdateQuestionMediaDto } from './dto/update-question-media.dto';
@@ -23,7 +31,10 @@ export class QuestionMediaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateQuestionMediaDto: UpdateQuestionMediaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateQuestionMediaDto: UpdateQuestionMediaDto,
+  ) {
     return this.questionMediaService.update(+id, updateQuestionMediaDto);
   }
 

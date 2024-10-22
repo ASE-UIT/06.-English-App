@@ -12,23 +12,33 @@ export class User extends Base {
   })
   role: USER_ROLES;
   @AutoMap()
-  @Column()
-  firstName: string;
+  @Column({
+    nullable: true,
+  })
+  firstName?: string;
   @AutoMap()
-  @Column()
-  lastName: string;
+  @Column({
+    nullable: true,
+  })
+  lastName?: string;
   @AutoMap()
   @Column()
   email: string;
   @AutoMap()
-  @Column()
-  phone: string;
+  @Column({
+    nullable: true,
+  })
+  phone?: string;
   @AutoMap()
-  @Column()
-  birthDate: Date;
+  @Column({
+    nullable: true,
+  })
+  birthDate?: Date;
   @AutoMap()
-  @Column()
-  avatarURL: string;
+  @Column({
+    nullable: true,
+  })
+  avatarURL?: string;
   @AutoMap()
   @Column()
   awsCognitoId: string;

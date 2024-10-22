@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Res, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Res,
+  Query,
+  UnauthorizedException,
+  Req,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { InjectMapper, MapPipe } from '@automapper/nestjs';
@@ -16,6 +25,8 @@ import { UserDto } from '../user/dto/userD.dto';
 import { IUser } from '../../common/guards/at.guard';
 import { ResponseObject } from '../../utils/objects';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ConfirmForgotPasswordDto } from './dto/confirm-forgot-password.dto';
 
 @ApiTags(DOCUMENTATION.TAGS.AUTH)
 @Controller(END_POINTS.AUTH.BASE)
@@ -58,12 +69,15 @@ export class AuthController {
   @ApiOperation({ summary: 'Sign in a user' })
   async signIn(
     @Body() signInCognitoDto: SignInCognitoDto,
-    @Res() response: Response,
+    @Res({ passthrough: true }) response: Response,
   ) {
-    const { accessToken, userSub, refreshToken } =
+    const { accessToken, isEmailVerified, refreshToken } =
       await this.cognitoService.signIn(signInCognitoDto);
+    if (!isEmailVerified) {
+      throw new UnauthorizedException('Email not verified');
+    }
     this.authService.setRefreshToken(response, refreshToken);
-    return ResponseObject.create('User signed in', { accessToken, userSub });
+    return ResponseObject.create('User signed in', { accessToken });
   }
 
   @Public()
@@ -72,6 +86,36 @@ export class AuthController {
   async confirmSignUp(@Body() confirmSignUpDto: ConfirmSignUpDto) {
     const res = await this.cognitoService.confirmSignUp(confirmSignUpDto);
     return ResponseObject.create("User's email confirmed", res);
+  }
+
+  @Public()
+  @Post(END_POINTS.AUTH.FORGOT_PASSWORD)
+  @ApiOperation({ summary: 'Forgot password' })
+  async forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto) {
+    const res = await this.cognitoService.forgotPassword(forgotPasswordDto);
+    return ResponseObject.create('Forgot password', res);
+  }
+
+  @Public()
+  @Post(END_POINTS.AUTH.CONFIRM_FORGOT_PASSWORD)
+  @ApiOperation({ summary: 'Confirm forgot password' })
+  async confirmForgotPassword(
+    @Body() confirmForgotPasswordDto: ConfirmForgotPasswordDto,
+  ) {
+    const res = await this.cognitoService.confirmForgotPassword(
+      confirmForgotPasswordDto,
+    );
+    return ResponseObject.create('Forgot password confirmed', res);
+  }
+
+  @Public()
+  @Post(END_POINTS.AUTH.REFRESH_TOKEN)
+  @ApiOperation({ summary: 'Refresh access token' })
+  async refreshToken(@Req() req: Request) {
+    const refreshToken = this.authService.getRefreshToken(req);
+    const { accessToken } =
+      await this.cognitoService.refreshAccessToken(refreshToken);
+    return ResponseObject.create('Access token refreshed', { accessToken });
   }
 
   @Public()
@@ -89,6 +133,7 @@ export class AuthController {
     return ResponseObject.create('User signed in', { userInfo, accessToken });
   }
 
+  @Public()
   @Post(END_POINTS.AUTH.SIGN_OUT)
   @ApiOperation({ summary: 'Sign out a user' })
   async signOut(@UserReq() user: IUser, @Res() response: Response) {

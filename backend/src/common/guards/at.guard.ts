@@ -86,7 +86,6 @@ export class JwtAuthGuard implements CanActivate {
 
     const kid = decodedHeader.header.kid;
     const signingKey = await this.getSigningKey(kid);
-    console.log(this.audience);
     return new Promise((resolve, reject) => {
       jwt.verify(
         token,

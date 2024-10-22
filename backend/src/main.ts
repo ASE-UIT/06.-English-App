@@ -39,7 +39,7 @@ async function bootstrap() {
   if (env === 'DEVELOPMENT') {
     app.useGlobalInterceptors(new LoggingInterceptor());
   }
-  // app.useGlobalInterceptors(new TimeoutInterceptor());
+  app.useGlobalInterceptors(new TimeoutInterceptor());
   app.useGlobalInterceptors(new TransformInterceptor());
   SwaggerModule.setup('docs', app, document);
   await app.listen(port || 3001);

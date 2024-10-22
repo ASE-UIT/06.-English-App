@@ -34,8 +34,8 @@ export class UserDto {
   birthDate: Date;
 
   @AutoMap()
-  @ApiProperty({ description: 'URL to the avatar image of the user' })
-  avatarURL: string;
+  @ApiProperty({ description: 'Key to the avatar image of the user' })
+  avatarKey: string;
 
   @AutoMap()
   @ApiProperty({ description: 'Date when the user was created' })

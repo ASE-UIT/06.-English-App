@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { CourseCategoryService } from './course-category.service';
 import { CreateCourseCategoryDto } from './dto/create-course-category.dto';
 import { UpdateCourseCategoryDto } from './dto/update-course-category.dto';
@@ -23,7 +31,10 @@ export class CourseCategoryController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCourseCategoryDto: UpdateCourseCategoryDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateCourseCategoryDto: UpdateCourseCategoryDto,
+  ) {
     return this.courseCategoryService.update(+id, updateCourseCategoryDto);
   }
 

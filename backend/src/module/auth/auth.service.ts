@@ -3,7 +3,7 @@ import { User } from '../user/entities/user.entity';
 import { Teacher } from '../user/entities/teacher.entity';
 import { Student } from '../user/entities/student.entity';
 import { DataSource } from 'typeorm';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -41,6 +41,10 @@ export class AuthService {
       sameSite: 'none',
       secure: true,
     });
+  }
+
+  getRefreshToken(request: Request) {
+    return request.cookies['refresh_token'];
   }
 
   removeRefreshToken(response: Response) {
