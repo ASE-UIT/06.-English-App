@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SectionMediaService } from './section-media.service';
 import { CreateSectionMediaDto } from './dto/create-section-media.dto';
 import { UpdateSectionMediaDto } from './dto/update-section-media.dto';
@@ -23,7 +31,10 @@ export class SectionMediaController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSectionMediaDto: UpdateSectionMediaDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateSectionMediaDto: UpdateSectionMediaDto,
+  ) {
     return this.sectionMediaService.update(+id, updateSectionMediaDto);
   }
 

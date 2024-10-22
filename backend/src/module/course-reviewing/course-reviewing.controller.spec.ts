@@ -11,7 +11,9 @@ describe('CourseReviewingController', () => {
       providers: [CourseReviewingService],
     }).compile();
 
-    controller = module.get<CourseReviewingController>(CourseReviewingController);
+    controller = module.get<CourseReviewingController>(
+      CourseReviewingController,
+    );
   });
 
   it('should be defined', () => {

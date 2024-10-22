@@ -31,7 +31,7 @@ interface DatabaseConfig {
             username: dbConfig.username,
             password: dbConfig.password,
             database: dbConfig.database,
-            synchronize: false,
+            synchronize: true,
             entities: [`${__dirname}/../**/**.entity{.ts,.js}`],
             logging: true,
             logger: 'advanced-console',

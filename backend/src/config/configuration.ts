@@ -13,6 +13,8 @@ export default () => ({
   cognitoClient: process.env.COGNITO_CLIENT,
   cognitoDomain: process.env.COGNITO_DOMAIN,
   cognitoRedirectUri: process.env.COGNITO_REDIRECT_URI,
+  awsBucketName: process.env.AWS_BUCKET_NAME,
+  cloudFrontURL: process.env.CLOUDFRONT_URL,
   database: {
     host: process.env.DATABASE_HOST,
     port: parseInt(process.env.DATABASE_PORT, 10) || 5432,

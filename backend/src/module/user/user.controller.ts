@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+
 import { User } from '../../common/decorators/user.decorator';
 import { User as UserEntity } from './entities/user.entity';
 import { DOCUMENTATION, END_POINTS } from '../../utils/constants';

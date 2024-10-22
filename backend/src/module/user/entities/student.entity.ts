@@ -28,6 +28,8 @@ export class Student extends Base {
   courseViewings: CourseViewing[];
   @OneToMany(() => FeedBack, (feedBack) => feedBack.student)
   feedBacks: FeedBack[];
-  @Column()
-  school: string;
+  @Column({
+    nullable: true,
+  })
+  schoolName?: string;
 }

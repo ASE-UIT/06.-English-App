@@ -10,10 +10,18 @@ export const END_POINTS = {
     CALL_BACK: '/callback',
     CONFIRM_FORGOT_PASSWORD: '/confirm-forgot-password',
     CONFIRM_SIGN_UP: '/confirm-sign-up',
+    RESEND_CONFIRMATION_CODE: '/resend-confirmation-code',
+    REFRESH_TOKEN: '/refresh-token',
   },
   USER: {
     BASE: '/user',
     ME: '/me',
+  },
+  FILE: {
+    BASE: '/file',
+    UPLOAD: '/presigned-url',
+    DOWNLOAD: '/download/:key',
+    DELETE: '/delete/:key',
   },
 };
 export const DOCUMENTATION = {
@@ -24,6 +32,7 @@ export const DOCUMENTATION = {
   TAGS: {
     AUTH: 'AUTH',
     USER: 'USER',
+    FILE: 'FILE',
   },
 };
 export const TIMEOUT = 5000;

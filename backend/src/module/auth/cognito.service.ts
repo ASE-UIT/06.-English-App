@@ -1,22 +1,21 @@
 import { createHmac } from 'crypto';
 import {
   AdminInitiateAuthCommand,
+  AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
   ConfirmForgotPasswordCommand,
   ConfirmSignUpCommand,
   ForgotPasswordCommand,
   ResendConfirmationCodeCommand,
-  AdminUserGlobalSignOutCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 
 import {
   BadRequestException,
-  HttpException,
-  HttpStatus,
+  ForbiddenException,
   Injectable,
   NotFoundException,
-  Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { RegisterCognitoDto } from './dto/register-cognito.dto';
 import { SignInCognitoDto } from './dto/sign-in-cognito.dto';
@@ -27,6 +26,9 @@ import { Request, Response } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { ConfirmForgotPasswordDto } from './dto/confirm-forgot-password.dto';
+import { ForgotPasswordDto } from './dto/forgot-password.dto';
+import { ResendConfirmationCodeDto } from './dto/resend-confirmation-code.dto';
 
 @Injectable()
 export class CognitoService {
@@ -66,6 +68,11 @@ export class CognitoService {
     return hasher.digest('base64');
   }
 
+  handleError(error: any, action: string) {
+    const errorMessage = error.message || 'An unexpected error occurred';
+    throw new BadRequestException(`Failed to ${action}: ${errorMessage}`);
+  }
+
   async signUp(registerCognitoDto: RegisterCognitoDto) {
     const command = new SignUpCommand({
       ClientId: this.clientId,
@@ -88,7 +95,15 @@ export class CognitoService {
       const response = await this.cognitoClient.send(command);
       return response.UserSub;
     } catch (error) {
-      throw new BadRequestException(error.message);
+      if (error.code === 'UsernameExistsException') {
+        throw new ForbiddenException('Username already exists');
+      }
+      if (error.code === 'InvalidPasswordException') {
+        throw new BadRequestException(
+          'Password must have uppercase, lowercase, number, and special character',
+        );
+      }
+      this.handleError(error, 'sign up');
     }
   }
 
@@ -111,10 +126,16 @@ export class CognitoService {
       const refreshToken = response.AuthenticationResult.RefreshToken;
       const idToken = response.AuthenticationResult.IdToken;
       const decodedToken = this.decodeJwt(idToken);
-      const userSub = decodedToken.sub;
-      return { accessToken, userSub, refreshToken };
+      const isEmailVerified = decodedToken.email_verified;
+      return { accessToken, refreshToken, isEmailVerified };
     } catch (error) {
-      throw new NotFoundException(error.message);
+      if (error.code === 'UserNotFoundException') {
+        throw new NotFoundException('User not found');
+      }
+      if (error.code === 'NotAuthorizedException') {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+      this.handleError(error, 'sign in');
     }
   }
 
@@ -162,7 +183,41 @@ export class CognitoService {
       const userInfo = userInfoResponse.data;
       return { userInfo, accessToken, refreshToken };
     } catch (error) {
-      throw new BadRequestException(error.message);
+      this.handleError(error, 'sign in with OAuth');
+    }
+  }
+
+  async refreshAccessToken(refreshToken: string) {
+    try {
+      const tokenResponse = await firstValueFrom(
+        this.httpService
+          .post(
+            `${this.cognitoDomain}/oauth2/token`,
+            new URLSearchParams({
+              grant_type: 'refresh_token',
+              client_id: this.clientId,
+              refresh_token: refreshToken,
+            }),
+            {
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                Authorization:
+                  'Basic ' +
+                  Buffer.from(
+                    `${this.clientId}:${this.cognitoClientSecret}`,
+                  ).toString('base64'),
+              },
+            },
+          )
+          .pipe(
+            catchError((error) => {
+              throw new BadRequestException(error.response);
+            }),
+          ),
+      );
+      return tokenResponse.data.access_token;
+    } catch (error) {
+      this.handleError(error, 'refresh access token');
     }
   }
 
@@ -176,51 +231,51 @@ export class CognitoService {
     try {
       return await this.cognitoClient.send(command);
     } catch (error) {
-      throw new BadRequestException(error.message);
+      this.handleError(error, 'confirm sign up');
     }
   }
 
-  async forgotPassword(username: string) {
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto) {
     const command = new ForgotPasswordCommand({
       ClientId: this.clientId,
-      Username: username,
+      Username: forgotPasswordDto.username,
     });
     try {
       return await this.cognitoClient.send(command);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
+      this.handleError(error, 'forgot password');
     }
   }
 
   async confirmForgotPassword(
-    username: string,
-    confirmationCode: string,
-    newPassword: string,
+    conFirmForgotPasswordDto: ConfirmForgotPasswordDto,
   ) {
     const command = new ConfirmForgotPasswordCommand({
       ClientId: this.clientId,
-      Username: username,
-      ConfirmationCode: confirmationCode,
-      Password: newPassword,
+      Username: conFirmForgotPasswordDto.username,
+      ConfirmationCode: conFirmForgotPasswordDto.confirmationCode,
+      Password: conFirmForgotPasswordDto.newPassword,
     });
 
     try {
       return await this.cognitoClient.send(command);
     } catch (error) {
-      throw new BadRequestException(error.message);
+      this.handleError(error, 'confirm forgot password');
     }
   }
 
-  async resendConfirmationCode(username: string) {
+  async resendConfirmationCode(
+    resendConfirmationCodeDto: ResendConfirmationCodeDto,
+  ) {
     const command = new ResendConfirmationCodeCommand({
       ClientId: this.clientId,
-      Username: username,
+      Username: resendConfirmationCodeDto.username,
     });
 
     try {
       return await this.cognitoClient.send(command);
     } catch (error) {
-      throw new BadRequestException(error.message);
+      this.handleError(error, 'resend confirmation code');
     }
   }
 
@@ -233,7 +288,7 @@ export class CognitoService {
     try {
       return await this.cognitoClient.send(command);
     } catch (error) {
-      throw new BadRequestException(error.message);
+      this.handleError(error, 'sign out');
     }
   }
 

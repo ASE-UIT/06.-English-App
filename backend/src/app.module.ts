@@ -5,6 +5,7 @@ import { TypeOrmModule } from './datasource/typeorm.module';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { SharedModule } from './module/shared.module';
+import { ThrottlerModule, minutes } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -17,6 +18,12 @@ import { SharedModule } from './module/shared.module';
     AutomapperModule.forRoot({
       strategyInitializer: classes(),
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: minutes(5),
+        limit: 10,
+      },
+    ]),
     SharedModule,
   ],
 })
