@@ -43,8 +43,8 @@ const protectedRoutes = [
     component: <Lecture></Lecture>,
   },
   {
-    path: routes.CreateCourse, 
-    component: <CreateCourse />, 
+    // path: routes.CreateCourse, 
+    // component: <CreateCourse />, 
   }
   // {
   //   path: routes.ReadingMultipleChoices,
