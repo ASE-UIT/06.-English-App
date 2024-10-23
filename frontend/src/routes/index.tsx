@@ -7,13 +7,11 @@ import { Lecture } from "@/pages/protected-route/lecture"
 import { LoginPage } from "@/pages/LoginPage/LoginPage"
 import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
 import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
-import { CreateCourse } from "@/components/Course/CreateCourse"
 import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
 import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
 import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
 import { studentRoutes } from "@/config/routes"
 import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
-import path from "path"
 import StudentReading from "@/components/Student/Reading/StudentReading"
 
 const publicRoutes = [
