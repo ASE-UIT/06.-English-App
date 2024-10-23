@@ -11,6 +11,10 @@ import { CreateCourse } from "@/components/Course/CreateCourse"
 import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
 import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
 import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
+import { studentRoutes } from "@/config/routes"
+import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
+import path from "path"
+import StudentReading from "@/components/Student/Reading/StudentReading"
 
 const publicRoutes = [
   {
@@ -42,10 +46,10 @@ const protectedRoutes = [
     path: routes.Reading,
     component: <Lecture></Lecture>,
   },
-  {
-    path: routes.CreateCourse, 
-    component: <CreateCourse />, 
-  }
+  // {
+  //   path: routes.CreateCourse, 
+  //   component: <CreateCourse />, 
+  // }
   // {
   //   path: routes.ReadingMultipleChoices,
   //   component: (
@@ -70,5 +74,10 @@ const protectedRoutes = [
   //     </Lecture>
   //   )
   // }
+  {
+    path: studentRoutes.DoTestReading,
+    component: <StudentReading></StudentReading>,
+    layout: DoTestLayout,
+  }
 ]
 export { publicRoutes, protectedRoutes }

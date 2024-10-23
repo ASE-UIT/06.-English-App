@@ -10,3 +10,7 @@ export const routes = {
   ReadingNoteCompletion: '/lecture/reading/note-completion',
   Register: '/register',
 };
+export const studentRoutes = {
+  DoTest: '/do-test',
+  DoTestReading: '/do-test/reading',
+}

@@ -40,6 +40,9 @@ const config = {
         "login-image": "700px",
         "register-table": "800px",
       },
+      boxShadow: {
+        custom: '0px 4px 4px rgba(0, 0, 0, 0.25)'
+      },
       colors: {
         headerIcon: "#5D5FEF",
         sectionHeaderBg: "rgba(252, 221, 236, 0.50)",
@@ -105,7 +108,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),require('tailwind-scrollbar')],  
 } satisfies Config
 
 export default config
