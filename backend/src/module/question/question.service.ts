@@ -1,11 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
+import { DataSource } from 'typeorm';
+import { Question } from './entities/question.entity';
 
 @Injectable()
 export class QuestionService {
-  create(createQuestionDto: CreateQuestionDto) {
-    return 'This action adds a new question';
+  constructor(private readonly dataSource: DataSource) {}
+  async create(question: Question) {
+
+    try {
+      // insert a new question
+
+      const newQuestion = await this.dataSource
+      .getRepository(Question)
+      .insert(question);
+    
+      return newQuestion;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
+
   }
 
   findAll() {

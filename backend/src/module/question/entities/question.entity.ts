@@ -1,3 +1,4 @@
+import { AutoMap } from '@automapper/classes';
 import { Answer } from 'src/module/answer/entities/answer.entity';
 import { Base } from 'src/module/base/base.entity';
 import { QuestionGroup } from 'src/module/question-group/entities/question-group.entity';
@@ -15,24 +16,32 @@ import {
 
 @Entity()
 export class Question extends Base {
+  @AutoMap()
   @ManyToOne(() => QuestionGroup, (questionGroup) => questionGroup.questions)
   questionGroup?: QuestionGroup;
+  @AutoMap()
   @ManyToOne(() => Section, (section) => section.questions)
-  sectionID?: Section;
+  section?: Section;
+  @AutoMap()
   @Column()
   text: string;
+  @AutoMap()
   @Column({
     type: 'enum',
     enum: QUESTION_TYPE,
     default: QUESTION_TYPE.COMBO_BOX,
   })
   type: QUESTION_TYPE;
+  @AutoMap()
   @OneToMany(() => StudentAnswer, (studentAnswer) => studentAnswer.question)
   studentAnswers: StudentAnswer;
+  @AutoMap()
   @OneToMany(() => Answer, (answer) => answer.question)
   answers: Answer[];
+  @AutoMap()
   @Column()
   order: number;
+  @AutoMap()
   @OneToMany(() => QuestionMedia, (questionMedia) => questionMedia.question)
   questionMedias: QuestionMedia[];
 }
