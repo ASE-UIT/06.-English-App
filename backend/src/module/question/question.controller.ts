@@ -6,11 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiParam } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Question } from './entities/question.entity';
@@ -19,14 +20,17 @@ import { CreateAnswerDto } from '../answer/dto/create-answer.dto';
 import { ResponseObject } from 'src/utils/objects';
 import { CreateQuestionMediaDto } from '../question-media/dto/create-question-media.dto';
 import { QuestionMedia } from '../question-media/entities/question-media.entity';
+import { END_POINTS } from 'src/utils/constants';
+import { UpdateAnswerDto } from '../answer/dto/update-answer.dto';
+import { UpdateQuestionMediaDto } from '../question-media/dto/update-question-media.dto';
 
-@Controller('question')
+@Controller(END_POINTS.QUESTION.BASE)
 export class QuestionController {
   constructor(private readonly questionService: QuestionService,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
-  @Post()
+  @Post(END_POINTS.QUESTION.CREATE)
   @ApiOperation({ summary: 'Create a new question with its answers' })
   async create(@Body() createQuestionDto: CreateQuestionDto) {
     const question = this.mapper.map(createQuestionDto, CreateQuestionDto, Question);
@@ -39,9 +43,11 @@ export class QuestionController {
     return ResponseObject.create('Question created', newQuestion);
   }
 
-  @Get()
-  findAll() {
-    return this.questionService.findAll();
+  @Get(END_POINTS.QUESTION.FIND_BY_SECTION)
+  @ApiOperation({ summary: 'Find all questions belong to a section' })
+  @ApiParam({ name: 'sectionId', type: 'string' })
+  async findBySection(@Query('sectionId') sectionId: string) {
+    return this.questionService.findBySection(sectionId);
   }
 
   @Get(':id')
@@ -49,12 +55,19 @@ export class QuestionController {
     return this.questionService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
+  @ApiOperation({ summary: 'Update a question and it\'s answers' })
+  @Patch(END_POINTS.QUESTION.PATCH)
+  async update(
     @Body() updateQuestionDto: UpdateQuestionDto,
   ) {
-    return this.questionService.update(+id, updateQuestionDto);
+    const question = this.mapper.map(updateQuestionDto, UpdateQuestionDto, Question);
+    const answer = this.mapper.map(updateQuestionDto.answers, Array<UpdateAnswerDto>, Array<Answer>);
+    const questionMedia = this.mapper.map(updateQuestionDto.questionMedias, Array<UpdateQuestionMediaDto>, Array<QuestionMedia>);
+
+    question.answers = answer;
+    question.questionMedias = questionMedia;
+    const result = await this.questionService.update(question);
+    return ResponseObject.create('Question updated', result);
   }
 
   @Delete(':id')

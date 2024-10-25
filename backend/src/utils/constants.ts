@@ -23,6 +23,14 @@ export const END_POINTS = {
     DOWNLOAD: '/download/:key',
     DELETE: '/delete/:key',
   },
+  QUESTION: {
+    BASE: '/question',
+    CREATE: '',
+    FIND_BY_SECTION: '',
+    PATCH: '',
+    DELETE: ':id',
+    DELETE_ANSWER: '/answer/',
+  }
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',

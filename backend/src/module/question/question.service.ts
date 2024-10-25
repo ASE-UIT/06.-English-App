@@ -23,16 +23,35 @@ export class QuestionService {
 
   }
 
-  findAll() {
-    return `This action returns all question`;
+  async findBySection(sectionId: string) {
+    try {
+      // find all questions by sectionId
+      const questions = await this.dataSource
+      .getRepository(Question)
+      .find({ where: { section: { id: sectionId } } });
+    
+      return questions;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
   findOne(id: number) {
     return `This action returns a #${id} question`;
   }
 
-  update(id: number, updateQuestionDto: UpdateQuestionDto) {
-    return `This action updates a #${id} question`;
+  update(question: Question) {
+    try {
+      // update a question
+      const updatedQuestion = this.dataSource
+      .getRepository(Question)
+      .save(question);
+    
+      return updatedQuestion;
+    }
+    catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
   remove(id: number) {

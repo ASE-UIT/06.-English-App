@@ -21,7 +21,7 @@ export class Question extends Base {
   questionGroup?: QuestionGroup;
   @AutoMap()
   @ManyToOne(() => Section, (section) => section.questions)
-  section?: Section;
+  section: Section;
   @AutoMap()
   @Column()
   text: string;
@@ -36,12 +36,18 @@ export class Question extends Base {
   @OneToMany(() => StudentAnswer, (studentAnswer) => studentAnswer.question)
   studentAnswers: StudentAnswer;
   @AutoMap()
-  @OneToMany(() => Answer, (answer) => answer.question)
+  @OneToMany(() => Answer, (answer) => answer.question, {
+    eager: true,
+    cascade: ['insert'],
+  })
   answers: Answer[];
   @AutoMap()
   @Column()
   order: number;
   @AutoMap()
-  @OneToMany(() => QuestionMedia, (questionMedia) => questionMedia.question)
+  @OneToMany(() => QuestionMedia, (questionMedia) => questionMedia.question, {
+    eager: true,
+    cascade: ['insert'],
+  })
   questionMedias: QuestionMedia[];
 }

@@ -33,12 +33,14 @@ export class CreateQuestionDto {
   @IsNumber()
   order: number;
 
+  
   @ApiProperty({ description: 'Answers of the question' })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateAnswerDto)
   answers: CreateAnswerDto[];
 
+  
   @ApiProperty({ description: ' Medias of the question' })
   @IsArray()
   @ValidateNested({ each: true })
