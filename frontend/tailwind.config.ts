@@ -41,6 +41,10 @@ const config = {
         "register-table": "800px",
       },
       colors: {
+        checkboxBg: "var(--Iris-blue2, #7879F1)",
+        comboboxBorder: "#F178B6",
+        comboboxBg: "#FCDDEC",
+        questionText: "#7879F1",
         headerIcon: "#5D5FEF",
         sectionHeaderBg: "rgba(252, 221, 236, 0.50)",
         currentBg: "#fff5fa",

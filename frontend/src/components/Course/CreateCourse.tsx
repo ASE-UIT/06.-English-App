@@ -1,7 +1,7 @@
-export const CreateCourse = () => { 
-    return (
-        <>
-        <h1>Create course</h1>
-        </>
-    )
+export const CreateCourse = () => {
+  return (
+    <>
+      <h1>Create course</h1>
+    </>
+  )
 }
