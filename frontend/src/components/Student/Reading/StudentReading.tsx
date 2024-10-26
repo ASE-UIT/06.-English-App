@@ -1,4 +1,8 @@
 import { ReadingQuestion } from "@/pages/main-layout/readingQuestion"
+import SubmitLogo from "../../../assets/submit_icon.svg"
+import { Button } from "@/components/ui/button"
+import RightNav from "../../../assets/right_nav_button.svg"
+import LeftNav from "@/assets/left_nav_button.svg";
 
 const testData = {
     title: "Australian artist Margaret Preston",
@@ -7,14 +11,28 @@ const testData = {
 }
 export default function StudentReading() { 
     return (
-        <div className="flex mx-[16px] gap-[10px] mt-[32px]">
-            <div className="text-black border-[#a5a6f6] border-2 rounded-md max-w-[750px] flex flex-col items-center max-h-[1100px] px-[5px] overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-300 ">
+        <div className="flex mx-[16px] gap-[10px] mt-[32px] mb-[32px]">
+            <div className="flex-1 text-black border-[#a5a6f6] border-2 rounded-md flex flex-col items-center max-h-[1100px] px-[5px] overflow-scroll overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-300 ">
                 <h2 className="text-2xl font-bold mt-[25px] mb-[25px]">{testData.title}</h2>
-                <img className="w-[930px] h-[720px] object-cover" src={testData.image} />
+                <img className="object-fill" src={testData.image} />
                 <p className="text-xl mt-[25px] ">{testData.content}</p>
             </div>
-            <div className="border-[#fcddec] border-2 rounded-md w-full">
-                <ReadingQuestion/>
+            <div className="flex flex-col flex-1">
+                <div className="border-[#fcddec] border-2 border-b-0 rounded-md w-full p-[20px]">
+                    <ReadingQuestion/>
+                </div>
+                <div className="flex h-[60px] bg-[#fff4f9] justify-between">
+                    <Button className="h-full bg-inherit">
+                        <img src={LeftNav} />
+                    </Button>
+                    <Button className="h-full bg-inherit">
+                        <img src={RightNav} />
+                    </Button>
+                </div>
+                <div className="flex justify-center mt-[50px]"><Button className="bg-[#ef5da8] items-center text-white text-2xl w-[120px]" >
+                    <img className="bg-[#ef5da8]" src={SubmitLogo}></img> Submit</Button>
+                </div>
+                
             </div>
         </div>
     )
