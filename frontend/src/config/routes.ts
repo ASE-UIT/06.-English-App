@@ -11,3 +11,7 @@ export const routes = {
   Register: "/register",
   ReadingExercise: "/reading-exercise",
 }
+export const studentRoutes = {
+  DoTest: '/do-test',
+  DoTestReading: '/do-test/reading',
+}

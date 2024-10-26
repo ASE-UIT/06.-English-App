@@ -17,7 +17,7 @@ export const ReadingQuestion = () => {
     return total
   }
   return (
-    <div className="flex h-screen w-full flex-col overflow-y-auto bg-red-200">
+    <div className="flex h-full w-full flex-col overflow-y-auto bg-white">
       {questionData.map((questions, index) => {
         return (
           <>

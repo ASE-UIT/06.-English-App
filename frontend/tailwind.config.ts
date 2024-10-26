@@ -40,6 +40,9 @@ const config = {
         "login-image": "700px",
         "register-table": "800px",
       },
+      boxShadow: {
+        custom: '0px 4px 4px rgba(0, 0, 0, 0.25)'
+      },
       colors: {
         checkboxBg: "var(--Iris-blue2, #7879F1)",
         comboboxBorder: "#F178B6",
@@ -109,7 +112,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"),require('tailwind-scrollbar')],  
 } satisfies Config
 
 export default config

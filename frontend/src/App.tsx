@@ -16,7 +16,7 @@ function App() {
             })}
             {protectedRoutes.map((route, index) => {
               const Page = route.component
-              const Layout = DefaultLayout
+              const Layout = route.layout == null ? DefaultLayout : route.layout
               // if (route.path === "/profile" || route.path === "/login") {
               //   Layout = ProfileLayout
               // } else if (route.layout) {
