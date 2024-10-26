@@ -12,6 +12,9 @@ export const routes = {
   ReadingExercise: "/reading-exercise",
 }
 export const studentRoutes = {
-  DoTest: '/do-test',
-  DoTestReading: '/do-test/reading',
+  DoTest: "/do-test",
+  DoTestReading: "/do-test/reading",
+}
+export const teacherRoutes = {
+  Home: "/instructor-home",
 }

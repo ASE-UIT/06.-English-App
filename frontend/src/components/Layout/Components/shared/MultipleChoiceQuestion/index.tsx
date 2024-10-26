@@ -1,6 +1,6 @@
 import { Checkbox } from "@/components/ui/checkbox"
 import { Question } from "@/type"
-import { numToLetter } from "../RadioGroupQuestion/helper";
+import { numToLetter } from "../RadioGroupQuestion/helper"
 export const MultipleChoiceQuestion = ({ prevSum, answer }: { prevSum: number; answer: Question[] }) => {
   return (
     <div>
