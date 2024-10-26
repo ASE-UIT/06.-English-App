@@ -27,9 +27,8 @@ export const END_POINTS = {
     BASE: '/question',
     CREATE: '',
     FIND_BY_SECTION: '',
-    PATCH: '',
+    PUT: '',
     DELETE: ':id',
-    DELETE_ANSWER: '/answer/',
   }
 };
 export const DOCUMENTATION = {

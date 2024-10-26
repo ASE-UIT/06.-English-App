@@ -54,7 +54,16 @@ export class QuestionService {
     }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} question`;
+  async remove(id: string) {
+    try {
+      // delete a question
+      const deletedQuestion = await this.dataSource
+      .getRepository(Question)
+      .delete(id);
+    
+      return deletedQuestion;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 }

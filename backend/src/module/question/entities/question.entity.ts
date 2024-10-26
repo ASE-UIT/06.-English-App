@@ -38,7 +38,7 @@ export class Question extends Base {
   @AutoMap()
   @OneToMany(() => Answer, (answer) => answer.question, {
     eager: true,
-    cascade: ['insert'],
+    cascade: true,
   })
   answers: Answer[];
   @AutoMap()
@@ -47,7 +47,7 @@ export class Question extends Base {
   @AutoMap()
   @OneToMany(() => QuestionMedia, (questionMedia) => questionMedia.question, {
     eager: true,
-    cascade: ['insert'],
+    cascade: true,
   })
   questionMedias: QuestionMedia[];
 }

@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  Put,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -56,7 +57,7 @@ export class QuestionController {
   }
 
   @ApiOperation({ summary: 'Update a question and it\'s answers' })
-  @Patch(END_POINTS.QUESTION.PATCH)
+  @Put(END_POINTS.QUESTION.PUT)
   async update(
     @Body() updateQuestionDto: UpdateQuestionDto,
   ) {
@@ -70,8 +71,9 @@ export class QuestionController {
     return ResponseObject.create('Question updated', result);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.questionService.remove(+id);
+  @Delete(END_POINTS.QUESTION.DELETE)
+  async remove(@Param('id') id: string) {
+    const res = await this.questionService.remove(id);
+    return ResponseObject.create('Question deleted', res);
   }
 }
