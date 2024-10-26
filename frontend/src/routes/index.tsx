@@ -10,6 +10,7 @@ import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRe
 import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
 import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
 import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
+import { ReadingQuestion } from "@/pages/main-layout/readingQuestion"
 import { studentRoutes } from "@/config/routes"
 import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
 import StudentReading from "@/components/Student/Reading/StudentReading"
@@ -17,7 +18,7 @@ import StudentReading from "@/components/Student/Reading/StudentReading"
 const publicRoutes = [
   {
     path: routes.Home,
-    layout:EmptyLayout,
+    layout: EmptyLayout,
     component: <Home></Home>,
   },
   {
@@ -38,6 +39,10 @@ const publicRoutes = [
     path: routes.TermsOfService,
     component: <TermsOfServicePage></TermsOfServicePage>,
   },
+  {
+    path: routes.ReadingExercise,
+    component: <ReadingQuestion></ReadingQuestion>,
+  },
 ]
 const protectedRoutes = [
   {
@@ -45,9 +50,9 @@ const protectedRoutes = [
     component: <Lecture></Lecture>,
   },
   // {
-  //   path: routes.CreateCourse, 
-  //   component: <CreateCourse />, 
-  // }
+  //   path: routes.CreateCourse,
+  //   component: <CreateCourse />,
+  // },
   // {
   //   path: routes.ReadingMultipleChoices,
   //   component: (

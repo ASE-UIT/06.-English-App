@@ -6,7 +6,7 @@ export interface Section {
   data: {
     [key: number]: {
       type: string
-    }, 
+    }
   }
 }
 

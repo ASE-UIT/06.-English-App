@@ -8,7 +8,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-
 interface Answer {
   text: string
   isCorrect: boolean
@@ -88,10 +87,10 @@ const Question = ({ index }: { index: number }) => {
                       X
                     </Button>
                     {multipleAnswers ? (
-                      <Checkbox className="bg-inherit h-[40px] w-[40px]" />
+                      <Checkbox className="h-[40px] w-[40px] bg-inherit" />
                     ) : (
-                      <RadioGroup defaultValue="comfortable bg-inherit rounded-full" >
-                        <div className="flex items-center space-x-2 h-[40px] w-[40px]">
+                      <RadioGroup defaultValue="comfortable bg-inherit rounded-full">
+                        <div className="flex h-[40px] w-[40px] items-center space-x-2">
                           <RadioGroupItem className="bg-inherit" value="default" id="r1" />
                           <Label htmlFor="r1">Default</Label>
                         </div>
@@ -99,7 +98,7 @@ const Question = ({ index }: { index: number }) => {
                     )}
                   </li>
                 ))}
-                <div className="mb-[20px] flex w-full justify-center align-middle max-w-[780px]">
+                <div className="mb-[20px] flex w-full max-w-[780px] justify-center align-middle">
                   <div className="w-full min-w-[240px] rounded-lg border-[1px] bg-customPink px-[16px] py-2">
                     <Input className="border-none bg-inherit text-[#AEAEB2]" type="text" placeholder="Type here" />
                   </div>

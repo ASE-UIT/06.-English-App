@@ -1,3 +1,5 @@
+import { ReadingQuestion } from "@/pages/main-layout/readingQuestion"
+
 const testData = {
     title: "Australian artist Margaret Preston",
     image: "https://www.artgallery.nsw.gov.au/media/uploads/artists/MP_in_her_Adelaide_studio_c1909_photograph_from_the_State_Library_of_SA.jpg",
@@ -12,7 +14,7 @@ export default function StudentReading() {
                 <p className="text-xl mt-[25px] ">{testData.content}</p>
             </div>
             <div className="border-[#fcddec] border-2 rounded-md w-full">
-                <h1 className="text-2xl text-[black]">Loading question</h1>// load question
+                <ReadingQuestion/>
             </div>
         </div>
     )

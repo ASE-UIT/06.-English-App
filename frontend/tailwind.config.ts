@@ -44,6 +44,10 @@ const config = {
         custom: '0px 4px 4px rgba(0, 0, 0, 0.25)'
       },
       colors: {
+        checkboxBg: "var(--Iris-blue2, #7879F1)",
+        comboboxBorder: "#F178B6",
+        comboboxBg: "#FCDDEC",
+        questionText: "#7879F1",
         headerIcon: "#5D5FEF",
         sectionHeaderBg: "rgba(252, 221, 236, 0.50)",
         currentBg: "#fff5fa",
