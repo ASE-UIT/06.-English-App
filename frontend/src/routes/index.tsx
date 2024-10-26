@@ -11,9 +11,11 @@ import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
 import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
 import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
 import { ReadingQuestion } from "@/pages/main-layout/readingQuestion"
-import { studentRoutes } from "@/config/routes"
+import { studentRoutes, teacherRoutes } from "@/config/routes"
 import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
 import StudentReading from "@/components/Student/Reading/StudentReading"
+import { InstructorHome } from "@/pages/protected-route/teacher/home"
+import { Fragment } from "react/jsx-runtime"
 
 const publicRoutes = [
   {
@@ -49,6 +51,11 @@ const protectedRoutes = [
     path: routes.Reading,
     component: <Lecture></Lecture>,
   },
+  {
+    path: teacherRoutes.Home,
+    layout: Fragment,
+    component: <InstructorHome></InstructorHome>,
+  },
   // {
   //   path: routes.CreateCourse,
   //   component: <CreateCourse />,
@@ -81,6 +88,6 @@ const protectedRoutes = [
     path: studentRoutes.DoTestReading,
     component: <StudentReading></StudentReading>,
     layout: DoTestLayout,
-  }
+  },
 ]
 export { publicRoutes, protectedRoutes }
