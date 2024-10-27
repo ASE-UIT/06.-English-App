@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@react-navigation/native-stack": "^6.11.0",
     "react-native-element-dropdown": "^2.12.1"
   }
 }

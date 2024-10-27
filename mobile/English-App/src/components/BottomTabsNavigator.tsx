@@ -2,6 +2,10 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { Icon } from "@rneui/themed";
 import ReadingExercise from "../screens/ReadingExercise";
 import { Image } from "react-native";
+import LearningScreen from "../screens/LearningScreen";
+import FlashCard from "../screens/FlashCard";
+import Home from "../screens/Home";
+import Profile from "../screens/Profile";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -20,7 +24,7 @@ export default function BottomTabsNavigator() {
     >
       <Tab.Screen
         name="home"
-        component={ReadingExercise} // change this to HomeScreen later
+        component={Home} // change this to HomeScreen later
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
@@ -30,7 +34,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="learning"
-        component={ReadingExercise} // change this to LearningScreen later
+        component={LearningScreen} // change this to LearningScreen later
         options={{
           tabBarLabel: "Learning",
           tabBarIcon: ({ color }) => (
@@ -40,7 +44,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="vocabulary"
-        component={ReadingExercise} // change this to VocabularyScreen later
+        component={FlashCard} // change this to VocabularyScreen later
         options={{
           tabBarLabel: "Vocabulary",
           tabBarIcon: ({ color }) => (
@@ -60,7 +64,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="profile"
-        component={ReadingExercise} // change this to ProfileScreen later
+        component={Profile} // change this to ProfileScreen later
         options={{
           tabBarLabel: "Profile",
           tabBarIcon: ({ color }) => (
