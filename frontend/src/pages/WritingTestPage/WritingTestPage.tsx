@@ -7,7 +7,7 @@ import writtingTest  from '@/assets/image/writingTest.jpg'
 export const WritingTestPage = () => {
     return (
         <>
-            <div className="flex flex-col">
+            <div className="flex flex-col bg-white h-screen">
                 <div className='bg-[#FFF4F9] h-[60px] flex-none shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
                     <button className='flex items-center bg-transparent py-[14px]'>
                         <IoIosArrowBack className='text-[#5D5FEF] w-[30px] h-[30px]'/>

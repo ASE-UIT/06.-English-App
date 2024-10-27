@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { protectedRoutes, publicRoutes } from "./routes/index"
 import { DefaultLayout } from "./components/Layout"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import 'regenerator-runtime/runtime';
 const queryClient = new QueryClient()
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
             })}
             {protectedRoutes.map((route, index) => {
               const Page = route.component
-              const Layout = DefaultLayout
+              const Layout = route.layout == null ? DefaultLayout : route.layout
               // if (route.path === "/profile" || route.path === "/login") {
               //   Layout = ProfileLayout
               // } else if (route.layout) {

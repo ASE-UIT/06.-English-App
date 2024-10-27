@@ -9,15 +9,20 @@ import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
 import { WritingTestPage } from "@/pages/WritingTestPage/WritingTestPage"
 import { SpeakingTestPage } from "@/pages/SpeakingTestPage/SpeakingTestPage"
 import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
+import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
 import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
 import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
-import MultipleChoice from "@/components/Reading/MultipleChoices"
-import TrueFalseNotGiven from "@/components/Reading/TFNG"
-import NoteCompletion from "@/components/Reading/NoteCompletion"
-import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
+import { ReadingQuestion } from "@/pages/main-layout/readingQuestion"
+import { studentRoutes, teacherRoutes } from "@/config/routes"
+import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
+import StudentReading from "@/components/Student/Reading/StudentReading"
+import { InstructorHome } from "@/pages/protected-route/teacher/home"
+import { Fragment } from "react/jsx-runtime"
+import path from "path"
 const publicRoutes = [
   {
     path: routes.Home,
+    layout: EmptyLayout,
     component: <Home></Home>,
   },
   {
@@ -39,21 +44,34 @@ const publicRoutes = [
     component: <TermsOfServicePage></TermsOfServicePage>,
   },
   {
-    path: routes.SpeakingTest,
-    component: <SpeakingTestPage></SpeakingTestPage>,
-    layout: EmptyLayout,
-  },
-  {
-    path: routes.WritingTest,
-    component: <WritingTestPage></WritingTestPage>,
-    layout: EmptyLayout,
+    path: routes.ReadingExercise,
+    component: <ReadingQuestion></ReadingQuestion>,
   },
 ]
 const protectedRoutes = [
   {
+    path: routes.WritingTest,
+    layout: Fragment,
+    component: <WritingTestPage></WritingTestPage>,
+  },
+  {
+    path: routes.SpeakingTest,
+    layout: Fragment,
+    component: <SpeakingTestPage></SpeakingTestPage>,
+  },
+  {
     path: routes.Reading,
     component: <Lecture></Lecture>,
   },
+  {
+    path: teacherRoutes.Home,
+    layout: Fragment,
+    component: <InstructorHome></InstructorHome>,
+  },
+  // {
+  //   path: routes.CreateCourse,
+  //   component: <CreateCourse />,
+  // },
   // {
   //   path: routes.ReadingMultipleChoices,
   //   component: (
@@ -78,5 +96,10 @@ const protectedRoutes = [
   //     </Lecture>
   //   )
   // }
+  {
+    path: studentRoutes.DoTestReading,
+    component: <StudentReading></StudentReading>,
+    layout: DoTestLayout,
+  },
 ]
 export { publicRoutes, protectedRoutes }

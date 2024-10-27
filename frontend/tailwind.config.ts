@@ -40,7 +40,16 @@ const config = {
         "login-image": "700px",
         "register-table": "800px",
       },
+      boxShadow: {
+        custom: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+        sideBar: "4px 0px 16px 0px rgba(0, 0, 0, 0.25)",
+      },
       colors: {
+        sideBar: "#FCDDEC80",
+        checkboxBg: "var(--Iris-blue2, #7879F1)",
+        comboboxBorder: "#F178B6",
+        comboboxBg: "#FCDDEC",
+        questionText: "#7879F1",
         headerIcon: "#5D5FEF",
         sectionHeaderBg: "rgba(252, 221, 236, 0.50)",
         currentBg: "#fff5fa",
@@ -105,7 +114,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar")],
 } satisfies Config
 
 export default config

@@ -4,10 +4,10 @@ import { LuClock } from "react-icons/lu";
 import { IoSend } from "react-icons/io5";
 import { FaMicrophone } from "react-icons/fa";
 import { FaMicrophoneSlash } from "react-icons/fa";
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+// import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export const SpeakingTestPage = () => {
-    const { transcript, listening, resetTranscript } = useSpeechRecognition();
+    // const { transcript, listening, resetTranscript } = useSpeechRecognition();
     const totalMinutes: number = 15;
     const [minutes, setMinutes] = useState(totalMinutes);
     const [isRecording, setIsRecording] = useState(false);
@@ -15,13 +15,13 @@ export const SpeakingTestPage = () => {
 
     const startRecording = () => {
         setIsRecording(!isRecording);
-        if (isRecording == true) {
-            listening ? SpeechRecognition.startListening() :
-            SpeechRecognition.startListening();
-        } else {
-            listening ? SpeechRecognition.stopListening() :
-            SpeechRecognition.stopListening();
-        }
+        // if (isRecording == true) {
+        //     listening ? SpeechRecognition.startListening() :
+        //     SpeechRecognition.startListening();
+        // } else {
+        //     listening ? SpeechRecognition.stopListening() :
+        //     SpeechRecognition.stopListening();
+        // }
     }
     useEffect(() => {
         const interval = setInterval(() => {
@@ -33,15 +33,15 @@ export const SpeakingTestPage = () => {
         }
         if (minutes === 0 && seconds === 0) {
             clearInterval(interval);   
-            console.log('Đã hết giờ!');
+            // console.log('Đã hết giờ!');
         }
         }, 1000);
         return () => clearInterval(interval);
     }, [minutes, seconds]);
-    console.log(transcript);
+    // console.log(transcript);
     return (
         <>
-        <div className="h-screen flex flex-col">
+        <div className="h-screen flex flex-col h-screen bg-white">
             <div className='bg-[#FFF4F9] h-[60px] flex-none shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
                 <button className='flex items-center bg-transparent py-[14px]'>
                     <IoIosArrowBack className='text-[#5D5FEF] w-[30px] h-[30px]'/>
