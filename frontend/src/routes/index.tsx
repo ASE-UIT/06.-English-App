@@ -6,6 +6,8 @@ import { Home } from "@/pages/main-layout/Home"
 import { Lecture } from "@/pages/protected-route/lecture"
 import { LoginPage } from "@/pages/LoginPage/LoginPage"
 import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
+import { WritingTestPage } from "@/pages/WritingTestPage/WritingTestPage"
+import { SpeakingTestPage } from "@/pages/SpeakingTestPage/SpeakingTestPage"
 import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
 import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
 import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
@@ -16,8 +18,8 @@ import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
 import StudentReading from "@/components/Student/Reading/StudentReading"
 import { InstructorHome } from "@/pages/protected-route/teacher/home"
 import { Fragment } from "react/jsx-runtime"
-import DoTestListening from "@/components/Student/Listening/StudentListening"
 
+import DoTestListening from "@/components/Student/Listening/StudentListening"
 const publicRoutes = [
   {
     path: routes.Home,
@@ -48,6 +50,16 @@ const publicRoutes = [
   },
 ]
 const protectedRoutes = [
+  {
+    path: routes.WritingTest,
+    layout: Fragment,
+    component: <WritingTestPage></WritingTestPage>,
+  },
+  {
+    path: routes.SpeakingTest,
+    layout: Fragment,
+    component: <SpeakingTestPage></SpeakingTestPage>,
+  },
   {
     path: routes.Reading,
     component: <Lecture></Lecture>,

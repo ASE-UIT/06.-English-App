@@ -1,4 +1,5 @@
 export const routes = {
+
   Home: "/",
   Privacy: "/privacy",
   TermsOfService: "/terms-of-service",
@@ -10,6 +11,8 @@ export const routes = {
   ReadingNoteCompletion: "/lecture/reading/note-completion",
   Register: "/register",
   ReadingExercise: "/reading-exercise",
+  WritingTest: '/writting/test',
+  SpeakingTest: '/speaking/test',
 }
 export const studentRoutes = {
   DoTest: "/do-test",
