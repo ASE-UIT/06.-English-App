@@ -1,20 +1,23 @@
 import { S3Service } from './s3.service';
-import { Controller, Delete, Get, Param, Post, Res } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Res } from '@nestjs/common';
 import { Response } from 'express';
 import { DOCUMENTATION, END_POINTS } from '../../utils/constants';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ResponseObject } from '../../utils/objects';
 
+@ApiBearerAuth()
 @ApiTags(DOCUMENTATION.TAGS.FILE)
 @Controller(END_POINTS.FILE.BASE)
 export class S3Controller {
   constructor(private readonly s3Service: S3Service) {}
 
-  @Post(END_POINTS.FILE.UPLOAD)
+  @Get(END_POINTS.FILE.UPLOAD)
   @ApiOperation({
     summary: 'Get a pre-signed URL to upload a file',
   })
   async getPreSignedUrl() {
-    return this.s3Service.generatePreSignedUrl();
+    const res = await this.s3Service.generatePreSignedUrl();
+    return ResponseObject.create('Pre-signed URL generated', res);
   }
 
   @Get(END_POINTS.FILE.DOWNLOAD)

@@ -14,6 +14,7 @@ export class Teacher extends Base {
   @Column({
     type: 'enum',
     enum: DEGREE,
+    nullable: true,
   })
-  degree: DEGREE;
+  degree?: DEGREE;
 }
