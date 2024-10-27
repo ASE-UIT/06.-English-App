@@ -18,7 +18,8 @@ import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
 import StudentReading from "@/components/Student/Reading/StudentReading"
 import { InstructorHome } from "@/pages/protected-route/teacher/home"
 import { Fragment } from "react/jsx-runtime"
-import path from "path"
+
+import DoTestListening from "@/components/Student/Listening/StudentListening"
 const publicRoutes = [
   {
     path: routes.Home,
@@ -101,5 +102,10 @@ const protectedRoutes = [
     component: <StudentReading></StudentReading>,
     layout: DoTestLayout,
   },
+  { 
+    path: studentRoutes.DoTestListening, 
+    component: <DoTestListening></DoTestListening>, 
+    layout: DoTestLayout,
+  }
 ]
 export { publicRoutes, protectedRoutes }
