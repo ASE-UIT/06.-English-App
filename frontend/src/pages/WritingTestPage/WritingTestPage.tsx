@@ -3,7 +3,7 @@ import { IoSend } from "react-icons/io5";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowDropright, IoIosArrowDropleft } from "react-icons/io";
 
-import writtingTest  from '@/assets/image/writingTest.jpg'
+import writtingTest from "@/assets/image/writingTest.jpg"
 export const WritingTestPage = () => {
     return (
         <>

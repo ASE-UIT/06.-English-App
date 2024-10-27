@@ -4,7 +4,9 @@ import { MdOutlineMonitor } from "react-icons/md"
 import { FiMessageSquare, FiBarChart } from "react-icons/fi"
 import { BiHelpCircle } from "react-icons/bi"
 import LOGO from "@/assets/Logo.svg"
-
+import { FaRegBell } from "react-icons/fa";
+import { Input } from "@/components/ui/input"
+import ProfileImage from "@/assets/image/ProfileImage.jpg"
 const links = [
   {
     label: "Course",
@@ -54,8 +56,31 @@ export const InstructorHome = () => {
             </div>
           </SidebarBody>
         </Sidebar>
-        <div className="flex flex-1">
-          <span className="text-black">CONTENT</span>
+        <div className="w-full">
+          <div className="w-[90%] mx-auto">
+            <div className="flex justify-between justify-between items-center w-full">
+                <span className="text-headerIcon text-[30px] font-semibold">Course</span>
+                <div className="flex justify-center items-center mr-[20px]">
+                  <span className="text-[25px] font-medium text-black mr-[20px]">Student</span>
+                  <FaRegBell className="text-headerIcon w-[25px] h-[25px] mr-[20px]"/>
+                  <img src={ProfileImage} alt="" className="w-[30px] h-[30px] rounded-full object-cover"/>
+                </div>
+            </div>
+
+            <div className="flex items-center">
+                  <Input type="text" className="h-[50px] text-[20px] rounded-3xl w-[200px] mr-[20px]" placeholder="Search your courses"/>
+                  <select name="" id="" className="h-[30px] bg-white rounded-lg text-black border-black mr-[20px]">
+                    <option value="">Newest</option>
+                    <option value="">Most popular</option>
+                    <option value="">Most view</option>
+                    <option value="">Most like</option>
+                  </select>
+                  <button className='h-[38px] rounded-2xl flex items-center justify-center bg-fuschia'>
+                        <span className='text-[20px] text-white font-normal'>Create new</span>
+                  </button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
