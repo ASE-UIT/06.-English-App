@@ -1,16 +1,16 @@
 import {
+  Body,
   Controller,
   Get,
   Post,
-  Body,
-  Res,
   Query,
-  UnauthorizedException,
   Req,
+  Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { InjectMapper, MapPipe } from '@automapper/nestjs';
+import { InjectMapper } from '@automapper/nestjs';
 import { RegisterAuthDto } from './dto/register-auth.dto';
 import { Mapper } from '@automapper/core';
 import { CognitoService } from './cognito.service';
@@ -21,7 +21,6 @@ import { SignInCognitoDto } from './dto/sign-in-cognito.dto';
 import { DOCUMENTATION, END_POINTS } from '../../utils/constants';
 import { Public } from '../../common/decorators/public.decorator';
 import { ConfirmSignUpDto } from './dto/confirm-sign-up.dto';
-import { UserDto } from '../user/dto/userD.dto';
 import { IUser } from '../../common/guards/at.guard';
 import { ResponseObject } from '../../utils/objects';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -53,16 +52,16 @@ export class AuthController {
     return ResponseObject.create('User created', res);
   }
 
-  @Public()
-  @Post(END_POINTS.AUTH.OAUTH2_CREATE)
-  @ApiOperation({
-    summary: 'Create a user with OAuth2 account not found in DB',
-  })
-  async oauth2Create(@Body() userDto: UserDto) {
-    const userCreated = this.mapper.map(userDto, UserDto, User);
-    const res = await this.authService.create(userCreated);
-    return ResponseObject.create('User created', res);
-  }
+  // @Public()
+  // @Post(END_POINTS.AUTH.OAUTH2_CREATE)
+  // @ApiOperation({
+  //   summary: 'Create a user with OAuth2 account not found in DB',
+  // })
+  // async oauth2Create(@Body() userDto: UserDto) {
+  //   const userCreated = this.mapper.map(userDto, UserDto, User);
+  //   const res = await this.authService.create(userCreated);
+  //   return ResponseObject.create('User created', res);
+  // }
 
   @Public()
   @Post(END_POINTS.AUTH.SIGN_IN)

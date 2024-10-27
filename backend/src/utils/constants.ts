@@ -16,6 +16,7 @@ export const END_POINTS = {
   USER: {
     BASE: '/user',
     ME: '/me',
+    CREATE: '/create',
   },
   FILE: {
     BASE: '/file',
