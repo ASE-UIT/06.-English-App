@@ -13,8 +13,9 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
       <MainHeader title="English App" />
-
-          <LearningScreen />
+          <NavigationContainer>
+            <BottomTabsNavigator />
+          </NavigationContainer>
 
     </SafeAreaView>
   );
