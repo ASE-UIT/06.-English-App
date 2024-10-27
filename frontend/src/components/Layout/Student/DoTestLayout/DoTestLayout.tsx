@@ -6,7 +6,7 @@ const SectionData = {
 export default function DoTestLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex flex-col">
-      <div className="sticky top-0 flex h-[70px] items-center gap-[10px] bg-[#fff4f9] shadow-custom">
+      <div className="sticky z-10 top-0 flex h-[70px] items-center gap-[10px] bg-[#fff4f9] shadow-custom">
         <Button variant="ghost" className="bg-inherit hover:bg-inherit hover:outline-none focus:outline-none">
           <span className="ml-[14px]">
             <img src={BackIconButton} />

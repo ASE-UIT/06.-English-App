@@ -7,7 +7,7 @@ import writtingTest from "@/assets/image/writingTest.jpg"
 export const WritingTestPage = () => {
     return (
         <>
-            <div className="flex flex-col bg-white h-screen">
+            <div className="flex flex-col bg-white h-screen overflow-hidden">
                 <div className='bg-[#FFF4F9] h-[60px] flex-none shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
                     <button className='flex items-center bg-transparent py-[14px]'>
                         <IoIosArrowBack className='text-[#5D5FEF] w-[30px] h-[30px]'/>
@@ -15,9 +15,9 @@ export const WritingTestPage = () => {
                     </button>
                 </div> 
 
-                <Splitter style={{ height: '100%', backgroundColor: "#a5a6f6" }} className='border-b-2 border-[#a5a6f6] mt-[8px]'>
-                    <SplitterPanel className="flex align-items-center justify-content-center bg-white" size={25} minSize={10}>
-                        <div className='w-full my-auto mx-2'>
+                <Splitter style={{ height: 'calc(100vh - 150px)', backgroundColor: "#a5a6f6" }} className='border-b-2 border-[#a5a6f6] mt-[8px]'>
+                    <SplitterPanel className="flex align-items-center justify-content-center bg-white overflow-y-auto" size={25} minSize={10}>
+                        <div className='w-full my-auto mx-2 overflow-y-auto'>
                             <span className='text-[24px] text-black font-bold'>Writing task 1</span>
                             <p className='text-[16px] text-black'>
                                 You should spend about 20 minutes on this task.

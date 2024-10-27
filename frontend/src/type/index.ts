@@ -20,3 +20,8 @@ export interface Question {
   answer?: Answer[]
   order: number // Trường order là tùy chọn
 }
+export interface SidebarContextProps {
+  open: boolean
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  animate: boolean
+}
