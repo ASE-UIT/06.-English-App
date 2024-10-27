@@ -2,9 +2,10 @@ import { cn } from "@/lib/utils"
 import { NavLink, LinkProps } from "react-router-dom"
 import React, { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { IconMenu2, IconX } from "@tabler/icons-react"
 import { useSidebar } from "@/hooks"
 import { SidebarContext } from "@/hooks/useSidebar/context"
+import { CiMenuBurger } from "react-icons/ci";
+import { RxCross2 } from "react-icons/rx";
 
 interface Links {
   label: string
@@ -91,7 +92,7 @@ export const MobileSidebar = ({ className, children, ...props }: React.Component
         {...props}
       >
         <div className="z-20 flex w-full justify-end">
-          <IconMenu2 className="text-neutral-800 dark:text-neutral-200" onClick={() => setOpen(!open)} />
+          <CiMenuBurger className="text-neutral-800 dark:text-neutral-200" onClick={() => setOpen(!open)} />
         </div>
         <AnimatePresence>
           {open && (
@@ -112,7 +113,7 @@ export const MobileSidebar = ({ className, children, ...props }: React.Component
                 className="absolute right-10 top-10 z-50 text-neutral-800 dark:text-neutral-200"
                 onClick={() => setOpen(!open)}
               >
-                <IconX />
+                <RxCross2 />
               </div>
               {children}
             </motion.div>
