@@ -1,13 +1,14 @@
+import "regenerator-runtime/runtime";
 import { useEffect, useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
 import { LuClock } from "react-icons/lu";
 import { IoSend } from "react-icons/io5";
 import { FaMicrophone } from "react-icons/fa";
 import { FaMicrophoneSlash } from "react-icons/fa";
-// import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export const SpeakingTestPage = () => {
-    // const { transcript, listening, resetTranscript } = useSpeechRecognition();
+    const { transcript, listening } = useSpeechRecognition();
     const totalMinutes: number = 15;
     const [minutes, setMinutes] = useState(totalMinutes);
     const [isRecording, setIsRecording] = useState(false);
@@ -15,13 +16,11 @@ export const SpeakingTestPage = () => {
 
     const startRecording = () => {
         setIsRecording(!isRecording);
-        // if (isRecording == true) {
-        //     listening ? SpeechRecognition.startListening() :
-        //     SpeechRecognition.startListening();
-        // } else {
-        //     listening ? SpeechRecognition.stopListening() :
-        //     SpeechRecognition.stopListening();
-        // }
+        if (!isRecording) {
+            SpeechRecognition.startListening();
+        } else {
+            SpeechRecognition.stopListening();
+        }
     }
     useEffect(() => {
         const interval = setInterval(() => {
@@ -32,16 +31,16 @@ export const SpeakingTestPage = () => {
             setSeconds(seconds - 1);
         }
         if (minutes === 0 && seconds === 0) {
-            clearInterval(interval);   
+            clearInterval(interval); 
             // console.log('Đã hết giờ!');
         }
         }, 1000);
         return () => clearInterval(interval);
     }, [minutes, seconds]);
-    // console.log(transcript);
+    console.log(transcript);
     return (
         <>
-        <div className="h-screen flex flex-col h-screen bg-white">
+        <div className="h-screen flex flex-col bg-white">
             <div className='bg-[#FFF4F9] h-[60px] flex-none shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
                 <button className='flex items-center bg-transparent py-[14px]'>
                     <IoIosArrowBack className='text-[#5D5FEF] w-[30px] h-[30px]'/>
@@ -73,7 +72,7 @@ export const SpeakingTestPage = () => {
                        
                         <div className="ml-[200px]">
                             <p className="text-[20px] font-medium text-black">You should say:</p>
-                            <p className="text-[20px] font-medium text-black ml-5">Who this person is </p>
+                            <p className="text-[20px] font-medium text-black ml-5">Who this person is</p>
                             <p className="text-[20px] font-medium text-black ml-5">How you met</p>
                             <p className="text-[20px] font-medium text-black ml-5">Why you want to work or study with this person</p>
                         </div>
