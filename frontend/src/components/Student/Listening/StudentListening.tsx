@@ -10,8 +10,8 @@ export default function DoTestListening() {
                 <div className="flex gap-10">
                     <div className="flex flex-col flex-[8]">
                         <div className="flex flex-col">
-                            <div className="my-8 bg-[#fff5fa] relative">
-                                <audio className="w-full bg-[#fff5fa] absolute z-0" controls autoPlay muted loop>
+                            <div className="my-8 bg-transparent">
+                                <audio className="w-full bg-[#fff5fa] -z-10" controls autoPlay muted loop>
                                     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
                                 </audio>
                             </div>
