@@ -6,10 +6,15 @@ import { Home } from "@/pages/main-layout/Home"
 import { Lecture } from "@/pages/protected-route/lecture"
 import { LoginPage } from "@/pages/LoginPage/LoginPage"
 import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
+import { WritingTestPage } from "@/pages/WritingTestPage/WritingTestPage"
+import { SpeakingTestPage } from "@/pages/SpeakingTestPage/SpeakingTestPage"
 import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
 import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
 import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
-
+import MultipleChoice from "@/components/Reading/MultipleChoices"
+import TrueFalseNotGiven from "@/components/Reading/TFNG"
+import NoteCompletion from "@/components/Reading/NoteCompletion"
+import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
 const publicRoutes = [
   {
     path: routes.Home,
@@ -32,6 +37,16 @@ const publicRoutes = [
   {
     path: routes.TermsOfService,
     component: <TermsOfServicePage></TermsOfServicePage>,
+  },
+  {
+    path: routes.SpeakingTest,
+    component: <SpeakingTestPage></SpeakingTestPage>,
+    layout: EmptyLayout,
+  },
+  {
+    path: routes.WritingTest,
+    component: <WritingTestPage></WritingTestPage>,
+    layout: EmptyLayout,
   },
 ]
 const protectedRoutes = [

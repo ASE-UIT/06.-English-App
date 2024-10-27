@@ -1,4 +1,4 @@
-import LoginImage from "@/assets/LoginImage.jpg"
+import LoginImage from "@/assets/image/LoginImage.jpg"
 export default function LoginRegisterLayout({ children }: { children: React.ReactNode }) {
     return (
         <>
