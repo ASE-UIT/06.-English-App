@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
@@ -16,6 +15,8 @@ import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Course } from './entities/course.entity';
 import { ResponseObject } from 'src/utils/objects';
+import { User } from 'src/common/decorators/user.decorator';
+import { IUser } from 'src/common/guards/at.guard';
 
 @Controller(END_POINTS.COURSE.BASE)
 export class CourseController {
@@ -25,9 +26,10 @@ export class CourseController {
   ) {}
 
   @Post(END_POINTS.COURSE.CREATE)
-  async create(@Body() createCourseDto: CreateCourseDto) {
+  async create(@User() user: IUser, @Body() createCourseDto: CreateCourseDto) {
+    console.log(createCourseDto);
     const course = this.mapper.map(createCourseDto, CreateCourseDto, Course);
-    const result = await this.courseService.create(course);
+    const result = await this.courseService.create(user.userAwsId, course);
     return ResponseObject.create('Course created', result);
   }
 
@@ -37,8 +39,9 @@ export class CourseController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.courseService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    const result = await this.courseService.findOne(id);
+    return ResponseObject.create('Course retrieved successfully', result);
   }
 
   @Put()

@@ -9,11 +9,11 @@ export class CreateCourseDto {
 
   @AutoMap()
   @IsString()
-  name: string;
+  title: string;
 
   @AutoMap()
   @IsEnum(STATE)
-  state: STATE;
+  state: STATE = STATE.DRAFT;
 
   @AutoMap()
   @IsString()
