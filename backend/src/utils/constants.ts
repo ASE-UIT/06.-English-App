@@ -24,6 +24,19 @@ export const END_POINTS = {
     DOWNLOAD: '/download/:key',
     DELETE: '/delete/:key',
   },
+  COURSE: {
+    BASE: '/course',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
+  COURSE_CATEGORY: {
+    BASE: '/category',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+  },
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',

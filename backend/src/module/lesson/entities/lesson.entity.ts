@@ -1,6 +1,5 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
-import { LessonMedia } from './lesson-media.entity';
 import { LessonVocabulary } from './lesson-vocabulary.entity';
 import { Grammar } from '../../grammar/entities/grammar.entity';
 import { TYPES } from '../../../utils/constants';
@@ -20,11 +19,6 @@ export class Lesson extends Base {
     enum: TYPES,
   })
   type: TYPES;
-
-  @OneToMany(() => LessonMedia, (lessonMedia) => lessonMedia.lesson, {
-    cascade: true,
-  })
-  lessonMedias?: LessonMedia[];
 
   @OneToMany(
     () => LessonVocabulary,

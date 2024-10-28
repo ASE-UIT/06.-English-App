@@ -1,11 +1,20 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCourseCategoryDto } from './dto/create-course-category.dto';
+import { HttpException, Injectable } from '@nestjs/common';
 import { UpdateCourseCategoryDto } from './dto/update-course-category.dto';
+import { CourseCategory } from './entities/course-category.entity';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class CourseCategoryService {
-  create(createCourseCategoryDto: CreateCourseCategoryDto) {
-    return 'This action adds a new courseCategory';
+  constructor(private readonly dataSource: DataSource) {}
+  async create(category: CourseCategory) {
+    try {
+      const newCategory = await this.dataSource
+        .getRepository(CourseCategory)
+        .insert(category);
+      return newCategory;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
   findAll() {
