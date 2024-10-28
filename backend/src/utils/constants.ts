@@ -32,7 +32,7 @@ export const END_POINTS = {
     DELETE: '',
   },
   COURSE_CATEGORY: {
-    BASE: '/category',
+    BASE: '/course-category',
     CREATE: '',
     LIST: '',
     UPDATE: '',
@@ -47,6 +47,8 @@ export const DOCUMENTATION = {
     AUTH: 'AUTH',
     USER: 'USER',
     FILE: 'FILE',
+    COURSE: 'COURSE',
+    COURSE_CATEGORY: 'COURSE_CATEGORY',
   },
 };
 export const TIMEOUT = 5000;

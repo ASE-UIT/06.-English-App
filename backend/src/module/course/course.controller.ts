@@ -10,15 +10,17 @@ import {
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { END_POINTS } from 'src/utils/constants';
+import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Course } from './entities/course.entity';
 import { ResponseObject } from 'src/utils/objects';
 import { User } from 'src/common/decorators/user.decorator';
 import { IUser } from 'src/common/guards/at.guard';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller(END_POINTS.COURSE.BASE)
+@ApiTags(DOCUMENTATION.TAGS.COURSE)
 export class CourseController {
   constructor(
     private readonly courseService: CourseService,
@@ -26,8 +28,8 @@ export class CourseController {
   ) {}
 
   @Post(END_POINTS.COURSE.CREATE)
+  @ApiOperation({ summary: 'Create course' })
   async create(@User() user: IUser, @Body() createCourseDto: CreateCourseDto) {
-    console.log(createCourseDto);
     const course = this.mapper.map(createCourseDto, CreateCourseDto, Course);
     const result = await this.courseService.create(user.userAwsId, course);
     return ResponseObject.create('Course created', result);
