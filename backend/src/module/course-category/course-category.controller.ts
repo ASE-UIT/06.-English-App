@@ -43,8 +43,15 @@ export class CourseCategoryController {
   }
 
   @Get()
-  findAll() {
-    return this.courseCategoryService.findAll();
+  @ApiOperation({
+    summary: 'Get all course categories',
+  })
+  async findAll() {
+    const result = await this.courseCategoryService.findAll();
+    return ResponseObject.create(
+      'Course categories retrieved successfully',
+      result,
+    );
   }
 
   @Get(':id')

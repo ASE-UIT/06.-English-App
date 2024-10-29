@@ -16,8 +16,15 @@ export class CourseCategoryService {
     }
   }
 
-  findAll() {
-    return `This action returns all courseCategory`;
+  async findAll() {
+    try {
+      const courseCategories = await this.dataSource
+        .getRepository(CourseCategory)
+        .find();
+      return courseCategories;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
   async findOne(id: string) {
@@ -33,10 +40,11 @@ export class CourseCategoryService {
 
   async update(updateCourseCategory: CourseCategory) {
     try {
-      const updatedCategory = await this.dataSource
+      await this.findOne(updateCourseCategory.id);
+      const updatedCourseCategory = await this.dataSource
         .getRepository(CourseCategory)
-        .update(updateCourseCategory.id, updateCourseCategory);
-      return updatedCategory;
+        .save(updateCourseCategory);
+      return updatedCourseCategory;
     } catch (error) {
       throw new HttpException(error.message, 500);
     }

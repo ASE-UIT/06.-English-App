@@ -9,7 +9,7 @@ import { FeedBack } from 'src/module/feed-back/entities/feed-back.entity';
 import { Lesson } from 'src/module/lesson/entities/lesson.entity';
 import { Teacher } from 'src/module/user/entities/teacher.entity';
 import { STATE } from 'src/utils/constants';
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
 
 @Entity()
 export class Course extends Base {
@@ -26,6 +26,7 @@ export class Course extends Base {
   price: number;
 
   @ManyToOne(() => Teacher, (teacher) => teacher.courses)
+  @JoinColumn({ name: 'teacherId' })
   teacher: Teacher;
 
   @Column({
@@ -37,6 +38,7 @@ export class Course extends Base {
   state: STATE = STATE.DRAFT;
 
   @ManyToOne(() => CourseCategory, (category) => category.course)
+  @JoinColumn({ name: 'categoryId' })
   category: CourseCategory;
 
   @OneToMany(() => CourseReviewing, (courseReviewing) => courseReviewing.course)
