@@ -11,7 +11,7 @@ export class CourseCategoryProfile extends AutomapperProfile {
     super(mapper);
   }
   override get profile() {
-    return (mapper) => {
+    return (mapper: Mapper) => {
       createMap(mapper, CourseCategory, CreateCourseCategoryDto);
       createMap(mapper, CreateCourseCategoryDto, CourseCategory);
       createMap(mapper, UpdateCourseCategoryDto, CourseCategory);
