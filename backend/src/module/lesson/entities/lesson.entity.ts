@@ -1,30 +1,29 @@
 import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
-import { LessonMedia } from './lesson-media.entity';
 import { LessonVocabulary } from './lesson-vocabulary.entity';
 import { Grammar } from '../../grammar/entities/grammar.entity';
 import { TYPES } from '../../../utils/constants';
 import { Section } from 'src/module/section/entities/section.entity';
 import { Course } from 'src/module/course/entities/course.entity';
+import { AutoMap } from '@automapper/classes';
 
 @Entity()
 export class Lesson extends Base {
   @Column()
+  @AutoMap()
   name: string;
   @Column()
+  @AutoMap()
   description: string;
   @Column('text')
+  @AutoMap()
   content: string;
   @Column({
     type: 'enum',
     enum: TYPES,
   })
+  @AutoMap()
   type: TYPES;
-
-  @OneToMany(() => LessonMedia, (lessonMedia) => lessonMedia.lesson, {
-    cascade: true,
-  })
-  lessonMedias?: LessonMedia[];
 
   @OneToMany(
     () => LessonVocabulary,
