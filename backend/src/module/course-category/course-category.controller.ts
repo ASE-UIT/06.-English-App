@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Put,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CourseCategoryService } from './course-category.service';
 import { CreateCourseCategoryDto } from './dto/create-course-category.dto';
@@ -66,7 +67,7 @@ export class CourseCategoryController {
     );
   }
 
-  @Put()
+  @Put('')
   @ApiOperation({
     summary: 'Update course category',
   })
