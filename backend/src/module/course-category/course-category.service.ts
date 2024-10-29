@@ -1,23 +1,53 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCourseCategoryDto } from './dto/create-course-category.dto';
-import { UpdateCourseCategoryDto } from './dto/update-course-category.dto';
+import { HttpException, Injectable } from '@nestjs/common';
+import { CourseCategory } from './entities/course-category.entity';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class CourseCategoryService {
-  create(createCourseCategoryDto: CreateCourseCategoryDto) {
-    return 'This action adds a new courseCategory';
+  constructor(private readonly dataSource: DataSource) {}
+  async create(category: CourseCategory) {
+    try {
+      const newCategory = await this.dataSource
+        .getRepository(CourseCategory)
+        .insert(category);
+      return newCategory;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
-  findAll() {
-    return `This action returns all courseCategory`;
+  async findAll() {
+    try {
+      const courseCategories = await this.dataSource
+        .getRepository(CourseCategory)
+        .find();
+      return courseCategories;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} courseCategory`;
+  async findOne(id: string) {
+    try {
+      const courseCategory = await this.dataSource
+        .getRepository(CourseCategory)
+        .findOne({ where: { id } });
+      return courseCategory;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
-  update(id: number, updateCourseCategoryDto: UpdateCourseCategoryDto) {
-    return `This action updates a #${id} courseCategory`;
+  async update(updateCourseCategory: CourseCategory) {
+    try {
+      await this.findOne(updateCourseCategory.id);
+      const updatedCourseCategory = await this.dataSource
+        .getRepository(CourseCategory)
+        .save(updateCourseCategory);
+      return updatedCourseCategory;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
   remove(id: number) {

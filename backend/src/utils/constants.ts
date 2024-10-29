@@ -24,6 +24,19 @@ export const END_POINTS = {
     DOWNLOAD: '/download/:key',
     DELETE: '/delete/:key',
   },
+  COURSE: {
+    BASE: '/course',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
+  COURSE_CATEGORY: {
+    BASE: '/course-category',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+  },
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',
@@ -34,6 +47,8 @@ export const DOCUMENTATION = {
     AUTH: 'AUTH',
     USER: 'USER',
     FILE: 'FILE',
+    COURSE: 'COURSE',
+    COURSE_CATEGORY: 'COURSE_CATEGORY',
   },
 };
 export const TIMEOUT = 5000;
