@@ -1,7 +1,7 @@
+import CreateCourseForm from '@/components/component/createCourseForm';
+import { createCourse } from '@/services/createCourseAPI';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CreateCourseForm from 'src/components/component/createCourseForm';
-import { createCourse } from 'src/services/createCourseAPI';
 
 interface CourseData {
   title: string;

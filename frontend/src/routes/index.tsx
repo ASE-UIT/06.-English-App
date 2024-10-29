@@ -20,6 +20,7 @@ import { InstructorHome } from "@/pages/protected-route/teacher/home"
 import { Fragment } from "react/jsx-runtime"
 
 import DoTestListening from "@/components/Student/Listening/StudentListening"
+import CreateCoursePage from "@/pages/CreateCoursePage/createCoursePage"
 const publicRoutes = [
   {
     path: routes.Home,
@@ -68,6 +69,11 @@ const protectedRoutes = [
     path: teacherRoutes.Home,
     layout: Fragment,
     component: <InstructorHome></InstructorHome>,
+  },
+  {
+    path: teacherRoutes.CreateCourse,
+    layout: Fragment,
+    component: <CreateCoursePage></CreateCoursePage>
   },
   // {
   //   path: routes.CreateCourse,

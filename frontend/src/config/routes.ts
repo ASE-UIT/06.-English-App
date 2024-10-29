@@ -20,5 +20,6 @@ export const studentRoutes = {
   DoTestListening: "/do-test/listening"
 }
 export const teacherRoutes = {
+  CreateCourse: "/create-course",
   Home: "/instructor-home",
 }
