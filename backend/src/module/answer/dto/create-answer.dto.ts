@@ -14,5 +14,5 @@ export class CreateAnswerDto {
     type: Boolean
   })
   @IsBoolean()
-  is_correct: boolean;
+  isCorrect: boolean;
 }

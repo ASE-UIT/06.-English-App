@@ -7,4 +7,9 @@ export class CreateQuestionGroupDto {
   @ApiProperty({ description: 'Question group name' })
   @IsString()
   text: string;
+
+  @AutoMap()
+  @IsString()
+  @ApiProperty({ description: 'Section ID' })
+  section: string; 
 }

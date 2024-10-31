@@ -1,16 +1,18 @@
 import { AutoMap } from "@automapper/classes";
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsNumber, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsEnum, IsNumber, IsOptional, IsString, ValidateNested, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { CreateAnswerDto } from "src/module/answer/dto/create-answer.dto";
 import { QUESTION_TYPE } from "src/utils/constants";
 
 
+
 export class CreateQuestionDto {
   @AutoMap()
-  @ApiProperty({ description: 'Question group ID' })
+  @ApiProperty({ description: 'Question group ID', nullable: true })
+  @IsOptional()
   @IsString()
-  questionGroup?: string;
+  questionGroup?: string | null;
 
   @AutoMap()
   @ApiProperty({ description: 'Section ID' })
@@ -41,7 +43,6 @@ export class CreateQuestionDto {
   @IsNumber()
   order: number;
 
-  
   @ApiProperty({ 
     description: 'Answers of the question',
     type: [CreateAnswerDto]

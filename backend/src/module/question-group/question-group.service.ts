@@ -3,6 +3,7 @@ import { CreateQuestionGroupDto } from './dto/create-question-group.dto';
 import { UpdateQuestionGroupDto } from './dto/update-question-group.dto';
 import { QuestionGroup } from './entities/question-group.entity';
 import { DataSource } from 'typeorm';
+import { Section } from '../section/entities/section.entity';
 
 @Injectable()
 export class QuestionGroupService {
@@ -15,6 +16,7 @@ export class QuestionGroupService {
       const newQuestionGroup = await this.dataSource
         .getRepository(QuestionGroup)
         .save(questionGroup);
+
       return newQuestionGroup;
     } catch (err) {
       throw new HttpException(err.message, 500);

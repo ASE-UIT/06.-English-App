@@ -1,5 +1,5 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
-import { createMap, type Mapper } from '@automapper/core';
+import { createMap, forMember, mapFrom, type Mapper } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 import { Question } from 'src/module/question/entities/question.entity';
 import { CreateQuestionDto } from 'src/module/question/dto/create-question.dto';
@@ -21,13 +21,12 @@ export class QuestionProfile extends AutomapperProfile {
         return (mapper) => {
             createMap(mapper, Question, CreateQuestionDto);
             createMap(mapper, CreateQuestionDto, Question);
-            createMap(mapper, Array<CreateAnswerDto>, Array<Answer>);
+            createMap(mapper, CreateAnswerDto, Answer);
             createMap(mapper, UpdateQuestionDto, Question);
-            createMap(mapper, Array<UpdateAnswerDto>, Array<Answer>);
+            createMap(mapper, UpdateAnswerDto, Answer);
             createMap(mapper, CreateQuestionGroupDto, QuestionGroup);
             createMap(mapper, UpdateQuestionGroupDto, QuestionGroup);
-            createMap(mapper, QuestionGroup, CreateQuestionGroupDto);
-            createMap(mapper, QuestionGroup, UpdateQuestionGroupDto);
+            
         };
     }
 }

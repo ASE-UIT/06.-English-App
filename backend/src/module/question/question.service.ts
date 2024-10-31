@@ -14,7 +14,7 @@ export class QuestionService {
 
       const newQuestion = await this.dataSource
       .getRepository(Question)
-      .insert(question);
+      .save(question);
     
       return newQuestion;
     } catch (error) {
@@ -30,6 +30,8 @@ export class QuestionService {
       .getRepository(Question)
       .find({ where: { section: { id: sectionId } } });
     
+
+
       return questions;
     } catch (error) {
       throw new HttpException(error.message, 500);
