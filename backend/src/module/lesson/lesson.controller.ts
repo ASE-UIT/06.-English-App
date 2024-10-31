@@ -18,7 +18,7 @@ import { Lesson } from './entities/lesson.entity';
 import { LessonVocabulary } from './entities/lesson-vocabulary.entity';
 import { CreateLessonVocabularyDto } from './dto/create-lesson-vocabulary.dto';
 import { ResponseObject } from 'src/utils/objects';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InternalServerErrorException } from '@nestjs/common';
 
 @Controller(END_POINTS.LESSON.BASE)
@@ -28,6 +28,9 @@ export class LessonController {
     private readonly lessonService: LessonService,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
+  @ApiOperation({
+    summary: 'Create a new vocabulary lesson',
+  })
   @Post(END_POINTS.LESSON.CREATE_VOCABULARY)
   async createVocabularyLesson(@Body() createLessonDto: CreateLessonDto) {
     try {
@@ -55,7 +58,9 @@ export class LessonController {
       throw new InternalServerErrorException('Error creating lesson');
     }
   }
-
+  @ApiOperation({
+    summary: 'Create a new grammar lesson',
+  })
   @Post(END_POINTS.LESSON.CREATE_GRAMMAR)
   async createGrammarLesson(@Body() createLessonDto: CreateLessonDto) {
     try {
@@ -77,7 +82,9 @@ export class LessonController {
       throw new InternalServerErrorException('Error creating lesson');
     }
   }
-  @Post(END_POINTS.LESSON.CREATE_NORMAL)
+  @ApiOperation({
+    summary: 'Create a new normal lesson',
+  })
   async createNormalLesson(@Body() createLessonDto: CreateLessonDto) {
     const lesson = await this.mapper.mapAsync(
       createLessonDto,
@@ -97,7 +104,7 @@ export class LessonController {
   }
 
   @Patch(':id')
-  async Date(
+  async Update(
     @Param('id') id: string,
     @Body() updateLessonDto: UpdateLessonDto,
   ) {
@@ -109,9 +116,12 @@ export class LessonController {
     const result = await this.lessonService.update(updateLesson);
     return ResponseObject.create('Update lesson successfully', result);
   }
-
+  @ApiOperation({
+    summary: 'Delete a lesson',
+  })
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.lessonService.remove(+id);
+    const result = await this.lessonService.remove(id);
+    return ResponseObject.create('Delete lesson successfully', result);
   }
 }
