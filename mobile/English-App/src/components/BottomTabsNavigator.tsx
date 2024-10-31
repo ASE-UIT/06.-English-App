@@ -2,10 +2,10 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import { Icon } from "@rneui/themed";
 import ReadingExercise from "../screens/ReadingExercise";
 import { Image } from "react-native";
-import LearningScreen from "../screens/LearningScreen";
-import FlashCard from "../screens/FlashCard";
-import Home from "../screens/Home";
-import Profile from "../screens/Profile";
+import Learning from "../screens/Learning";
+import FlashCard from "../screens/FlashCard/FlashCard";
+import Home from "../screens/Home/Home";
+import Profile from "../screens/Profile/Profile";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -34,7 +34,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="learning"
-        component={LearningScreen} // change this to LearningScreen later
+        component={Learning} // change this to LearningScreen later
         options={{
           tabBarLabel: "Learning",
           tabBarIcon: ({ color }) => (
