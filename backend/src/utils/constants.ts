@@ -53,6 +53,13 @@ export const END_POINTS = {
     UPDATE: '',
     DELETE: '',
   },
+  SECTION: {
+    BASE: '/section',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',
@@ -67,6 +74,7 @@ export const DOCUMENTATION = {
     COURSE_CATEGORY: 'COURSE_CATEGORY',
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',
+    SECTION: 'SECTION',
   },
 };
 export const TIMEOUT = 5000;
