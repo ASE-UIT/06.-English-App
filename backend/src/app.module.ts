@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import configuration from './config/configuration';
 import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from './datasource/typeorm.module';
+import { TypeOrmModule } from './datasource/typeorm.module'; // Import TypeOrmModule nếu chưa có
+import { CourseBuyingModule } from './module/course-buying/course-buying.module'; // Import CourseBuyingModule
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { SharedModule } from './module/shared.module';
 import { ThrottlerModule, minutes } from '@nestjs/throttler';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ThrottlerModule, minutes } from '@nestjs/throttler';
       },
     ]),
     SharedModule,
+    CourseBuyingModule, // Thêm vào đây
   ],
 })
 export class AppModule {}
