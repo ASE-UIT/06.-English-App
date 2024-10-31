@@ -10,7 +10,9 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 @Entity()
 export class Question extends Base {
   @AutoMap()
-  @ManyToOne(() => QuestionGroup, (questionGroup) => questionGroup.questions)
+  @ManyToOne(() => QuestionGroup, (questionGroup) => questionGroup.questions, {
+    eager: true,
+  })
   questionGroup?: QuestionGroup;
   @AutoMap()
   @ManyToOne(() => Section, (section) => section.questions)

@@ -59,6 +59,13 @@ export const END_POINTS = {
     FIND_BY_SECTION: '',
     PUT: '',
     DELETE: ':id',
+  },
+  QUESTION_GROUP: {
+    BASE: '/question-group',
+    CREATE: '',
+    GET_BY_SECTION: '/:sectionId',
+    UPDATE: '',
+    DELETE: ':id',
   }
 };
 export const DOCUMENTATION = {
@@ -74,6 +81,8 @@ export const DOCUMENTATION = {
     COURSE_CATEGORY: 'COURSE_CATEGORY',
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',
+    QUESTION: 'QUESTION',
+    QUESTION_GROUP: 'QUESTION_GROUP',
   },
 };
 export const TIMEOUT = 5000;

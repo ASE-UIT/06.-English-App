@@ -9,7 +9,10 @@ export class CreateAnswerDto {
   text: string;
 
   @AutoMap()
-  @ApiProperty({ description: "Is correct answer" })
+  @ApiProperty({ 
+    description: "Is correct answer",
+    type: Boolean
+  })
   @IsBoolean()
   is_correct: boolean;
 }

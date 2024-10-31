@@ -5,7 +5,6 @@ import { AutoMap } from '@automapper/classes';
 import { ApiProperty, OmitType } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { UpdateAnswerDto } from 'src/module/answer/dto/update-answer.dto';
-import { UpdateQuestionMediaDto } from 'src/module/question-media/dto/update-question-media.dto';
 
 export class UpdateQuestionDto extends PartialType(
   OmitType(CreateQuestionDto, ['answers'] as const),) {

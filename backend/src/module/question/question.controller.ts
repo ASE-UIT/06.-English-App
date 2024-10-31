@@ -12,20 +12,18 @@ import {
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
-import { ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Question } from './entities/question.entity';
 import { Answer } from '../answer/entities/answer.entity';
 import { CreateAnswerDto } from '../answer/dto/create-answer.dto';
 import { ResponseObject } from 'src/utils/objects';
-import { CreateQuestionMediaDto } from '../question-media/dto/create-question-media.dto';
-import { QuestionMedia } from '../question-media/entities/question-media.entity';
-import { END_POINTS } from 'src/utils/constants';
+import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { UpdateAnswerDto } from '../answer/dto/update-answer.dto';
-import { UpdateQuestionMediaDto } from '../question-media/dto/update-question-media.dto';
 
 @Controller(END_POINTS.QUESTION.BASE)
+@ApiTags(DOCUMENTATION.TAGS.QUESTION)
 export class QuestionController {
   constructor(private readonly questionService: QuestionService,
     @InjectMapper() private readonly mapper: Mapper,
@@ -49,11 +47,6 @@ export class QuestionController {
     return this.questionService.findBySection(sectionId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.questionService.findOne(+id);
-  }
-
   @ApiOperation({ summary: 'Update a question and it\'s answers' })
   @Put(END_POINTS.QUESTION.PUT)
   async update(
@@ -62,12 +55,13 @@ export class QuestionController {
     const question = this.mapper.map(updateQuestionDto, UpdateQuestionDto, Question);
     const answer = this.mapper.map(updateQuestionDto.answers, Array<UpdateAnswerDto>, Array<Answer>);
     question.answers = answer;
-    
+
     const result = await this.questionService.update(question);
     return ResponseObject.create('Question updated', result);
   }
 
   @Delete(END_POINTS.QUESTION.DELETE)
+  @ApiOperation({ summary: 'Delete a question' })
   async remove(@Param('id') id: string) {
     const res = await this.questionService.remove(id);
     return ResponseObject.create('Question deleted', res);

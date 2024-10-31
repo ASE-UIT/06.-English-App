@@ -1,11 +1,24 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { CreateQuestionGroupDto } from './dto/create-question-group.dto';
 import { UpdateQuestionGroupDto } from './dto/update-question-group.dto';
+import { QuestionGroup } from './entities/question-group.entity';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class QuestionGroupService {
-  create(createQuestionGroupDto: CreateQuestionGroupDto) {
-    return 'This action adds a new questionGroup';
+  constructor(
+    private readonly dataSource: DataSource,
+  ) {}
+
+  async create(questionGroup: QuestionGroup) {
+    try {
+      const newQuestionGroup = await this.dataSource
+        .getRepository(QuestionGroup)
+        .save(questionGroup);
+      return newQuestionGroup;
+    } catch (err) {
+      throw new HttpException(err.message, 500);
+    }
   }
 
   findAll() {
@@ -16,11 +29,25 @@ export class QuestionGroupService {
     return `This action returns a #${id} questionGroup`;
   }
 
-  update(id: number, updateQuestionGroupDto: UpdateQuestionGroupDto) {
-    return `This action updates a #${id} questionGroup`;
+  update(questionGroup: QuestionGroup) {
+    try {
+      const updatedQuestionGroup = this.dataSource
+        .getRepository(QuestionGroup)
+        .save(questionGroup);
+      return updatedQuestionGroup;
+    } catch (err) {
+      throw new HttpException(err.message, 500);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} questionGroup`;
+  remove(id: string) {
+    try {
+      const deleteResult = this.dataSource.getRepository(QuestionGroup)
+        .delete(id);
+      return deleteResult;
+    }
+    catch (err) {
+      throw new HttpException(err.message, 500);
+    }
   }
 }

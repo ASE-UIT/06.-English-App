@@ -3,7 +3,6 @@ import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 import { IsArray, IsEnum, IsNumber, IsString, ValidateNested } from "class-validator";
 import { CreateAnswerDto } from "src/module/answer/dto/create-answer.dto";
-import { CreateQuestionMediaDto } from "src/module/question-media/dto/create-question-media.dto";
 import { QUESTION_TYPE } from "src/utils/constants";
 
 
@@ -19,22 +18,34 @@ export class CreateQuestionDto {
   section?: string;
 
   @AutoMap()
-  @ApiProperty({ description: 'Text of the question' })
+  @ApiProperty({ 
+    description: 'Text of the question',
+    type: String
+  })
   @IsString()
   text: string;
 
   @AutoMap()
-  @ApiProperty({ description: 'Type of the question' })
+  @ApiProperty({ 
+    description: 'Type of the question',
+    enum: QUESTION_TYPE
+  })
   @IsEnum(QUESTION_TYPE)
   type: QUESTION_TYPE;
 
   @AutoMap()
-  @ApiProperty({ description: 'Order of the question' })
+  @ApiProperty({ 
+    description: 'Order of the question',
+    type: Number
+  })
   @IsNumber()
   order: number;
 
   
-  @ApiProperty({ description: 'Answers of the question' })
+  @ApiProperty({ 
+    description: 'Answers of the question',
+    type: [CreateAnswerDto]
+  })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateAnswerDto)
