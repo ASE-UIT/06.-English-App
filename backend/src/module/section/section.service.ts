@@ -1,11 +1,33 @@
-import { Injectable } from '@nestjs/common';
-import { CreateSectionDto } from './dto/create-section.dto';
-import { UpdateSectionDto } from './dto/update-section.dto';
+import { HttpException, Injectable } from '@nestjs/common';
+import { Section } from './entities/section.entity';
+import { DataSource } from 'typeorm';
+import HttpStatusCode from 'src/utils/HttpStatusCode';
+import { Lesson } from '../lesson/entities/lesson.entity';
 
 @Injectable()
 export class SectionService {
-  create(createSectionDto: CreateSectionDto) {
-    return 'This action adds a new section';
+  constructor(private readonly dataSource: DataSource) {}
+
+  async create(lessonId: string, section: Section) {
+    try {
+      const lesson = await this.dataSource
+        .getRepository(Lesson)
+        .findOne({ where: { id: lessonId } });
+      if (!lesson) {
+        throw new HttpException('Lesson not found', HttpStatusCode.NOT_FOUND);
+      }
+      section.lesson = lesson;
+      const newSection = await this.dataSource
+        .getRepository(Section)
+        .save(section);
+      return newSection;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   findAll() {
@@ -16,8 +38,28 @@ export class SectionService {
     return `This action returns a #${id} section`;
   }
 
-  update(id: number, updateSectionDto: UpdateSectionDto) {
-    return `This action updates a #${id} section`;
+  async update(section: Section, lessionId?: string) {
+    try {
+      if (lessionId) {
+        const lesson = await this.dataSource
+          .getRepository(Lesson)
+          .findOne({ where: { id: lessionId } });
+        if (!lesson) {
+          throw new HttpException('Lesson not found', HttpStatusCode.NOT_FOUND);
+        }
+        section.lesson = lesson;
+      }
+      const updatedSection = await this.dataSource
+        .getRepository(Section)
+        .save(section);
+      return updatedSection;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   remove(id: number) {

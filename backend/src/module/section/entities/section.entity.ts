@@ -1,3 +1,4 @@
+import { AutoMap } from '@automapper/classes';
 import { Base } from 'src/module/base/base.entity';
 import { Lesson } from 'src/module/lesson/entities/lesson.entity';
 import { QuestionGroup } from 'src/module/question-group/entities/question-group.entity';
@@ -8,14 +9,17 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 @Entity()
 export class Section extends Base {
   @Column()
+  @AutoMap()
   title: string;
   @Column()
+  @AutoMap()
   content: string;
   @Column({
     type: 'enum',
     enum: SECTION_TYPE,
     default: SECTION_TYPE.ROOT,
   })
+  @AutoMap()
   type: SECTION_TYPE;
   @ManyToOne(() => Lesson, (lesson) => lesson.sections)
   lesson: Lesson;

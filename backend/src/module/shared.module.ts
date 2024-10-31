@@ -6,6 +6,7 @@ import { CourseCategoryModule } from './course-category/course-category.module';
 import { CourseModule } from './course/course.module';
 import { LessonModule } from './lesson/lesson.module';
 import { GrammarModule } from './grammar/grammar.module';
+import { SectionModule } from './section/section.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { GrammarModule } from './grammar/grammar.module';
     CourseModule,
     LessonModule,
     GrammarModule,
+    SectionModule,
   ],
   exports: [
     AuthModule,
@@ -25,6 +27,7 @@ import { GrammarModule } from './grammar/grammar.module';
     CourseModule,
     LessonModule,
     GrammarModule,
+    SectionModule,
   ],
 })
 export class SharedModule {}
