@@ -16,12 +16,42 @@ export const END_POINTS = {
   USER: {
     BASE: '/user',
     ME: '/me',
+    CREATE: '/create',
   },
   FILE: {
     BASE: '/file',
     UPLOAD: '/presigned-url',
     DOWNLOAD: '/download/:key',
     DELETE: '/delete/:key',
+  },
+  COURSE: {
+    BASE: '/course',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
+  COURSE_CATEGORY: {
+    BASE: '/course-category',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+  },
+  LESSON: {
+    BASE: '/lesson',
+    CREATE_GRAMMAR: '/grammar',
+    CREATE_VOCABULARY: '/vocabulary',
+    CREATE_NORMAL: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
+  GRAMMAR: {
+    BASE: '/grammar',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
   },
   QUESTION: {
     BASE: '/question',
@@ -40,6 +70,10 @@ export const DOCUMENTATION = {
     AUTH: 'AUTH',
     USER: 'USER',
     FILE: 'FILE',
+    COURSE: 'COURSE',
+    COURSE_CATEGORY: 'COURSE_CATEGORY',
+    LESSON: 'LESSON',
+    GRAMMAR: 'GRAMMAR',
   },
 };
 export const TIMEOUT = 5000;

@@ -22,7 +22,7 @@ import { SignInCognitoDto } from './dto/sign-in-cognito.dto';
 import { ConfirmSignUpDto } from './dto/confirm-sign-up.dto';
 import { ConfigService } from '@nestjs/config';
 import { AUTH_FLOW } from '../../utils/constants';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -196,6 +196,7 @@ export class CognitoService {
             new URLSearchParams({
               grant_type: 'refresh_token',
               client_id: this.clientId,
+
               refresh_token: refreshToken,
             }),
             {
@@ -225,6 +226,7 @@ export class CognitoService {
     const command = new ConfirmSignUpCommand({
       ClientId: this.clientId,
       Username: confirmationCode.username,
+      SecretHash: this.getSecretHash(confirmationCode.username),
       ConfirmationCode: confirmationCode.code,
     });
 
@@ -239,6 +241,7 @@ export class CognitoService {
     const command = new ForgotPasswordCommand({
       ClientId: this.clientId,
       Username: forgotPasswordDto.username,
+      SecretHash: this.getSecretHash(forgotPasswordDto.username),
     });
     try {
       return await this.cognitoClient.send(command);
@@ -255,6 +258,7 @@ export class CognitoService {
       Username: conFirmForgotPasswordDto.username,
       ConfirmationCode: conFirmForgotPasswordDto.confirmationCode,
       Password: conFirmForgotPasswordDto.newPassword,
+      SecretHash: this.getSecretHash(conFirmForgotPasswordDto.username),
     });
 
     try {
@@ -270,6 +274,7 @@ export class CognitoService {
     const command = new ResendConfirmationCodeCommand({
       ClientId: this.clientId,
       Username: resendConfirmationCodeDto.username,
+      SecretHash: this.getSecretHash(resendConfirmationCodeDto.username),
     });
 
     try {
@@ -293,7 +298,7 @@ export class CognitoService {
   }
 
   private decodeJwt(token: string): any {
-    const [header, payload, signature] = token.split('.');
+    const [, payload] = token.split('.');
     const decodedPayload = Buffer.from(payload, 'base64').toString();
     return JSON.parse(decodedPayload);
   }
