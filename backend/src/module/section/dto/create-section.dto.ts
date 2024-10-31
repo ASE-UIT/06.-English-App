@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 import { SECTION_TYPE } from 'src/utils/constants';
 
 export class CreateSectionDto {
@@ -29,8 +29,9 @@ export class CreateSectionDto {
   })
   content: string;
   @ApiProperty()
-  @IsString()
+  @IsEnum(SECTION_TYPE)
   @IsNotEmpty()
+  @AutoMap()
   @ApiProperty({
     description: 'Type of the section',
     enum: SECTION_TYPE,
