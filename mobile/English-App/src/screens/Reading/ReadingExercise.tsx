@@ -1,7 +1,7 @@
 import { View, Text, Image, ScrollView } from "react-native";
-import { content } from "../../tailwind.config";
-import MultipleChoiceFormat from "../components/MultipleChoiceFormat/MultipleChoiceFormat";
-import MultiSelectFormat from "../components/MultiSelectFormat/MultiSelectFormat";
+import { MultipleChoiceFormat } from "../../components/MultiSelectFormat";
+
+
 export default function ReadingExercise() {
   // hard-coded data for now
   const section = {
@@ -24,7 +24,8 @@ export default function ReadingExercise() {
       <View className="reading-questions" style={{ display: "flex", gap: 20 }}>
         {/* questions.map()... */}
         <MultipleChoiceFormat />
-        <MultiSelectFormat />
+
+    
       </View>
     </ScrollView>
   );

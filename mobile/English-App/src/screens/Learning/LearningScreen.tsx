@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, ScrollView } from 'react-native'
-import CourseItem from '../components/CourseItem'
 import { Button } from 'react-native-elements'
+import CourseItem from '../../components/CourseItem'
 
 const dataForCourseItem = [
     {
