@@ -67,7 +67,7 @@ export class CreateLessonDto {
   @AutoMap()
   @ApiProperty({
     type: Object,
-    description: 'grammar of lesson',
+    description: 'grammarIds of lesson',
   })
   @IsOptional()
   grammarIds: string[];

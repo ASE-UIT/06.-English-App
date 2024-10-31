@@ -84,7 +84,13 @@ export class LessonService {
     }
   }
 
-  async remove(id: number) {
-    return `This action removes a #${id} lesson`;
+  async remove(id: string) {
+    try {
+      const result = await this.dataSource.getRepository(Lesson).delete(id);
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
   }
 }
