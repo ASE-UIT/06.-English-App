@@ -1,14 +1,11 @@
 import { AutoMap } from '@automapper/classes';
 import { IsString } from 'class-validator';
 
-export class CreateGrammarDto {
+export class CreateLessonVocabularyDto {
   @AutoMap()
   @IsString()
-  title: string;
+  vocabulary: string;
   @AutoMap()
   @IsString()
-  description: string;
-  @AutoMap()
-  @IsString()
-  content: string;
+  note: string;
 }

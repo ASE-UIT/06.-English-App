@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { LessonVocabulary } from './lesson-vocabulary.entity';
 import { Grammar } from '../../grammar/entities/grammar.entity';
@@ -36,6 +43,7 @@ export class Lesson extends Base {
   @OneToMany(() => Section, (section) => section.lesson)
   sections?: Section[];
   @ManyToMany(() => Grammar, (grammar) => grammar.lessons)
+  @JoinTable()
   grammars?: Grammar[];
   @ManyToOne(() => Course, (course) => course.lessons)
   course: Course;
