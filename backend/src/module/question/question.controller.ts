@@ -36,9 +36,7 @@ export class QuestionController {
   async create(@Body() createQuestionDto: CreateQuestionDto) {
     const question = this.mapper.map(createQuestionDto, CreateQuestionDto, Question);
     const answer = this.mapper.map(createQuestionDto.answers, Array<CreateAnswerDto>, Array<Answer>);
-    const questionMedias = this.mapper.map(createQuestionDto.questionMedias, Array<CreateQuestionMediaDto>, Array<QuestionMedia>);
     question.answers = answer;
-    question.questionMedias = questionMedias;
     const newQuestion = await this.questionService.create(question);
 
     return ResponseObject.create('Question created', newQuestion);
@@ -63,10 +61,8 @@ export class QuestionController {
   ) {
     const question = this.mapper.map(updateQuestionDto, UpdateQuestionDto, Question);
     const answer = this.mapper.map(updateQuestionDto.answers, Array<UpdateAnswerDto>, Array<Answer>);
-    const questionMedia = this.mapper.map(updateQuestionDto.questionMedias, Array<UpdateQuestionMediaDto>, Array<QuestionMedia>);
-
     question.answers = answer;
-    question.questionMedias = questionMedia;
+    
     const result = await this.questionService.update(question);
     return ResponseObject.create('Question updated', result);
   }

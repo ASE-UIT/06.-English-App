@@ -8,7 +8,7 @@ import { UpdateAnswerDto } from 'src/module/answer/dto/update-answer.dto';
 import { UpdateQuestionMediaDto } from 'src/module/question-media/dto/update-question-media.dto';
 
 export class UpdateQuestionDto extends PartialType(
-  OmitType(CreateQuestionDto, ['answers', 'questionMedias'] as const),) {
+  OmitType(CreateQuestionDto, ['answers'] as const),) {
   @AutoMap()
   @ApiProperty({ description: 'Question ID' })
   @IsString()
@@ -21,10 +21,4 @@ export class UpdateQuestionDto extends PartialType(
   @Type(() => UpdateAnswerDto)
   answers: UpdateAnswerDto[];
 
-  
-  @ApiProperty({ description: ' Medias of the question' })
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => UpdateQuestionMediaDto)
-  questionMedias: UpdateQuestionMediaDto[];
 }

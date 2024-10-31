@@ -11,7 +11,6 @@ import {
   Entity,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity()
@@ -44,10 +43,4 @@ export class Question extends Base {
   @AutoMap()
   @Column()
   order: number;
-  @AutoMap()
-  @OneToMany(() => QuestionMedia, (questionMedia) => questionMedia.question, {
-    eager: true,
-    cascade: true,
-  })
-  questionMedias: QuestionMedia[];
 }

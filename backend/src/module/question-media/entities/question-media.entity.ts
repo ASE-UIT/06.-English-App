@@ -5,8 +5,8 @@ import { Column, Entity, ManyToOne } from 'typeorm';
 
 @Entity()
 export class QuestionMedia extends Base {
-  @ManyToOne(() => Question, (question) => question.questionMedias)
-  question: Question;
+  // @ManyToOne(() => Question, (question) => question.questionMedias)
+  // question: Question;
   @Column({
     type: 'enum',
     enum: MEDIAS,
