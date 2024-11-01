@@ -7,8 +7,8 @@ import { FaMicrophone } from "react-icons/fa";
 import { FaMicrophoneSlash } from "react-icons/fa";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-export const SpeakingTestPage = () => {
-    const { transcript, listening } = useSpeechRecognition();
+const SpeakingTestPage = () => {
+    const { transcript } = useSpeechRecognition();
     const totalMinutes: number = 15;
     const [minutes, setMinutes] = useState(totalMinutes);
     const [isRecording, setIsRecording] = useState(false);
@@ -97,3 +97,4 @@ export const SpeakingTestPage = () => {
         </>
     )
 }
+export default SpeakingTestPage;

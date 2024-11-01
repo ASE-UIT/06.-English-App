@@ -12,12 +12,12 @@ function App() {
           <Routes>
             {publicRoutes.map((route, index) => {
               const Page = route.component
-              const Layout = route.layout == null ? DefaultLayout : route.layout
+              const Layout = route.layout === null ? DefaultLayout : route.layout
               return <Route key={index} path={route.path} element={<Layout>{Page}</Layout>} />
             })}
             {protectedRoutes.map((route, index) => {
               const Page = route.component
-              const Layout = route.layout == null ? DefaultLayout : route.layout
+              const Layout = route.layout === null ? DefaultLayout : route.layout
               // if (route.path === "/profile" || route.path === "/login") {
               //   Layout = ProfileLayout
               // } else if (route.layout) {
@@ -26,9 +26,6 @@ function App() {
               //   Layout = Fragment
               // }
               return <Route key={index} path={route.path} element={<Layout>{Page}</Layout>} />
-
-              
-              
             })}
           </Routes>
         </div>

@@ -1,7 +1,7 @@
 import { FcGoogle } from "react-icons/fc"
 import { FaFacebook } from "react-icons/fa"
 import { Link } from "react-router-dom"
-export const RegisterPage = () => {
+const RegisterPage = () => {
   return (
     <>
       <div className="flex h-[550px] w-[500px] flex-col justify-between">
@@ -76,3 +76,4 @@ export const RegisterPage = () => {
     </>
   )
 }
+export default RegisterPage;

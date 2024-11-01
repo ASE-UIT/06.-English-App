@@ -1,31 +1,24 @@
-// import MultipleChoice from "@/components/Reading/MultipleChoices"
-// import NoteCompletion from "@/components/Reading/NoteCompletion"
-// import TrueFalseNotGiven from "@/components/Reading/TFNG"
-import { routes } from "@/config"
-import { Home } from "@/pages/main-layout/Home"
-import { Lecture } from "@/pages/protected-route/lecture"
-import { LoginPage } from "@/pages/LoginPage/LoginPage"
-import { RegisterPage } from "@/pages/RegisterPage/RegisterPage"
-import { WritingTestPage } from "@/pages/WritingTestPage/WritingTestPage"
-import { SpeakingTestPage } from "@/pages/SpeakingTestPage/SpeakingTestPage"
 import LoginRegisterLayout from "@/components/Layout/LoginRegisterLayout/LoginRegisterLayout"
 import EmptyLayout from "@/components/Layout/EmptyLayout/EmptyLayout"
-import PrivacyPolicyPage from "@/pages/PrivacyPage/PrivacyPage.tsx"
-import TermsOfServicePage from "@/pages/TermsOfServicePage/TermsOfServicePage.tsx"
-import { ReadingQuestion } from "@/pages/main-layout/readingQuestion"
-import { studentRoutes, teacherRoutes } from "@/config/routes"
+import PrivacyPolicyPage from "@/pages/LandingPage/PrivacyPage/PrivacyPage"
+import TermsOfServicePage from "@/pages/LandingPage/TermsOfServicePage/TermsOfServicePage"
+import { routes, studentRoutes, teacherRoutes } from "@/config/routes"
 import DoTestLayout from "@/components/Layout/Student/DoTestLayout/DoTestLayout"
-import StudentReading from "@/components/Student/Reading/StudentReading"
-import { InstructorHome } from "@/pages/protected-route/teacher/home"
 import { Fragment } from "react/jsx-runtime"
-
-import DoTestListening from "@/components/Student/Listening/StudentListening"
-import CreateCoursePage from "@/pages/CreateCoursePage/createCoursePage"
+import HomePage from "@/pages/LandingPage/Home"
+import LoginPage from "@/pages/AuthPage/LoginPage/LoginPage"
+import RegisterPage from "@/pages/AuthPage/RegisterPage/RegisterPage"
+import WritingTestPage from "@/pages/App/StudentPage/TestPage/WritingTestPage/WritingTestPage"
+import SpeakingTestPage from "@/pages/App/StudentPage/TestPage/SpeakingTestPage/SpeakingTestPage"
+import ListeningTestPage from "@/pages/App/StudentPage/TestPage/ListeningTestPage/ListeningTestPage"
+import MyCoursePage from "@/pages/App/TeacherPage/CoursePage/MyCoursePage"
+import InstructorHome from "@/pages/App/TeacherPage/HomePage/InstructorHome"
+import ReadingPage from "@/pages/App/StudentPage/TestPage/ReadingTestPage/ReadingPage"
 const publicRoutes = [
   {
-    path: routes.Home,
+    path: routes.LandingPage,
     layout: EmptyLayout,
-    component: <Home></Home>,
+    component: <HomePage></HomePage>,
   },
   {
     path: routes.Login,
@@ -38,80 +31,59 @@ const publicRoutes = [
     layout: LoginRegisterLayout,
   },
   {
-    path: routes.Privacy,
+    path: routes.PrivacyPolicy,
     component: <PrivacyPolicyPage></PrivacyPolicyPage>,
   },
   {
     path: routes.TermsOfService,
     component: <TermsOfServicePage></TermsOfServicePage>,
   },
-  {
-    path: routes.ReadingExercise,
-    component: <ReadingQuestion></ReadingQuestion>,
-  },
 ]
 const protectedRoutes = [
   {
-    path: routes.WritingTest,
+    path: studentRoutes.DoTestWriting,
     layout: Fragment,
     component: <WritingTestPage></WritingTestPage>,
   },
   {
-    path: routes.SpeakingTest,
+    path: studentRoutes.DoTestSpeaking,
     layout: Fragment,
     component: <SpeakingTestPage></SpeakingTestPage>,
   },
   {
-    path: routes.Reading,
-    component: <Lecture></Lecture>,
+    path: studentRoutes.DoTestListening,
+    component: <ListeningTestPage></ListeningTestPage>,
+    layout: DoTestLayout,
+  },
+  {
+    path: studentRoutes.DoTestReading,
+    component: <ReadingPage></ReadingPage>,
+    layout: DoTestLayout,
   },
   {
     path: teacherRoutes.Home,
-    layout: Fragment,
     component: <InstructorHome></InstructorHome>,
-  },
-  {
-    path: teacherRoutes.CreateCourse,
     layout: Fragment,
-    component: <CreateCoursePage></CreateCoursePage>
   },
-  // {
-  //   path: routes.CreateCourse,
-  //   component: <CreateCourse />,
-  // },
-  // {
-  //   path: routes.ReadingMultipleChoices,
-  //   component: (
-  //     <Lecture>
-  //       <MultipleChoice></MultipleChoice>
-  //     </Lecture>
-  //   ),
-  // },
-  // {
-  //   path: routes.ReadingTFNG,
-  //   component: (
-  //     <Lecture>
-  //       <TrueFalseNotGiven></TrueFalseNotGiven>
-  //     </Lecture>
-  //   )
-  // },
-  // {
-  //   path: routes.ReadingNoteCompletion,
-  //   component: (
-  //     <Lecture>
-  //       <NoteCompletion></NoteCompletion>
-  //     </Lecture>
-  //   )
-  // }
   {
-    path: studentRoutes.DoTestReading,
-    component: <StudentReading></StudentReading>,
-    layout: DoTestLayout,
+    path: teacherRoutes.Course.Base,
+    component: <MyCoursePage></MyCoursePage>,
+    layout: Fragment,
   },
-  { 
-    path: studentRoutes.DoTestListening, 
-    component: <DoTestListening></DoTestListening>, 
-    layout: DoTestLayout,
-  }
+  {
+    path: teacherRoutes.Course.Create,
+    component: <MyCoursePage></MyCoursePage>,
+    layout: Fragment,
+  },
+  {
+    path: teacherRoutes.Course.Detail,
+    component: <MyCoursePage></MyCoursePage>,
+    layout: Fragment,
+  },
+  {
+    path: teacherRoutes.Course.Edit,
+    component: <MyCoursePage></MyCoursePage>,
+    layout: Fragment,
+  },
 ]
 export { publicRoutes, protectedRoutes }

@@ -1,6 +1,6 @@
 import { FcGoogle } from "react-icons/fc"
 import { Link } from "react-router-dom"
-export const LoginPage = () => {
+const LoginPage = () => {
   return (
     <>
       <div className="flex h-[480px] w-[500px] flex-col justify-between">
@@ -46,3 +46,4 @@ export const LoginPage = () => {
     </>
   )
 }
+export default LoginPage;
