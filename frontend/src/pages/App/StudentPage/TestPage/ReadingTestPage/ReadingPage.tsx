@@ -1,6 +1,6 @@
-import SubmitLogo from "../../../assets/submit_icon.svg"
+import SubmitLogo from "@/assets/submit_icon.svg"
 import { Button } from "@/components/ui/button"
-import RightNav from "../../../assets/right_nav_button.svg"
+import RightNav from "@/assets/right_nav_button.svg"
 import LeftNav from "@/assets/left_nav_button.svg";
 import { ReadingTestPage } from "@/pages/App/StudentPage/TestPage/ReadingTestPage/ReadingTestPage";
 
