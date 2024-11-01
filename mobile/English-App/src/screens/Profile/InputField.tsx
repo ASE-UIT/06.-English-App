@@ -9,11 +9,6 @@ type InputFieldProps = {
 };
 
 const InputField = ({ label, value, onChangeText }: InputFieldProps) => {
-  const [isEdit, setIsEdit] = React.useState(false);
-  const handleEdit = () => {
-    setIsEdit(!isEdit);
-
-    }
   
     return (
     <View className="w-[90%] justify-center items-center ">
@@ -23,13 +18,13 @@ const InputField = ({ label, value, onChangeText }: InputFieldProps) => {
       <TextInput
         mode="outlined"
         dense
-        disabled={!isEdit}
+       
         value={value}
         style={{ width: "90%" }}
         onChangeText={onChangeText}
         outlineColor="#5D5FEF"
         outlineStyle={{borderRadius:15}}
-        right={<TextInput.Icon icon={"pencil"} onPress={handleEdit} />}
+        right={<TextInput.Icon icon={"pencil"}  />}
       />
     </View>
   );
