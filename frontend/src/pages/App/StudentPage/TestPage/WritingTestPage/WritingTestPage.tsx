@@ -4,7 +4,7 @@ import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowDropright, IoIosArrowDropleft } from "react-icons/io";
 
 import writtingTest  from '@/assets/image/writingTest.jpg'
-export const WritingTestPage = () => {
+const WritingTestPage = () => {
     return (
         <>
             <div className="flex flex-col bg-white h-screen overflow-hidden">
@@ -64,3 +64,4 @@ export const WritingTestPage = () => {
         </>
     )
 }
+export default WritingTestPage;

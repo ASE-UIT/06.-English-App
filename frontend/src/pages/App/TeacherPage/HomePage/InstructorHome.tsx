@@ -28,7 +28,7 @@ const links = [
   },
 ]
 
-export const InstructorHome = () => {
+const InstructorHome = () => {
   const [open, setOpen] = useState(false)
   return (
     <div className="flex min-h-screen flex-col bg-white">
@@ -61,3 +61,4 @@ export const InstructorHome = () => {
     </div>
   )
 }
+export default InstructorHome

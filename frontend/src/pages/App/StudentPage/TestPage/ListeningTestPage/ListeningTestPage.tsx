@@ -1,8 +1,8 @@
-import { ReadingQuestion } from "@/pages/main-layout/readingQuestion";
 import { Button } from "@/components/ui/button";
 import SubmitLogo from "@/assets/submit_icon.svg";
+import { ReadingTestPage } from "../ReadingTestPage/ReadingTestPage";
 
-export default function DoTestListening() { 
+export default function ListeningTestPage() { 
     return (
         <div className="flex mt-[45px] ml-[75px] mr-[40px] mb-[20px]">
             <div className="flex-[7] flex flex-col">
@@ -17,7 +17,7 @@ export default function DoTestListening() {
                             </div>
                             <div className="border-[#fcddec] border-2 rounded-md w-full p-[20px]">
                                 <div className="flex flex-col flex-[8]">
-                                    <ReadingQuestion/>
+                                    <ReadingTestPage/>
                                 </div>
                             </div>
                         </div>

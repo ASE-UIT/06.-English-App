@@ -6,7 +6,7 @@ import { questionData } from "./data"
 import _ from "lodash"
 import { RadioGroupQuestion } from "@/components/Layout/Components/shared/RadioGroupQuestion"
 
-export const ReadingQuestion = () => {
+export const ReadingTestPage = () => {
   const prevSum = (index: number) => {
     let total = 0
     if (index === 0) return total
