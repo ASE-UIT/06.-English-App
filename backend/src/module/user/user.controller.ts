@@ -37,7 +37,7 @@ export class UserController {
   })
   async createUser(@User() user: IUser, @Body() userDto: UserDto) {
     const userCreated = this.mapper.map(userDto, UserDto, UserEntity);
-    const res = await this.authService.create(userCreated);
+    const res = await this.authService.create(userCreated, user.userName);
     return ResponseObject.create('User created', res);
   }
 }

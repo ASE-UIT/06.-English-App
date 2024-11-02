@@ -37,4 +37,11 @@ export class UserService {
     }
     return user;
   }
+
+  async getUserRole(awsId: string) {
+    const user = await this.dataSource.getRepository(User).findOneOrFail({
+      where: { awsCognitoId: awsId },
+    });
+    return user.role;
+  }
 }
