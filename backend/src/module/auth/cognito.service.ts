@@ -1,5 +1,6 @@
 import { createHmac } from 'crypto';
 import {
+  AdminAddUserToGroupCommand,
   AdminInitiateAuthCommand,
   AdminUserGlobalSignOutCommand,
   CognitoIdentityProviderClient,
@@ -126,6 +127,7 @@ export class CognitoService {
       const refreshToken = response.AuthenticationResult.RefreshToken;
       const idToken = response.AuthenticationResult.IdToken;
       const decodedToken = this.decodeJwt(idToken);
+
       const isEmailVerified = decodedToken.email_verified;
       return { accessToken, refreshToken, isEmailVerified };
     } catch (error) {
@@ -184,6 +186,29 @@ export class CognitoService {
       return { userInfo, accessToken, refreshToken };
     } catch (error) {
       this.handleError(error, 'sign in with OAuth');
+    }
+  }
+
+  async addUserToGroup(username: string, groupName: string) {
+    const command = new AdminAddUserToGroupCommand({
+      UserPoolId: this.userPoolId,
+      Username: username,
+      GroupName: groupName,
+    });
+
+    try {
+      await this.cognitoClient.send(command);
+    } catch (error) {
+      if (error.code === 'UserNotFoundException') {
+        throw new NotFoundException('User not found');
+      }
+      if (error.code === 'GroupNotFoundException') {
+        throw new NotFoundException('Group not found');
+      }
+      if (error.code === 'ResourceNotFoundException') {
+        throw new NotFoundException('Resource not found');
+      }
+      this.handleError(error, 'add user to group');
     }
   }
 

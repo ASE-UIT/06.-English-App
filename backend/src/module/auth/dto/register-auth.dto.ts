@@ -1,13 +1,22 @@
-import { IsEmail, IsEnum, IsNotEmpty } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  ValidateIf,
+} from 'class-validator';
 import { IsPasswordStrong } from '../../../common/validators/is-strong-password.validator';
 import { IsValidDOB } from '../../../common/validators/is-valid-dob.validator';
 import { AutoMap } from '@automapper/classes';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class RegisterAuthDto {
   @AutoMap()
   @IsNotEmpty()
-  @ApiProperty({ description: 'Unique username for the user' })
+  @ApiProperty({
+    description: 'Unique username for the user',
+    default: 'guest_user',
+  })
   username: string;
 
   @AutoMap()
@@ -17,7 +26,11 @@ export class RegisterAuthDto {
 
   @AutoMap()
   @IsPasswordStrong()
-  @ApiProperty({ description: 'Password for the account', minLength: 8 })
+  @ApiProperty({
+    description: 'Password for the account',
+    minLength: 8,
+    default: '*^0x,S.-89;b!O^r',
+  })
   password: string;
 
   @AutoMap()
@@ -28,22 +41,40 @@ export class RegisterAuthDto {
     enum: ['TEACHER', 'STUDENT'],
     description: 'Role of the user',
   })
-  role: string;
+  role: 'TEACHER' | 'STUDENT';
 
   @AutoMap()
-  @ApiProperty({ description: 'First name of the user' })
-  firstName: string;
+  @IsOptional()
+  @ApiProperty({ description: 'First name of the user', default: 'John' })
+  firstName?: string; // Nullable field
 
   @AutoMap()
-  @ApiProperty({ description: 'Last name of the user' })
-  lastName: string;
+  @IsOptional()
+  @ApiProperty({ description: 'Last name of the user', default: 'Doe' })
+  lastName?: string; // Nullable field
 
   @AutoMap()
-  @ApiProperty({ description: 'Phone number of the user' })
-  phone: string;
+  @IsOptional()
+  @ApiProperty({
+    description: 'Phone number of the user',
+    default: '1234567890',
+  })
+  phone?: string; // Nullable field
 
   @AutoMap()
   @IsValidDOB()
-  @ApiProperty({ description: 'Date of birth' })
-  birthDate: Date;
+  @IsOptional()
+  @ApiProperty({ description: 'Date of birth', default: '1990-01-01' })
+  birthDate?: Date;
+  @ValidateIf((o) => o.role === 'TEACHER')
+  @IsNotEmpty({ message: 'Degree is required for teachers' })
+  @ApiPropertyOptional({
+    enum: ['BACHELOR', 'MASTER', 'DOCTOR', 'UNKNOWN'],
+    description: 'Degree of the teacher',
+  })
+  degree?: string;
+  @ValidateIf((o) => o.role === 'STUDENT')
+  @IsNotEmpty({ message: 'School name is required for students' })
+  @ApiPropertyOptional({ description: 'School name of the student' })
+  schoolName?: string;
 }

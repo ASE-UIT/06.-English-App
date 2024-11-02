@@ -39,7 +39,10 @@ export class AuthController {
   @Public()
   @Post(END_POINTS.AUTH.SIGN_UP)
   @ApiOperation({ summary: 'Register a new user' })
-  async signUp(@Body() registerAuthDto: RegisterAuthDto) {
+  async signUp(
+    @UserReq() user: IUser,
+    @Body() registerAuthDto: RegisterAuthDto,
+  ) {
     const registerCognitoDto = this.mapper.map(
       registerAuthDto,
       RegisterAuthDto,
@@ -48,7 +51,7 @@ export class AuthController {
     const cognitoId = await this.cognitoService.signUp(registerCognitoDto);
     const userCreated = this.mapper.map(registerAuthDto, RegisterAuthDto, User);
     userCreated.awsCognitoId = cognitoId;
-    const res = await this.authService.create(userCreated);
+    const res = await this.authService.create(userCreated, user.userName);
     return ResponseObject.create('User created', res);
   }
 

@@ -11,6 +11,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { LoggingInterceptor } from './common/interceptors/logger.interceptor';
 import { SwaggerModule } from '@nestjs/swagger';
 import docs from './config/documentation';
+import { RolesGuard } from './common/guards/role.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,6 +31,7 @@ async function bootstrap() {
   app.use(cookieParser());
   app.setGlobalPrefix(END_POINTS.BASE);
   app.useGlobalGuards(new JwtAuthGuard(reflector, configService));
+  app.useGlobalGuards(new RolesGuard(reflector));
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
