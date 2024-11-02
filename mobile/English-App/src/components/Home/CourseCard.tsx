@@ -37,7 +37,7 @@ export default function CourseCard() {
       <View className="flex flex-row gap-1 items-start">
         <Text className="text-xs text-black">đ{currentPrice}</Text>
         <Text className="text-[10px] text-gray-500 line-through">
-          {originalPrice}
+          đ{originalPrice}
         </Text>
       </View>
     </View>
