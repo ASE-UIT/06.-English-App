@@ -3,7 +3,7 @@ import QuestionHeading from "../QuestionHeading";
 import QuestionSubHeading from "../QuestionSubHeading";
 import MultiSelectQuestion from "./MultiSelectQuestion";
 
-export default function MultipleChoiceFormat() {
+export default function MultiSelectFormat() {
   // hardcoded questions data
   const questions = [
     {
