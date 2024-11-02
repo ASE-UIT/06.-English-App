@@ -10,7 +10,7 @@ const Profile = () => {
   const [username, setUsername] = useState('johndoe');
   const [name, setName] = useState('John Doe');
   const [isEditingName, setIsEditingName] = useState(false);
-  const nameInputRef = useRef(null);
+  const nameInputRef = useRef<TextInput>(null);
 
   const handleEditName = () => {
     setIsEditingName(!isEditingName);
