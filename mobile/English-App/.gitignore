@@ -35,4 +35,3 @@ yarn-error.*
 *.tsbuildinfo
 
 #Ignore App.tsx file
-App.tsx

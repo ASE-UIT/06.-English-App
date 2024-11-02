@@ -23,7 +23,6 @@ export default function ReadingExercise() {
       <View className="reading-questions" style={{ display: "flex", gap: 20 }}>
         {/* questions.map()... */}
         <MultipleChoiceFormat />
-        <MultiSelectFormat />
       </View>
     </ScrollView>
   );
