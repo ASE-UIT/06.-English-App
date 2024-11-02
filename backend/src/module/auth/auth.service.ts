@@ -4,15 +4,20 @@ import { Teacher } from '../user/entities/teacher.entity';
 import { Student } from '../user/entities/student.entity';
 import { DataSource } from 'typeorm';
 import { Request, Response } from 'express';
+import { CognitoService } from './cognito.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly cognitoService: CognitoService,
+  ) {}
 
-  async create(user: User) {
+  async create(user: User, username: string) {
     try {
-      const res = await this.dataSource.transaction(async (manager) => {
+      return await this.dataSource.transaction(async (manager) => {
         const res = await manager.save(user);
+        await this.cognitoService.handleUpdateRole(user.role, username);
         switch (user.role) {
           case 'TEACHER':
             const teacher = new Teacher();
@@ -29,7 +34,6 @@ export class AuthService {
         }
         return res;
       });
-      return res;
     } catch (error) {
       throw new HttpException(error.message, 500);
     }

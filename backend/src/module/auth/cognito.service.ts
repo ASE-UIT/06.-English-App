@@ -126,6 +126,7 @@ export class CognitoService {
       const refreshToken = response.AuthenticationResult.RefreshToken;
       const idToken = response.AuthenticationResult.IdToken;
       const decodedToken = this.decodeJwt(idToken);
+
       const isEmailVerified = decodedToken.email_verified;
       return { accessToken, refreshToken, isEmailVerified };
     } catch (error) {
