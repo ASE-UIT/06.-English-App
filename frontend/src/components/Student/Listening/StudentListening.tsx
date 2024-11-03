@@ -28,7 +28,7 @@ export default function DoTestListening() {
                         </div>
                     </div>
                     <div className="flex-[2] bg-[#fcddec] h-[300px] rounded-lg p-[30px]">
-                        <div className="grid grid-cols-7 gap-2">
+                        <div className="grid grid-cols-6 gap-2">
                         {
                             Array.from({ length: 10 }, (_, i) => (
                                 <Button key={i} className="h-[40px] w-[40px] bg-inherit text-[#ef5da8] hover:bg-inherit hover:outline-none focus:outline-none rounded-full border-1 border-[#5d5fef]">{i + 1}</Button>

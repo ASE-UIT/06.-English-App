@@ -1,19 +1,16 @@
 import "regenerator-runtime/runtime";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { LuClock } from "react-icons/lu";
 import { IoSend } from "react-icons/io5";
 import { FaMicrophone } from "react-icons/fa";
 import { FaMicrophoneSlash } from "react-icons/fa";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import Clock from "../../components/Tam-components/Clock";
 
 export const SpeakingTestPage = () => {
-    const { transcript, listening } = useSpeechRecognition();
+    const { transcript } = useSpeechRecognition();
     const totalMinutes: number = 15;
-    const [minutes, setMinutes] = useState(totalMinutes);
     const [isRecording, setIsRecording] = useState(false);
-    const [seconds, setSeconds] = useState(59);
-
     const startRecording = () => {
         setIsRecording(!isRecording);
         if (!isRecording) {
@@ -22,21 +19,6 @@ export const SpeakingTestPage = () => {
             SpeechRecognition.stopListening();
         }
     }
-    useEffect(() => {
-        const interval = setInterval(() => {
-        if (seconds === 0) {
-            setMinutes(minutes - 1);
-            setSeconds(59);
-        } else {
-            setSeconds(seconds - 1);
-        }
-        if (minutes === 0 && seconds === 0) {
-            clearInterval(interval); 
-            // console.log('Đã hết giờ!');
-        }
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [minutes, seconds]);
     console.log(transcript);
     return (
         <>
@@ -60,11 +42,7 @@ export const SpeakingTestPage = () => {
                     </div>
 
                     <div className="flex-grow bg-[#fafafa] flex flex-col justify-around">
-                        <div className="flex justify-center items-center">
-                            <LuClock className="w-[30px] h-[30px] text-[#5D5FEF] ml-[2px]"/>
-                            <span className="text-[24px] font-semibold text-[#5D5FEF]">{minutes}:</span>
-                            <span className="text-[24px] font-semibold text-[#5D5FEF]">{seconds}</span>
-                        </div>
+                        <Clock totalMinutes={totalMinutes}/>
 
                         <span className="text-[28px] font-semibold text-fuschia mx-auto">QUESTION</span>
                         

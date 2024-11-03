@@ -11,8 +11,8 @@ export const routes = {
   ReadingNoteCompletion: "/lecture/reading/note-completion",
   Register: "/register",
   ReadingExercise: "/reading-exercise",
-  WritingTest: '/writting/test',
-  SpeakingTest: '/speaking/test',
+  WritingTest: '/do-test/writing',
+  SpeakingTest: '/do-test/speaking',
 }
 export const studentRoutes = {
   DoTest: "/do-test",
