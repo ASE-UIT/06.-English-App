@@ -29,7 +29,7 @@ const CourseDetail = () => {
   return (
     <View className='relative w-full h-full'>
       <View className='flex mx-[45px] mt-[50px] '>
-        <Image source={require('../../assets/Frame9.png')} className='rounded-3xl w-full h-64'/>
+        <Image source={require('../../../assets/Frame9.png')} className='rounded-3xl w-full h-64'/>
         <Text className='text-lg font-semibold'>Reading Course For Beginer</Text>
         <Text>Created by <Text className='text-[#5D5FEF]'>Ms. Thuy</Text></Text>
         <View className='flex flex-row justify-between'>

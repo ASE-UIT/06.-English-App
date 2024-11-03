@@ -7,6 +7,7 @@ import Home from "../screens/Home/Home";
 import Profile from "../screens/Profile/Profile";
 import Reading from "../screens/Reading";
 import CourseHome from "./CourseHome"
+import CourseDetail from "../screens/CourseDetail";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -45,7 +46,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="vocabulary"
-        component={FlashCard} // change this to VocabularyScreen later
+        component={CourseDetail} // change this to VocabularyScreen later
         options={{
           tabBarLabel: "Vocabulary",
           tabBarIcon: ({ color }) => (
