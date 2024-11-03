@@ -5,36 +5,45 @@ import {
   TouchableOpacity,
   StyleSheet,
   ScrollView,
+  Dimensions,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { Video, ResizeMode, AVPlaybackStatus, AVPlaybackStatusSuccess } from 'expo-av'; // Import AVPlaybackStatusSuccess from expo-av
+import { Video, ResizeMode, AVPlaybackStatus, AVPlaybackStatusSuccess } from 'expo-av';
 import colors from '../../../colors';
+
+const { height } = Dimensions.get('window');
 
 export default function CourseViewer() {
   const [currentSection, setCurrentSection] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentVideoUri, setCurrentVideoUri] = useState(''); // State to store the current video URI
-  const videoRef = useRef<Video>(null); // Create a ref for the Video component with proper type
+  const [currentVideoUri, setCurrentVideoUri] = useState('');
+  const [activeTab, setActiveTab] = useState('lessons');
+  const videoRef = useRef<Video>(null);
 
-  const [sections, setSections] = useState([
-    { id: 1, type: "vocab", title: "Vocabulary" },
-    { id: 2, type: "grammar", title: "Grammar" },
-    { id: 0, type: 'video', title: "Video lecture 1", completed: false, uri: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-    { id: 3, type: "speaking", title: 'Section 1', completed: false },
-    { id: 4, type: 'video', title: "Video lecture 2", completed: false, uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' }, // Changed id to 4
-    { id: 5, type: "speaking", title: 'Section 1', completed: false }, // Changed id to 5
-    { id: 6, type: "listening", title: 'Section 2', completed: false },
-    { id: 7, type: "writing", title: 'Section 3', completed: false },
-    { id: 8, type: "reading", title: 'Section 4', completed: false },
+  const [lessons, setLessons] = useState([
+    {
+      name: "Lesson 1: Introduction",
+      sections: [
+        { id: 1, type: "vocab", title: "Vocabulary" },
+        { id: 2, type: "grammar", title: "Grammar" },
+        { id: 0, type: 'video', title: "Video lecture 1", completed: false, uri: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+        { id: 3, type: "writing", title: 'Section 3', completed: false },
+        { id: 12, type: "reading", title: 'Section 4', completed: false },
+      ],
+    },
+    {
+      name: "Lesson 2: Advanced Topics",
+      sections: [
+        { id: 9, type: "vocab", title: "Vocabulary" },
+        { id: 10, type: "grammar", title: "Grammar" },
+        { id: 4, type: 'video', title: "Video lecture 2", completed: false, uri: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4' },
+        { id: 5, type: "speaking", title: 'Section 1', completed: false },
+        { id: 6, type: "listening", title: 'Section 2', completed: false },
+        { id: 7, type: "writing", title: 'Section 3', completed: false },
+        { id: 8, type: "reading", title: 'Section 4', completed: false },
+      ],
+    },
   ]);
-
-  const vocabAndGrammarSections = sections.filter(
-    (section) => section.type === 'vocab' || section.type === 'grammar'
-  );
-
-  const otherSections = sections.filter(
-    (section) => section.type !== 'vocab' && section.type !== 'grammar'
-  );
 
   const handleReplay = () => {
     if (videoRef.current) {
@@ -42,20 +51,26 @@ export default function CourseViewer() {
     }
   };
 
+  // khi bấm vào section thì gọi hàm này
   const handleSectionPress = (section: any) => {
     setCurrentSection(section.id);
+    // nếu section là video thì phát video
     if (section.type === 'video') {
       setCurrentVideoUri(section.uri);
       setIsPlaying(true);
     }
   };
 
+  // hàm này là logic cho việc khi phát hết video thì section được xem là completed
   const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
     if (status.isLoaded && (status as AVPlaybackStatusSuccess).didJustFinish) {
-      setSections((prevSections) =>
-        prevSections.map((section) =>
-          section.id === currentSection ? { ...section, completed: true } : section
-        )
+      setLessons((prevLessons) =>
+        prevLessons.map((lesson) => ({
+          ...lesson,
+          sections: lesson.sections.map((section) =>
+            section.id === currentSection ? { ...section, completed: true } : section
+          ),
+        }))
       );
     }
   };
@@ -66,15 +81,14 @@ export default function CourseViewer() {
       <View style={styles.videoContainer}>
         <View style={styles.videoArea}>
           <Video
-            ref={videoRef} // Attach the ref to the Video component
-            source={{ uri: currentVideoUri }} // Use the current video URI from state
+            ref={videoRef}
+            source={{ uri: currentVideoUri }}
             style={styles.video}
             shouldPlay={isPlaying}
-            resizeMode={ResizeMode.COVER} // Use the ResizeMode enum
+            resizeMode={ResizeMode.COVER}
             useNativeControls
-            onPlaybackStatusUpdate={handlePlaybackStatusUpdate} // Add the playback status update handler
+            onPlaybackStatusUpdate={handlePlaybackStatusUpdate}
           />
-          {/* Replay Button */}
           <TouchableOpacity
             style={styles.replayButton}
             onPress={handleReplay}
@@ -90,90 +104,127 @@ export default function CourseViewer() {
         <Text style={styles.title}>
           THE COMPLETE GUIDE TO IELTS READING GENERAL
         </Text>
-        <Text style={styles.subtitle}>Lesson 1: Introduction</Text>
+        <Text style={styles.subtitle}>Ms Thuy</Text>
       </View>
 
-      {/* Sections List */}
-      <View style={styles.sectionListContainer}>
-        <ScrollView>
-          <View style={styles.row}>
-            {vocabAndGrammarSections.map((section) => (
-                <TouchableOpacity
-                key={section.id}
-                style={[
-                  styles.sectionButton,
-                  currentSection === section.id && styles.sectionButtonActive,
-                  section.type === 'vocab' && { backgroundColor: colors.blue4, borderRadius: 20},
-                  section.type === 'grammar' && { backgroundColor: colors.blue4, borderRadius: 20},
-                ]}
-                onPress={() => handleSectionPress(section)}
-                >
-                <Icon
-                  name={
-                  section.type === 'vocab' ? 'book' : 'list'
-                  }
-                  size={20}
-                  color="#666"
-                  style={styles.sectionIcon}
-                />
-                <Text style={styles.sectionTitle}>{section.title}</Text>
-                {'completed' in section && (
-                  section.completed ? (
-                  <Icon name="check-circle" size={20} color="green" />
-                  ) : (
-                  <Icon name="circle" size={20} color="#ccc" />
-                  )
-                )}
-                </TouchableOpacity>
-            ))}
-          </View>
-          {otherSections.map((section) => (
-            <TouchableOpacity
-              key={section.id}
-              style={[
-                styles.sectionButton,
-                currentSection === section.id && styles.sectionButtonActive,
-              ]}
-              onPress={() => handleSectionPress(section)}
-            >
-              <Icon
-                name={
-                  section.type === 'video' ? 'play' :
-                  section.type === 'speaking' ? 'mic' :
-                  section.type === 'listening' ? 'headphones' :
-                  section.type === 'writing' ? 'edit-3' :
-                  section.type === 'reading' ? 'book-open' :
-                  'circle'
-                }
-                size={20}
-                color="#666"
-                style={styles.sectionIcon}
-              />
-              <Text style={styles.sectionTitle}>{section.title}</Text>
-              {'completed' in section && (
-                section.completed ? (
-                  <Icon name="check-circle" size={20} color="green" />
-                ) : (
-                  <Icon name="circle" size={20} color="#ccc" />
-                )
-              )}
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+      {/* Tab Section */}
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'lessons' && styles.activeTab]}
+          onPress={() => setActiveTab('lessons')}
+        >
+          <Text style={[styles.tabText, activeTab === 'lessons' && styles.activeTabText]}>Lessons</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tab, activeTab === 'more' && styles.activeTab]}
+          onPress={() => setActiveTab('more')}
+        >
+          <Text style={[styles.tabText, activeTab === 'more' && styles.activeTabText]}>More</Text>
+        </TouchableOpacity>
       </View>
+
+      {/* Scrollable Content */}
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollViewContent}>
+        {activeTab === 'lessons' && lessons.map((lesson, lessonIndex) => (
+          <View key={lessonIndex} style={styles.lessonContainer}>
+            <Text style={styles.lessonTitle}>{lesson.name}</Text>
+            <View style={styles.sectionListContainer}>
+              <View style={styles.row}>
+                {lesson.sections
+                  .filter((section) => section.type === 'vocab' || section.type === 'grammar')
+                  .map((section) => (
+                    <TouchableOpacity
+                      key={section.id}
+                      style={[
+                        styles.sectionButton,
+                        currentSection === section.id && styles.sectionButtonActive,
+                        section.type === 'vocab' && { backgroundColor: colors.blue4, borderRadius: 20 },
+                        section.type === 'grammar' && { backgroundColor: colors.blue4, borderRadius: 20 },
+                      ]}
+                      onPress={() => handleSectionPress(section)}
+                    >
+                      <Icon
+                        name={section.type === 'vocab' ? 'book' : 'list'}
+                        size={20}
+                        color="#666"
+                        style={styles.sectionIcon}
+                      />
+                      <Text style={styles.sectionTitle}>{section.title}</Text>
+                    </TouchableOpacity>
+                  ))}
+              </View>
+              {lesson.sections
+                .filter((section) => section.type !== 'vocab' && section.type !== 'grammar')
+                .map((section) => (
+                  <TouchableOpacity
+                    key={section.id}
+                    style={[
+                      styles.sectionButton,
+                      currentSection === section.id && styles.sectionButtonActive,
+                    ]}
+                    onPress={() => handleSectionPress(section)}
+                  >
+                    <Icon
+                      name={
+                        section.type === 'video' ? 'play' :
+                        section.type === 'speaking' ? 'mic' :
+                        section.type === 'listening' ? 'headphones' :
+                        section.type === 'writing' ? 'edit-3' :
+                        section.type === 'reading' ? 'book-open' :
+                        'circle'
+                      }
+                      size={20}
+                      color="#666"
+                      style={styles.sectionIcon}
+                    />
+                    <Text style={styles.sectionTitle}>{section.title}</Text>
+                    {'completed' in section && (
+                      section.completed ? (
+                        <Icon name="check-circle" size={20} color="green" />
+                      ) : (
+                        <Icon name="circle" size={20} color="#ccc" />
+                      )
+                    )}
+                  </TouchableOpacity>
+                ))}
+            </View>
+          </View>
+        ))}
+
+        {/* content của tab more */}
+        {activeTab === 'more' && (
+          <View style={styles.moreContent}>
+            <TouchableOpacity style={styles.menuItem}>
+              <Icon name="info" size={20} color="#666" style={styles.menuIcon} />
+              <Text style={styles.menuText}>About this course</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Icon name="share-2" size={20} color="#666" style={styles.menuIcon} />
+              <Text style={styles.menuText}>Share this course</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Icon name="message-circle" size={20} color="#666" style={styles.menuIcon} />
+              <Text style={styles.menuText}>Q&A</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Icon name="bell" size={20} color="#666" style={styles.menuIcon} />
+              <Text style={styles.menuText}>Announcements</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.menuItem}>
+              <Icon name="heart" size={20} color="#666" style={styles.menuIcon} />
+              <Text style={styles.menuText}>Add course to favorite</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 }
 
-// Stylesheet
 const styles = StyleSheet.create({
   container: {
-    maxWidth: '100%',
+    flex: 1,
     backgroundColor: '#fff',
-    borderRadius: 10,
-    overflow: 'hidden',
-    elevation: 3,
-    margin: 10,
   },
   videoContainer: {
     backgroundColor: '#1c1c1e',
@@ -201,6 +252,7 @@ const styles = StyleSheet.create({
   },
   header: {
     padding: 16,
+    paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#e5e5e5',
   },
@@ -210,15 +262,50 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 14,
-    color: '#6b7280',
+    color: colors.blue1,
+  },
+  tabContainer: {
+    flexDirection: 'row',
+  },
+  tab: {
+    flex: 1,
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: colors.blue1,
+  },
+  tabText: {
+    fontSize: 16,
+    color: colors.blue3,
+  },
+  activeTabText: {
+    color: colors.blue1,
+    fontWeight: '600',
+  },
+  scrollView: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    paddingBottom: 16,
+  },
+  lessonContainer: {
+    marginBottom: 8,
+  },
+  lessonTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    padding: 16,
+    paddingBottom: 8,
   },
   sectionListContainer: {
-    height: 400,
-    padding: 16,
+    paddingHorizontal: 16,
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    marginBottom: 8,
   },
   sectionButton: {
     flexDirection: 'row',
@@ -227,7 +314,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderRadius: 8,
     backgroundColor: '#fff',
-    marginBottom: 8,
     flex: 1,
     marginHorizontal: 4,
   },
@@ -239,6 +325,21 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     flex: 1,
+    fontSize: 16,
+  },
+  moreContent: {
+    padding: 16,
+  },
+  menuItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+  },
+  menuIcon: {
+    marginRight: 8,
+  },
+  menuText: {
     fontSize: 16,
   },
 });
