@@ -24,6 +24,7 @@
     "expo-status-bar": "~1.12.1",
     "lucide": "^0.454.0",
     "lucide-react": "^0.454.0",
+    "formik": "^2.4.6",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -37,7 +38,8 @@
     "react-native-sound-player": "^0.14.3",
     "react-native-vector-icons": "^10.2.0",
     "react-native-video": "^6.7.0",
-    "react-native-web": "~0.19.10"
+    "react-native-web": "~0.19.10",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
