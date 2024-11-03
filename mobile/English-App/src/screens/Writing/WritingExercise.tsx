@@ -1,8 +1,8 @@
 import { View, Text } from 'react-native'
 import React, { useState } from 'react'
 import { Button } from '@rneui/themed'
-import Writing_task from '../components/Writing/Writing_task'
-import Writing_submit from '../components/Writing/Writing_submit'
+import Writing_task from '../../components/Writing/Writing_task'
+import Writing_submit from '../../components/Writing/Writing_submit'
 
 const WritingExercise = () => {
     const [task, setTask] = useState(true);
