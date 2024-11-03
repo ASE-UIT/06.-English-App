@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, TextInput, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import { Avatar, Icon } from 'react-native-elements';
 import InputField from './InputField'; // Adjust the import path as needed
 
@@ -64,6 +64,35 @@ const Profile = () => {
         <InputField label="Phone Number" value={phoneNumber} onChangeText={setPhoneNumber} />
         <InputField label="Email" value={email} onChangeText={setEmail} />
         <InputField label="Password" value={password} onChangeText={setPassword} />
+        <View
+        style={{ marginTop: 100 }}
+        className="flex flex-row justify-center items-center  gap-7"
+      >
+        <TouchableOpacity className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3">
+          <Icon
+            name="checkbox-marked-outline"
+            type="material-community"
+            color="white"
+            size={25}
+          />
+          <Text className="text-white text-xs  font-semibold">Update</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3">
+          <Icon name="cog" type="material-community" color="white" size={25} />
+          <Text className="text-white text-xs  font-semibold">Setting</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3">
+          <Icon
+            name="logout"
+            type="material-community"
+            color="white"
+            size={25}
+          />
+          <Text className="text-white text-xs  font-semibold">Log out</Text>
+        </TouchableOpacity>
+      </View>
       </View>
     </TouchableWithoutFeedback>
   );
