@@ -17,6 +17,16 @@ export class CourseService {
       throw new HttpException(error.message, 500);
     }
   }
+
+  async findAllCourses() {
+    try {
+      const courses = await this.dataSource.getRepository(Course).find();
+      return courses;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
+  }
+
   async findByCategory(categoryId: string) {
     try {
       const courses = await this.dataSource

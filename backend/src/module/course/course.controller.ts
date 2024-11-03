@@ -18,9 +18,10 @@ import { Course } from './entities/course.entity';
 import { ResponseObject } from 'src/utils/objects';
 import { User } from 'src/common/decorators/user.decorator';
 import { IUser } from 'src/common/guards/at.guard';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CourseCategoryService } from '../course-category/course-category.service';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.COURSE.BASE)
 @ApiTags(DOCUMENTATION.TAGS.COURSE)
 export class CourseController {
@@ -29,7 +30,6 @@ export class CourseController {
     private readonly courseCategoryService: CourseCategoryService,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
-
   @Post(END_POINTS.COURSE.CREATE)
   @ApiOperation({ summary: 'Create course' })
   async create(@User() user: IUser, @Body() createCourseDto: CreateCourseDto) {
@@ -45,6 +45,31 @@ export class CourseController {
     course.teacher = teacher;
     const result = await this.courseService.create(user.userAwsId, course);
     return ResponseObject.create('Course created', result);
+  }
+
+  @Get(END_POINTS.COURSE.GET_RECOMMENDATION_COURSES)
+  @ApiOperation({ summary: 'Get recommendation course by student' })
+  async findAllCourses() {
+    const courses = await this.courseService.findAllCourses();
+    return ResponseObject.create('Courses retrieved successfully', courses);
+  }
+
+  @Get(END_POINTS.COURSE.GET_MY_COURSE_BY_TEACHER)
+  @ApiOperation({
+    summary: 'Get all courses of teacher',
+  })
+  async findMyCourseByTeacher(@User() user: IUser) {
+    const courses = await this.courseService.findAll(user.userAwsId);
+    return ResponseObject.create('Courses retrieved successfully', courses);
+  }
+
+  @Get(END_POINTS.COURSE.GET_MY_COURSE_BY_USER)
+  @ApiOperation({
+    summary: 'Get all courses of user',
+  })
+  async findMyCourseByUser(@User() user: IUser) {
+    const courses = await this.courseService.findAll(user.userAwsId);
+    return ResponseObject.create('Courses retrieved successfully', courses);
   }
 
   @Get()
