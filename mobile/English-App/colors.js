@@ -7,6 +7,7 @@ const colors = {
     blue1: '#5D5FEF',
     blue2: '#7879F1',
     blue3: '#A5A6F6',
+    blue4: '#E2E3FF',
     primary: '#007bff', // Replace with custom blue color
     success: '#28a745',
     danger: '#dc3545',
