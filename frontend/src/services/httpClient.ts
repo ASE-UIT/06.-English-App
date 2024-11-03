@@ -17,34 +17,33 @@ class HttpClient {
     return `${this.baseUrl}${endpoint}`
   }
 
-  async get<T = any>(endpoint: string, config?: AxiosAuthRefreshRequestConfig) {
+  async get<T>(endpoint: string, config?: AxiosAuthRefreshRequestConfig) {
     const response = await this.instance.get<T>(this.getUrl(endpoint), config)
     return response.data
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async post<T = any>(endpoint: string, data?: object, config?: AxiosAuthRefreshRequestConfig) {
+  async post<T>(endpoint: string, data?: object, config?: AxiosAuthRefreshRequestConfig) {
     const response = await this.instance.post<T>(this.getUrl(endpoint), data, config)
     return response.data
   }
 
-  async patch<T = any>(endpoint: string, data?: object, config?: AxiosAuthRefreshRequestConfig) {
+  async patch<T>(endpoint: string, data?: object, config?: AxiosAuthRefreshRequestConfig) {
     const response = await this.instance.patch<T>(this.getUrl(endpoint), data, config)
     return response.data
   }
 
-  async put<T = any>(endpoint: string, data?: object, config?: AxiosAuthRefreshRequestConfig) {
+  async put<T>(endpoint: string, data?: object, config?: AxiosAuthRefreshRequestConfig) {
     const response = await this.instance.put<T>(this.getUrl(endpoint), data, config)
     return response.data
   }
 
-  async delete<T = any>(endpoint: string, config?: AxiosAuthRefreshRequestConfig) {
+  async delete<T>(endpoint: string, config?: AxiosAuthRefreshRequestConfig) {
     const response = await this.instance.delete<T>(this.getUrl(endpoint), config)
     return response.data
   }
 }
 
-export function handleError(error: any, onError?: (error: AxiosResponse) => void) {
+export function handleError(error: unknown, onError?: (error: AxiosResponse) => void) {
   if (axios.isAxiosError(error)) {
     if (error.response) {
       if (error.response.status >= 500 && error.response.status < 600) {
