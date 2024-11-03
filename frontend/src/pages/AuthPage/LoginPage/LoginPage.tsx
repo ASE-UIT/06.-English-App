@@ -1,24 +1,24 @@
-import authApi from "@/services/auth.service";
 import { SignInPayload } from "@/type/auth";
 import { FormEvent, useState } from "react";
 import { FcGoogle } from "react-icons/fc"
 import { Link, useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-
-
+import { useAuth } from "@/hooks/useAuth";
 
 const LoginPage = () => {
+  const { logIn } = useAuth()
   const [signInData, setSignInData] = useState<SignInPayload>({username: "", password: ""});
   const navigate = useNavigate();
   const handleSignInSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const signInRes = await authApi.signIn(signInData);
-    if(signInRes) {
+    await logIn(signInData);
+    const token = localStorage.getItem("accessToken")
+    if(token) {
       toast.success("Đăng nhập thành công!");
       console.log("Login success");
-      console.log(signInRes);
       navigate("/teacher-home");
+      toast.success("Đăng nhập thành công")
     }
     else toast.error("Sai tài khoản hoặc mật khẩu!");
   }

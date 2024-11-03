@@ -4,8 +4,8 @@ class AuthApi {
     constructor(){}
     async signIn(data: SignInPayload){
         try {
-            const res = await httpClient.post("/auth/sign-in", data);
-            return res;
+            const res = await httpClient.post<{ data: { accessToken: string } }>("/auth/sign-in", data);
+            return {accessToken: res.data.accessToken};
         } catch (error) {
             console.log(error);
         }
@@ -18,6 +18,14 @@ class AuthApi {
             console.log(error);
         }
     }
+    async signOut() {
+    try {
+      const res = await httpClient.delete("/auth/sign-out")
+      return res
+    } catch (error) {
+      console.log(error)
+    }
+  }
     async confirmSignUp(){ 
 
     }
@@ -28,7 +36,12 @@ class AuthApi {
 
     }
     async refreshToken(){
-
+        try {
+            const res = await httpClient.post<{ data: { accessToken: string } }>("/auth/refresh-token");
+            return {accessToken: res.data.accessToken};
+        } catch (error) {
+            console.log(error);
+        }
     }
     async OAuthCallBack(){
     }

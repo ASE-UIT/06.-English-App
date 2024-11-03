@@ -50,10 +50,12 @@
     "tailwind-merge": "^2.5.4",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.25.9",
+    "@types/jwt-decode": "^3.1.0",
     "@types/lodash": "^4.17.10",
     "@types/node": "^22.7.3",
     "@types/react": "^18.3.3",
