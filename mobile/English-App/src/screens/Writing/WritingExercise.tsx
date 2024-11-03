@@ -17,16 +17,18 @@ const WritingExercise = () => {
     
     const [textInputValue, setTextInputValue] = useState('');
     return (
-        <View>
-            {
-                task ? (
-                    <Writing_task taskNumber={0} question={''} />
-                ) : (
-                    <Writing_submit />
-                )
-            }
+        <View className='flex relative h-full'>
+            <View className='mt-[50px]'>
+                {
+                    task ? (
+                        <Writing_task taskNumber={0} question={''} />
+                    ) : (
+                        <Writing_submit />
+                    )
+                }
+            </View>
 
-            <View className='flex flex-row justify-between p-3 gap-2'>
+            <View className='flex flex-row justify-between p-3 gap-2 absolute right-0 bottom-0 left-0'>
                 <Button
                     title={'Task'}
                     containerStyle={{
