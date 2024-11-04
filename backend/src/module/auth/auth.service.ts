@@ -17,7 +17,7 @@ export class AuthService {
     try {
       return await this.dataSource.transaction(async (manager) => {
         const res = await manager.save(user);
-        await this.cognitoService.handleUpdateRole(user.role, username);
+        await this.cognitoService.addUserToGroup(username, user.role);
         switch (user.role) {
           case 'TEACHER':
             const teacher = new Teacher();
