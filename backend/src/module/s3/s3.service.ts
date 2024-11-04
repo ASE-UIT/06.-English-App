@@ -25,15 +25,16 @@ export class S3Service {
     this.bucketName = this.configService.get<string>('awsBucketName');
   }
 
-  async generatePreSignedUrl() {
-    const key = `uploads/${uuidV4()}`;
+  async generatePreSignedUrl(type: string) {
+    const key = uuidV4();
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
+      ContentType: type,
     });
 
     const preSignedUrl = await getSignedUrl(this.s3Client, command, {
-      expiresIn: 3600,
+      expiresIn: 1800,
     });
 
     return { preSignedUrl, key };

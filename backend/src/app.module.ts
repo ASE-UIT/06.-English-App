@@ -5,7 +5,7 @@ import { TypeOrmModule } from './datasource/typeorm.module';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
 import { SharedModule } from './module/shared.module';
-import { ThrottlerModule, minutes } from '@nestjs/throttler';
+import { minutes, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -20,8 +20,8 @@ import { ThrottlerModule, minutes } from '@nestjs/throttler';
     }),
     ThrottlerModule.forRoot([
       {
-        ttl: minutes(5),
-        limit: 10,
+        ttl: minutes(1),
+        limit: 15,
       },
     ]),
     SharedModule,
