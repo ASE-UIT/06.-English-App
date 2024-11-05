@@ -26,8 +26,12 @@ export const END_POINTS = {
   },
   COURSE: {
     BASE: '/course',
+    GET_ALL_COURSES: '/get-all-courses',
+    GET_RECOMMENDATION_COURSES: '/get-all-recomendation-courses',
+    GET_MY_COURSE_BY_TEACHER: '/teacher/my-course',
+    GET_MY_COURSE_BY_STUDENT: '/student/my-course/',
+    GET_DETAIL: '/detail/:id',
     CREATE: '',
-    LIST: '',
     UPDATE: '',
     DELETE: '',
   },

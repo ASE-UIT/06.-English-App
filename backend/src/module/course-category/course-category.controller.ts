@@ -6,7 +6,6 @@ import {
   Param,
   Delete,
   Put,
-  ParseUUIDPipe,
 } from '@nestjs/common';
 import { CourseCategoryService } from './course-category.service';
 import { CreateCourseCategoryDto } from './dto/create-course-category.dto';
@@ -16,8 +15,9 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { CourseCategory } from './entities/course-category.entity';
 import { ResponseObject } from 'src/utils/objects';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.COURSE_CATEGORY.BASE)
 @ApiTags(DOCUMENTATION.TAGS.COURSE_CATEGORY)
 export class CourseCategoryController {
