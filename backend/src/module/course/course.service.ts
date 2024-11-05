@@ -3,6 +3,7 @@ import { DataSource } from 'typeorm';
 import { Course } from './entities/course.entity';
 import { Teacher } from '../user/entities/teacher.entity';
 import { User } from '../user/entities/user.entity';
+import { GetAllCourseQuery } from './dto/get-all-course.dto';
 
 @Injectable()
 export class CourseService {
@@ -18,7 +19,27 @@ export class CourseService {
     }
   }
 
-  async findAllCourses() {
+  async findAllCourses(query: GetAllCourseQuery) {
+    try {
+      const [courses, count] = await this.dataSource
+        .getRepository(Course)
+        .findAndCount({
+          where: {
+            ...(query.search && {
+              name: { contains: query.search, mode: 'insensitive' },
+            }),
+            ...(query.categoryId && { category: { id: query.categoryId } }),
+          },
+          skip: query.skip,
+          take: query.take,
+        });
+      return { courses, count };
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async findAllRecommendationCourses() {
     try {
       const courses = await this.dataSource.getRepository(Course).find();
       return courses;
@@ -26,7 +47,6 @@ export class CourseService {
       throw new HttpException(error.message, 500);
     }
   }
-
   async findByCategory(categoryId: string) {
     try {
       const courses = await this.dataSource

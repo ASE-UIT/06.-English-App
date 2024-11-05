@@ -7,6 +7,7 @@ import {
   Delete,
   Put,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
@@ -20,6 +21,7 @@ import { User } from 'src/common/decorators/user.decorator';
 import { IUser } from 'src/common/guards/at.guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CourseCategoryService } from '../course-category/course-category.service';
+import { GetAllCourseQuery } from './dto/get-all-course.dto';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE.BASE)
@@ -46,11 +48,17 @@ export class CourseController {
     const result = await this.courseService.create(user.userAwsId, course);
     return ResponseObject.create('Course created', result);
   }
+  @Get(END_POINTS.COURSE.GET_ALL_COURSES)
+  @ApiOperation({ summary: 'Get all courses by student' })
+  async findAllCourses(@Query() query: GetAllCourseQuery) {
+    const { courses, count } = await this.courseService.findAllCourses(query);
+    return ResponseObject.create('Courses retrieved successfully', courses);
+  }
 
   @Get(END_POINTS.COURSE.GET_RECOMMENDATION_COURSES)
   @ApiOperation({ summary: 'Get recommendation course by student' })
-  async findAllCourses() {
-    const courses = await this.courseService.findAllCourses();
+  async findAllRecommendationCourses() {
+    const courses = await this.courseService.findAllRecommendationCourses();
     return ResponseObject.create('Courses retrieved successfully', courses);
   }
 
@@ -71,14 +79,6 @@ export class CourseController {
     const courses = await this.courseService.findAll(user.userAwsId);
     return ResponseObject.create('Courses retrieved successfully', courses);
   }
-
-  @Get()
-  @ApiOperation({ summary: 'Get all courses of teacher' })
-  async findAll(@User() user: IUser) {
-    const courses = await this.courseService.findAll(user.userAwsId);
-    return ResponseObject.create('Courses retrieved successfully', courses);
-  }
-
   @Get(':id')
   @ApiOperation({
     summary: 'Get course by id',
