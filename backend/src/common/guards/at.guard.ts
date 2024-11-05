@@ -58,6 +58,7 @@ export class JwtAuthGuard implements CanActivate {
       request['user'] = {
         userAwsId: res.sub,
         userName: res.username,
+        roles: res['cognito:groups'],
       } as IUser;
       return true;
     } catch (error) {

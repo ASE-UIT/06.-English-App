@@ -40,6 +40,29 @@ export const END_POINTS = {
     LIST: '',
     UPDATE: '',
   },
+  LESSON: {
+    BASE: '/lesson',
+    CREATE_GRAMMAR: '/grammar',
+    CREATE_VOCABULARY: '/vocabulary',
+    CREATE_NORMAL: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
+  GRAMMAR: {
+    BASE: '/grammar',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
+  SECTION: {
+    BASE: '/section',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '',
+    DELETE: '',
+  },
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',
@@ -52,6 +75,9 @@ export const DOCUMENTATION = {
     FILE: 'FILE',
     COURSE: 'COURSE',
     COURSE_CATEGORY: 'COURSE_CATEGORY',
+    LESSON: 'LESSON',
+    GRAMMAR: 'GRAMMAR',
+    SECTION: 'SECTION',
   },
 };
 export const TIMEOUT = 5000;
