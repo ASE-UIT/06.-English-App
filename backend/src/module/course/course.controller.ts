@@ -22,6 +22,10 @@ import { IUser } from 'src/common/guards/at.guard';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CourseCategoryService } from '../course-category/course-category.service';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
+import {
+  PaginatedResponse,
+  PaginatedResult,
+} from 'src/utils/paginated-response';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE.BASE)
@@ -52,7 +56,10 @@ export class CourseController {
   @ApiOperation({ summary: 'Get all courses by student' })
   async findAllCourses(@Query() query: GetAllCourseQuery) {
     const { courses, count } = await this.courseService.findAllCourses(query);
-    return ResponseObject.create('Courses retrieved successfully', courses);
+    return PaginatedResult.create(
+      'Courses retrieved successfully',
+      PaginatedResponse.create(courses, query.page, count, query.take),
+    );
   }
 
   @Get(END_POINTS.COURSE.GET_RECOMMENDATION_COURSES)
@@ -71,17 +78,17 @@ export class CourseController {
     return ResponseObject.create('Courses retrieved successfully', courses);
   }
 
-  @Get(END_POINTS.COURSE.GET_MY_COURSE_BY_USER)
+  @Get(END_POINTS.COURSE.GET_MY_COURSE_BY_STUDENT)
   @ApiOperation({
     summary: 'Get all courses of user',
   })
   async findMyCourseByUser(@User() user: IUser) {
-    const courses = await this.courseService.findAll(user.userAwsId);
+    const courses = await this.courseService.findAllByStudent(user.userAwsId);
     return ResponseObject.create('Courses retrieved successfully', courses);
   }
-  @Get(':id')
+  @Get(END_POINTS.COURSE.GET_DETAIL)
   @ApiOperation({
-    summary: 'Get course by id',
+    summary: 'Get course detail by id',
   })
   async findOne(@Param('id') id: string) {
     const result = await this.courseService.findOne(id);

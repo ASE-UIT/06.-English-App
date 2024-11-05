@@ -4,6 +4,7 @@ import { Course } from './entities/course.entity';
 import { Teacher } from '../user/entities/teacher.entity';
 import { User } from '../user/entities/user.entity';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
+import { STATE } from 'src/utils/constants';
 
 @Injectable()
 export class CourseService {
@@ -29,6 +30,7 @@ export class CourseService {
               name: { contains: query.search, mode: 'insensitive' },
             }),
             ...(query.categoryId && { category: { id: query.categoryId } }),
+            state: STATE.PUBLISHED,
           },
           skip: query.skip,
           take: query.take,
@@ -74,6 +76,22 @@ export class CourseService {
     }
   }
 
+  async findAllByStudent(awsId: string) {
+    try {
+      const courses = await this.dataSource
+        .getRepository(Course)
+        .createQueryBuilder('course')
+        .leftJoin('course.courseOwnings', 'courseOwnings')
+        .leftJoin('courseOwnings.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
+        .where('userInfo.awsCognitoId = :awsId', { awsId })
+        .getMany();
+      return courses;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
   async findOne(id: string) {
     try {
       const existingCourse = await this.dataSource
