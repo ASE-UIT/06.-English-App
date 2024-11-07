@@ -45,6 +45,7 @@ export const END_POINTS = {
     BASE: '/lesson',
     CREATE_GRAMMAR: '/grammar',
     CREATE_VOCABULARY: '/vocabulary',
+    GET_ALL_LESSONS_BY_COURSE: '/get-all-lessons-by-course/:courseId',
     CREATE_NORMAL: '',
     LIST: '',
     UPDATE: '',

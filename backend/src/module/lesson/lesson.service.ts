@@ -56,8 +56,19 @@ export class LessonService {
       throw new HttpException(error.message, 500);
     }
   }
-  async findAll() {
-    return `This action returns all lesson`;
+  async getAllLessonOfCourse(courseId: string) {
+    try {
+      const lessons = await this.dataSource
+        .getRepository(Lesson)
+        .createQueryBuilder('lesson')
+        .leftJoin('lesson.course', 'course')
+        .where('course.id = :courseId', { courseId })
+        .getMany();
+      return lessons;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
   }
 
   async findOne(id: string) {
