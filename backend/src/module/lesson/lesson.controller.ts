@@ -18,9 +18,10 @@ import { Lesson } from './entities/lesson.entity';
 import { LessonVocabulary } from './entities/lesson-vocabulary.entity';
 import { CreateLessonVocabularyDto } from './dto/create-lesson-vocabulary.dto';
 import { ResponseObject } from 'src/utils/objects';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { InternalServerErrorException } from '@nestjs/common';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.LESSON.BASE)
 @ApiTags(DOCUMENTATION.TAGS.LESSON)
 export class LessonController {
