@@ -103,7 +103,11 @@ export class LessonController {
     const result = await this.lessonService.findOne(id);
     return ResponseObject.create('Get lesson successfully', result);
   }
-
+  @Get(END_POINTS.LESSON.GET_ALL_LESSONS_BY_COURSE)
+  async getAllLessonOfCourse(@Param('courseId') courseId: string) {
+    const result = await this.lessonService.getAllLessonOfCourse(courseId);
+    return ResponseObject.create('Get all lessons successfully', result);
+  }
   @Patch(':id')
   async Update(
     @Param('id') id: string,
