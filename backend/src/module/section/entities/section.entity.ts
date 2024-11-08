@@ -14,6 +14,7 @@ export class Section extends Base {
   @Column()
   @AutoMap()
   content: string;
+  @Column()
   @Column({
     type: 'enum',
     enum: SECTION_TYPE,
@@ -21,6 +22,11 @@ export class Section extends Base {
   })
   @AutoMap()
   type: SECTION_TYPE;
+  @Column({
+    nullable: true,
+  })
+  @AutoMap()
+  sectionMedia?: string;
   @ManyToOne(() => Lesson, (lesson) => lesson.sections)
   lesson: Lesson;
   @OneToMany(() => QuestionGroup, (questionGroup) => questionGroup.section)

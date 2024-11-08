@@ -10,13 +10,14 @@ import {
 import { SectionService } from './section.service';
 import { CreateSectionDto } from './dto/create-section.dto';
 import { UpdateSectionDto } from './dto/update-section.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { Section } from './entities/section.entity';
 import { ResponseObject } from 'src/utils/objects';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.SECTION.BASE)
 @ApiTags(DOCUMENTATION.TAGS.SECTION)
 export class SectionController {
