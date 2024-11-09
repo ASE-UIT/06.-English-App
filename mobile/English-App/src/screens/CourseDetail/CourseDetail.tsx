@@ -1,4 +1,4 @@
-import { View, Text, Image, FlatList } from 'react-native'
+import { View, Text, Image, FlatList, SafeAreaView } from 'react-native'
 import React from 'react'
 import { Button, Icon } from '@rneui/themed'
 
@@ -24,11 +24,8 @@ const CourseDetail = () => {
     setIsPlaylist(false)
     setIsDescription(true)
   }
-
-
   return (
-    <View className='relative w-full h-full'>
-      <View className='flex mx-[45px] mt-[50px] '>
+      <View className='mt-[50px] px-[45px] h-auto relative'>
         <Image source={require('../../../assets/Frame9.png')} className='rounded-3xl w-full h-64'/>
         <Text className='text-lg font-semibold'>Reading Course For Beginer</Text>
         <Text>Created by <Text className='text-[#5D5FEF]'>Ms. Thuy</Text></Text>
@@ -64,36 +61,37 @@ const CourseDetail = () => {
             />
           </View>
           <FlatList 
-            data={['Lesson 1', 'Lesson 2', 'Lesson 3', 'Lesson 4', 'Lesson 5', 'Lesson 6', 'Lesson 7', 'Lesson 8', 'Lesson 9', 'Lesson 10']} 
+            // data={[]}
+            data={['Lesson 1', 'Lesson 2', 'Lesson 3', 'Lesson 4', 'Lesson 5', 'Lesson 6', 'Lesson 7', 'Lesson 8', 'Lesson 9', 'Lesson 10','Lesson 1', 'Lesson 2', 'Lesson 3', 'Lesson 4', 'Lesson 5', 'Lesson 6', 'Lesson 7', 'Lesson 8', 'Lesson 9', 'Lesson 10']} 
             renderItem={({ item }) => Lesson()} 
-            style={{ display:'flex',height: '50%', marginTop: 10}}
+            style={{ display:'flex',height: '40%', marginTop: 10}}
             scrollEnabled={true}
             keyExtractor={(item, index) => index.toString()} 
           />
         </View>
-        
+
+        <View className='flex flex-row bg-white pl-8 pr-8 pb-3 pt-[14px] w-screen justify-around h-[80px] absolute bottom-0 right-0 left-0'>
+          <Button buttonStyle={{
+            backgroundColor: '#EF5DA8',
+            borderRadius: 20,
+            width: 60,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}>
+              <Icon name='cart-outline' type='material-community' color='white' onPress={() => {console.log('Press')}}/>
+          </Button>
+          <Button title='BUY NOW' buttonStyle={{
+            backgroundColor: '#5D5FEF',
+            borderRadius: 20,
+            width: 210,
+            height: 50,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}/>
+        </View>
       </View>
-      <View className='flex flex-row bg-white pl-8 pr-8 pb-3 justify-around absolute bottom-0 right-0 left-0'>
-        <Button buttonStyle={{
-          backgroundColor: '#EF5DA8',
-          borderRadius: 20,
-          width: 60,
-          height: 50,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
-            <Icon name='cart-outline' type='material-community' onPress={() => {console.log('Press')}}/>
-        </Button>
-        <Button title='BUY NOW' buttonStyle={{
-          backgroundColor: '#5D5FEF',
-          borderRadius: 20,
-          width: 210,
-          height: 50,
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}/>
-      </View>
-    </View>
+
   )
 }
 
