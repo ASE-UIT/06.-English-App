@@ -402,3 +402,4 @@ Temporary Items
 dist
 .webpack
 .serverless/**/*.zip
+mobile/English-App/App.tsx
