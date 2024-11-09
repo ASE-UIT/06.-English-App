@@ -8,6 +8,7 @@ import Profile from "../screens/Profile/Profile";
 import Reading from "../screens/Reading";
 import CourseHome from "./CourseHome"
 import CourseDetail from "../screens/CourseDetail";
+import Vocabulary from "../screens/Vocabulary";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -46,7 +47,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="vocabulary"
-        component={CourseDetail} // change this to VocabularyScreen later
+        component={Vocabulary} // change this to VocabularyScreen later
         options={{
           tabBarLabel: "Vocabulary",
           tabBarIcon: ({ color }) => (
