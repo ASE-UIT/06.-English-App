@@ -4,7 +4,7 @@ import React from 'react'
 export default function GrammarLesson() {
   return (
     <View>
-      <Text>Present perfect tense</Text>
+      <Text className='text-black text-base font-semibold'>Present perfect tense</Text>
     </View>
   )
 }
