@@ -16,7 +16,7 @@ export class CourseBuyingController {
   constructor(private readonly courseBuyingService: CourseBuyingService) {}
 
   @Post()
-  create(@Body() createCourseBuyingDto: CreateCourseBuyingDto) {
+  async create(@Body() createCourseBuyingDto: CreateCourseBuyingDto) {
     return this.courseBuyingService.create(createCourseBuyingDto);
   }
 
@@ -26,20 +26,32 @@ export class CourseBuyingController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.courseBuyingService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.courseBuyingService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id') id: number,
     @Body() updateCourseBuyingDto: UpdateCourseBuyingDto,
   ) {
-    return this.courseBuyingService.update(+id, updateCourseBuyingDto);
+    return this.courseBuyingService.update(id, updateCourseBuyingDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.courseBuyingService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.courseBuyingService.remove(id);
+  }
+
+  // Endpoint tạo session thanh toán cho Stripe
+  @Post('payment/:id')
+  async createPaymentSession(@Param('id') id: number) {
+    return this.courseBuyingService.createPaymentSession(id);
+  }
+
+  @Post('vnpay-payment/:id')
+  async createVNPayPaymentSession(@Param('id') id: number) {
+    return this.courseBuyingService.createVNPayPaymentSession(id);
   }
 }
+

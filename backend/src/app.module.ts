@@ -7,6 +7,7 @@ import { classes } from '@automapper/classes';
 import { SharedModule } from './module/shared.module';
 import { ThrottlerModule, minutes } from '@nestjs/throttler';
 import configuration from './config/configuration';
+import paymentConfig from './config/payment.config';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import configuration from './config/configuration';
       },
     ]),
     SharedModule,
-    CourseBuyingModule, // Thêm vào đây
+    CourseBuyingModule, 
+    
   ],
 })
 export class AppModule {}

@@ -1,13 +1,19 @@
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsString, IsNotEmpty } from 'class-validator';
 import { PAYMENT_METHOD } from 'src/utils/constants';
 
 export class CreateCourseBuyingDto {
+  @IsString()
+  @IsNotEmpty()
+  userId: string; 
+
+  @IsString()
+  @IsNotEmpty()
+  courseId: string;
+
   @IsEnum(PAYMENT_METHOD)
   paymentMethod: PAYMENT_METHOD;
 
   @IsString()
+  @IsNotEmpty()
   key: string;
-
-  @IsString()
-  active: boolean; // Nếu active không cần truyền từ client, có thể bỏ qua
 }

@@ -1,19 +1,5 @@
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
-import { PAYMENT_METHOD } from 'src/utils/constants';
 
-export class CreateCourseBuyingDto {
-  @IsString()
-  @IsNotEmpty()
-  userId: string; 
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateCourseBuyingDto } from './create-course-buying.dto';
 
-  @IsString()
-  @IsNotEmpty()
-  courseId: string; 
-
-  @IsEnum(PAYMENT_METHOD)
-  paymentMethod: PAYMENT_METHOD; 
-
-  @IsString()
-  @IsNotEmpty()
-  key: string; 
-}
+export class UpdateCourseBuyingDto extends PartialType(CreateCourseBuyingDto) {}
