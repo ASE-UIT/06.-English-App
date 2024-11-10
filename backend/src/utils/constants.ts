@@ -148,3 +148,5 @@ export enum STATE {
   BLOCKED = 'BLOCKED',
   PUBLISHED = 'PUBLISHED',
 }
+
+export const COURSE_THUMBNAIL_IMAGE = '';
