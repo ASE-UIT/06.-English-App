@@ -25,6 +25,13 @@ export class Course extends Base {
   @AutoMap()
   price: number;
 
+  @Column({
+    default:
+      'https://study4.com/media/courses/Course/files/2023/10/19/phat_am_giao_tiep_1.webp',
+  })
+  @AutoMap()
+  thumbnail_image: string;
+
   @ManyToOne(() => Teacher, (teacher) => teacher.courses)
   @JoinColumn({ name: 'teacherId' })
   teacher: Teacher;
