@@ -83,6 +83,7 @@ export class LessonController {
       throw new InternalServerErrorException('Error creating lesson');
     }
   }
+  @Post(END_POINTS.LESSON.CREATE_NORMAL)
   @ApiOperation({
     summary: 'Create a new normal lesson',
   })
