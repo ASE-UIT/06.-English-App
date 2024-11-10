@@ -26,6 +26,7 @@ import {
   PaginatedResponse,
   PaginatedResult,
 } from 'src/utils/paginated-response';
+import { CourseResponseDto } from './dto/course-response.dto';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE.BASE)
@@ -53,12 +54,17 @@ export class CourseController {
     return ResponseObject.create('Course created', result);
   }
   @Get(END_POINTS.COURSE.GET_ALL_COURSES)
-  @ApiOperation({ summary: 'Get all courses by student' })
+  @ApiOperation({ summary: 'Get all courses in home page' })
   async findAllCourses(@Query() query: GetAllCourseQuery) {
     const { courses, count } = await this.courseService.findAllCourses(query);
+    const coursesReponse = this.mapper.mapArray(
+      courses,
+      Course,
+      CourseResponseDto,
+    );
     return PaginatedResult.create(
       'Courses retrieved successfully',
-      PaginatedResponse.create(courses, query.page, count, query.take),
+      PaginatedResponse.create(coursesReponse, query.page, count, query.take),
     );
   }
 
@@ -75,7 +81,15 @@ export class CourseController {
   })
   async findMyCourseByTeacher(@User() user: IUser) {
     const courses = await this.courseService.findAll(user.userAwsId);
-    return ResponseObject.create('Courses retrieved successfully', courses);
+    const coursesReponse = await this.mapper.mapArrayAsync(
+      courses,
+      Course,
+      CourseResponseDto,
+    );
+    return ResponseObject.create(
+      'Courses retrieved successfully',
+      coursesReponse,
+    );
   }
 
   @Get(END_POINTS.COURSE.GET_MY_COURSE_BY_STUDENT)
@@ -84,7 +98,15 @@ export class CourseController {
   })
   async findMyCourseByUser(@User() user: IUser) {
     const courses = await this.courseService.findAllByStudent(user.userAwsId);
-    return ResponseObject.create('Courses retrieved successfully', courses);
+    const coursesReponse = await this.mapper.mapArrayAsync(
+      courses,
+      Course,
+      CourseResponseDto,
+    );
+    return ResponseObject.create(
+      'Courses retrieved successfully',
+      coursesReponse,
+    );
   }
   @Get(END_POINTS.COURSE.GET_DETAIL)
   @ApiOperation({
@@ -94,7 +116,6 @@ export class CourseController {
     const result = await this.courseService.findOne(id);
     return ResponseObject.create('Course retrieved successfully', result);
   }
-
   @Put()
   @ApiOperation({
     summary: 'Update course',

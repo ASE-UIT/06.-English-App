@@ -22,19 +22,32 @@ export class CourseService {
 
   async findAllCourses(query: GetAllCourseQuery) {
     try {
-      const [courses, count] = await this.dataSource
+      const queryBuilder = this.dataSource
         .getRepository(Course)
-        .findAndCount({
-          where: {
-            ...(query.search && {
-              name: { contains: query.search, mode: 'insensitive' },
-            }),
-            ...(query.categoryId && { category: { id: query.categoryId } }),
-            state: STATE.PUBLISHED,
-          },
-          skip: query.skip,
-          take: query.take,
+        .createQueryBuilder('course')
+        .leftJoin('course.category', 'category')
+        .leftJoin('course.teacher', 'teacher')
+        .leftJoin('teacher.userInfo', 'userInfo')
+        .leftJoin('course.courseReviewings', 'courseReviewings')
+        .select(['course', 'category.name', 'teacher', 'userInfo'])
+        .where('course.state = :state', { state: STATE.PUBLISHED });
+
+      if (query.search) {
+        queryBuilder.andWhere('course.title ILIKE :search', {
+          search: `%${query.search}%`,
         });
+      }
+
+      if (query.categoryId) {
+        queryBuilder.andWhere('category.id = :categoryId', {
+          categoryId: query.categoryId,
+        });
+      }
+
+      const [courses, count] = await queryBuilder
+        .skip(query.skip)
+        .take(query.take)
+        .getManyAndCount();
       return { courses, count };
     } catch (error) {
       throw new HttpException(error.message, 500);
@@ -67,7 +80,15 @@ export class CourseService {
         .createQueryBuilder('course')
         .leftJoin('course.category', 'category')
         .leftJoin('course.teacher', 'teacher')
-        .select(['course', 'category.name'])
+        .leftJoin('course.courseReviewings', 'courseReviewings')
+        .leftJoin('teacher.userInfo', 'userInfo')
+        .select([
+          'course',
+          'category.name',
+          'teacher',
+          'userInfo',
+          'courseReviewings',
+        ])
         .where('teacher.id = :teacherId', { teacherId: teacher.id })
         .getMany();
       return courses;
@@ -82,8 +103,19 @@ export class CourseService {
         .getRepository(Course)
         .createQueryBuilder('course')
         .leftJoin('course.courseOwnings', 'courseOwnings')
+        .leftJoin('course.category', 'category')
+        .leftJoin('course.teacher', 'teacher')
+        .leftJoin('teacher.userInfo', 'userInfo')
+        .leftJoin('course.courseReviewings', 'courseReviewings')
         .leftJoin('courseOwnings.student', 'student')
         .leftJoin('student.userInfo', 'userInfo')
+        .select([
+          'course',
+          'category.name',
+          'teacher',
+          'userInfo',
+          'courseReviewings',
+        ])
         .where('userInfo.awsCognitoId = :awsId', { awsId })
         .getMany();
       return courses;
