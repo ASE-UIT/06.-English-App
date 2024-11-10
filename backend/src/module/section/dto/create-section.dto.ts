@@ -37,4 +37,12 @@ export class CreateSectionDto {
     enum: SECTION_TYPE,
   })
   type: SECTION_TYPE;
+  @AutoMap()
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Media of the section',
+    type: String,
+  })
+  sectionMedia: string;
 }

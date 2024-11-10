@@ -10,13 +10,14 @@ import {
 import { SectionService } from './section.service';
 import { CreateSectionDto } from './dto/create-section.dto';
 import { UpdateSectionDto } from './dto/update-section.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { Section } from './entities/section.entity';
 import { ResponseObject } from 'src/utils/objects';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.SECTION.BASE)
 @ApiTags(DOCUMENTATION.TAGS.SECTION)
 export class SectionController {
@@ -35,7 +36,6 @@ export class SectionController {
       CreateSectionDto,
       Section,
     );
-    console.log(section);
     const newSection = await this.sectionService.create(
       createSectionDto.lessionId,
       section,
@@ -44,8 +44,13 @@ export class SectionController {
   }
 
   @Get(':id')
+  @ApiResponse({
+    status: 200,
+    description: 'Section found',
+  })
   async findOne(@Param('id') id: string) {
-    return this.sectionService.findOne(+id);
+    const section = await this.sectionService.findOne(id);
+    return ResponseObject.create('Section found', section);
   }
 
   @Patch()

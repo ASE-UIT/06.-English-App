@@ -45,4 +45,13 @@ export class UpdateSectionDto {
     enum: SECTION_TYPE,
   })
   type?: SECTION_TYPE;
+  @ApiProperty()
+  @IsString()
+  @IsOptional()
+  @AutoMap()
+  @ApiProperty({
+    description: 'Media of the section',
+    type: String,
+  })
+  sectionMedia?: string;
 }

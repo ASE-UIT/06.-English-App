@@ -15,8 +15,9 @@ import { Mapper } from '@automapper/core';
 import { Grammar } from './entities/grammar.entity';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { ResponseObject } from 'src/utils/objects';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.GRAMMAR.BASE)
 @ApiTags(DOCUMENTATION.TAGS.GRAMMAR)
 export class GrammarController {

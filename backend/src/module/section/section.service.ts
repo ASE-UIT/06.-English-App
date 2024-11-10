@@ -30,12 +30,24 @@ export class SectionService {
     }
   }
 
-  findAll() {
-    return `This action returns all section`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} section`;
+  async findOne(id: string) {
+    try {
+      const section = await this.dataSource
+        .getRepository(Section)
+        .createQueryBuilder('section')
+        .leftJoin('section.questionGroups', 'questionGroups')
+        .leftJoin('questionGroups.questions', 'questions')
+        .select(['section', 'questionGroups', 'questions'])
+        .where('section.id = :id', { id })
+        .getOne();
+      return section;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async update(section: Section, lessionId?: string) {
