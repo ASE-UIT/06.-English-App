@@ -1,7 +1,10 @@
 import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import CourseItem from "../../components/CourseItem";
+import { useNavigation } from "@react-navigation/native";
+
+import { LearningScreenNavigationProp } from "../../type";
 
 const dataForCourseItem = [
   {
@@ -23,6 +26,7 @@ const dataForCourseItem = [
 ];
 
 export default function LearningScreen() {
+  const nav = useNavigation<LearningScreenNavigationProp>();
   const [buttonSelected, setButtonSelected] = React.useState("All");
   return (
     <ScrollView className="w-full px-[24px] py-6">
@@ -87,15 +91,17 @@ export default function LearningScreen() {
       </View>
       <View className="w-full flex flex-col gap-2 items-center mt-5">
         {dataForCourseItem.map((course, index) => (
-          <CourseItem
-            key={index}
-            srcImg={course.srcImg}
-            title={course.title}
-            teacherName={course.teacherName}
-            progress={course.progress}
-            rated={course.rated}
-            onPressItem={() => {}}
-          />
+         
+            <CourseItem
+              key={index}
+              srcImg={course.srcImg}
+              title={course.title}
+              teacherName={course.teacherName}
+              progress={course.progress}
+              rated={course.rated}
+              onPressItem={() => nav.navigate("Course")}
+            />
+         
         ))}
       </View>
     </ScrollView>

@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView, StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-import BottomTabsNavigator from "./src/components/BottomTabsNavigator";
+import BottomTabsNavigator from "./src/Navigation/BottomTabsNavigator";
 import MainHeader from "./src/components/MainHeader";
 export default function App() {
   return (
@@ -9,6 +9,7 @@ export default function App() {
       <SafeAreaView style={styles.container}>
         <MainHeader title="English App" />
         <NavigationContainer>
+
           <BottomTabsNavigator />
         </NavigationContainer>
       </SafeAreaView>

@@ -7,6 +7,7 @@ import Profile from "../screens/Profile/Profile";
 
 import Vocabulary from "../screens/Vocabulary";
 import Grammar from "../screens/Grammar";
+import LearningStackNavigation from "./LearningStackNavigation";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -35,7 +36,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="learning"
-        component={Learning} // change this to LearningScreen later
+        component={LearningStackNavigation} // change this to LearningScreen later
         options={{
           tabBarLabel: "Learning",
           tabBarIcon: ({ color }) => (
