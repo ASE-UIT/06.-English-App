@@ -150,4 +150,10 @@ export enum STATE {
   PUBLISHED = 'PUBLISHED',
 }
 
+export enum SECTION_STATUS {
+  NOT_STARTED = 'NOT_STARTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+}
+
 export const COURSE_THUMBNAIL_IMAGE = '';
