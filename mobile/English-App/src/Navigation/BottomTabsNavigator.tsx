@@ -1,13 +1,13 @@
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import { Icon } from "@rneui/themed";
 
-import Learning from "../screens/Learning";
 import Home from "../screens/Home/Home";
 import Profile from "../screens/Profile/Profile";
 
 import Vocabulary from "../screens/Vocabulary";
-import Grammar from "../screens/Grammar";
+
 import LearningStackNavigation from "./LearningStackNavigation";
+import GrammarStackNavigation from "./GrammarStackNavigation";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -56,7 +56,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="grammar"
-        component={Grammar} // change this to GrammarScreen later
+        component={GrammarStackNavigation} // change this to GrammarScreen later
         options={{
           tabBarLabel: "Grammar",
           tabBarIcon: ({ color }) => (

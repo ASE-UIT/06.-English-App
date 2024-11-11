@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import React from "react";
 import { Icon } from "@rneui/base";
+import { useNavigation } from "@react-navigation/native";
+import { GrammarScreenNavigationProp } from "../../type";
 
 const Grammar = () => {
   const titles = [
@@ -13,6 +15,8 @@ const Grammar = () => {
     "Present simple tense",
     "Past simple tense",
   ];
+
+  const navigation = useNavigation<GrammarScreenNavigationProp>();
   return (
     <SafeAreaView className=" justify-center items-center flex ">
       <View
@@ -21,7 +25,11 @@ const Grammar = () => {
       >
         {titles.map((title, index) => {
           return (
-            <TouchableOpacity key={index} className="flex flex-row justify-start items-center p-2  gap-3">
+            <TouchableOpacity
+              onPress={() => navigation.navigate("GrammarDetail")}
+              key={index}
+              className="flex flex-row justify-start items-center p-2  gap-3"
+            >
               <Icon name="play" type="material-community" size={20} />
               <Text className="text-black text-base">{title}</Text>
             </TouchableOpacity>

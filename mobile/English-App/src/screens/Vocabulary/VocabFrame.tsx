@@ -1,13 +1,16 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { Icon, CheckBox } from "react-native-elements"; // or the appropriate library
 
 export default function VocabFrame() {
   const [checked, setChecked] = React.useState(false);
   return (
-    <View style={{
-        backgroundColor: checked ? '#fcddec' : '#fff'
-    }} className="vocabFrame w-full  items-center  flex flex-row ">
+    <TouchableOpacity
+      style={{
+        backgroundColor: checked ? "#fcddec" : "#fff",
+      }}
+      className="vocabFrame w-full  items-center  flex flex-row "
+    >
       <Icon name="home" size={70} />
       <View>
         <Text>home(n)</Text>
@@ -20,9 +23,8 @@ export default function VocabFrame() {
           onPress={() => setChecked(!checked)}
           checkedColor="#ef5da8"
           uncheckedColor="#ef5da8"
-          
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
