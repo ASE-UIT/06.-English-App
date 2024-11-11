@@ -2,11 +2,18 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator, StackHeaderStyleInterpolator } from '@react-navigation/stack'
 import { Button, Icon } from '@rneui/themed'
 import React, { useState } from 'react'
-import { Animated, FlatList, TouchableOpacity, View } from 'react-native'
+import { Animated, FlatList, TouchableOpacity, View, Text } from 'react-native'
 import { PaperProvider, Portal } from 'react-native-paper'
 import { QList, UserPostHeader } from '../../components/Q&A'
 import AnswerScreen from './AnswerScreen'
 import PostQuestionModal from './postQuestionModal'
+import {
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+    MenuProvider,
+} from 'react-native-popup-menu';
 
 const forFade: StackHeaderStyleInterpolator = ({ current, next }) => {
     const opacity = Animated.add(
@@ -24,6 +31,24 @@ const forFade: StackHeaderStyleInterpolator = ({ current, next }) => {
         backgroundStyle: { opacity },
     };
 };
+
+const CustomMenu = () => {
+
+
+    return (
+        <Menu>
+            <MenuTrigger >
+                <Icon name='dots-vertical' type='material-community' color='#5D5FEF' />
+            </MenuTrigger>
+            <MenuOptions>
+                <MenuOption onSelect={() => alert(`Edit`)} text='Edit' />
+                <MenuOption onSelect={() => alert(`Delete`)} >
+                    <Text style={{ color: 'red' }}>Delete</Text>
+                </MenuOption>
+            </MenuOptions>
+        </Menu>
+    );
+}
 
 const QuestionStack = ({ navigation }: { navigation: any }) => {
     const data = [
@@ -94,25 +119,34 @@ const QuestionStack = ({ navigation }: { navigation: any }) => {
 const QuestionScreen = () => {
 
     const Stack = createStackNavigator();
-    
+
     return (
-        <NavigationContainer>
-            <Stack.Navigator>
-                <Stack.Screen
-                    name="Question"
-                    component={QuestionStack}
-                    options={{
-                        headerTintColor: 'white',
-                        headerStyle: { backgroundColor: 'tomato' },
-                    }}
-                />
-                <Stack.Screen
-                    name="Detail"
-                    component={AnswerScreen}
-                    options={{ headerStyleInterpolator: forFade }}
-                />
-            </Stack.Navigator>
-        </NavigationContainer>
+        <MenuProvider>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen
+                        name="Q&A"
+                        component={QuestionStack}
+                        options={{
+                            headerTintColor: '#5D5FEF',
+                            headerStyle: { backgroundColor: '#FFF4F9' },
+                        }}
+                    />
+                    <Stack.Screen
+                        name="Detail"
+                        component={AnswerScreen}
+                        options={{
+                            headerRight: () => (
+                                <CustomMenu />
+                            ),
+                            headerStyleInterpolator: forFade,
+                            headerTintColor: '#5D5FEF',
+                            headerStyle: { backgroundColor: '#FFF4F9' },
+                        }}
+                    />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </MenuProvider>
     )
 }
 
