@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorException, BadRequestException, Query } from '@nestjs/common';
 import { LessonDiscussionService } from './lesson-discussion.service';
 import { CreateLessonDiscussionDto } from './dto/create-lesson-discussion.dto';
 import { UpdateLessonDiscussionDto } from './dto/update-lesson-discussion.dto';
@@ -34,8 +34,9 @@ export class LessonDiscussionController {
   }
 
   @Get(END_POINTS.LESSON_DISCUSSION.LIST)
-  findAll() {
-    return this.lessonDiscussionService.findAll();
+  async findAll(@Query('courseId') courseId: string) {
+    const res = await this.lessonDiscussionService.findByCourse(courseId);
+    return ResponseObject.create('Lesson Discussion array:', res);
   }
 
   @Get(':id')

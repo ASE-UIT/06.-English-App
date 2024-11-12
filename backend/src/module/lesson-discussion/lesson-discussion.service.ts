@@ -10,6 +10,22 @@ import { User } from '../user/entities/user.entity';
 export class LessonDiscussionService {
   constructor (private readonly dataSource: DataSource) {}
 
+  async findByCourse(courseId: string) {
+    try {
+      // find lesson discussion that have lession id belongs to courseId
+      const lessonDiscussions = await this.dataSource.getRepository(LessonDiscussion)
+        .createQueryBuilder('lessonDiscussion')
+        .innerJoin('lessonDiscussion.lesson', 'lesson')
+        .where('lesson.courseId = :courseId', { courseId })
+        .getMany();
+      
+      return lessonDiscussions;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+
   async create(lessonDiscussion: LessonDiscussion, lessonId: string, userId: string) {
     try {
       const [lesson, user] = await Promise.all([
@@ -32,10 +48,6 @@ export class LessonDiscussionService {
       console.log(error);
       throw new HttpException(error.message, 500);
     }
-  }
-
-  findAll() {
-    return `This action returns all lessonDiscussion`;
   }
 
   findOne(id: number) {
