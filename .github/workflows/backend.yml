@@ -7,6 +7,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ./backend
     runs-on: ubuntu-latest
     env:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -22,13 +25,16 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Build and Push Docker Images
         run: |
-          cd backend
+          pwd
           docker compose build
           docker compose push
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
       - name: Install SSH client
         run: sudo apt-get install openssh-client
@@ -40,14 +46,13 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
         run: |
-          ls 
           pwd
           echo "${PRIVATE_KEY}" > key.pem
           echo "${APP_SECRET}" > env
           chmod 600 key.pem env
 
           scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
-          scp -o StrictHostKeyChecking=no -i key.pem ./backend/docker-compose.yml $EC2_USER@$EC2_HOST:/path/on/ec2/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/path/on/ec2/docker-compose.yml
           echo "Begin ssh"
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << EOF
             docker compose -f /path/on/ec2/docker-compose.yml down || true
