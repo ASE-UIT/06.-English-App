@@ -13,6 +13,7 @@ import { TYPES } from '../../../utils/constants';
 import { Section } from 'src/module/section/entities/section.entity';
 import { Course } from 'src/module/course/entities/course.entity';
 import { AutoMap } from '@automapper/classes';
+import { LessonDiscussion } from 'src/module/lesson-discussion/entities/lesson-discussion.entity';
 
 @Entity()
 export class Lesson extends Base {
@@ -47,4 +48,6 @@ export class Lesson extends Base {
   grammars?: Grammar[];
   @ManyToOne(() => Course, (course) => course.lessons)
   course: Course;
+  @OneToMany(() => LessonDiscussion, (lessonDiscussion) => lessonDiscussion.lesson)
+  lessonDiscussions: LessonDiscussion[];
 }

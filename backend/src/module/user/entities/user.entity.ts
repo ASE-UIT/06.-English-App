@@ -1,7 +1,8 @@
 import { USER_ROLES } from 'src/utils/constants';
 import { Base } from '../../base/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
+import { LessonDiscussion } from 'src/module/lesson-discussion/entities/lesson-discussion.entity';
 
 @Entity()
 export class User extends Base {
@@ -42,4 +43,7 @@ export class User extends Base {
   @AutoMap()
   @Column()
   awsCognitoId: string;
+
+  @OneToMany(() => LessonDiscussion, (lessonDiscussion) => lessonDiscussion.user)
+  lessonDiscussions: LessonDiscussion[];
 }
