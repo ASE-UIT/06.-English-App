@@ -40,7 +40,8 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
         run: |
-          ls -al
+          ls 
+          pwd
           echo "${PRIVATE_KEY}" > key.pem
           echo "${APP_SECRET}" > env
           chmod 600 key.pem env
