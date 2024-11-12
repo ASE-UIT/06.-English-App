@@ -1,0 +1,18 @@
+.previewContainer {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .lessonList {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .lessonItem {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  

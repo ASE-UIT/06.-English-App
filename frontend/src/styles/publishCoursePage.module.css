@@ -1,0 +1,23 @@
+.publishContainer {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .confirmButton {
+    background-color: #28a745;
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    cursor: pointer;
+  }
+  
+  .confirmButton:hover {
+    background-color: #218838;
+  }
+  

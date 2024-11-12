@@ -1,0 +1,16 @@
+.pricingContainer {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+  }
+  
+  .inputField {
+    width: 100%;
+    margin: 5px 0;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
