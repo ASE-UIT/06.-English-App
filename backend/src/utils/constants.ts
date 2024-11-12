@@ -79,6 +79,17 @@ export const END_POINTS = {
     UPDATE: '',
     DELETE: '',
   },
+  LESSON_DISCUSSION: {
+    BASE: '/lesson-discussion',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '/:lessonDiscussionId',
+    DELETE: '/:lessonDiscussionId',
+    CREATE_REPLY: '/:id/reply',
+    LIST_REPLY: '/:id/reply',
+    UPDATE_REPLY: '/:id/reply/:replyId',
+    DELETE_REPLY: '/:id/reply/:replyId',
+  },
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',
@@ -96,6 +107,7 @@ export const DOCUMENTATION = {
     SECTION: 'SECTION',
     QUESTION: 'QUESTION',
     QUESTION_GROUP: 'QUESTION_GROUP',
+    LESSON_DISCUSSION: 'LESSON_DISCUSSION',
   },
 };
 export const TIMEOUT = 5000;

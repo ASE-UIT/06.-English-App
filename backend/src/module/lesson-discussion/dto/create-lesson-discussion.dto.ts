@@ -31,11 +31,10 @@ export class CreateLessonDiscussionDto {
   @IsString()
   lessonId: string;
 
-
   @AutoMap()
   @ApiProperty({
     type: String,
-    description: 'User Id',
+    description: 'User Id - The user who created this lesson discussion',
     example: '1',
   })
   @IsString()

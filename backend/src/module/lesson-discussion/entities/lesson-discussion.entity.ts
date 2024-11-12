@@ -19,7 +19,7 @@ export class LessonDiscussion extends Base {
   lesson: Lesson;
 
   @ManyToOne(() => User, (user) => user.lessonDiscussions)
-  user: string;
+  user: User;
 
   @OneToMany(() => LessonDiscussionReply, (lessonDiscussionReply) => lessonDiscussionReply.lessonDiscussion)
   lessonDiscussionReplies: LessonDiscussionReply[];
