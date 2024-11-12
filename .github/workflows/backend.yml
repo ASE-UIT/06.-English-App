@@ -1,11 +1,15 @@
 name: CI/CD for NestJS Docker Deployment
+
 on:
   push:
     branches:
       - main-backend
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -16,13 +20,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Build Docker image
+      - name: Build and Push Docker Images
         run: |
           cd backend
-          docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/nestjs-app:latest .
-      - name: Push Docker image
-        run: |
-          docker push ${{ secrets.DOCKER_HUB_USERNAME }}/nestjs-app:latest
+          docker compose build
+          docker compose push
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
@@ -40,18 +43,16 @@ jobs:
           echo "${PRIVATE_KEY}" > key.pem
           echo "${APP_SECRET}" > env
           chmod 600 key.pem env
+          cd backend
           scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/path/on/ec2/docker-compose.yml
           echo "Begin ssh"
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << EOF
-            docker stop nestjs-app || true
-            echo "Removing old container..."
-            docker rm nestjs-app || true
-            echo "Starting new container..."
+            docker compose -f /path/on/ec2/docker-compose.yml down || true
             docker rmi ${DOCKER_HUB_USERNAME}/nestjs-app:latest -f || true
-            echo "Pulling Docker image..."
-            docker pull ${DOCKER_HUB_USERNAME}/nestjs-app:latest || { echo "Failed to pull image"; exit 1; }
-            echo "Stopping old container..."
-            docker run --env-file /path/on/ec2/env -d --name nestjs-app -p 3000:3000 ${DOCKER_HUB_USERNAME}/nestjs-app:latest
+            docker compose -f /path/on/ec2/docker-compose.yml pull
+          
+            docker compose --env-file /path/on/ec2/env -f /path/on/ec2/docker-compose.yml up -d
           EOF
           echo "Finish ssh"
           rm key.pem env
