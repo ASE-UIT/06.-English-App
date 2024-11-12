@@ -6,6 +6,8 @@ import { CourseCategoryModule } from './course-category/course-category.module';
 import { CourseModule } from './course/course.module';
 import { LessonModule } from './lesson/lesson.module';
 import { GrammarModule } from './grammar/grammar.module';
+import { QuestionModule } from './question/question.module';
+import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
 
@@ -18,6 +20,8 @@ import { HttpModule } from '@nestjs/axios';
     CourseModule,
     LessonModule,
     GrammarModule,
+    QuestionModule,
+    QuestionGroupModule,
     SectionModule,
     HttpModule,
   ],
@@ -29,6 +33,8 @@ import { HttpModule } from '@nestjs/axios';
     CourseModule,
     LessonModule,
     GrammarModule,
+    QuestionModule,
+    QuestionGroupModule,
     SectionModule,
     HttpModule,
   ],
