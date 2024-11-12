@@ -71,7 +71,7 @@ export const END_POINTS = {
     GET_BY_SECTION: '/:sectionId',
     UPDATE: '',
     DELETE: ':id',
-  }
+  },
   SECTION: {
     BASE: '/section',
     CREATE: '',
