@@ -3,6 +3,7 @@ import { Base } from '../../base/base.entity';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { AutoMap } from '@automapper/classes';
 import { LessonDiscussion } from 'src/module/lesson-discussion/entities/lesson-discussion.entity';
+import { LessonDiscussionReply } from 'src/module/lesson-discussion/entities/lesson-discussion-reply.entity';
 
 @Entity()
 export class User extends Base {
@@ -46,4 +47,6 @@ export class User extends Base {
 
   @OneToMany(() => LessonDiscussion, (lessonDiscussion) => lessonDiscussion.user)
   lessonDiscussions: LessonDiscussion[];
+  @OneToMany(() => LessonDiscussionReply, (lessonDiscussionReply) => lessonDiscussionReply.user)
+  lessonDiscussionReplies: LessonDiscussionReply[];
 }
