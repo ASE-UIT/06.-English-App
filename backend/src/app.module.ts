@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import configuration from './config/configuration';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from './datasource/typeorm.module';
 import { AutomapperModule } from '@automapper/nestjs';
 import { classes } from '@automapper/classes';
@@ -26,11 +26,15 @@ import * as redisStore from 'cache-manager-redis-store';
         limit: 15,
       },
     ]),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
-      store: redisStore,
-      host: 'localhost',
-      port: 6379,
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        store: redisStore,
+        host: configService.get<string>('redis.host'),
+        port: configService.get<number>('redis.port'),
+      }),
     }),
     SharedModule,
   ],
