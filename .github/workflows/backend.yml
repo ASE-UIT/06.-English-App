@@ -54,13 +54,13 @@ jobs:
           chmod 600 key.pem env
           chmod 600 docker-compose.yml
           scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
-          scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker-compose.yml
           echo "Begin ssh"
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << EOF
-            docker compose -f docker-compose.yml down || true
+            docker compose -f /home/ubuntu/docker-compose.yml down || true
             docker rmi ${DOCKER_HUB_USERNAME}/nestjs-app:latest -f || true
-            docker compose -f docker-compose.yml pull
-            docker compose --env-file /path/on/ec2/env -f docker-compose.yml up -d
+            docker compose -f /home/ubuntu/docker-compose.yml pull
+            docker compose --env-file /path/on/ec2/env -f /home/ubuntu/docker-compose.yml up -d
           EOF
           echo "Finish ssh"
           rm key.pem env
