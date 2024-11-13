@@ -1,0 +1,4 @@
+services:
+  api:
+    env_file:
+      - /path/on/ec2/env

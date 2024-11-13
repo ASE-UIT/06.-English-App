@@ -4,6 +4,8 @@ services:
       dockerfile: Dockerfile
       context: .
     image: "${DOCKER_HUB_USERNAME}/nestjs-app:latest"
+    env_file:
+      - .env
     ports:
       - 3000:3000
     depends_on:
