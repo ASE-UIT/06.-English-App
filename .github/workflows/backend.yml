@@ -7,6 +7,9 @@ on:
 
 jobs:
   build:
+    defaults:
+      run:
+        working-directory: ./backend
     runs-on: ubuntu-latest
     env:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
@@ -22,14 +25,19 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
       - name: Build and Push Docker Images
         run: |
-          cd backend
+          pwd
           docker compose build
           docker compose push
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
     steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
       - name: Install SSH client
         run: sudo apt-get install openssh-client
       - name: Deploy to EC2
@@ -40,20 +48,19 @@ jobs:
           DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
           APP_SECRET: ${{ secrets.APP_SECRET }}
         run: |
-          ls 
           pwd
           echo "${PRIVATE_KEY}" > key.pem
           echo "${APP_SECRET}" > env
           chmod 600 key.pem env
-
+          chmod 600 docker-compose.yml
           scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
-          scp -o StrictHostKeyChecking=no -i key.pem ./backend/docker-compose.yml $EC2_USER@$EC2_HOST:/path/on/ec2/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker-compose.yml
           echo "Begin ssh"
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << EOF
-            docker compose -f /path/on/ec2/docker-compose.yml down || true
+            docker compose -f /home/ubuntu/docker-compose.yml down || true
             docker rmi ${DOCKER_HUB_USERNAME}/nestjs-app:latest -f || true
-            docker compose -f /path/on/ec2/docker-compose.yml pull
-            docker compose --env-file /path/on/ec2/env -f /path/on/ec2/docker-compose.yml up -d
+            docker compose -f /home/ubuntu/docker-compose.yml pull
+            docker compose --env-file /path/on/ec2/env -f /home/ubuntu/docker-compose.yml up -d
           EOF
           echo "Finish ssh"
           rm key.pem env
