@@ -56,14 +56,16 @@ jobs:
           echo "${APP_SECRET}" > env
           chmod 600 key.pem env
           chmod 600 docker-compose.yml
+          chmod 600 docker-compose.override.yml
           scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
           scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i key.pem docker-compose.override.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker-compose.override.yml
           echo "Begin ssh"
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << EOF
             docker compose -f /home/ubuntu/docker-compose.yml down || true
             docker rmi ${DOCKER_HUB_USERNAME}/nestjs-app:latest -f || true
-            docker compose --env-file /path/on/ec2/env -f /home/ubuntu/docker-compose.yml pull
-            docker compose --env-file /path/on/ec2/env -f /home/ubuntu/docker-compose.yml up -d
+            docker compose -f /home/ubuntu/docker-compose.yml pull
+            docker compose -f /home/ubuntu/docker-compose.yml -f /home/ubuntu/docker-compose.override.yml up -d
           EOF
           echo "Finish ssh"
           rm key.pem env
