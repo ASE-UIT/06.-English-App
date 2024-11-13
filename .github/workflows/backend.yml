@@ -58,9 +58,8 @@ jobs:
           echo "Begin ssh"
           ssh -o StrictHostKeyChecking=no -i key.pem $EC2_USER@$EC2_HOST << EOF
             docker compose -f /home/ubuntu/docker-compose.yml down || true
-            docker rmi ${DOCKER_HUB_USERNAME}/nestjs-app:latest -f || true
             docker compose -f /home/ubuntu/docker-compose.yml pull
-            docker compose --env-file /path/on/ec2/env -f /home/ubuntu/docker-compose.yml up -d
+            docker compose -f /home/ubuntu/docker-compose.yml up -d
           EOF
           echo "Finish ssh"
           rm key.pem env
