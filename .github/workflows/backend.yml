@@ -26,6 +26,9 @@ jobs:
       - name: Build and Push Docker Images
         run: |
           pwd
+          touch .env
+          echo "${DOCKER_HUB_USERNAME}" > .env
+          chmod 600 .env
           docker compose build
           docker compose push
 
