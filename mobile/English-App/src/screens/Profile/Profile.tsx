@@ -24,6 +24,8 @@ const Profile = () => {
           setUsername(`${userData.firstName} ${userData.lastName}`);
           setPhoneNumber(userData.phone);
           setEmail(userData.email);
+          console.log(userData);
+          
         }
       }
       catch(err){
