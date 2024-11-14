@@ -1,4 +1,8 @@
-import { API_URL,accessToken } from "./config";
+require('dotenv').config()
+
+
+const API_URL = process.env.API_URL;
+const accessToken = process.env.ACCESS_TOKEN;
 
 let url = API_URL + 'section';
 class sectionService {
