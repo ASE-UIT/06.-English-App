@@ -1,67 +1,72 @@
-import { Splitter, SplitterPanel } from 'primereact/splitter';
-import { IoSend } from "react-icons/io5";
-import { IoIosArrowBack } from "react-icons/io";
-import { IoIosArrowDropright, IoIosArrowDropleft } from "react-icons/io";
+import { Splitter, SplitterPanel } from "primereact/splitter"
+import { IoSend } from "react-icons/io5"
+import { IoIosArrowBack } from "react-icons/io"
+import { IoIosArrowDropright, IoIosArrowDropleft } from "react-icons/io"
 
-import writtingTest  from '@/assets/image/writingTest.jpg'
+import writtingTest from "@/assets/image/writingTest.jpg"
 const WritingTestPage = () => {
-    return (
-        <>
-            <div className="flex flex-col bg-white h-screen overflow-hidden">
-                <div className='bg-[#FFF4F9] h-[60px] flex-none shadow-[0px_4px_4px_rgba(0,0,0,0.25)]'>
-                    <button className='flex items-center bg-transparent py-[14px]'>
-                        <IoIosArrowBack className='text-[#5D5FEF] w-[30px] h-[30px]'/>
-                        <span className='text-[16px] text-[#5D5FEF] font-bold'>Writing task 1</span>
-                    </button>
-                </div> 
+  return (
+    <>
+      <div className="flex h-screen flex-col overflow-hidden bg-white">
+        <div className="h-[60px] flex-none bg-[#FFF4F9] shadow-[0px_4px_4px_rgba(0,0,0,0.25)]">
+          <button className="flex items-center bg-transparent py-[14px]">
+            <IoIosArrowBack className="h-[30px] w-[30px] text-[#5D5FEF]" />
+            <span className="text-[16px] font-bold text-[#5D5FEF]">Writing task 1</span>
+          </button>
+        </div>
 
-                <Splitter style={{ height: 'calc(100vh - 150px)', backgroundColor: "#a5a6f6" }} className='border-b-2 border-[#a5a6f6] mt-[8px]'>
-                    <SplitterPanel className="flex align-items-center justify-content-center bg-white overflow-y-auto" size={25} minSize={10}>
-                        <div className='w-full my-auto mx-2 overflow-y-auto'>
-                            <span className='text-[24px] text-black font-bold'>Writing task 1</span>
-                            <p className='text-[16px] text-black'>
-                                You should spend about 20 minutes on this task.
+        <Splitter
+          style={{ height: "calc(100vh - 150px)", backgroundColor: "#a5a6f6" }}
+          className="mt-[8px] border-b-2 border-[#a5a6f6]"
+        >
+          <SplitterPanel
+            className="align-items-center justify-content-center flex overflow-y-auto bg-white"
+            size={25}
+            minSize={10}
+          >
+            <div className="mx-2 my-auto w-full overflow-y-auto">
+              <span className="text-[24px] font-bold text-black">Writing task 1</span>
+              <p className="text-[16px] text-black">
+                You should spend about 20 minutes on this task. The graph below shows the production levels of the main
+                kinds of fuel in the UK between 1981 and 2000. Summarize the formation by selecting and reporting the
+                main features and make comparisons where relevant. You should write at least 150 words.
+              </p>
 
-                                The graph below shows the production levels of the main kinds of fuel in the UK between 1981 and 2000.
-
-                                Summarize the formation by selecting and reporting the main features and make comparisons where relevant.
-
-                                You should write at least 150 words.
-                            </p>
-
-                            <img src={writtingTest} alt="writting test image" className='w-full object-cover'/>
-                        </div>
-
-                    </SplitterPanel>
-                    <SplitterPanel className="flex align-items-center justify-content-center bg-white" size={75}>
-                        <div className='w-full my-auto mx-6'>
-                            <textarea placeholder='Type your essay here...' className='min-h-[400px] w-full bg-white text-black border-2 rounded-md' name="" id=""></textarea>
-                            <div className='w-full flex justify-between items-center'>
-                                <span className='text-[20px] text-black'>Word Count:</span>
-                                <div className='flex justify-between'>
-                                <button className='flex items-center bg-transparent p-0 rounded-full mr-2'>
-                                    <IoIosArrowDropleft className='text-fuschia w-[50px] h-[50px]'/>
-                                </button>
-
-                                <button className='flex items-center bg-transparent p-0 rounded-full'>
-                                    <IoIosArrowDropright className='text-fuschia w-[50px] h-[50px]'/>
-                                </button>
-                                </div>
-                            </div>
-                        </div>
-
-                    </SplitterPanel>
-                </Splitter>
-
-                <div className='h-[90px] flex justify-center items-center'>
-                    <button className='h-[38px] w-[160px] flex items-center justify-center bg-fuschia py-[18px]'>
-                        <span className='text-[20px] text-white font-bold mr-4'>Submit</span>
-                        <IoSend className='text-white w-[25px] h-[25px]'/>
-                    </button>
-                </div>
-
+              <img src={writtingTest} alt="writting test image" className="w-full object-cover" />
             </div>
-        </>
-    )
+          </SplitterPanel>
+          <SplitterPanel className="align-items-center justify-content-center flex bg-white" size={75}>
+            <div className="mx-6 my-auto w-full">
+              <textarea
+                placeholder="Type your essay here..."
+                className="min-h-[400px] w-full rounded-md border-2 bg-white text-black"
+                name=""
+                id=""
+              ></textarea>
+              <div className="flex w-full items-center justify-between">
+                <span className="text-[20px] text-black">Word Count:</span>
+                <div className="flex justify-between">
+                  <button className="mr-2 flex items-center rounded-full bg-transparent p-0">
+                    <IoIosArrowDropleft className="h-[50px] w-[50px] text-fuschia" />
+                  </button>
+
+                  <button className="flex items-center rounded-full bg-transparent p-0">
+                    <IoIosArrowDropright className="h-[50px] w-[50px] text-fuschia" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </SplitterPanel>
+        </Splitter>
+
+        <div className="flex h-[90px] items-center justify-center">
+          <button className="flex h-[38px] w-[160px] items-center justify-center bg-fuschia py-[18px]">
+            <span className="mr-4 text-[20px] font-bold text-white">Submit</span>
+            <IoSend className="h-[25px] w-[25px] text-white" />
+          </button>
+        </div>
+      </div>
+    </>
+  )
 }
-export default WritingTestPage;
+export default WritingTestPage

@@ -1,11 +1,10 @@
-
 export const routes = {
   LandingPage: "/",
   Login: "/login",
   Register: "/register",
   ForgotPassword: "/forgot-password",
   ResetPassword: "/reset-password",
-  PrivacyPolicy : "/privacy-policy",
+  PrivacyPolicy: "/privacy-policy",
   TermsOfService: "/terms-of-service",
 }
 export const studentRoutes = {
@@ -16,7 +15,7 @@ export const studentRoutes = {
   Lesson: "/my-course/:courseId/lesson",
   LessonDetail: "/my-course/:courseId/lesson/:lessonId",
   Section: "/my-course/:courseId/lesson/:lessonId/section",
-  SectionDetail: "/my-course/:courseId/lesson/:lessonId/section/:sectionId",  
+  SectionDetail: "/my-course/:courseId/lesson/:lessonId/section/:sectionId",
   SearchVocabulary: "/search-vocabulary",
   DoTestReading: "/do-test/reading",
   DoTestListening: "/do-test/listening",
@@ -34,6 +33,7 @@ export const teacherRoutes = {
   Lesson: {
     Base: "/course/:courseId/lesson",
     Create: "/course/:courseId/lesson/create",
+    CreateVocab: "/course/:courseId/lesson/Vocabulary",
     Edit: "/course/:courseId/lesson/:id/edit",
     Detail: "/course/:courseId/lesson/:id",
   },

@@ -1,32 +1,32 @@
-import CreateCourseForm from '@/components/component/createCourseForm';
-import { createCourse } from '@/services/createCourseAPI';
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import CreateCourseForm from "@/components/component/createCourseForm"
+import { createCourse } from "@/services/createCourseAPI"
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 interface CourseData {
-  title: string;
-  description: string;
-  category: string;
+  title: string
+  description: string
+  category: string
 }
 
 const CreateCoursePage: React.FC = () => {
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleCreateCourse = async (courseData: CourseData) => {
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
 
     try {
-      await createCourse(courseData);
-      navigate('/courses'); 
+      await createCourse(courseData)
+      navigate("/courses")
     } catch (err) {
-      setError('Can not create course');
+      setError("Can not create course")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="create-course-page">
@@ -34,7 +34,7 @@ const CreateCoursePage: React.FC = () => {
       {error && <div className="error-message">{error}</div>}
       <CreateCourseForm onSubmit={handleCreateCourse} isLoading={isLoading} />
     </div>
-  );
-};
+  )
+}
 
-export default CreateCoursePage;
+export default CreateCoursePage

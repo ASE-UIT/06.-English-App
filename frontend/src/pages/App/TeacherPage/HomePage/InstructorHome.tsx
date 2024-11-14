@@ -4,6 +4,8 @@ import { MdOutlineMonitor } from "react-icons/md"
 import { FiMessageSquare, FiBarChart } from "react-icons/fi"
 import { BiHelpCircle } from "react-icons/bi"
 import LOGO from "@/assets/Logo.svg"
+import { Button } from "@/components/ui/button"
+import { userApi } from "@/apis"
 
 const links = [
   {
@@ -56,6 +58,14 @@ const InstructorHome = () => {
         </Sidebar>
         <div className="flex flex-1">
           <span className="text-black">CONTENT</span>
+          <Button
+            onClick={async () => {
+              const ans = await userApi.getUser()
+              console.log("ans", ans)
+            }}
+          >
+            Test Get User
+          </Button>
         </div>
       </div>
     </div>

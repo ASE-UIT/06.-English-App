@@ -25,3 +25,8 @@ export interface SidebarContextProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   animate: boolean
 }
+export type Response = {
+  statusCode: number
+  message: string
+  data: unknown
+}
