@@ -8,6 +8,7 @@ import { LessonModule } from './lesson/lesson.module';
 import { GrammarModule } from './grammar/grammar.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
+import { CourseBuyingModule } from './course-buying/course-buying.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { HttpModule } from '@nestjs/axios';
     GrammarModule,
     SectionModule,
     HttpModule,
+    CourseBuyingModule,
   ],
   exports: [
     AuthModule,
@@ -31,6 +33,7 @@ import { HttpModule } from '@nestjs/axios';
     GrammarModule,
     SectionModule,
     HttpModule,
+    CourseBuyingModule,
   ],
 })
 export class SharedModule {}

@@ -1,45 +1,70 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Req, Query, Res } from '@nestjs/common';
 import { CourseBuyingService } from './course-buying.service';
 import { CreateCourseBuyingDto } from './dto/create-course-buying.dto';
-import { UpdateCourseBuyingDto } from './dto/update-course-buying.dto';
+import { END_POINTS } from 'src/utils/constants';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { InjectMapper } from '@automapper/nestjs';
+import { Mapper } from '@automapper/core';
+import { CourseBuying } from './entities/course-buying.entity';
+import { ResponseObject } from 'src/utils/objects';
+import { Request, Response } from 'express';
+import { User } from 'src/common/decorators/user.decorator';
+import { IUser } from 'src/common/guards/at.guard';
 
-@Controller('course-buying')
+@ApiBearerAuth()
+@Controller(END_POINTS.COURSE_BUYING.BASE)
 export class CourseBuyingController {
-  constructor(private readonly courseBuyingService: CourseBuyingService) {}
+  constructor(
+    private readonly courseBuyingService: CourseBuyingService,
+    @InjectMapper() private readonly mapper: Mapper,
+  ) {}
 
-  @Post()
-  create(@Body() createCourseBuyingDto: CreateCourseBuyingDto) {
-    return this.courseBuyingService.create(createCourseBuyingDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.courseBuyingService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.courseBuyingService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateCourseBuyingDto: UpdateCourseBuyingDto,
+  @Post(END_POINTS.COURSE_BUYING.CREATE)
+  async create(
+    @Body() createCourseBuyingDto: CreateCourseBuyingDto,
+    @User() user: IUser,
   ) {
-    return this.courseBuyingService.update(+id, updateCourseBuyingDto);
+    const courseBuying = this.mapper.map(
+      createCourseBuyingDto,
+      CreateCourseBuyingDto,
+      CourseBuying,
+    );
+    const result = await this.courseBuyingService.create(
+      courseBuying,
+      createCourseBuyingDto.courseId,
+      user.userAwsId,
+    );
+    return ResponseObject.create('CourseBuying created successfully', result);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.courseBuyingService.remove(+id);
+  @Post(END_POINTS.COURSE_BUYING.CREATE_PAY_ORDER_URL)
+  async createPayOrderUrl(
+    @Req() req: Request,
+    @Body() body: { courseBuyingId: string },
+  ) {
+    const result = await this.courseBuyingService.createPayOrderUrl(
+      req,
+      body.courseBuyingId,
+    );
+    return ResponseObject.create('Pay order url created successfully', {
+      result,
+    });
+  }
+  @Post(END_POINTS.COURSE_BUYING.VALIDATE_PAY_ORDER)
+  async validatePayOrder(@Query() query) {
+    const validationResult =
+      await this.courseBuyingService.validatePayOrder(query);
+    return ResponseObject.create(validationResult.message, {
+      code: validationResult.code,
+    });
+  }
+  @Get(END_POINTS.COURSE_BUYING.VNPAY_IPN)
+  async ipnVnpayUrl(@Query() query: any, @Res() res: Response) {
+    return await this.courseBuyingService.ipnVnpayUrl(query, res);
+  }
+
+  @Post(END_POINTS.COURSE_BUYING.MARK_AS_COMPLETED)
+  markAsCompleted(@Body() body: { sectionId: string }) {
+    return this.courseBuyingService.markAsCompleted(body.sectionId);
   }
 }

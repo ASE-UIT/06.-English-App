@@ -35,6 +35,14 @@ export const END_POINTS = {
     UPDATE: '',
     DELETE: '',
   },
+  COURSE_BUYING: {
+    BASE: '/course-buying',
+    CREATE: '',
+    MARK_AS_COMPLETED: '/mark-as-completed',
+    CREATE_PAY_ORDER_URL: '/create-pay-order-url',
+    VALIDATE_PAY_ORDER: '/validate-pay-order',
+    VNPAY_IPN: '/vnpay-ipn',
+  },
   COURSE_CATEGORY: {
     BASE: '/course-category',
     CREATE: '',
