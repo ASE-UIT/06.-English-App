@@ -42,7 +42,7 @@ export const ReadingTestPage = () => {
       <MultipleChoiceQuestion />
       <RadioGroupQuestion />
       <MatchingQuestion/> */}
-      <hr className="bg-[#FCDDEC] my-[30px] mx-3 border-t-2"/>
+      <hr className="mx-3 my-[30px] border-t-2 bg-[#FCDDEC]" />
       <div className="my-[50px] text-center text-2xl text-[#5d5fef]">--End of the Test--</div>
     </div>
   )

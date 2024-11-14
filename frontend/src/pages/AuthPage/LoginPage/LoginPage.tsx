@@ -1,26 +1,25 @@
-import { SignInPayload } from "@/type/auth";
-import { FormEvent, useState } from "react";
+import { SignInPayload } from "@/type/auth"
+import { FormEvent, useState } from "react"
 import { FcGoogle } from "react-icons/fc"
 import { Link, useNavigate } from "react-router-dom"
-import { ToastContainer, toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import { useAuth } from "@/hooks/useAuth";
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { useAuth } from "@/hooks/useAuth"
 
 const LoginPage = () => {
   const { logIn } = useAuth()
-  const [signInData, setSignInData] = useState<SignInPayload>({username: "", password: ""});
-  const navigate = useNavigate();
+  const [signInData, setSignInData] = useState<SignInPayload>({ username: "", password: "" })
+  const navigate = useNavigate()
   const handleSignInSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    await logIn(signInData);
+    event.preventDefault()
+    await logIn(signInData)
     const token = localStorage.getItem("accessToken")
-    if(token) {
-      toast.success("Đăng nhập thành công!");
-      console.log("Login success");
-      navigate("/teacher-home");
+    if (token) {
+      toast.success("Đăng nhập thành công!")
+      console.log("Login success")
+      navigate("/teacher-home")
       toast.success("Đăng nhập thành công")
-    }
-    else toast.error("Sai tài khoản hoặc mật khẩu!");
+    } else toast.error("Sai tài khoản hoặc mật khẩu!")
   }
   return (
     <>
@@ -35,7 +34,7 @@ const LoginPage = () => {
             name="username"
             placeholder="Username"
             value={signInData.username}
-            onChange={(e) => setSignInData({...signInData, username: e.target.value})}
+            onChange={(e) => setSignInData({ ...signInData, username: e.target.value })}
             className="h-[40px] rounded-lg bg-white p-1 text-[20px] text-[#f17ab7]"
           />
           <input
@@ -43,27 +42,30 @@ const LoginPage = () => {
             name="password"
             placeholder="password"
             value={signInData.password}
-            onChange={(e) => setSignInData({...signInData, password: e.target.value})}
+            onChange={(e) => setSignInData({ ...signInData, password: e.target.value })}
             className="h-[40px] rounded-lg bg-white p-1 text-[20px] text-[#f17ab7]"
           />
           <div className="flex justify-between">
-          <div>
-            <input name="remember-me" type="checkbox" className="mr-1 h-5 w-5 bg-white" />
-            <label className="text-[20px] font-normal text-black">Remmember me</label>
-          </div>
+            <div>
+              <input name="remember-me" type="checkbox" className="mr-1 h-5 w-5 bg-white" />
+              <label className="text-[20px] font-normal text-black">Remmember me</label>
+            </div>
             <Link to="/forgot-password" className="text-[20px] text-[#f17ab7] underline-offset-4">
               Forgot password?
             </Link>
           </div>
 
           <div>
-            <button type="submit" className="mb-[16px] w-full rounded-lg bg-fuschia p-[6px] text-[20px] font-normal text-white">
+            <button
+              type="submit"
+              className="mb-[16px] w-full rounded-lg bg-fuschia p-[6px] text-[20px] font-normal text-white"
+            >
               Log in
             </button>
 
             <button className="flex w-full items-center justify-center rounded-lg bg-white p-[6px] text-[20px] font-normal text-black">
               <FcGoogle className="mr-2 h-6 w-6" />
-                Log in with Google
+              Log in with Google
             </button>
           </div>
         </form>
@@ -72,4 +74,4 @@ const LoginPage = () => {
     </>
   )
 }
-export default LoginPage;
+export default LoginPage

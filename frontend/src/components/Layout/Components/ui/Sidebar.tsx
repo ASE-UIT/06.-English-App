@@ -4,8 +4,8 @@ import React, { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { useSidebar } from "@/hooks"
 import { SidebarContext } from "@/hooks/useSidebar/context"
-import { CiMenuBurger } from "react-icons/ci";
-import { RxCross2 } from "react-icons/rx";
+import { CiMenuBurger } from "react-icons/ci"
+import { RxCross2 } from "react-icons/rx"
 
 interface Links {
   label: string

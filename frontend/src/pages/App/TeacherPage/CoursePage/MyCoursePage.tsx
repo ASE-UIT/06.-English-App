@@ -1,7 +1,3 @@
 export default function MyCoursePage() {
-  return (
-    <div>
-      MyCoursePage
-    </div>
-  );
+  return <div>MyCoursePage</div>
 }
