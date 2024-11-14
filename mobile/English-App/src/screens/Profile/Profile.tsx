@@ -1,16 +1,38 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, TextInput, TouchableWithoutFeedback, TouchableOpacity, Keyboard } from 'react-native';
 import { Avatar, Icon } from 'react-native-elements';
 import InputField from './InputField'; // Adjust the import path as needed
+import userService from '../../services/user.service';
 
 const Profile = () => {
-  const [phoneNumber, setPhoneNumber] = useState('1234567890');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('exam@gmail.com');
   const [password, setPassword] = useState('*******');
   const [username, setUsername] = useState('johndoe');
   const [name, setName] = useState('John Doe');
   const [isEditingName, setIsEditingName] = useState(false);
   const nameInputRef = useRef<TextInput>(null);
+  const [avatar, setAvatar] = useState();
+
+  useEffect(() => {
+    const fetchData= async()=>{
+      try{
+
+        const result = await userService.getUser();
+        if(result.statusCode===200){
+          const userData = result.data;
+          setUsername(`${userData.firstName} ${userData.lastName}`);
+          setPhoneNumber(userData.phone);
+          setEmail(userData.email);
+        }
+      }
+      catch(err){
+        console.log(err);
+      }
+      
+    }
+    fetchData();
+  }, []);
 
   const handleEditName = () => {
     setIsEditingName(!isEditingName);
