@@ -1,12 +1,34 @@
 import { View, Text, ScrollView, Image, Button } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import DirectToSectionCard from "../../components/Home/DirectToSectionCard";
 import CategoryCard from "../../components/Home/CategoryCard";
 import CourseCard from "../../components/Home/CourseCard";
 import colors from "../../../colors";
+import courseCategoryService from "../../services/courseCategory.service";
 
 const Home = () => {
   const userName = "Emma";
+  interface CourseCategory {
+    id: string;
+    name: string;
+  }
+
+  const [courseCategories, setCourseCategories] = useState<CourseCategory[]>([]);
+
+  useEffect(() => {
+    const fetchCourseCategories = async () => {
+      try {
+        const result = await courseCategoryService.getCourseCategories();
+        setCourseCategories(result.data);
+        console.log(courseCategories);
+      } catch (error) {
+        console.error("Error fetching course categories:", error);
+      }
+    };
+
+    fetchCourseCategories();
+  }, []);
+
   return (
     <ScrollView
       style={{
@@ -54,10 +76,14 @@ const Home = () => {
             paddingVertical: 10,
           }}
         >
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
+          {courseCategories.map((category) => (
+            <CategoryCard
+            name={category.name}
+            key={category.id}
+             
+            />
+          ))}
+         
         </ScrollView>
       </View>
       <View className="recommend flex flex-col gap-2">
