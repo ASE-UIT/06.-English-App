@@ -42,6 +42,7 @@ export const END_POINTS = {
     CREATE_PAY_ORDER_URL: '/create-pay-order-url',
     VALIDATE_PAY_ORDER: '/validate-pay-order',
     VNPAY_IPN: '/vnpay-ipn',
+    TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
   },
   COURSE_CATEGORY: {
     BASE: '/course-category',

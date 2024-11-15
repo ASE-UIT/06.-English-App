@@ -10,6 +10,7 @@ import { ResponseObject } from 'src/utils/objects';
 import { Request, Response } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
 import { IUser } from 'src/common/guards/at.guard';
+import { UpdateLessonProgress } from './dto/update-lesson-progress.dto';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE_BUYING.BASE)
@@ -51,7 +52,7 @@ export class CourseBuyingController {
     });
   }
   @Post(END_POINTS.COURSE_BUYING.VALIDATE_PAY_ORDER)
-  async validatePayOrder(@Query() query) {
+  async validatePayOrder(@Query() query: any) {
     const validationResult =
       await this.courseBuyingService.validatePayOrder(query);
     return ResponseObject.create(validationResult.message, {
@@ -64,7 +65,11 @@ export class CourseBuyingController {
   }
 
   @Post(END_POINTS.COURSE_BUYING.MARK_AS_COMPLETED)
-  markAsCompleted(@Body() body: { sectionId: string }) {
-    return this.courseBuyingService.markAsCompleted(body.sectionId);
+  async markAsCompleted(@Body() body: UpdateLessonProgress) {
+    await this.courseBuyingService.markAsCompleted(body.lessonId);
+    return ResponseObject.create(
+      'CourseBuying marked as completed successfully',
+      null,
+    );
   }
 }

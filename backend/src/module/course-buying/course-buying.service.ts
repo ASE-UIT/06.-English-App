@@ -200,7 +200,7 @@ export class CourseBuyingService {
   remove(id: number) {
     return `This action removes a #${id} courseBuying`;
   }
-  async markAsCompleted(sectionId: string) {
-    return `This action marks section ${sectionId} as completed`;
+  async markAsCompleted(sectionId: string) { 
+    return 'CourseBuying marked as completed successfully';
   }
 }
