@@ -1,6 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Image, Text, View } from "react-native";
 import { Rating } from "react-native-elements";
+import { TouchableOpacity } from "react-native-gesture-handler";
+
+import { CourseScreenNavigationProp } from "../../type";
 
 export default function CourseCard() {
   const courseName = "Reading Essentials";
@@ -9,8 +13,11 @@ export default function CourseCard() {
   const votes = 100;
   const currentPrice = 100000;
   const originalPrice = 200000;
+  const nav = useNavigation< CourseScreenNavigationProp>();
   return (
-    <View className="flex flex-col justify-between w-40">
+    <TouchableOpacity className="flex flex-col justify-between w-40" onPress={()=>{
+      nav.navigate("CourseDetail")
+    }}>
       <Image
         source={require("../../../assets/courseCard.jpg")}
         className="w-full h-32"
@@ -40,6 +47,6 @@ export default function CourseCard() {
           đ{originalPrice}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
