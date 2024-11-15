@@ -1,12 +1,12 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
-  Put,
+  Get,
   NotFoundException,
+  Param,
+  Post,
+  Put,
   Query,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
@@ -37,6 +37,7 @@ export class CourseController {
     private readonly courseCategoryService: CourseCategoryService,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
+
   @Post(END_POINTS.COURSE.CREATE)
   @ApiOperation({ summary: 'Create course' })
   async create(@User() user: IUser, @Body() createCourseDto: CreateCourseDto) {
@@ -53,6 +54,7 @@ export class CourseController {
     const result = await this.courseService.create(user.userAwsId, course);
     return ResponseObject.create('Course created', result);
   }
+
   @Get(END_POINTS.COURSE.GET_ALL_COURSES)
   @ApiOperation({ summary: 'Get all courses in home page' })
   async findAllCourses(@Query() query: GetAllCourseQuery) {
@@ -72,7 +74,15 @@ export class CourseController {
   @ApiOperation({ summary: 'Get recommendation course by student' })
   async findAllRecommendationCourses() {
     const courses = await this.courseService.findAllRecommendationCourses();
-    return ResponseObject.create('Courses retrieved successfully', courses);
+    const coursesReponse = this.mapper.mapArray(
+      courses,
+      Course,
+      CourseResponseDto,
+    );
+    return ResponseObject.create(
+      'Courses recommendation retrieved successfully',
+      coursesReponse,
+    );
   }
 
   @Get(END_POINTS.COURSE.GET_MY_COURSE_BY_TEACHER)
@@ -108,6 +118,7 @@ export class CourseController {
       coursesReponse,
     );
   }
+
   @Get(END_POINTS.COURSE.GET_DETAIL)
   @ApiOperation({
     summary: 'Get course detail by id',
@@ -116,6 +127,7 @@ export class CourseController {
     const result = await this.courseService.findOne(id);
     return ResponseObject.create('Course retrieved successfully', result);
   }
+
   @Put()
   @ApiOperation({
     summary: 'Update course',
@@ -138,6 +150,7 @@ export class CourseController {
     const result = await this.courseService.update(courseUpdated);
     return ResponseObject.create('Course updated', result);
   }
+
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.courseService.remove(id);
