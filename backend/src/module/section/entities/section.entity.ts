@@ -31,6 +31,6 @@ export class Section extends Base {
   lesson: Lesson;
   @OneToMany(() => QuestionGroup, (questionGroup) => questionGroup.section)
   questionGroups: QuestionGroup[];
-  @OneToMany(() => Question, (question) => question.sectionID)
+  @OneToMany(() => Question, (question) => question.section)
   questions: Question[];
 }
