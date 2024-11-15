@@ -8,6 +8,8 @@ import Vocabulary from "../screens/Vocabulary";
 
 import LearningStackNavigation from "./LearningStackNavigation";
 import GrammarStackNavigation from "./GrammarStackNavigation";
+import CourseDetail from "../screens/CourseDetail";
+import HomeStackNavigation from "./HomeStackNavigation";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -26,7 +28,7 @@ export default function BottomTabsNavigator() {
     >
       <Tab.Screen
         name="home"
-        component={Home} // change this to HomeScreen later
+        component={HomeStackNavigation} // change this to HomeScreen later
         options={{
           tabBarLabel: "Home",
           tabBarIcon: ({ color }) => (
