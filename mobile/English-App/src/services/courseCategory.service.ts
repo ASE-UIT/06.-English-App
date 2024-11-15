@@ -1,5 +1,6 @@
 import { API_URL, ACCESS_TOKEN } from "@env";
 
+
 class courseCategoryService {
   async getCourseCategories() {
     const url = `${API_URL}course-category`;
@@ -14,6 +15,8 @@ class courseCategoryService {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
+   
+    
     return await response.json();
   }
 }

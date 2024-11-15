@@ -6,7 +6,8 @@ export type RootStackParamList = {
   Course: undefined;
   Reading: undefined;
   Grammar: undefined;
-  GrammarDetail: undefined; // Add GrammarDetail here
+  GrammarDetail: undefined;
+  CourseDetail: undefined;
 };
 
 export type LearningScreenNavigationProp = StackNavigationProp<
@@ -29,7 +30,15 @@ export type CourseScreenNavigationProp = StackNavigationProp<
   "Course"
 >;
 
+export type CourseDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "CourseDetail"
+>;
+
 export type LearningScreenRouteProp = RouteProp<RootStackParamList, "Learning">;
 export type CourseScreenRouteProp = RouteProp<RootStackParamList, "Course">;
 export type GrammarScreenRouteProp = RouteProp<RootStackParamList, "Grammar">;
-export type GrammarDetailScreenRouteProp = RouteProp<RootStackParamList, "GrammarDetail">;
+export type GrammarDetailScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "GrammarDetail"
+>;

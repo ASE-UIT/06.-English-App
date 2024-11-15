@@ -20,7 +20,9 @@ const Home = () => {
       try {
         const result = await courseCategoryService.getCourseCategories();
         setCourseCategories(result.data);
-        console.log(courseCategories);
+       
+        
+        
       } catch (error) {
         console.error("Error fetching course categories:", error);
       }
