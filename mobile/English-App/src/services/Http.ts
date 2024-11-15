@@ -1,24 +1,34 @@
+import { API_URL, ACCESS_TOKEN } from "@env";
+
 class Http {
   baseUrl: string;
   constructor() {
-    this.baseUrl = "http://localhost:8000/api";
+    this.baseUrl = API_URL;
   }
   private getURL(url: string) {
-    return `${this.baseUrl}/${url}`;
+    return `${this.baseUrl}${url}`;
   }
   async get(endpoint: string) {
-    const response = await fetch(this.getURL(endpoint));
-    return response.json();
+    const response = await fetch(this.getURL(endpoint), {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
+    });
+    return response;
   }
   async post(endpoint: string, data: object) {
     const response = await fetch(this.getURL(endpoint), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
       body: JSON.stringify(data),
     });
-    return response.json();
+    return response;
   }
 
   async put(endpoint: string, data: object) {
@@ -26,16 +36,22 @@ class Http {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        accept: "*/*",
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
       body: JSON.stringify(data),
     });
-    return response.json();
+    return response;
   }
   async delete(endpoint: string) {
     const response = await fetch(this.getURL(endpoint), {
       method: "DELETE",
+      headers: {
+        accept: "*/*",
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
+      },
     });
-    return response.json();
+    return response;
   }
 }
 
