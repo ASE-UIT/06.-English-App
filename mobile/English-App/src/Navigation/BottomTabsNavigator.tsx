@@ -10,6 +10,8 @@ import LearningStackNavigation from "./LearningStackNavigation";
 import GrammarStackNavigation from "./GrammarStackNavigation";
 import CourseDetail from "../screens/CourseDetail";
 import HomeStackNavigation from "./HomeStackNavigation";
+import Grammar from "../screens/Grammar";
+import Learning from "../screens/Learning";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
@@ -28,9 +30,10 @@ export default function BottomTabsNavigator() {
     >
       <Tab.Screen
         name="home"
-        component={HomeStackNavigation} // change this to HomeScreen later
+        component={Home} // change this to HomeScreen later
         options={{
           tabBarLabel: "Home",
+        
           tabBarIcon: ({ color }) => (
             <Icon name="home" type="ant-design" color={color} />
           ),
@@ -38,7 +41,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="learning"
-        component={LearningStackNavigation} // change this to LearningScreen later
+        component={Learning} // change this to LearningScreen later
         options={{
           tabBarLabel: "Learning",
           tabBarIcon: ({ color }) => (
@@ -58,7 +61,7 @@ export default function BottomTabsNavigator() {
       />
       <Tab.Screen
         name="grammar"
-        component={GrammarStackNavigation} // change this to GrammarScreen later
+        component={Grammar} // change this to GrammarScreen later
         options={{
           tabBarLabel: "Grammar",
           tabBarIcon: ({ color }) => (
