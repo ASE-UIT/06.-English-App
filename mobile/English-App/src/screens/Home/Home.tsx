@@ -8,14 +8,19 @@ import courseCategoryService from "../../services/courseCategory.service";
 
 const Home = () => {
   const userName = "Emma";
-  const [courseCategories, setCourseCategories] = useState([]);
+  interface CourseCategory {
+    id: string;
+    name: string;
+  }
+
+  const [courseCategories, setCourseCategories] = useState<CourseCategory[]>([]);
 
   useEffect(() => {
     const fetchCourseCategories = async () => {
       try {
         const result = await courseCategoryService.getCourseCategories();
-        setCourseCategories(result.data); // Set the entire data array
-        console.log(result.data);
+        setCourseCategories(result.data);
+        console.log(courseCategories);
       } catch (error) {
         console.error("Error fetching course categories:", error);
       }
@@ -71,7 +76,14 @@ const Home = () => {
             paddingVertical: 10,
           }}
         >
-          <CategoryCard name="grammar" />
+          {courseCategories.map((category) => (
+            <CategoryCard
+            name={category.name}
+            key={category.id}
+             
+            />
+          ))}
+         
         </ScrollView>
       </View>
       <View className="recommend flex flex-col gap-2">

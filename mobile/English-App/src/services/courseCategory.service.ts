@@ -3,6 +3,8 @@ import { API_URL, ACCESS_TOKEN } from "@env";
 class courseCategoryService {
   async getCourseCategories() {
     const url = `${API_URL}course-category`;
+
+    
     const response = await fetch(url, {
       headers: {
         accept: "*/*",
