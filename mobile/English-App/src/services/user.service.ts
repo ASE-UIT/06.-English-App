@@ -1,5 +1,6 @@
-import { API_URL } from "./config";
-import { accessToken } from "./config";
+
+import { API_URL,ACCESS_TOKEN } from "@env";
+
 let url = API_URL + "user/me";
 
 class userService {
@@ -7,7 +8,7 @@ class userService {
     const response = await fetch(url, {
       headers: {
         accept: "*/*",
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
     });
     return await response.json();
