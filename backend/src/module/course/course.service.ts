@@ -9,6 +9,7 @@ import { STATE } from 'src/utils/constants';
 @Injectable()
 export class CourseService {
   constructor(private readonly dataSource: DataSource) {}
+
   async create(awsId: string, course: Course) {
     try {
       const newCourse = await this.dataSource
@@ -56,12 +57,21 @@ export class CourseService {
 
   async findAllRecommendationCourses() {
     try {
-      const courses = await this.dataSource.getRepository(Course).find();
-      return courses;
+      return await this.dataSource
+        .getRepository(Course)
+        .createQueryBuilder('course')
+        .leftJoin('course.category', 'category')
+        .leftJoin('course.teacher', 'teacher')
+        .leftJoin('teacher.userInfo', 'userInfo')
+        .leftJoin('course.courseReviewings', 'courseReviewings')
+        .select(['course', 'category.name', 'teacher', 'userInfo'])
+        .where('course.state = :state', { state: STATE.PUBLISHED })
+        .getMany();
     } catch (error) {
       throw new HttpException(error.message, 500);
     }
   }
+
   async findByCategory(categoryId: string) {
     try {
       const courses = await this.dataSource
@@ -72,6 +82,7 @@ export class CourseService {
       throw new HttpException(error.message, 500);
     }
   }
+
   async findAll(awsId: string) {
     try {
       const teacher = await this.findTeacherByAwsId(awsId);
@@ -124,6 +135,7 @@ export class CourseService {
       throw new HttpException(error.message, 500);
     }
   }
+
   async findOne(id: string) {
     try {
       const existingCourse = await this.dataSource
@@ -140,6 +152,7 @@ export class CourseService {
       throw new HttpException(error.message, 500);
     }
   }
+
   update(course: Course) {
     try {
       const updatedCourse = this.dataSource.getRepository(Course).save(course);
@@ -152,6 +165,7 @@ export class CourseService {
   remove(id: string) {
     return `This action removes a #${id} course`;
   }
+
   public async findTeacherByAwsId(awsId: string) {
     const user = await this.dataSource.getRepository(User).findOneOrFail({
       where: { awsCognitoId: awsId },
