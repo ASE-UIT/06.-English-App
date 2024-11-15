@@ -1,7 +1,4 @@
-
-import { API_URL,ACCESS_TOKEN } from "@env";
-
-let url = API_URL + "user/me";
+import { API_URL, ACCESS_TOKEN } from "@env";
 
 class UserService {
   async getUser() {

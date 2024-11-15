@@ -8,6 +8,7 @@ import Vocabulary from "../screens/Vocabulary";
 
 import LearningStackNavigation from "./LearningStackNavigation";
 import GrammarStackNavigation from "./GrammarStackNavigation";
+import CourseDetail from "../screens/CourseDetail";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function BottomTabsNavigator() {
