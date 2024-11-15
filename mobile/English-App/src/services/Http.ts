@@ -1,5 +1,4 @@
-import { API_URL, ACCESS_TOKEN } from "@env";
-
+import { API_URL, ACCESS_TOKEN } from "./config";
 class Http {
   baseUrl: string;
   constructor() {
@@ -16,7 +15,7 @@ class Http {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
     });
-    return response;
+    return response.json();
   }
   async post(endpoint: string, data: object) {
     const response = await fetch(this.getURL(endpoint), {
@@ -28,7 +27,7 @@ class Http {
       },
       body: JSON.stringify(data),
     });
-    return response;
+    return response.json();
   }
 
   async put(endpoint: string, data: object) {
@@ -41,7 +40,7 @@ class Http {
       },
       body: JSON.stringify(data),
     });
-    return response;
+    return response.json();
   }
   async delete(endpoint: string) {
     const response = await fetch(this.getURL(endpoint), {
@@ -51,7 +50,7 @@ class Http {
         Authorization: `Bearer ${ACCESS_TOKEN}`,
       },
     });
-    return response;
+    return response.json();
   }
 }
 

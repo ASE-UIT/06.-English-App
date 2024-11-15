@@ -5,19 +5,17 @@ import { Rating } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import { CourseScreenNavigationProp } from "../../type";
+import { Course } from "../../models";
 
-export default function CourseCard() {
-  const courseName = "Reading Essentials";
-  const creator = "Mrs. Thuy";
-  const rating = 4.5;
-  const votes = 100;
-  const currentPrice = 100000;
-  const originalPrice = 200000;
-  const nav = useNavigation< CourseScreenNavigationProp>();
+export default function CourseCard({ course }: { course: Course }) {
+  const nav = useNavigation<CourseScreenNavigationProp>();
   return (
-    <TouchableOpacity className="flex flex-col justify-between w-40" onPress={()=>{
-      nav.navigate("CourseDetail")
-    }}>
+    <TouchableOpacity
+      className="flex flex-col justify-between w-40"
+      onPress={() => {
+        nav.navigate("CourseDetail");
+      }}
+    >
       <Image
         source={require("../../../assets/courseCard.jpg")}
         className="w-full h-32"
@@ -27,25 +25,23 @@ export default function CourseCard() {
         numberOfLines={1}
         ellipsizeMode="tail"
       >
-        {courseName}
+        {course.title}
       </Text>
       <Text
         className="text-xs text-blue2"
         numberOfLines={1}
         ellipsizeMode="tail"
       >
-        {creator}
+        {course.teacherName}
       </Text>
       <View className="flex flex-row items-center gap-1">
-        <Text className="text-xs text-black">{rating}</Text>
-        <Rating readonly startingValue={rating} imageSize={10} />
-        <Text className="text-xs text-black">({votes})</Text>
+        <Text className="text-xs text-black">{course.ratingAverage}</Text>
+        <Rating readonly startingValue={course.ratingAverage} imageSize={10} />
+        <Text className="text-xs text-black">{course.ratingCount}</Text>
       </View>
       <View className="flex flex-row gap-1 items-start">
-        <Text className="text-xs text-black">đ{currentPrice}</Text>
-        <Text className="text-[10px] text-gray-500 line-through">
-          đ{originalPrice}
-        </Text>
+        <Text className="text-xs text-black">đ500.000</Text>
+        <Text className="text-[10px] text-gray-500 line-through">đ800.000</Text>
       </View>
     </TouchableOpacity>
   );
