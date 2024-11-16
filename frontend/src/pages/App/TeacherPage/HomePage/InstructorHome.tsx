@@ -58,10 +58,14 @@ const InstructorHome = () => {
         </Sidebar>
         <div className="flex flex-1">
           <span className="text-black">CONTENT</span>
-          <Button onClick={async() => {
-            const ans = await userApi.getUser()
-            console.log("ans",ans)
-          }}>Test Get User</Button>
+          <Button
+            onClick={async () => {
+              const ans = await userApi.getUser()
+              console.log("ans", ans)
+            }}
+          >
+            Test Get User
+          </Button>
         </div>
       </div>
     </div>

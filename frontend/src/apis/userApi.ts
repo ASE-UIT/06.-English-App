@@ -6,12 +6,12 @@ interface User {
   data: {
     id: string
     role: string
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone:  string,
-    birthDate: string,
-    avatarURL: null,
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    birthDate: string
+    avatarURL: null
     additionalInfo: {
       degree: string
     }

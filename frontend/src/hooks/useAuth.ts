@@ -15,8 +15,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 
 // Define the state type for the store
 type AuthState = {
-  accessToken: string | null;
-  setAccessToken: (accessToken: string) => void;
+  accessToken: string | null
+  setAccessToken: (accessToken: string) => void
 }
 
 export function useAuth() {
@@ -38,20 +38,20 @@ export function useAuth() {
     }
   }, [accessToken])
 
-  const logIn = async ({ username, password }:{username: string, password:string}) => {
-      try {
-          const loginData = {
-              username: username,
-              password: password
-        }
-      const { accessToken } = await authApi.signIn(loginData) ?? {}
+  const logIn = async ({ username, password }: { username: string; password: string }) => {
+    try {
+      const loginData = {
+        username: username,
+        password: password,
+      }
+      const { accessToken } = (await authApi.signIn(loginData)) ?? {}
       if (accessToken) {
-          const decodeToken = jwtDecode<{ username: string }>(accessToken)
-          httpClient.setAuthHeader(accessToken)
+        const decodeToken = jwtDecode<{ username: string }>(accessToken)
+        httpClient.setAuthHeader(accessToken)
         localStorage.setItem("accessToken", accessToken)
         localStorage.setItem("username", decodeToken.username)
-          setAccessToken(accessToken)
-          console.log("DECODE", decodeToken)
+        setAccessToken(accessToken)
+        console.log("DECODE", decodeToken)
       }
       console.log("TokenSTORAGE", accessToken)
     } catch (error) {
