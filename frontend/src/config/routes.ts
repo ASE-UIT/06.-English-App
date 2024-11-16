@@ -45,6 +45,7 @@ export const teacherRoutes = {
   Section: {
     Base: "/course/:courseId/lesson/:lessonId/section",
     Create: "/course/:courseId/lesson/:lessonId/section/create",
+    CreateWriting: "/course/create/writing",
     Edit: "/course/:courseId/lesson/:lessonId/section/:id/edit",
     Detail: "/course/:courseId/lesson/:lessonId/section/:id",
   },

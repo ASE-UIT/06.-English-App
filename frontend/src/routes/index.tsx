@@ -17,6 +17,7 @@ import ReadingPage from "@/pages/App/StudentPage/TestPage/ReadingTestPage/Readin
 import { MyLessonPage } from "@/pages/App/TeacherPage/LessonPage/MyLessonPage"
 import { CreateVocab } from "@/pages/App/TeacherPage/LessonPage/CreateVocab"
 import { CreateGrammar } from "@/pages/App/TeacherPage/LessonPage/CreateGrammar"
+import { CreateWriting } from "@/pages/App/TeacherPage/LessonPage/CreateWriting"
 import CourseList from "@/pages/App/TeacherPage/CoursePage/List"
 import CourseCreate from "@/pages/App/TeacherPage/CoursePage/Add"
 import CourseAddLessons from "@/pages/App/TeacherPage/CoursePage/Add/Lessons"
@@ -128,6 +129,11 @@ const protectedRoutes = [
   {
     path: teacherRoutes.Lesson.CreateGrammar,
     component: <CreateGrammar></CreateGrammar>,
+    layout: DoTestLayout,
+  },
+  {
+    path: teacherRoutes.Section.CreateWriting,
+    component: <CreateWriting></CreateWriting>,
     layout: DoTestLayout,
   },
 ]
