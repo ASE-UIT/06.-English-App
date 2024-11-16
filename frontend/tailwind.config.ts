@@ -46,6 +46,7 @@ const config = {
         sectionCard: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
       },
       colors: {
+        accordionTrigger: "#BCFFE3",
         sectionDesriptionModal: "#898989",
         lessonbg: "#FFF4F9",
         sideBar: "#FCDDEC80",

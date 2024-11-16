@@ -16,6 +16,7 @@ import InstructorHome from "@/pages/App/TeacherPage/HomePage/InstructorHome"
 import ReadingPage from "@/pages/App/StudentPage/TestPage/ReadingTestPage/ReadingPage"
 import { MyLessonPage } from "@/pages/App/TeacherPage/LessonPage/MyLessonPage"
 import { CreateVocab } from "@/pages/App/TeacherPage/LessonPage/CreateVocab"
+import { CreateGrammar } from "@/pages/App/TeacherPage/LessonPage/CreateGrammar"
 const publicRoutes = [
   {
     path: routes.LandingPage,
@@ -95,6 +96,11 @@ const protectedRoutes = [
   {
     path: teacherRoutes.Lesson.CreateVocab,
     component: <CreateVocab></CreateVocab>,
+    layout: DoTestLayout,
+  },
+  {
+    path: teacherRoutes.Lesson.CreateGrammar,
+    component: <CreateGrammar></CreateGrammar>,
     layout: DoTestLayout,
   },
 ]

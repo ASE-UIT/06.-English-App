@@ -12,8 +12,10 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Section } from "@/type/section"
 import { BiPlus } from "react-icons/bi"
+import { useNavigate } from "react-router"
 
 export const MyLessonPage = () => {
+  const navigate = useNavigate()
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-white px-[66px] py-[64px]">
       <div className="flex flex-col rounded-md border-2 border-fuschia px-[78px] py-[56px]">
@@ -25,7 +27,10 @@ export const MyLessonPage = () => {
             <BiPlus className="mr-[1.5px]" size={20} />
             Add materials
           </Button>
-          <Button className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal">
+          <Button
+            onClick={() => navigate("/course/1/lesson/Vocabulary")}
+            className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal"
+          >
             <BiPlus className="mr-[1.5px]" size={20} />
             Vocabulary
           </Button>
@@ -42,7 +47,7 @@ export const MyLessonPage = () => {
               <span className="text-xl font-extralight text-black">15.00</span>
             </div>
           </div>
-          <div className="flex h-[73px] w-full cursor-pointer border-2 border-headerIcon shadow-sectionCard">
+          <div className="flex h-[73px] w-full cursor-pointer border-[1px] border-headerIcon shadow-sectionCard">
             <div className="flex flex-col bg-lessonbg px-[26px] py-[9px]">
               <div className="flex w-full items-center gap-[23px]">
                 <span className="text-2xl font-normal text-headerIcon">Section 1</span>
@@ -51,7 +56,7 @@ export const MyLessonPage = () => {
               <span className="text-xl font-extralight text-black">3 questions</span>
             </div>
           </div>
-          <div className="flex h-[73px] w-full cursor-pointer border-2 border-headerIcon shadow-sectionCard">
+          <div className="flex h-[73px] w-full cursor-pointer border-[1px] border-headerIcon shadow-sectionCard">
             <div className="flex flex-col bg-lessonbg px-[26px] py-[9px]">
               <div className="flex w-full items-center gap-[23px]">
                 <span className="text-2xl font-normal text-headerIcon">Section 2</span>

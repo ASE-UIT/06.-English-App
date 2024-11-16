@@ -33,7 +33,8 @@ export const teacherRoutes = {
   Lesson: {
     Base: "/course/:courseId/lesson",
     Create: "/course/:courseId/lesson/create",
-    CreateVocab: "/course/:courseId/lesson/Vocabulary",
+    CreateVocab: "/course/:courseId/:lessonId/Vocabulary",
+    CreateGrammar: "/course/:courseId/:lessonId/Grammar",
     Edit: "/course/:courseId/lesson/:id/edit",
     Detail: "/course/:courseId/lesson/:id",
   },
