@@ -8,15 +8,19 @@ import {
   Delete,
 } from '@nestjs/common';
 import { StudentAnswerService } from './student-answer.service';
-import { CreateStudentAnswerDto } from './dto/create-student-answer.dto';
 import { UpdateStudentAnswerDto } from './dto/update-student-answer.dto';
+import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { StudentAnswerSubmit } from './dto/student-answer-submit.dto';
 
-@Controller('student-answer')
+@ApiBearerAuth()
+@ApiTags(DOCUMENTATION.TAGS.STUDENT_ANSWER)
+@Controller(END_POINTS.STUDENT_ANSWER.BASE)
 export class StudentAnswerController {
   constructor(private readonly studentAnswerService: StudentAnswerService) {}
 
-  @Post()
-  create(@Body() createStudentAnswerDto: CreateStudentAnswerDto) {
+  @Post(END_POINTS.STUDENT_ANSWER.SUBMIT_ANSWER)
+  create(@Body() createStudentAnswerDto: StudentAnswerSubmit) {
     return this.studentAnswerService.create(createStudentAnswerDto);
   }
 
