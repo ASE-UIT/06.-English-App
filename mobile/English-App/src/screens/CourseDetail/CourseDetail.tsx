@@ -9,6 +9,20 @@ import {
 import React from "react";
 import { Button, Icon } from "@rneui/themed";
 import { BottomSheet } from "@rneui/base";
+import { ScrollView } from "react-native-gesture-handler";
+
+const data: string[] = [
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+
+]
 
 const Lesson = () => {
   return (
@@ -39,88 +53,76 @@ const CourseDetail = () => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = React.useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState(0);
   return (
-    <View className="mt-[50px] px-[45px] h-auto relative">
-      <Image
-        source={require("../../../assets/Frame9.png")}
-        className="rounded-3xl w-full h-64"
-      />
-      <Text className="text-lg font-semibold">Reading Course For Beginer</Text>
-      <Text>
-        Created by <Text className="text-[#5D5FEF]">Ms. Thuy</Text>
-      </Text>
-      <View className="flex flex-row justify-between">
-        <View className="flex flex-row items-center gap-1">
-          <Icon
-            name="star-o"
-            type="font-awesome"
-            onPress={() => {
-              console.log("Press");
-            }}
-          />
-          <Text>4.5</Text>
-        </View>
-        <Text className="text-[#5D5FEF] text-3xl">40$</Text>
-      </View>
-
-      <View>
-        <View className="flex flex-row py-3 bg-[#A5A6F6] justify-around rounded-[20px]">
-          <Button
-            title="Playlist"
-            buttonStyle={{
-              backgroundColor: isPlaylist ? "#5D5FEF" : "#A5A6F6",
-              borderRadius: 20,
-              width: 120,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={handlePlaylist}
-          />
-          <Button
-            title="Description"
-            buttonStyle={{
-              backgroundColor: !isDescription ? "#A5A6F6" : "#5D5FEF",
-              borderRadius: 20,
-              width: 120,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={handleDescription}
-          />
-        </View>
-        <FlatList
-          // data={[]}
-          data={[
-            "Lesson 1",
-            "Lesson 2",
-            "Lesson 3",
-            "Lesson 4",
-            "Lesson 5",
-            "Lesson 6",
-            "Lesson 7",
-            "Lesson 8",
-            "Lesson 9",
-            "Lesson 10",
-            "Lesson 1",
-            "Lesson 2",
-            "Lesson 3",
-            "Lesson 4",
-            "Lesson 5",
-            "Lesson 6",
-            "Lesson 7",
-            "Lesson 8",
-            "Lesson 9",
-            "Lesson 10",
-          ]}
-          renderItem={({ item }) => Lesson()}
-          style={{ display: "flex", height: "40%", marginTop: 10 }}
-          scrollEnabled={true}
-          keyExtractor={(item, index) => index.toString()}
+    <ScrollView className="mt-[10px] h-full " nestedScrollEnabled contentContainerStyle={{
+      display:'flex',
+      flexDirection:'column',
+      justifyContent:'space-between',
+    }}>
+      <View className="px-[45px] h-[90%]">
+        <Image
+          source={require("../../../assets/Frame9.png")}
+          className="rounded-3xl w-full h-64"
         />
-      </View>
+        <Text className="text-lg font-semibold">Reading Course For BeginerReading Course For BeginerReading Course For BeginerReading Course For BeginerReading Course For Beginer</Text>
+        <Text>
+          Created by <Text className="text-[#5D5FEF]">Ms. Thuy</Text>
+        </Text>
+        <View className="flex flex-row justify-between">
+          <View className="flex flex-row items-center gap-1">
+            <Icon
+              name="star-o"
+              type="font-awesome"
+              onPress={() => {
+                console.log("Press");
+              }}
+            />
+            <Text>4.5</Text>
+          </View>
+          <Text className="text-[#5D5FEF] text-3xl">40$</Text>
+        </View>
 
-      <View className="flex flex-row bg-white pl-8 pr-8 pb-3 pt-[14px] w-screen justify-around h-[80px] absolute bottom-0 right-0 left-0">
+        <View>
+          <View className="flex flex-row py-3 bg-[#A5A6F6] justify-around rounded-[20px]">
+            <Button
+              title="Playlist"
+              buttonStyle={{
+                backgroundColor: isPlaylist ? "#5D5FEF" : "#A5A6F6",
+                borderRadius: 20,
+                width: 120,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={handlePlaylist}
+            />
+            <Button
+              title="Description"
+              buttonStyle={{
+                backgroundColor: !isDescription ? "#A5A6F6" : "#5D5FEF",
+                borderRadius: 20,
+                width: 120,
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              onPress={handleDescription}
+            />
+          </View>
+          <ScrollView className="h-[207px] min-h-[40px] w-full" style={{
+            display:'flex'
+
+          }}>
+            {isPlaylist && data.length > 0 ? (
+              data.map((item, index) => <Lesson key={index} />)
+            ) : (
+              <Text className="text-sm font-medium text-center mt-4 text-gray-500">
+                No lessons available.
+              </Text>
+            )}
+          </ScrollView>
+        </View>
+      </View>
+      <View className="flex flex-row bg-white pl-8 pr-8 pb-3 pt-[14px] w-screen justify-around h-[80px] ">
         <Button
           buttonStyle={{
             backgroundColor: "#EF5DA8",
@@ -155,6 +157,7 @@ const CourseDetail = () => {
           }}
         />
       </View>
+
       <BottomSheet
         isVisible={isBottomSheetVisible}
         modalProps={{
@@ -266,7 +269,7 @@ const CourseDetail = () => {
           </View>
         </View>
       </BottomSheet>
-    </View>
+    </ScrollView>
   );
 };
 

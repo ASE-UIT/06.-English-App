@@ -1,22 +1,12 @@
-require('dotenv').config()
+import { API_URL, ACCESS_TOKEN } from "@env";
 
-
-const API_URL = process.env.API_URL;
+const API = process.env.API_URL;
 const accessToken = process.env.ACCESS_TOKEN;
 
-let url = API_URL + 'section';
+let url = API + 'section';
 class sectionService {
     async getSection(id:string) {
         url = url + '/' + id;
-        const response = await fetch(url, {
-            headers: {
-                'accept': '*/*',
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-        return response.json();
-    }
-    async getSections() {
         const response = await fetch(url, {
             headers: {
                 'accept': '*/*',
