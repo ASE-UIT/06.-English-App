@@ -1,3 +1,4 @@
+import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
@@ -8,8 +9,10 @@ export class CreateStudentAnswerDto {
   })
   @IsString()
   @IsNotEmpty()
-  questionId: number;
+  @AutoMap()
+  questionId: string;
   @IsString()
   @IsNotEmpty()
+  @AutoMap()
   answer: string;
 }
