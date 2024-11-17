@@ -67,6 +67,20 @@ export const END_POINTS = {
     UPDATE: '',
     DELETE: '',
   },
+  QUESTION: {
+    BASE: '/question',
+    CREATE: '',
+    FIND_BY_SECTION: '',
+    PUT: '',
+    DELETE: ':id',
+  },
+  QUESTION_GROUP: {
+    BASE: '/question-group',
+    CREATE: '',
+    GET_BY_SECTION: '/:sectionId',
+    UPDATE: '',
+    DELETE: ':id',
+  },
   SECTION: {
     BASE: '/section',
     CREATE: '',
@@ -89,6 +103,8 @@ export const DOCUMENTATION = {
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',
     SECTION: 'SECTION',
+    QUESTION: 'QUESTION',
+    QUESTION_GROUP: 'QUESTION_GROUP',
   },
 };
 export const TIMEOUT = 5000;
