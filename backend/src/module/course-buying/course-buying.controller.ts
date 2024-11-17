@@ -10,7 +10,6 @@ import { ResponseObject } from 'src/utils/objects';
 import { Request, Response } from 'express';
 import { User } from 'src/common/decorators/user.decorator';
 import { IUser } from 'src/common/guards/at.guard';
-import { UpdateLessonProgress } from './dto/update-lesson-progress.dto';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE_BUYING.BASE)
@@ -62,14 +61,5 @@ export class CourseBuyingController {
   @Get(END_POINTS.COURSE_BUYING.VNPAY_IPN)
   async ipnVnpayUrl(@Query() query: any, @Res() res: Response) {
     return await this.courseBuyingService.ipnVnpayUrl(query, res);
-  }
-
-  @Post(END_POINTS.COURSE_BUYING.MARK_AS_COMPLETED)
-  async markAsCompleted(@Body() body: UpdateLessonProgress) {
-    await this.courseBuyingService.markAsCompleted(body.lessonId);
-    return ResponseObject.create(
-      'CourseBuying marked as completed successfully',
-      null,
-    );
   }
 }

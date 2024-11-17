@@ -38,10 +38,14 @@ export const END_POINTS = {
   COURSE_BUYING: {
     BASE: '/course-buying',
     CREATE: '',
-    MARK_AS_COMPLETED: '/mark-as-completed',
     CREATE_PAY_ORDER_URL: '/create-pay-order-url',
     VALIDATE_PAY_ORDER: '/validate-pay-order',
     VNPAY_IPN: '/vnpay-ipn',
+    TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
+  },
+  COURSE_OWNING: { 
+    BASE: '/course-owning',
+    ACTIVE_COURSE: '/active-course',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
   },
   COURSE_CATEGORY: {
