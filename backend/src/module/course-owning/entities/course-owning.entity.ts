@@ -5,7 +5,6 @@ import { Course } from 'src/module/course/entities/course.entity';
 
 @Entity()
 export class CourseOwning extends Base {
-  @ManyToOne(() => Student, (student) => student.courseOwnings)
   @Column()
   expiredDate: Date;
   @Column()

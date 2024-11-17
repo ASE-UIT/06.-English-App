@@ -15,6 +15,10 @@ export default () => ({
   cognitoRedirectUri: process.env.COGNITO_REDIRECT_URI,
   awsBucketName: process.env.AWS_BUCKET_NAME,
   cloudFrontURL: process.env.CLOUDFRONT_URL,
+  redis: {
+    host: process.env.REDIS_HOST,
+    port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+  },
   database: {
     host: process.env.DATABASE_HOST,
     port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
