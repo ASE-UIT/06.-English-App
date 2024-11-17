@@ -1,2 +1,4 @@
 import Course from "./Course";
-export { Course };
+import Lesson from "./Lesson";
+import Section from "./Section";
+export { Course, Lesson, Section };
