@@ -13,7 +13,7 @@ export default function CourseCard() {
   const votes = 100;
   const currentPrice = 100000;
   const originalPrice = 200000;
-  const nav = useNavigation< CourseScreenNavigationProp>();
+  const nav = useNavigation<CourseScreenNavigationProp>();
   return (
     <TouchableOpacity className="flex flex-col justify-between w-40" onPress={()=>{
       nav.navigate("CourseDetail")

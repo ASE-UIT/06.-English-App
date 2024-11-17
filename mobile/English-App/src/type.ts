@@ -3,7 +3,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 
 export type RootStackParamList = {
   Learning: undefined;
-  Course: undefined;
+  CourseHome: undefined;
   Reading: undefined;
   Grammar: undefined;
   GrammarDetail: undefined;
@@ -27,7 +27,7 @@ export type GrammarDetailScreenNavigationProp = StackNavigationProp<
 
 export type CourseScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "Course"
+  "CourseHome"
 >;
 
 export type CourseDetailScreenNavigationProp = StackNavigationProp<
