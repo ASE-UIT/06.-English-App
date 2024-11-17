@@ -13,7 +13,7 @@ export default function CourseCard({ course }: { course: Course }) {
     <TouchableOpacity
       className="flex flex-col justify-between w-40"
       onPress={() => {
-        nav.navigate("CourseDetail");
+        nav.navigate("CourseDetail", { course });
       }}
     >
       <Image

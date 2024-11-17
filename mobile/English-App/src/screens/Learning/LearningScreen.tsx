@@ -6,12 +6,12 @@ import { useNavigation } from "@react-navigation/native";
 
 import { LearningScreenNavigationProp } from "../../type";
 import courseService from "../../services/course.service";
-import { Course } from "../../models";
+import { MyCourse } from "../../models";
 
 export default function LearningScreen() {
   const nav = useNavigation<LearningScreenNavigationProp>();
   const [buttonSelected, setButtonSelected] = React.useState("All");
-  const [studentCourses, setStudentCourses] = useState<Course[]>([]);
+  const [studentCourses, setStudentCourses] = useState<MyCourse[]>([]);
   useEffect(() => {
     const fetchStudentCourses = async () => {
       try {
@@ -99,7 +99,7 @@ export default function LearningScreen() {
             title={course.title}
             teacherName={course.teacherName}
             rated={course.ratingCount}
-            onPressItem={() => nav.navigate("Course", { courseId: course.id })}
+            onPressItem={() => nav.navigate("Course", { course: course })}
             progress={50}
           />
         ))}

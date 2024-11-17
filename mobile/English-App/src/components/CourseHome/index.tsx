@@ -31,13 +31,13 @@ export default function CourseViewer() {
   const navigation = useNavigation<CourseScreenNavigationProp>();
 
   const route = useRoute<CourseScreenRouteProp>();
-  const { courseId } = route.params;
+  const { course } = route.params;
   const [lessons, setLessons] = useState<Lesson[]>([]);
 
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const res = await lessonService.getAllLessonsByCourse(courseId);
+        const res = await lessonService.getAllLessonsByCourse(course.id);
         if (res.statusCode === 200) {
           setLessons(
             res.data.map((lesson: Lesson) => ({
@@ -56,7 +56,7 @@ export default function CourseViewer() {
       }
     };
     fetchLessons();
-  }, [courseId]);
+  }, [course]);
   const handleReplay = () => {
     if (videoRef.current) {
       videoRef.current.replayAsync();
@@ -116,10 +116,8 @@ export default function CourseViewer() {
 
       {/* Header Section */}
       <View style={styles.header}>
-        <Text style={styles.title}>
-          THE COMPLETE GUIDE TO IELTS READING GENERAL
-        </Text>
-        <Text style={styles.subtitle}>Ms Thuy</Text>
+        <Text style={styles.title}>{course.title}</Text>
+        <Text style={styles.subtitle}>{course.teacherName}</Text>
       </View>
 
       {/* Tab Section */}

@@ -1,32 +1,58 @@
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import React from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Button, Icon } from "@rneui/themed";
 import { BottomSheet } from "@rneui/base";
+import { useRoute } from "@react-navigation/native";
+import { CourseDetailScreenRouteProp } from "../../type";
+import { Lesson, Section } from "../../models";
+import lessonService from "../../services/lesson.service";
 
-const Lesson = () => {
+const LessonItem = ({ lesson }: { lesson: Lesson }) => {
   return (
     <View className="flex gap-1 mt-[10px]">
-      <Text className="text-base font-semibold">Lesson 1</Text>
+      <Text className="text-base font-semibold">{lesson.name}</Text>
       <Text
         style={{ color: "rgba(0, 0, 0, 0.7)" }}
         className="text-sm font-medium"
       >
-        Introduction
+        {lesson.description}
       </Text>
     </View>
   );
 };
 
 const CourseDetail = () => {
-  const [isPlaylist, setIsPlaylist] = React.useState(true);
-  const [isDescription, setIsDescription] = React.useState(false);
+  const [isPlaylist, setIsPlaylist] = useState(true);
+  const [isDescription, setIsDescription] = useState(false);
+
+  const route = useRoute<CourseDetailScreenRouteProp>();
+  const { course } = route.params;
+
+  const [lessons, setLessons] = useState<Lesson[]>([]);
+
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        const res = await lessonService.getAllLessonsByCourse(course.id);
+        if (res.statusCode === 200) {
+          setLessons(
+            res.data.map((lesson: Lesson) => ({
+              ...lesson,
+              sections: lesson.sections ? lesson.sections : ([] as Section[]),
+            }))
+          );
+        } else {
+          console.error(
+            "Error fetching lessons, status code: ",
+            res.statusCode
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching lessons: ", error);
+      }
+    };
+    fetchLessons();
+  }, [course]);
 
   const handlePlaylist = () => {
     setIsPlaylist(true);
@@ -41,12 +67,12 @@ const CourseDetail = () => {
   return (
     <View className="mt-[50px] px-[45px] h-auto relative">
       <Image
-        source={require("../../../assets/Frame9.png")}
+        source={{ uri: course.thumbnail_image }}
         className="rounded-3xl w-full h-64"
       />
-      <Text className="text-lg font-semibold">Reading Course For Beginer</Text>
+      <Text className="text-lg font-semibold">{course.title}</Text>
       <Text>
-        Created by <Text className="text-[#5D5FEF]">Ms. Thuy</Text>
+        Created by <Text className="text-[#5D5FEF]">{course.teacherName}</Text>
       </Text>
       <View className="flex flex-row justify-between">
         <View className="flex flex-row items-center gap-1">
@@ -57,9 +83,9 @@ const CourseDetail = () => {
               console.log("Press");
             }}
           />
-          <Text>4.5</Text>
+          <Text>{course.ratingAverage}</Text>
         </View>
-        <Text className="text-[#5D5FEF] text-3xl">40$</Text>
+        <Text className="text-[#5D5FEF] text-3xl">#price</Text>
       </View>
 
       <View>
@@ -89,35 +115,9 @@ const CourseDetail = () => {
             onPress={handleDescription}
           />
         </View>
-        <FlatList
-          // data={[]}
-          data={[
-            "Lesson 1",
-            "Lesson 2",
-            "Lesson 3",
-            "Lesson 4",
-            "Lesson 5",
-            "Lesson 6",
-            "Lesson 7",
-            "Lesson 8",
-            "Lesson 9",
-            "Lesson 10",
-            "Lesson 1",
-            "Lesson 2",
-            "Lesson 3",
-            "Lesson 4",
-            "Lesson 5",
-            "Lesson 6",
-            "Lesson 7",
-            "Lesson 8",
-            "Lesson 9",
-            "Lesson 10",
-          ]}
-          renderItem={({ item }) => Lesson()}
-          style={{ display: "flex", height: "40%", marginTop: 10 }}
-          scrollEnabled={true}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {lessons.map((lesson) => (
+          <LessonItem key={lesson.id} lesson={lesson} />
+        ))}
       </View>
 
       <View className="flex flex-row bg-white pl-8 pr-8 pb-3 pt-[14px] w-screen justify-around h-[80px] absolute bottom-0 right-0 left-0">
