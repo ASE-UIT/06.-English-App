@@ -86,6 +86,9 @@ export class CourseService {
   async findAll(awsId: string) {
     try {
       const teacher = await this.findTeacherByAwsId(awsId);
+      if (!teacher) {
+        throw new HttpException('Teacher not found', 404);
+      }
       const courses = await this.dataSource
         .getRepository(Course)
         .createQueryBuilder('course')
@@ -116,7 +119,7 @@ export class CourseService {
         .leftJoin('course.courseOwnings', 'courseOwnings')
         .leftJoin('course.category', 'category')
         .leftJoin('course.teacher', 'teacher')
-        .leftJoin('teacher.userInfo', 'userInfo')
+        .leftJoin('teacher.userInfo', 'teacherInfo')
         .leftJoin('course.courseReviewings', 'courseReviewings')
         .leftJoin('courseOwnings.student', 'student')
         .leftJoin('student.userInfo', 'userInfo')
@@ -124,6 +127,7 @@ export class CourseService {
           'course',
           'category.name',
           'teacher',
+          'teacherInfo',
           'userInfo',
           'courseReviewings',
         ])

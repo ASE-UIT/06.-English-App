@@ -23,13 +23,13 @@ export class CourseProfile extends AutomapperProfile {
         forMember(
           (dest) => dest.ratingCount,
           mapFrom((src) =>
-            src.courseReviewings ? src.courseReviewings.length : 0,
+            src.courseReviewings?.length ? src.courseReviewings.length : 0,
           ),
         ),
         forMember(
           (dest) => dest.ratingAverage,
           mapFrom((src) =>
-            src.courseReviewings
+            src.courseReviewings?.length
               ? src.courseReviewings.reduce((acc, cur) => acc + cur.rating, 0) /
                 src.courseReviewings.length
               : 0,
