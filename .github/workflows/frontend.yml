@@ -6,22 +6,27 @@ on:
       - main-frontend
 
 jobs:
+ 
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+        
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
-
       - name: Install dependencies
-        run: npm install
+        run: |
+          cd frontend
+          npm install
 
       - name: Build React App
-        run: npm run build
+        run: |
+          cd frontend
+          npm run build
 
       - uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -32,6 +37,7 @@ jobs:
         run: aws s3 rm --recursive s3://$S3_BUCKET
       - name: Deploy to S3
         run: |
+          cd frontend
           aws s3 sync ./dist s3://$S3_BUCKET
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
