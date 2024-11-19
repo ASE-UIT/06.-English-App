@@ -10,6 +10,7 @@ import { User } from '../user/entities/user.entity';
 import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
+import { CheckKeyDto } from './dto/check-key.dto';
 
 @Injectable()
 export class CourseBuyingService {
@@ -188,19 +189,28 @@ export class CourseBuyingService {
       return { message: 'Pay fail', code: '97' };
     }
   }
-
-  findAll() {
-    return `This action returns all courseBuying`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} courseBuying`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} courseBuying`;
-  }
-  async markAsCompleted(sectionId: string) { 
-    return 'CourseBuying marked as completed successfully';
+  async checkKey(checkKeyDto: CheckKeyDto, userAwsId: string) {
+    try {
+      const courseBuyings = await this.dataSource
+        .getRepository(CourseBuying)
+        .createQueryBuilder('courseBuying')
+        .leftJoin('courseBuying.course', 'course')
+        .leftJoin('courseBuying.student', 'student')
+        .select(['courseBuying', 'course'])
+        .where('course.courseId = :id', { id: checkKeyDto.courseId })
+        .getMany();
+      if (!courseBuyings) {
+        throw new HttpException('Course buying not found', 404);
+      }
+      const courseBuying = courseBuyings.find(
+        (courseBuying) => courseBuying.key === checkKeyDto.key,
+      );
+      if (!courseBuying) {
+        throw new HttpException('Key not found', 404);
+      }
+      await this.dataSource.transaction(async (manager) => {});
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 }

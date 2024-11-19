@@ -41,9 +41,10 @@ export const END_POINTS = {
     CREATE_PAY_ORDER_URL: '/create-pay-order-url',
     VALIDATE_PAY_ORDER: '/validate-pay-order',
     VNPAY_IPN: '/vnpay-ipn',
+    CHECK_KEY: '/check-key',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
   },
-  COURSE_OWNING: { 
+  COURSE_OWNING: {
     BASE: '/course-owning',
     ACTIVE_COURSE: '/active-course',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
@@ -103,6 +104,8 @@ export const DOCUMENTATION = {
     USER: 'USER',
     FILE: 'FILE',
     COURSE: 'COURSE',
+    COURSE_BUYING: 'COURSE_BUYING',
+    COURSE_OWNING: 'COURSE_OWNING',
     COURSE_CATEGORY: 'COURSE_CATEGORY',
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',

@@ -11,6 +11,7 @@ import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
 import { CourseBuyingModule } from './course-buying/course-buying.module';
+import { CourseOwningModule } from './course-owning/course-owning.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { CourseBuyingModule } from './course-buying/course-buying.module';
     SectionModule,
     HttpModule,
     CourseBuyingModule,
+    CourseOwningModule,
   ],
   exports: [
     AuthModule,
@@ -40,6 +42,7 @@ import { CourseBuyingModule } from './course-buying/course-buying.module';
     SectionModule,
     HttpModule,
     CourseBuyingModule,
+    CourseOwningModule,
   ],
 })
 export class SharedModule {}
