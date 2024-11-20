@@ -3,17 +3,17 @@ import { SafeAreaView, StyleSheet, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import BottomTabsNavigator from "./src/Navigation/BottomTabsNavigator";
 import MainHeader from "./src/components/MainHeader";
+import { createStackNavigator } from "@react-navigation/stack";
+import RootStack from "./src/Navigation/RootStack";
 export default function App() {
+  const Stack = createStackNavigator();
   return (
-  
+    <NavigationContainer>
       <SafeAreaView style={styles.container}>
         <MainHeader title="English App" />
-        <NavigationContainer>
-
-          <BottomTabsNavigator />
-        </NavigationContainer>
+        <RootStack />
       </SafeAreaView>
-  
+    </NavigationContainer>
   );
 }
 

@@ -1,33 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import CourseItem from "../../components/CourseItem";
 import { useNavigation } from "@react-navigation/native";
 
 import { LearningScreenNavigationProp } from "../../type";
-
-const dataForCourseItem = [
-  {
-    srcImg:
-      "https://images.unsplash.com/photo-1728996152930-233c5aca21d7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
-    title: "TOEIC",
-    teacherName: "Vinh Thinh",
-    progress: 25,
-    rated: 3,
-  },
-  {
-    srcImg:
-      "https://images.unsplash.com/photo-1728996152930-233c5aca21d7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwzfHx8ZW58MHx8fHx8",
-    title: "IELTS",
-    teacherName: "Vinh Thinh Dep Trai",
-    progress: 50,
-    rated: 5,
-  },
-];
+import courseService from "../../services/course.service";
+import { MyCourse } from "../../models";
 
 export default function LearningScreen() {
   const nav = useNavigation<LearningScreenNavigationProp>();
   const [buttonSelected, setButtonSelected] = React.useState("All");
+  const [studentCourses, setStudentCourses] = useState<MyCourse[]>([]);
+  useEffect(() => {
+    const fetchStudentCourses = async () => {
+      try {
+        const res = await courseService.getStudentCourses();
+        if (res.statusCode === 200) {
+          setStudentCourses(res.data);
+        } else {
+          console.error(
+            "Error fetching student courses, status code: ",
+            res.statusCode
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching student courses: ", error);
+      }
+    };
+    fetchStudentCourses();
+  }, []);
   return (
     <ScrollView className="w-full px-[24px] py-6">
       <Text className="font-semibold text-base text-[#5D5FEF] mb-4">
@@ -90,18 +92,16 @@ export default function LearningScreen() {
         </Button>
       </View>
       <View className="w-full flex flex-col gap-2 items-center mt-5">
-        {dataForCourseItem.map((course, index) => (
-         
-            <CourseItem
-              key={index}
-              srcImg={course.srcImg}
-              title={course.title}
-              teacherName={course.teacherName}
-              progress={course.progress}
-              rated={course.rated}
-              onPressItem={() => nav.navigate("Course")}
-            />
-         
+        {studentCourses.map((course) => (
+          <CourseItem
+            key={course.id}
+            srcImg={course.thumbnail_image}
+            title={course.title}
+            teacherName={course.teacherName}
+            rated={course.ratingCount}
+            onPressItem={() => nav.navigate("Course", { course: course })}
+            progress={50}
+          />
         ))}
       </View>
     </ScrollView>

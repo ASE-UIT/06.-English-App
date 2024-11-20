@@ -5,6 +5,8 @@ import CategoryCard from "../../components/Home/CategoryCard";
 import CourseCard from "../../components/Home/CourseCard";
 import colors from "../../../colors";
 import courseCategoryService from "../../services/courseCategory.service";
+import courseService from "../../services/course.service";
+import { Course } from "../../models";
 
 const Home = () => {
   const userName = "Emma";
@@ -13,22 +15,40 @@ const Home = () => {
     name: string;
   }
 
-  const [courseCategories, setCourseCategories] = useState<CourseCategory[]>([]);
-
+  const [courseCategories, setCourseCategories] = useState<CourseCategory[]>(
+    []
+  );
+  const [recommendationCourses, setRecommendationCourses] = useState<Course[]>(
+    []
+  );
+  // use Course model for now, will be changed to RecommendationCourse model later
   useEffect(() => {
     const fetchCourseCategories = async () => {
       try {
         const result = await courseCategoryService.getCourseCategories();
         setCourseCategories(result.data);
-       
-        
-        
       } catch (error) {
         console.error("Error fetching course categories:", error);
       }
     };
+    const fetchRecommendationCourses = async () => {
+      try {
+        const res = await courseService.getAllCourses(); // change to getRecommendationCourses later
+        if (res.statusCode === 200) {
+          setRecommendationCourses(res.data.data);
+        } else {
+          console.error(
+            "Error fetching recommendation courses, status code: ",
+            res.statusCode
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching recommendation courses: ", error);
+      }
+    };
 
     fetchCourseCategories();
+    fetchRecommendationCourses();
   }, []);
 
   return (
@@ -79,13 +99,8 @@ const Home = () => {
           }}
         >
           {courseCategories.map((category) => (
-            <CategoryCard
-            name={category.name}
-            key={category.id}
-             
-            />
+            <CategoryCard name={category.name} key={category.id} />
           ))}
-         
         </ScrollView>
       </View>
       <View className="recommend flex flex-col gap-2">
@@ -103,10 +118,14 @@ const Home = () => {
             marginBottom: 20,
           }}
         >
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
+          {Array.isArray(recommendationCourses) &&
+          recommendationCourses.length > 0 ? (
+            recommendationCourses.map((course) => (
+              <CourseCard course={course} key={course.id} />
+            ))
+          ) : (
+            <Text>No courses available</Text>
+          )}
         </View>
       </View>
     </ScrollView>

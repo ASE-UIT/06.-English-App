@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,56 +15,48 @@ import {
   AVPlaybackStatusSuccess,
 } from "expo-av";
 import colors from "../../../colors";
-import { useNavigation } from "@react-navigation/native";
-import { CourseScreenNavigationProp } from "../../type";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { CourseScreenNavigationProp, CourseScreenRouteProp } from "../../type";
+import { Lesson, Section } from "../../models";
+import lessonService from "../../services/lesson.service";
 
 const { height } = Dimensions.get("window");
 
 export default function CourseViewer() {
-  const [currentSection, setCurrentSection] = useState(0);
+  const [currentSectionId, setCurrentSectionId] = useState("");
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentVideoUri, setCurrentVideoUri] = useState("");
   const [activeTab, setActiveTab] = useState("lessons");
   const videoRef = useRef<Video>(null);
   const navigation = useNavigation<CourseScreenNavigationProp>();
 
-  const [lessons, setLessons] = useState([
-    {
-      name: "Lesson 1: Introduction",
-      sections: [
-        { id: 1, type: "vocab", title: "Vocabulary" },
-        { id: 2, type: "grammar", title: "Grammar" },
-        {
-          id: 0,
-          type: "video",
-          title: "Video lecture 1",
-          completed: false,
-          uri: "https://www.w3schools.com/html/mov_bbb.mp4",
-        },
-        { id: 3, type: "writing", title: "Section 3", completed: false },
-        { id: 12, type: "reading", title: "Section 4", completed: false },
-      ],
-    },
-    {
-      name: "Lesson 2: Advanced Topics",
-      sections: [
-        { id: 9, type: "vocab", title: "Vocabulary" },
-        { id: 10, type: "grammar", title: "Grammar" },
-        {
-          id: 4,
-          type: "video",
-          title: "Video lecture 2",
-          completed: false,
-          uri: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
-        },
-        { id: 5, type: "speaking", title: "Section 1", completed: false },
-        { id: 6, type: "listening", title: "Section 2", completed: false },
-        { id: 7, type: "writing", title: "Section 3", completed: false },
-        { id: 8, type: "reading", title: "Section 4", completed: false },
-      ],
-    },
-  ]);
+  const route = useRoute<CourseScreenRouteProp>();
+  const { course } = route.params;
+  const [lessons, setLessons] = useState<Lesson[]>([]);
 
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        const res = await lessonService.getAllLessonsByCourse(course.id);
+        if (res.statusCode === 200) {
+          setLessons(
+            res.data.map((lesson: Lesson) => ({
+              ...lesson,
+              sections: lesson.sections ? lesson.sections : ([] as Section[]),
+            }))
+          );
+        } else {
+          console.error(
+            "Error fetching lessons, status code: ",
+            res.statusCode
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching lessons: ", error);
+      }
+    };
+    fetchLessons();
+  }, [course]);
   const handleReplay = () => {
     if (videoRef.current) {
       videoRef.current.replayAsync();
@@ -73,7 +65,7 @@ export default function CourseViewer() {
 
   // khi bấm vào section thì gọi hàm này
   const handleSectionPress = (section: any) => {
-    setCurrentSection(section.id);
+    setCurrentSectionId(section.id);
     // nếu section là video thì phát video
     if (section.type === "video") {
       setCurrentVideoUri(section.uri);
@@ -89,7 +81,7 @@ export default function CourseViewer() {
         prevLessons.map((lesson) => ({
           ...lesson,
           sections: lesson.sections.map((section) =>
-            section.id === currentSection
+            section.id === currentSectionId
               ? { ...section, completed: true }
               : section
           ),
@@ -124,10 +116,8 @@ export default function CourseViewer() {
 
       {/* Header Section */}
       <View style={styles.header}>
-        <Text style={styles.title}>
-          THE COMPLETE GUIDE TO IELTS READING GENERAL
-        </Text>
-        <Text style={styles.subtitle}>Ms Thuy</Text>
+        <Text style={styles.title}>{course.title}</Text>
+        <Text style={styles.subtitle}>{course.teacherName}</Text>
       </View>
 
       {/* Tab Section */}
@@ -181,7 +171,7 @@ export default function CourseViewer() {
                         key={section.id}
                         style={[
                           styles.sectionButton,
-                          currentSection === section.id &&
+                          currentSectionId === section.id &&
                             styles.sectionButtonActive,
                           section.type === "vocab" && {
                             backgroundColor: colors.blue4,
@@ -214,7 +204,7 @@ export default function CourseViewer() {
                       key={section.id}
                       style={[
                         styles.sectionButton,
-                        currentSection === section.id &&
+                        currentSectionId === section.id &&
                           styles.sectionButtonActive,
                       ]}
                       onPress={() => handleSectionPress(section)}

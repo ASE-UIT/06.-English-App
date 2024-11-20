@@ -1,11 +1,8 @@
-import { API_URL, ACCESS_TOKEN } from "@env";
-
-
+import { API_URL, ACCESS_TOKEN } from "./config";
 class courseCategoryService {
   async getCourseCategories() {
     const url = `${API_URL}course-category`;
 
-    
     const response = await fetch(url, {
       headers: {
         accept: "*/*",
@@ -15,8 +12,7 @@ class courseCategoryService {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-   
-    
+
     return await response.json();
   }
 }

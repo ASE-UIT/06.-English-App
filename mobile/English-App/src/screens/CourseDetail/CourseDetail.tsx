@@ -1,12 +1,5 @@
-import {
-  View,
-  Text,
-  Image,
-  FlatList,
-  SafeAreaView,
-  TouchableOpacity,
-} from "react-native";
-import React from "react";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
 import { Button, Icon } from "@rneui/themed";
 import { BottomSheet } from "@rneui/base";
 import { ScrollView } from "react-native-gesture-handler";
@@ -24,23 +17,52 @@ const data: string[] = [
 
 ]
 
-const Lesson = () => {
+const LessonItem = ({ lesson }: { lesson: Lesson }) => {
   return (
     <View className="flex gap-1 mt-[10px]">
-      <Text className="text-base font-semibold">Lesson 1</Text>
+      <Text className="text-base font-semibold">{lesson.name}</Text>
       <Text
         style={{ color: "rgba(0, 0, 0, 0.7)" }}
         className="text-sm font-medium"
       >
-        Introduction
+        {lesson.description}
       </Text>
     </View>
   );
 };
 
 const CourseDetail = () => {
-  const [isPlaylist, setIsPlaylist] = React.useState(true);
-  const [isDescription, setIsDescription] = React.useState(false);
+  const [isPlaylist, setIsPlaylist] = useState(true);
+  const [isDescription, setIsDescription] = useState(false);
+
+  const route = useRoute<CourseDetailScreenRouteProp>();
+  const { course } = route.params;
+
+  const [lessons, setLessons] = useState<Lesson[]>([]);
+
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        const res = await lessonService.getAllLessonsByCourse(course.id);
+        if (res.statusCode === 200) {
+          setLessons(
+            res.data.map((lesson: Lesson) => ({
+              ...lesson,
+              sections: lesson.sections ? lesson.sections : ([] as Section[]),
+            }))
+          );
+        } else {
+          console.error(
+            "Error fetching lessons, status code: ",
+            res.statusCode
+          );
+        }
+      } catch (error) {
+        console.error("Error fetching lessons: ", error);
+      }
+    };
+    fetchLessons();
+  }, [course]);
 
   const handlePlaylist = () => {
     setIsPlaylist(true);
