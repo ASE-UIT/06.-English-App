@@ -1,4 +1,5 @@
 import { API_URL, ACCESS_TOKEN } from "@env";
+console.log(API_URL, ACCESS_TOKEN);
 class Http {
   baseUrl: string;
   constructor() {

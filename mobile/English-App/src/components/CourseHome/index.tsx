@@ -16,7 +16,7 @@ import {
 } from "expo-av";
 import colors from "../../../colors";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { CourseScreenNavigationProp, CourseScreenRouteProp } from "../../type";
+import { CourseDetailScreenNavigationProp, CourseScreenRouteProp } from "../../type";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
 
@@ -28,7 +28,7 @@ export default function CourseViewer() {
   const [currentVideoUri, setCurrentVideoUri] = useState("");
   const [activeTab, setActiveTab] = useState("lessons");
   const videoRef = useRef<Video>(null);
-  const navigation = useNavigation<CourseScreenNavigationProp>();
+  const navigation = useNavigation<CourseDetailScreenNavigationProp>();
 
   const route = useRoute<CourseScreenRouteProp>();
   const { course } = route.params;
