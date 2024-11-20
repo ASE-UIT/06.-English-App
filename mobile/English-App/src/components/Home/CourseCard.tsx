@@ -4,11 +4,11 @@ import { Image, Text, View } from "react-native";
 import { Rating } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import { CourseScreenNavigationProp } from "../../type";
+import { CourseDetailScreenNavigationProp } from "../../type";
 import { Course } from "../../models";
 
 export default function CourseCard({ course }: { course: Course }) {
-  const nav = useNavigation<CourseScreenNavigationProp>();
+  const nav = useNavigation<CourseDetailScreenNavigationProp>();
   return (
     <TouchableOpacity
       className="flex flex-col justify-between w-40"

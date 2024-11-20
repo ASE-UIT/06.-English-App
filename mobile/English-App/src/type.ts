@@ -26,10 +26,7 @@ export type GrammarDetailScreenNavigationProp = StackNavigationProp<
   "GrammarDetail"
 >;
 
-export type CourseScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "CourseHome"
->;
+
 
 export type CourseDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

@@ -1,4 +1,4 @@
-import { API_URL, ACCESS_TOKEN } from "@env";
+import { API_URL, ACCESS_TOKEN } from "./config";
 class courseCategoryService {
   async getCourseCategories() {
     const url = `${API_URL}course-category`;
