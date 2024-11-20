@@ -3,6 +3,10 @@ import React, { useEffect, useState } from "react";
 import { Button, Icon } from "@rneui/themed";
 import { BottomSheet } from "@rneui/base";
 import { ScrollView } from "react-native-gesture-handler";
+import { Lesson, Section } from "../../models";
+import lessonService from "../../services/lesson.service";
+import { CourseDetailScreenRouteProp } from "../../type";
+import { useRoute } from "@react-navigation/native";
 
 const data: string[] = [
   "Lesson 1",
@@ -82,12 +86,12 @@ const CourseDetail = () => {
     }}>
       <View className="px-[45px] h-[90%]">
         <Image
-          source={require("../../../assets/Frame9.png")}
+          source={{ uri: course.thumbnail_image }}
           className="rounded-3xl w-full h-64"
         />
-        <Text className="text-lg font-semibold">Reading Course For BeginerReading Course For BeginerReading Course For BeginerReading Course For BeginerReading Course For Beginer</Text>
+        <Text className="text-lg font-semibold">{course.title}</Text>
         <Text>
-          Created by <Text className="text-[#5D5FEF]">Ms. Thuy</Text>
+          Created by <Text className="text-[#5D5FEF]">{course.teacherName}</Text>
         </Text>
         <View className="flex flex-row justify-between">
           <View className="flex flex-row items-center gap-1">
@@ -98,9 +102,9 @@ const CourseDetail = () => {
                 console.log("Press");
               }}
             />
-            <Text>4.5</Text>
+            <Text>{course.ratingAverage}</Text>
           </View>
-          <Text className="text-[#5D5FEF] text-3xl">40$</Text>
+          <Text className="text-[#5D5FEF] text-3xl">#price</Text>
         </View>
 
         <View>
@@ -135,7 +139,8 @@ const CourseDetail = () => {
 
           }}>
             {isPlaylist && data.length > 0 ? (
-              data.map((item, index) => <Lesson key={index} />)
+              lessons.map((lesson) => (
+                <LessonItem key={lesson.id} lesson={lesson} />))
             ) : (
               <Text className="text-sm font-medium text-center mt-4 text-gray-500">
                 No lessons available.

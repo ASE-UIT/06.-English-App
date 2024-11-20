@@ -5,15 +5,12 @@ const accessToken = process.env.ACCESS_TOKEN;
 class grammarService {
     async getGrammar() {
         const url = API + 'grammar';
-        console.log(url);
-        console.log(accessToken);
         const response = await fetch(url, {
             headers: {
                 'accept': '*/*',
                 'Authorization': `Bearer ${accessToken}`
             }
         });
-        
         return response.json();
     }
 }
