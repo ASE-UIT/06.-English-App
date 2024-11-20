@@ -1,4 +1,9 @@
-import { HttpException, Injectable, Req } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  Req,
+} from '@nestjs/common';
 import { CourseBuying } from './entities/course-buying.entity';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -11,6 +16,7 @@ import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
 import { CheckKeyDto } from './dto/check-key.dto';
+import { CourseOwning } from '../course-owning/entities/course-owning.entity';
 
 @Injectable()
 export class CourseBuyingService {
@@ -190,27 +196,40 @@ export class CourseBuyingService {
     }
   }
   async checkKey(checkKeyDto: CheckKeyDto, userAwsId: string) {
-    try {
-      const courseBuyings = await this.dataSource
+    return this.dataSource.transaction(async (transactionalEntityManager) => {
+      const courseBuying = await transactionalEntityManager
         .getRepository(CourseBuying)
         .createQueryBuilder('courseBuying')
-        .leftJoin('courseBuying.course', 'course')
-        .leftJoin('courseBuying.student', 'student')
-        .select(['courseBuying', 'course'])
-        .where('course.courseId = :id', { id: checkKeyDto.courseId })
-        .getMany();
-      if (!courseBuyings) {
-        throw new HttpException('Course buying not found', 404);
-      }
-      const courseBuying = courseBuyings.find(
-        (courseBuying) => courseBuying.key === checkKeyDto.key,
-      );
+        .innerJoin('courseBuying.course', 'course')
+        .innerJoin('courseBuying.student', 'student')
+        .innerJoin('student.userInfo', 'userInfo')
+        .select([
+          'courseBuying.id',
+          'courseBuying.key',
+          'course.id',
+          'student.id',
+        ])
+        .where('courseBuying.id = :courseBuyingId', {
+          courseBuyingId: checkKeyDto.courseBuyingId,
+        })
+        .andWhere('userInfo.id = :userAwsId', { userAwsId })
+        .andWhere('courseBuying.key = :key', { key: checkKeyDto.key })
+        .getOne();
+
       if (!courseBuying) {
-        throw new HttpException('Key not found', 404);
+        throw new NotFoundException('Course buying not found');
       }
-      await this.dataSource.transaction(async (manager) => {});
-    } catch (error) {
-      throw new HttpException(error.message, 500);
-    }
+
+      await transactionalEntityManager.getRepository(CourseOwning).insert({
+        course: { id: courseBuying.course.id },
+        student: { id: courseBuying.student.id },
+        active: true,
+        expiredDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 1),
+        ),
+      });
+
+      return { message: 'Success' };
+    });
   }
 }

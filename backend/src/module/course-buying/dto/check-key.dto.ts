@@ -16,4 +16,11 @@ export class CheckKeyDto {
   @IsNotEmpty()
   @IsString()
   courseId: string;
+  @ApiProperty({
+    description: 'courseBuyingId',
+    example: '6370e78d-81ad-4d5b-ab23-526b27634382',
+  })
+  @IsNotEmpty()
+  @IsString()
+  courseBuyingId: string;
 }

@@ -18,6 +18,10 @@ export class CreateCourseOwningDto {
   @AutoMap()
   expiredDate: string;
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  key: string;
+  @ApiProperty()
   @IsBoolean()
   @Transform(({ value }) => value === 'true')
   @AutoMap()

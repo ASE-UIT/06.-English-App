@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { CourseOwningService } from './course-owning.service';
 import { CreateCourseOwningDto } from './dto/create-course-owning.dto';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
@@ -28,9 +20,9 @@ export class CourseOwningController {
   ) {}
   @Post(END_POINTS.COURSE_OWNING.ACTIVE_COURSE)
   @ApiOperation({
-    summary: 'Active course',
+    summary: 'Create new course owning, in case student buy course by cash',
   })
-  async activeKey(
+  async createCourseOwning(
     @Body() createCourseOwningDto: CreateCourseOwningDto,
     @User() user: IUser,
   ) {
