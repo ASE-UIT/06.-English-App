@@ -9,6 +9,7 @@ export type RootStackParamList = {
   Grammar: undefined;
   GrammarDetail: undefined;
   CourseDetail: { course: Course };
+  CourseHome: { course: Course };
 };
 
 export type LearningScreenNavigationProp = StackNavigationProp<
@@ -25,8 +26,6 @@ export type GrammarDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "GrammarDetail"
 >;
-
-
 
 export type CourseDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
