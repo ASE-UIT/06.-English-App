@@ -2,8 +2,8 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Button, Icon } from "@rneui/themed";
 import { BottomSheet } from "@rneui/base";
-import { useRoute } from "@react-navigation/native";
-import { CourseDetailScreenRouteProp } from "../../type";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { CourseDetailScreenRouteProp, PayMentScreenNavigationProp } from "../../type";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
 
@@ -29,6 +29,8 @@ const CourseDetail = () => {
   const { course } = route.params;
 
   const [lessons, setLessons] = useState<Lesson[]>([]);
+
+  const nav =useNavigation<PayMentScreenNavigationProp>();
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -261,6 +263,16 @@ const CourseDetail = () => {
                 height: 50,
                 justifyContent: "center",
                 alignItems: "center",
+              }}
+              onPress={()=>{
+                if(selectedPaymentMethod === 0){
+                  nav.navigate("PayWithCard")
+                  setIsBottomSheetVisible(false);
+                }
+                else if(selectedPaymentMethod === 1){
+                  nav.navigate("PayWithBank")
+                  setIsBottomSheetVisible(false);
+                }
               }}
             />
           </View>
