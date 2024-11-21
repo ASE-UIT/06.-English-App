@@ -10,6 +10,7 @@ import { QuestionModule } from './question/question.module';
 import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
+import { CourseBuyingModule } from './course-buying/course-buying.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { StudentAnswerModule } from './student-answer/student-answer.module';
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    CourseBuyingModule,
     StudentAnswerModule,
   ],
   exports: [
@@ -39,6 +41,7 @@ import { StudentAnswerModule } from './student-answer/student-answer.module';
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    CourseBuyingModule,
     StudentAnswerModule,
   ],
 })

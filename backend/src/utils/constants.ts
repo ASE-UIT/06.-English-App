@@ -35,6 +35,19 @@ export const END_POINTS = {
     UPDATE: '',
     DELETE: '',
   },
+  COURSE_BUYING: {
+    BASE: '/course-buying',
+    CREATE: '',
+    CREATE_PAY_ORDER_URL: '/create-pay-order-url',
+    VALIDATE_PAY_ORDER: '/validate-pay-order',
+    VNPAY_IPN: '/vnpay-ipn',
+    TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
+  },
+  COURSE_OWNING: { 
+    BASE: '/course-owning',
+    ACTIVE_COURSE: '/active-course',
+    TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
+  },
   COURSE_CATEGORY: {
     BASE: '/course-category',
     CREATE: '',
@@ -104,6 +117,7 @@ export const DOCUMENTATION = {
     QUESTION: 'QUESTION',
     QUESTION_GROUP: 'QUESTION_GROUP',
     STUDENT_ANSWER: 'STUDENT_ANSWER',
+    COURSE_BUYING: 'COURSE_BUYING',
   },
 };
 export const TIMEOUT = 5000;
@@ -172,6 +186,12 @@ export enum STATE {
   SUBMITTED = 'SUBMITTED',
   BLOCKED = 'BLOCKED',
   PUBLISHED = 'PUBLISHED',
+}
+
+export enum SECTION_STATUS {
+  NOT_STARTED = 'NOT_STARTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
 }
 
 export const COURSE_THUMBNAIL_IMAGE = '';

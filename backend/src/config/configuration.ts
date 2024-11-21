@@ -15,6 +15,10 @@ export default () => ({
   cognitoRedirectUri: process.env.COGNITO_REDIRECT_URI,
   awsBucketName: process.env.AWS_BUCKET_NAME,
   cloudFrontURL: process.env.CLOUDFRONT_URL,
+  vnpayReturnUrl: process.env.VNP_RETURN_URL,
+  vnpayUrl: process.env.VNPAY_URL,
+  vnpTmnCode: process.env.VNP_TMN_CODE,
+  vnpHashSecret: process.env.VNP_HASH_SECRET,
   redis: {
     host: process.env.REDIS_HOST,
     port: parseInt(process.env.REDIS_PORT, 10) || 6379,
