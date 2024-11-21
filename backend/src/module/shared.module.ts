@@ -11,6 +11,7 @@ import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
 import { CourseBuyingModule } from './course-buying/course-buying.module';
+import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { CourseOwningModule } from './course-owning/course-owning.module';
 
 @Module({
@@ -27,6 +28,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     SectionModule,
     HttpModule,
     CourseBuyingModule,
+    StudentAnswerModule,
     CourseOwningModule,
   ],
   exports: [
@@ -42,6 +44,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     SectionModule,
     HttpModule,
     CourseBuyingModule,
+    StudentAnswerModule,
     CourseOwningModule,
   ],
 })

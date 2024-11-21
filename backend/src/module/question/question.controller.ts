@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Query,
@@ -26,15 +25,24 @@ import { groupQuestionsByQuestionGroup } from './functions/functions';
 @Controller(END_POINTS.QUESTION.BASE)
 @ApiTags(DOCUMENTATION.TAGS.QUESTION)
 export class QuestionController {
-  constructor(private readonly questionService: QuestionService,
+  constructor(
+    private readonly questionService: QuestionService,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
   @Post(END_POINTS.QUESTION.CREATE)
   @ApiOperation({ summary: 'Create a new question with its answers' })
   async create(@Body() createQuestionDto: CreateQuestionDto) {
-    const question = this.mapper.map(createQuestionDto, CreateQuestionDto, Question);
-    const answer = this.mapper.mapArray(createQuestionDto.answers, CreateAnswerDto, Answer);
+    const question = this.mapper.map(
+      createQuestionDto,
+      CreateQuestionDto,
+      Question,
+    );
+    const answer = this.mapper.mapArray(
+      createQuestionDto.answers,
+      CreateAnswerDto,
+      Answer,
+    );
     console.log(createQuestionDto.answers);
     question.answers = answer;
     const newQuestion = await this.questionService.create(question);
@@ -52,14 +60,20 @@ export class QuestionController {
     return ResponseObject.create('Questions found', res);
   }
 
-  @ApiOperation({ summary: 'Update a question and it\'s answers' })
+  @ApiOperation({ summary: "Update a question and it's answers" })
   @Put(END_POINTS.QUESTION.PUT)
-  async update(
-    @Body() updateQuestionDto: UpdateQuestionDto,
-  ) {
-    const question = this.mapper.map(updateQuestionDto, UpdateQuestionDto, Question);
-    console.log('DTO: ', updateQuestionDto)
-    const answer = this.mapper.mapArray(updateQuestionDto.answers, UpdateAnswerDto, Answer);
+  async update(@Body() updateQuestionDto: UpdateQuestionDto) {
+    const question = this.mapper.map(
+      updateQuestionDto,
+      UpdateQuestionDto,
+      Question,
+    );
+    console.log('DTO: ', updateQuestionDto);
+    const answer = this.mapper.mapArray(
+      updateQuestionDto.answers,
+      UpdateAnswerDto,
+      Answer,
+    );
     question.answers = answer;
     console.log('Mapped question: ', question);
     const result = await this.questionService.update(question);
