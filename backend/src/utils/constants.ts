@@ -79,6 +79,13 @@ export const END_POINTS = {
     UPDATE: '',
     DELETE: '',
   },
+  STUDENT_ANSWER: {
+    SUBMIT_ANSWER: '/submit-answer',
+    BASE: '/student-answer',
+    GET_SOLUTION: '/get-solution',
+    GET_HISTORY_RESULT: '/get-history-result',
+    REDO_SECTION: '/redo-section',
+  },
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',
@@ -96,6 +103,7 @@ export const DOCUMENTATION = {
     SECTION: 'SECTION',
     QUESTION: 'QUESTION',
     QUESTION_GROUP: 'QUESTION_GROUP',
+    STUDENT_ANSWER: 'STUDENT_ANSWER',
   },
 };
 export const TIMEOUT = 5000;
