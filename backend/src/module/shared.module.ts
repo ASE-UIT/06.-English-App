@@ -10,6 +10,7 @@ import { QuestionModule } from './question/question.module';
 import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
+import { StudentAnswerModule } from './student-answer/student-answer.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { HttpModule } from '@nestjs/axios';
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    StudentAnswerModule,
   ],
   exports: [
     AuthModule,
@@ -37,6 +39,7 @@ import { HttpModule } from '@nestjs/axios';
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    StudentAnswerModule,
   ],
 })
 export class SharedModule {}

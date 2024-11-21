@@ -9,6 +9,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { CreateStudentAnswerDto } from './dto/create-student-answer.dto';
 import { StudentAnswer } from './entities/student-answer.entity';
+import { CreateSubmitAnswerDto } from './dto/create-submit-answer.dto';
 
 @ApiBearerAuth()
 @ApiTags(DOCUMENTATION.TAGS.STUDENT_ANSWER)
@@ -22,11 +23,11 @@ export class StudentAnswerController {
   @ApiOperation({ summary: 'Submit student answer' })
   @Post(END_POINTS.STUDENT_ANSWER.SUBMIT_ANSWER)
   async submit(
-    @Body() createStudentAnswerDto: CreateStudentAnswerDto[],
     @User() user: IUser,
+    @Body() createStudentAnswerDto: CreateSubmitAnswerDto,
   ) {
     const studentAnswers = await this.mapper.mapArray(
-      createStudentAnswerDto,
+      createStudentAnswerDto.answers,
       CreateStudentAnswerDto,
       StudentAnswer,
     );
