@@ -50,6 +50,7 @@
     "ioredis": "^5.4.1",
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
+    "mime-types": "^2.1.35",
     "pg": "^8.13.0",
     "qs": "^6.13.0",
     "reflect-metadata": "^0.1.14",
