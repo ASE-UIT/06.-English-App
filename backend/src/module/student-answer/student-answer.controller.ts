@@ -1,8 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-} from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { StudentAnswerService } from './student-answer.service';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -18,13 +14,26 @@ import { StudentAnswer } from './entities/student-answer.entity';
 @ApiTags(DOCUMENTATION.TAGS.STUDENT_ANSWER)
 @Controller(END_POINTS.STUDENT_ANSWER.BASE)
 export class StudentAnswerController {
-  constructor(private readonly studentAnswerService: StudentAnswerService,   @InjectMapper() private readonly mapper: Mapper) {}
+  constructor(
+    private readonly studentAnswerService: StudentAnswerService,
+    @InjectMapper() private readonly mapper: Mapper,
+  ) {}
 
   @ApiOperation({ summary: 'Submit student answer' })
   @Post(END_POINTS.STUDENT_ANSWER.SUBMIT_ANSWER)
-  async submit(@Body() createStudentAnswerDto: CreateStudentAnswerDto[], @User() user: IUser, ) {
-    const studentAnswers = await this.mapper.mapArray(createStudentAnswerDto, CreateStudentAnswerDto, StudentAnswer);
-    const result = await this.studentAnswerService.submit(studentAnswers, user.userAwsId);
-    return ResponseObject.create('Successfully',result);
+  async submit(
+    @Body() createStudentAnswerDto: CreateStudentAnswerDto[],
+    @User() user: IUser,
+  ) {
+    const studentAnswers = await this.mapper.mapArray(
+      createStudentAnswerDto,
+      CreateStudentAnswerDto,
+      StudentAnswer,
+    );
+    const result = await this.studentAnswerService.submit(
+      studentAnswers,
+      user.userAwsId,
+    );
+    return ResponseObject.create('Successfully', result);
   }
 }
