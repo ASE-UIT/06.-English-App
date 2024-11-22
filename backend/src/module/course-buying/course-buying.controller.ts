@@ -12,6 +12,7 @@ import { User } from 'src/common/decorators/user.decorator';
 import { IUser } from 'src/common/guards/at.guard';
 import { VnpayIPNRequest } from './dto/vnpay-ipn.request.dto';
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
+import { CheckKeyDto } from './dto/check-key.dto';
 
 @ApiBearerAuth()
 @ApiTags(DOCUMENTATION.TAGS.COURSE_BUYING)

@@ -3,6 +3,7 @@ import { Base } from 'src/module/base/base.entity';
 import { CourseBuying } from 'src/module/course-buying/entities/course-buying.entity';
 import { CourseCategory } from 'src/module/course-category/entities/course-category.entity';
 import { CourseOwning } from 'src/module/course-owning/entities/course-owning.entity';
+import { CourseProgress } from 'src/module/course-owning/entities/course-progress.entity';
 import { CourseReviewing } from 'src/module/course-reviewing/entities/course-reviewing.entity';
 import { FeedBack } from 'src/module/feed-back/entities/feed-back.entity';
 import { Lesson } from 'src/module/lesson/entities/lesson.entity';
@@ -61,4 +62,7 @@ export class Course extends Base {
 
   @OneToMany(() => FeedBack, (feedBack) => feedBack.course)
   feedBacks: FeedBack[];
+
+  @OneToMany(() => CourseProgress, (courseProgress) => courseProgress.course)
+  courseProgresses: CourseProgress[];
 }

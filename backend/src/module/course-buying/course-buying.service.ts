@@ -228,7 +228,6 @@ export class CourseBuyingService {
           new Date().setFullYear(new Date().getFullYear() + 1),
         ),
       });
-
       return { message: 'Success' };
     });
   }
