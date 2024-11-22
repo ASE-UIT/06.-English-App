@@ -29,7 +29,19 @@ export class SectionService {
       );
     }
   }
-
+  async findAllByLesson(lessonId: string) {
+    try {
+      const sections = await this.dataSource.getRepository(Section).find({
+        where: { lesson: { id: lessonId } },
+      });
+      return sections;
+    } catch (error) {
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
   async findOne(id: string) {
     try {
       const section = await this.dataSource
@@ -49,7 +61,6 @@ export class SectionService {
       );
     }
   }
-
   async update(section: Section, lessionId?: string) {
     try {
       if (lessionId) {
@@ -73,7 +84,6 @@ export class SectionService {
       );
     }
   }
-
   remove(id: number) {
     return `This action removes a #${id} section`;
   }

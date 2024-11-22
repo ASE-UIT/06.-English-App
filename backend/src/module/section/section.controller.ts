@@ -10,7 +10,13 @@ import {
 import { SectionService } from './section.service';
 import { CreateSectionDto } from './dto/create-section.dto';
 import { UpdateSectionDto } from './dto/update-section.dto';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
@@ -41,6 +47,22 @@ export class SectionController {
       section,
     );
     return ResponseObject.create('Section created successfully', newSection);
+  }
+
+  @Get(END_POINTS.SECTION.GET_ALL_SECTION_BY_LESSON)
+  @ApiOperation({
+    summary: 'Get all sections by lesson',
+  })
+  @ApiParam({
+    name: 'lessonId',
+    example: '03315cdb-732a-4e63-ac8b-8bed5a40b374',
+    type: String,
+    description: 'ID của Lesson cần lấy dữ liệu',
+    required: true,
+  })
+  async findAllByLesson(@Param('lessonId') lessonId: string) {
+    const sections = await this.sectionService.findAllByLesson(lessonId);
+    return ResponseObject.create('Sections found', sections);
   }
 
   @Get(':id')
