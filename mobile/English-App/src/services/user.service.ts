@@ -1,4 +1,4 @@
-import { ACCESS_TOKEN, API_URL } from "./config";
+import { ACCESS_TOKEN, API_URL } from "@env";
 class UserService {
   async getUser() {
     const url = `${API_URL}user/me`;
