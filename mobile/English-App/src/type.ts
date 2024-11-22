@@ -12,7 +12,15 @@ export type RootStackParamList = {
   CourseHome: { course: Course };
   PayWithBank: undefined;
   PayWithCard: undefined;
+  Notification: undefined;
 };
+
+export type HeaderNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Notification"
+
+>;
+  
 
 export type LearningScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

@@ -1,9 +1,13 @@
+import { useNavigation } from "@react-navigation/native";
 import { Header, Icon } from "@rneui/themed";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { HeaderNavigationProp } from "../type";
 
 export default function MainHeader({ title }: { title: string }) {
+  const nav = useNavigation<HeaderNavigationProp>();
   return (
+
     <View
       className="bg-white flex flex-row justify-between items-center px-4 pt-10 pb-4 w-full"
       style={{
@@ -37,6 +41,7 @@ export default function MainHeader({ title }: { title: string }) {
             type="material"
             color="#5D5FEF"
             size={24}
+            onPress={()=>{nav.navigate('Notification')}}
           />
         </TouchableOpacity>
       </View>
