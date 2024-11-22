@@ -87,6 +87,7 @@ export const END_POINTS = {
   },
   SECTION: {
     BASE: '/section',
+    GET_ALL_SECTION_BY_LESSON: '/get-all-section-by-lesson/:lessonId',
     CREATE: '',
     LIST: '',
     UPDATE: '',
