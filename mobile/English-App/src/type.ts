@@ -9,6 +9,9 @@ export type RootStackParamList = {
   Grammar: undefined;
   GrammarDetail: undefined;
   CourseDetail: { course: Course };
+  CourseHome: { course: Course };
+  PayWithBank: undefined;
+  PayWithCard: undefined;
 };
 
 export type LearningScreenNavigationProp = StackNavigationProp<
@@ -26,8 +29,6 @@ export type GrammarDetailScreenNavigationProp = StackNavigationProp<
   "GrammarDetail"
 >;
 
-
-
 export type CourseDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "CourseDetail"
@@ -43,4 +44,10 @@ export type GrammarScreenRouteProp = RouteProp<RootStackParamList, "Grammar">;
 export type GrammarDetailScreenRouteProp = RouteProp<
   RootStackParamList,
   "GrammarDetail"
+>;
+
+export type PayMentScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "PayWithBank",
+  "PayWithCard"
 >;

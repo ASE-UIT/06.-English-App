@@ -23,6 +23,8 @@ export default function PayWithBank() {
               }}
             />
           </View>
+
+          
           <View className="flex flex-col flex-wrap gap-1">
             <Text className="text-lg font-semibold">Bank</Text>
             <Dropdown

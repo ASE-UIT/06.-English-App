@@ -99,7 +99,7 @@ export default function LearningScreen() {
             title={course.title}
             teacherName={course.teacherName}
             rated={course.ratingCount}
-            onPressItem={() => nav.navigate("Course", { course: course })}
+            onPressItem={() => nav.navigate("CourseHome", { course: course })}
             progress={50}
           />
         ))}
