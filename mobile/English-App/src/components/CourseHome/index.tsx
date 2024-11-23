@@ -1,24 +1,24 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-} from "react-native";
-import Icon from "react-native-vector-icons/Feather";
-import {
-  Video,
-  ResizeMode,
   AVPlaybackStatus,
   AVPlaybackStatusSuccess,
+  ResizeMode,
+  Video,
 } from "expo-av";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Icon from "react-native-vector-icons/Feather";
 import colors from "../../../colors";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { CourseDetailScreenNavigationProp, CourseScreenRouteProp } from "../../type";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
+import { CourseScreenNavigationProp, CourseScreenRouteProp } from "../../type";
 
 const { height } = Dimensions.get("window");
 
@@ -28,8 +28,7 @@ export default function CourseViewer() {
   const [currentVideoUri, setCurrentVideoUri] = useState("");
   const [activeTab, setActiveTab] = useState("lessons");
   const videoRef = useRef<Video>(null);
-  const navigation = useNavigation<CourseDetailScreenNavigationProp>();
-
+  const navigation = useNavigation<CourseScreenNavigationProp>();
   const route = useRoute<CourseScreenRouteProp>();
   const { course } = route.params;
   const [lessons, setLessons] = useState<Lesson[]>([]);

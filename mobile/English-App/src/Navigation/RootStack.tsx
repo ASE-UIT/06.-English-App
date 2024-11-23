@@ -6,6 +6,7 @@ import GrammarDetail from "../screens/Grammar/GrammarDetail";
 import Reading from "../screens/Reading";
 import PayWithBank from "../screens/CourseDetail/PayWithBank";
 import PayWithCard from "../screens/CourseDetail/PayWithCard";
+import Notification from "../screens/Notification";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
@@ -24,6 +25,9 @@ export default function RootStack() {
       <Stack.Screen name="Reading" component={Reading} />
       <Stack.Screen name="PayWithBank" component={PayWithBank} />
       <Stack.Screen name="PayWithCard" component={PayWithCard} />
+      <Stack.Screen name="Notification" component={Notification} options={{
+        headerShown: false,
+      }} />
     </Stack.Navigator>
   );
 }
