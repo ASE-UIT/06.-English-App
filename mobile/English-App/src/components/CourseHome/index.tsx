@@ -18,7 +18,7 @@ import Icon from "react-native-vector-icons/Feather";
 import colors from "../../../colors";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
-import { CourseScreenNavigationProp, CourseScreenRouteProp } from "../../type";
+import { CourseDetailScreenNavigationProp, CourseScreenRouteProp } from "../../type";
 
 const { height } = Dimensions.get("window");
 
@@ -28,7 +28,7 @@ export default function CourseViewer() {
   const [currentVideoUri, setCurrentVideoUri] = useState("");
   const [activeTab, setActiveTab] = useState("lessons");
   const videoRef = useRef<Video>(null);
-  const navigation = useNavigation<CourseScreenNavigationProp>();
+  const navigation = useNavigation<CourseDetailScreenNavigationProp>();
   const route = useRoute<CourseScreenRouteProp>();
   const { course } = route.params;
   const [lessons, setLessons] = useState<Lesson[]>([]);

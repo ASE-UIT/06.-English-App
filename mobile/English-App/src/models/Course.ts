@@ -7,6 +7,7 @@ type Course = {
   ratingAverage: number;
   teacherName: string;
   createdAt: string;
+  price: number;
   updatedAt: string;
   categoryName: string;
 };
