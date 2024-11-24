@@ -1,17 +1,13 @@
-import { ACCESS_TOKEN, API_URL } from "@env";
+import http from "./Http";
+
 class UserService {
   async getUser() {
-    const url = `${API_URL}user/me`;
-    const response = await fetch(url, {
-      headers: {
-        accept: "*/*",
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await http.get("user/me");
+      return response;
+    } catch (error: any) {
+      throw new Error(`HTTP error! status: ${error.message}`);
     }
-    return await response.json();
   }
 }
 

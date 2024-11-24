@@ -1,20 +1,14 @@
-import { API_URL, ACCESS_TOKEN } from "@env";
-class courseCategoryService {
+import http from "./Http";
+
+class CourseCategoryService {
   async getCourseCategories() {
-    const url = `${API_URL}course-category`;
-
-    const response = await fetch(url, {
-      headers: {
-        accept: "*/*",
-        Authorization: `Bearer ${ACCESS_TOKEN}`,
-      },
-    });
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      const response = await http.get("course-category");
+      return response;
+    } catch (error: any) {
+      throw new Error(`HTTP error! status: ${error.message}`);
     }
-
-    return await response.json();
   }
 }
 
-export default new courseCategoryService();
+export default new CourseCategoryService();
