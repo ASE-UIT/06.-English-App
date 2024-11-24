@@ -19,6 +19,7 @@ import colors from "../../../colors";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
 import { CourseDetailScreenNavigationProp, CourseScreenRouteProp } from "../../type";
+import sectionService from "../../services/section.service";
 
 const { height } = Dimensions.get("window");
 
@@ -33,27 +34,44 @@ export default function CourseViewer() {
   const { course } = route.params;
   const [lessons, setLessons] = useState<Lesson[]>([]);
 
-  useEffect(() => {
-    const fetchLessons = async () => {
-      try {
-        const res = await lessonService.getAllLessonsByCourse(course.id);
-        if (res.statusCode === 200) {
-          setLessons(
-            res.data.map((lesson: Lesson) => ({
+  const fetchLessons = async () => {
+    try {
+      const res = await lessonService.getAllLessonsByCourse(course.id);
+      if (res.statusCode === 200) {
+        const lessonsWithSections = await Promise.all(
+          res.data.map(async (lesson: Lesson) => {
+            const sections = await fetchSection(lesson.id);
+            return {
               ...lesson,
-              sections: lesson.sections ? lesson.sections : ([] as Section[]),
-            }))
-          );
-        } else {
-          console.error(
-            "Error fetching lessons, status code: ",
-            res.statusCode
-          );
-        }
-      } catch (error) {
-        console.error("Error fetching lessons: ", error);
+              sections: sections ? sections : ([] as Section[]),
+            };
+          })
+        );
+        setLessons(lessonsWithSections);
+      } else {
+        console.error("Error fetching lessons, status code: ", res.statusCode);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching lessons: ", error);
+    }
+  };
+  
+  const fetchSection = async (lessonId: string) => {
+    try {
+      const res = await sectionService.getSection(lessonId);
+      if (res.statusCode === 200) {
+        return res.data;
+      } else {
+        console.error("Error fetching sections, status code: ", res);
+        return [];
+      }
+    } catch (error) {
+      console.error("Error fetching sections: ", error);
+      return [];
+    }
+  };
+  
+  useEffect(() => {
     fetchLessons();
   }, [course]);
   const handleReplay = () => {
