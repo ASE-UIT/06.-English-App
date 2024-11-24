@@ -18,6 +18,7 @@ import { MyLessonPage } from "@/pages/App/TeacherPage/LessonPage/MyLessonPage"
 import { CreateVocab } from "@/pages/App/TeacherPage/LessonPage/CreateVocab"
 import { CreateGrammar } from "@/pages/App/TeacherPage/LessonPage/CreateGrammar"
 import { CreateWriting } from "@/pages/App/TeacherPage/LessonPage/CreateWriting"
+import CreateReadingMaterial from "@/pages/App/TeacherPage/LessonPage/CreateReadingMaterial"
 const publicRoutes = [
   {
     path: routes.LandingPage,
@@ -107,6 +108,11 @@ const protectedRoutes = [
   {
     path: teacherRoutes.Section.CreateWriting,
     component: <CreateWriting></CreateWriting>,
+    layout: DoTestLayout,
+  },
+  {
+    path: teacherRoutes.Section.CreateReadingMaterial,
+    component: <CreateReadingMaterial></CreateReadingMaterial>,
     layout: DoTestLayout,
   },
 ]

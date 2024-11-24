@@ -42,6 +42,7 @@ export const teacherRoutes = {
     Base: "/course/:courseId/lesson/:lessonId/section",
     Create: "/course/:courseId/lesson/:lessonId/section/create",
     CreateWriting: "/course/create/writing",
+    CreateReadingMaterial: "course/:courseId/lesson/:lessonId/section/create/reading-material",
     Edit: "/course/:courseId/lesson/:lessonId/section/:id/edit",
     Detail: "/course/:courseId/lesson/:lessonId/section/:id",
   },
