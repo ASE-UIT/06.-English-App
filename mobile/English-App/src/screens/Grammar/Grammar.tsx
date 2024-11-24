@@ -1,8 +1,10 @@
 import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import { GrammarScreenNavigationProp } from "../../type";
+import grammarService from "../../services/grammar.service";
+import sectionService from "../../services/section.service";
 
 const Grammar = () => {
   const titles = [
@@ -15,6 +17,17 @@ const Grammar = () => {
     "Present simple tense",
     "Past simple tense",
   ];
+
+  useEffect(() => {
+    grammarService.getGrammar()
+      .then((response) => {
+        
+      })
+      .catch((error) => {
+        
+      });
+
+  },[]);
 
   const navigation = useNavigation<GrammarScreenNavigationProp>();
   return (

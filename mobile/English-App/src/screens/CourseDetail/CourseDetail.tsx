@@ -2,10 +2,42 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Button, Icon } from "@rneui/themed";
 import { BottomSheet } from "@rneui/base";
+import { ScrollView } from "react-native-gesture-handler";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { CourseDetailScreenRouteProp, PayMentScreenNavigationProp } from "../../type";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
+
+const data: string[] = [
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+  "Lesson 1",
+
+]
 
 const LessonItem = ({ lesson }: { lesson: Lesson }) => {
   return (
@@ -30,7 +62,7 @@ const CourseDetail = () => {
 
   const [lessons, setLessons] = useState<Lesson[]>([]);
 
-  const nav =useNavigation<PayMentScreenNavigationProp>();
+  const nav = useNavigation<PayMentScreenNavigationProp>();
 
   useEffect(() => {
     const fetchLessons = async () => {
@@ -67,62 +99,77 @@ const CourseDetail = () => {
   const [isBottomSheetVisible, setIsBottomSheetVisible] = React.useState(false);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = React.useState(0);
   return (
-    <View className="mt-[50px] px-[45px] h-auto relative">
-      <Image
-        source={{ uri: course.thumbnail_image }}
-        className="rounded-3xl w-full h-64"
-      />
-      <Text className="text-lg font-semibold">{course.title}</Text>
-      <Text>
-        Created by <Text className="text-[#5D5FEF]">{course.teacherName}</Text>
-      </Text>
-      <View className="flex flex-row justify-between">
-        <View className="flex flex-row items-center gap-1">
-          <Icon
-            name="star-o"
-            type="font-awesome"
-            onPress={() => {
-              console.log("Press");
-            }}
+    <View className="h-full relative">
+      <ScrollView className="mt-[10px]" nestedScrollEnabled contentContainerStyle={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+      }}>
+        <View className="px-[45px] h-[90%]">
+          <Image
+            source={{ uri: course.thumbnail_image }}
+            className="rounded-3xl w-full h-64"
           />
-          <Text>{course.ratingAverage}</Text>
-        </View>
-        <Text className="text-[#5D5FEF] text-3xl">#price</Text>
-      </View>
+          <Text className="text-lg font-semibold">{course.title}</Text>
+          <Text>
+            Created by <Text className="text-[#5D5FEF]">{course.teacherName}</Text>
+          </Text>
+          <View className="flex flex-row justify-between">
+            <View className="flex flex-row items-center gap-1">
+              <Icon
+                name="star-o"
+                type="font-awesome"
+                onPress={() => {
+                  console.log("Press");
+                }}
+              />
+              <Text>{course.ratingAverage}</Text>
+            </View>
+            <Text className="text-[#5D5FEF] text-3xl">${course.price}</Text>
+          </View>
 
-      <View>
-        <View className="flex flex-row py-3 bg-[#A5A6F6] justify-around rounded-[20px]">
-          <Button
-            title="Playlist"
-            buttonStyle={{
-              backgroundColor: isPlaylist ? "#5D5FEF" : "#A5A6F6",
-              borderRadius: 20,
-              width: 120,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={handlePlaylist}
-          />
-          <Button
-            title="Description"
-            buttonStyle={{
-              backgroundColor: !isDescription ? "#A5A6F6" : "#5D5FEF",
-              borderRadius: 20,
-              width: 120,
-              height: 50,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            onPress={handleDescription}
-          />
-        </View>
-        {lessons.map((lesson) => (
-          <LessonItem key={lesson.id} lesson={lesson} />
-        ))}
-      </View>
+          <View>
+            <View className="flex flex-row py-3 bg-[#A5A6F6] justify-around rounded-[20px]">
+              <Button
+                title="Playlist"
+                buttonStyle={{
+                  backgroundColor: isPlaylist ? "#5D5FEF" : "#A5A6F6",
+                  borderRadius: 20,
+                  width: 120,
+                  height: 50,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={handlePlaylist}
+              />
+              <Button
+                title="Description"
+                buttonStyle={{
+                  backgroundColor: !isDescription ? "#A5A6F6" : "#5D5FEF",
+                  borderRadius: 20,
+                  width: 120,
+                  height: 50,
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                onPress={handleDescription}
+              />
+            </View>
+            <ScrollView className="h-[307px] w-full">
+              {isPlaylist && lessons.length > 0 ? (
+                lessons.map((lesson) => (
+                  <LessonItem key={lesson.id} lesson={lesson} />))
+              ) : (
+                <Text className="text-sm font-medium text-center mt-4 text-gray-500">
+                  No lessons available.
+                </Text>
+              )}
 
-      <View className="flex flex-row bg-white pl-8 pr-8 pb-3 pt-[14px] w-screen justify-around h-[80px] absolute bottom-0 right-0 left-0">
+            </ScrollView>
+          </View>
+        </View>
+      </ScrollView>
+      <View className="flex flex-row bg-white pl-8 pr-8 pb-3 pt-[14px] w-screen justify-around h-[80px] absolute right-0 left-0 bottom-0">
         <Button
           buttonStyle={{
             backgroundColor: "#EF5DA8",
@@ -157,6 +204,7 @@ const CourseDetail = () => {
           }}
         />
       </View>
+
       <BottomSheet
         isVisible={isBottomSheetVisible}
         modalProps={{
@@ -264,12 +312,12 @@ const CourseDetail = () => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              onPress={()=>{
-                if(selectedPaymentMethod === 0){
+              onPress={() => {
+                if (selectedPaymentMethod === 0) {
                   nav.navigate("PayWithCard")
                   setIsBottomSheetVisible(false);
                 }
-                else if(selectedPaymentMethod === 1){
+                else if (selectedPaymentMethod === 1) {
                   nav.navigate("PayWithBank")
                   setIsBottomSheetVisible(false);
                 }
@@ -278,6 +326,7 @@ const CourseDetail = () => {
           </View>
         </View>
       </BottomSheet>
+
     </View>
   );
 };

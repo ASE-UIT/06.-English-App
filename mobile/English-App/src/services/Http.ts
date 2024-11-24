@@ -1,4 +1,5 @@
 import { API_URL, ACCESS_TOKEN } from "@env";
+
 class Http {
   baseUrl: string;
   constructor() {

@@ -1,20 +1,16 @@
-require('dotenv').config()
+import { API_URL, ACCESS_TOKEN } from "@env";
 
-
-const API_URL = process.env.API_URL;
+const API = process.env.API_URL;
 const accessToken = process.env.ACCESS_TOKEN;
 class grammarService {
     async getGrammar() {
-        const url = API_URL + 'grammar';
-        console.log(url);
-        console.log(accessToken);
+        const url = API + 'grammar';
         const response = await fetch(url, {
             headers: {
                 'accept': '*/*',
                 'Authorization': `Bearer ${accessToken}`
             }
         });
-        
         return response.json();
     }
 }

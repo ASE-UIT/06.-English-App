@@ -5,6 +5,7 @@ import BottomTabsNavigator from "./src/Navigation/BottomTabsNavigator";
 import MainHeader from "./src/components/MainHeader";
 import { createStackNavigator } from "@react-navigation/stack";
 import RootStack from "./src/Navigation/RootStack";
+import CourseDetail from "./src/screens/CourseDetail";
 export default function App() {
   const Stack = createStackNavigator();
   return (
@@ -14,6 +15,7 @@ export default function App() {
         <RootStack />
       </SafeAreaView>
     </NavigationContainer>
+    
   );
 }
 
