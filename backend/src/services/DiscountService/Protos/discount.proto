@@ -1,0 +1,85 @@
+syntax = "proto3";
+import "google/protobuf/wrappers.proto";
+option csharp_namespace = "DiscountService";
+enum DiscountType {
+  OWNER = 0;
+  SYSTEM = 1;
+}
+service DiscountService {
+  rpc CreateDiscount (CreateDiscountRequest) returns (DiscountResponse);
+  rpc ApplyDiscount (ApplyDiscountRequest) returns (ApplyDiscountResponse);
+  rpc DisableDiscount (ApplyDiscountRequest) returns (ApplyDiscountResponse);
+  rpc UpdateDiscount (UpdateDiscountRequest) returns (DiscountResponse);
+  rpc GetDiscountsByOwner (google.protobuf.StringValue) returns (GetDiscountResponse);
+  rpc GetDiscountByCourse (GetDiscountRequest) returns (GetDiscountResponse);
+}
+
+message CreateDiscountRequest {
+  DiscountType type = 10;
+  double percentage = 2;
+  string code = 11;
+  double flatAmount = 3;
+  string startDate = 4;
+  string endDate = 5;
+  repeated google.protobuf.StringValue courseIds = 9;
+  string authorId = 7;
+  int32 usageLimit = 8;
+}
+
+message UpdateDiscountRequest {
+  reserved 7;
+  int32 discountId = 1;
+  string code = 12;
+  DiscountType type = 11;
+  double percentage = 3;
+  double flatAmount = 4;
+  string startDate = 5;
+  string endDate = 6;
+  repeated google.protobuf.StringValue courseIds = 10;
+  string authorId = 8;
+  int32 usageLimit = 9;
+}
+
+message ApplyDiscountRequest {
+  int32 discountId = 1;
+  reserved 2, 4;
+  string courseId = 5;
+  string userId = 3;
+}
+
+message DisableDiscountRequest {
+  int32 discountId = 1;
+}
+
+message GetDiscountRequest {
+  string courseId = 1;
+}
+
+message DiscountResponse {
+  int32 id = 1;
+  string status = 2;
+}
+
+message ApplyDiscountResponse {
+  string status = 1;
+  double discountAmount = 2;
+}
+
+message GetDiscountResponse {
+  repeated Discount discounts = 1;
+}
+
+message Discount {
+  int32 id = 1;
+  DiscountType type = 13;
+  double percentage = 3;
+  double flatAmount = 4;
+  string startDate = 5;
+  string endDate = 6;
+  string code = 14;
+  repeated google.protobuf.StringValue courseIds = 12;
+  string authorId = 8;
+  int32 usageLimit = 9;
+  bool isActive = 10;
+  int32 usageCount = 11;
+}
