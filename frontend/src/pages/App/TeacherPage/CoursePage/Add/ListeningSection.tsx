@@ -1,5 +1,5 @@
 import CourseCreateHeader from "@/components/Course/Create/Header"
-import { Button, Text, TextArea } from "@radix-ui/themes"
+import { Button } from "@radix-ui/themes"
 import { EyeOpenIcon, CheckIcon } from "@radix-ui/react-icons"
 import CourseCreateUpload from "@/components/Course/Create/Upload"
 
