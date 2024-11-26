@@ -1,5 +1,5 @@
 const CourseCreateSection = () => {
-    return (  );
+    return (<div>Create section</div>);
 }
  
 export default CourseCreateSection;
