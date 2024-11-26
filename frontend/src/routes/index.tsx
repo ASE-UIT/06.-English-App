@@ -18,6 +18,13 @@ import { MyLessonPage } from "@/pages/App/TeacherPage/LessonPage/MyLessonPage"
 import { CreateVocab } from "@/pages/App/TeacherPage/LessonPage/CreateVocab"
 import { CreateGrammar } from "@/pages/App/TeacherPage/LessonPage/CreateGrammar"
 import { CreateWriting } from "@/pages/App/TeacherPage/LessonPage/CreateWriting"
+import CourseList from "@/pages/App/TeacherPage/CoursePage/List"
+import CourseCreate from "@/pages/App/TeacherPage/CoursePage/Add"
+import CourseAddLessons from "@/pages/App/TeacherPage/CoursePage/Add/Lessons"
+import CourseAddReadingSection from "@/pages/App/TeacherPage/CoursePage/Add/ReadingSection"
+import CourseAddWritingSection from "@/pages/App/TeacherPage/CoursePage/Add/WritingSection"
+import CourseAddListeningSection from "@/pages/App/TeacherPage/CoursePage/Add/ListeningSection"
+import TeacherLayout from "@/components/Layout/Teacher"
 const publicRoutes = [
   {
     path: routes.LandingPage,
@@ -71,13 +78,33 @@ const protectedRoutes = [
   },
   {
     path: teacherRoutes.Course.Base,
-    component: <MyCoursePage></MyCoursePage>,
-    layout: Fragment,
+    component: <CourseList></CourseList>,
+    layout: TeacherLayout,
   },
   {
     path: teacherRoutes.Course.Create,
-    component: <MyCoursePage></MyCoursePage>,
-    layout: Fragment,
+    component: <CourseCreate></CourseCreate>,
+    layout: TeacherLayout,
+  },
+  {
+    path: teacherRoutes.Course.Lesson,
+    component: <CourseAddLessons></CourseAddLessons>,
+    layout: TeacherLayout,
+  },
+  {
+    path: teacherRoutes.Course.ReadingSection,
+    component: <CourseAddReadingSection></CourseAddReadingSection>,
+    layout: TeacherLayout,
+  },
+  {
+    path: teacherRoutes.Course.WritingSection,
+    component: <CourseAddWritingSection></CourseAddWritingSection>,
+    layout: TeacherLayout,
+  },
+  {
+    path: teacherRoutes.Course.ListeningSection,
+    component: <CourseAddListeningSection></CourseAddListeningSection>,
+    layout: TeacherLayout,
   },
   {
     path: teacherRoutes.Course.Detail,
