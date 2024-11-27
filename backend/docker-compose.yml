@@ -29,3 +29,5 @@ services:
 volumes:
   redis:
     driver: local
+  sqlite:
+    driver: local
