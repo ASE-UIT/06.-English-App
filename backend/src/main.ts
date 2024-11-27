@@ -48,4 +48,6 @@ async function bootstrap() {
   console.log(`Server running on http://localhost:${port || 3001}/docs`);
 }
 
-bootstrap();
+bootstrap()
+  .then(() => console.log('Server running'))
+  .catch((e) => console.error(e));

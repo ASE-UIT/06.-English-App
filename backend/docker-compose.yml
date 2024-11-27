@@ -10,6 +10,16 @@ services:
       - 3000:3000
     depends_on:
       - redis
+      - discount-api
+  discount-api:
+    build:
+      dockerfile: Dockerfile
+      context: ./src/services/DiscountService
+    image: "${DOCKER_HUB_USERNAME}/grpc-asp.net-discount-app:latest"
+    ports:
+      - 50051:8080
+    depends_on:
+      - redis
   redis:
     image: redis
     ports:
@@ -18,4 +28,6 @@ services:
       - redis:/data
 volumes:
   redis:
+    driver: local
+  sqlite:
     driver: local

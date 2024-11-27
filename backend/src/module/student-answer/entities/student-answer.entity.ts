@@ -1,3 +1,4 @@
+import { IsOptional } from 'class-validator';
 import { Base } from 'src/module/base/base.entity';
 import { Question } from 'src/module/question/entities/question.entity';
 import { Student } from 'src/module/user/entities/student.entity';
@@ -10,4 +11,10 @@ export class StudentAnswer extends Base {
   student: Student;
   @Column()
   answer: string;
+  @Column()
+  @IsOptional()
+  isCorrect: boolean;
+  @Column()
+  @IsOptional()
+  feedback: string;
 }

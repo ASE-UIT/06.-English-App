@@ -4,7 +4,6 @@ import { CourseBuying } from 'src/module/course-buying/entities/course-buying.en
 import { CourseCategory } from 'src/module/course-category/entities/course-category.entity';
 import { CourseOwning } from 'src/module/course-owning/entities/course-owning.entity';
 import { CourseReviewing } from 'src/module/course-reviewing/entities/course-reviewing.entity';
-import { CourseViewing } from 'src/module/course-viewing/entities/course-viewing.entity';
 import { FeedBack } from 'src/module/feed-back/entities/feed-back.entity';
 import { Lesson } from 'src/module/lesson/entities/lesson.entity';
 import { Teacher } from 'src/module/user/entities/teacher.entity';
@@ -50,9 +49,6 @@ export class Course extends Base {
 
   @OneToMany(() => CourseReviewing, (courseReviewing) => courseReviewing.course)
   courseReviewings: CourseReviewing[];
-
-  @OneToMany(() => CourseViewing, (courseViewing) => courseViewing.course)
-  courseViewings: CourseViewing[];
 
   @OneToMany(() => CourseOwning, (courseOwning) => courseOwning.course)
   courseOwnings: CourseOwning[];
