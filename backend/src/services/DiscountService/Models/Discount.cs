@@ -10,7 +10,7 @@ public class Discount
     public string Code { get; set; }
     public DateTime EndDate { get; set; }
     public string? CourseIds { get; set; } 
-    public string? AuthorId { get; set; }
+    public string? OwnerId { get; set; }
     public int? UsageLimit { get; set; }
     public bool IsActive { get; set; } = true;
     public int UsageCount { get; set; } = 0;

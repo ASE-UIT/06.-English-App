@@ -43,7 +43,7 @@ export const END_POINTS = {
     VNPAY_IPN: '/vnpay-ipn',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
   },
-  COURSE_OWNING: { 
+  COURSE_OWNING: {
     BASE: '/course-owning',
     ACTIVE_COURSE: '/active-course',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
@@ -63,6 +63,14 @@ export const END_POINTS = {
     LIST: '',
     UPDATE: '',
     DELETE: '',
+  },
+  DISCOUNT: {
+    BASE: '/discount',
+    CREATE: '',
+    GET_ALL_DISCOUNTS_BY_OWNER: '/get-all-discounts-by-owner',
+    UPDATE: ':id',
+    GET_ALL_DISCOUNTS_BY_COURSE: '/get-all-discounts-by-course/:courseId',
+    DISABLE_DISCOUNT: '/disable-discount/:id',
   },
   GRAMMAR: {
     BASE: '/grammar',
@@ -111,6 +119,7 @@ export const DOCUMENTATION = {
     USER: 'USER',
     FILE: 'FILE',
     COURSE: 'COURSE',
+    DISCOUNT: 'DISCOUNT',
     COURSE_CATEGORY: 'COURSE_CATEGORY',
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',
@@ -195,4 +204,8 @@ export enum SECTION_STATUS {
   DONE = 'DONE',
 }
 
+export const INJECTION_DEPS = {
+  DISCOUNT_PACKAGE: 'DISCOUNT_PACKAGE',
+  PUB_SUB_SERVICE: 'PUB_SUB_SERVICE',
+};
 export const COURSE_THUMBNAIL_IMAGE = '';

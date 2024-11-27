@@ -28,7 +28,8 @@ public static class Extension
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddDays(7),
                 CourseIds = JsonSerializer.Serialize(new[] { "1", "2", "3" }),
-                AuthorId = "1",
+                OwnerId = "1",
+                FlatAmount = 10,
                 UsageLimit = 100,
                 IsActive = true
             },
@@ -41,7 +42,8 @@ public static class Extension
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddDays(7),
                 CourseIds = JsonSerializer.Serialize(new[] { "1", "2", "3" }),
-                AuthorId = "1",
+                OwnerId = "1",
+                FlatAmount = 10,
                 UsageLimit = 100,
                 IsActive = true
             },
@@ -54,7 +56,8 @@ public static class Extension
                 StartDate = DateTime.UtcNow,
                 EndDate = DateTime.UtcNow.AddDays(7),
                 CourseIds = JsonSerializer.Serialize(new[] { "1", "2", "3" }),
-                AuthorId = "1",
+                OwnerId = "1",
+                FlatAmount = 10,
                 UsageLimit = 100,
                 IsActive = true
             }

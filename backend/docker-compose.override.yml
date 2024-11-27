@@ -1,4 +1,13 @@
 services:
   api:
+    environment:
+      - GRPC_DISCOUNT_URL=http://discount-api:50051
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
     env_file:
       - /path/on/ec2/env
+  discount-api:
+    environment:
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ConnectionStrings__Database=Data Source=discountdb
+      - ConnectionStrings__Redis=redis:6379

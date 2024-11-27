@@ -1,5 +1,6 @@
 syntax = "proto3";
 import "google/protobuf/wrappers.proto";
+package DiscountProtoService;
 option csharp_namespace = "DiscountService";
 enum DiscountType {
   OWNER = 0;
@@ -8,10 +9,10 @@ enum DiscountType {
 service DiscountService {
   rpc CreateDiscount (CreateDiscountRequest) returns (DiscountResponse);
   rpc ApplyDiscount (ApplyDiscountRequest) returns (ApplyDiscountResponse);
-  rpc DisableDiscount (ApplyDiscountRequest) returns (ApplyDiscountResponse);
+  rpc DisableDiscount (DisableDiscountRequest) returns (ApplyDiscountResponse);
   rpc UpdateDiscount (UpdateDiscountRequest) returns (DiscountResponse);
-  rpc GetDiscountsByOwner (google.protobuf.StringValue) returns (GetDiscountResponse);
-  rpc GetDiscountByCourse (GetDiscountRequest) returns (GetDiscountResponse);
+  rpc GetDiscountsByOwner (GetDiscountsByOwnerRequest) returns (GetDiscountResponse);
+  rpc GetDiscountByCourse (GetDiscountByCourseRequest) returns (GetDiscountResponse);
 }
 
 message CreateDiscountRequest {
@@ -22,7 +23,7 @@ message CreateDiscountRequest {
   string startDate = 4;
   string endDate = 5;
   repeated google.protobuf.StringValue courseIds = 9;
-  string authorId = 7;
+  string ownerId = 7;
   int32 usageLimit = 8;
 }
 
@@ -36,7 +37,7 @@ message UpdateDiscountRequest {
   string startDate = 5;
   string endDate = 6;
   repeated google.protobuf.StringValue courseIds = 10;
-  string authorId = 8;
+  string ownerId = 8;
   int32 usageLimit = 9;
 }
 
@@ -51,7 +52,10 @@ message DisableDiscountRequest {
   int32 discountId = 1;
 }
 
-message GetDiscountRequest {
+message GetDiscountsByOwnerRequest {
+  string ownerId = 2;
+}
+message GetDiscountByCourseRequest {
   string courseId = 1;
 }
 
@@ -78,7 +82,7 @@ message Discount {
   string endDate = 6;
   string code = 14;
   repeated google.protobuf.StringValue courseIds = 12;
-  string authorId = 8;
+  string ownerId = 8;
   int32 usageLimit = 9;
   bool isActive = 10;
   int32 usageCount = 11;

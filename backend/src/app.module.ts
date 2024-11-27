@@ -24,6 +24,7 @@ import { minutes, ThrottlerModule } from '@nestjs/throttler';
         limit: 15,
       },
     ]),
+
     SharedModule,
   ],
 })

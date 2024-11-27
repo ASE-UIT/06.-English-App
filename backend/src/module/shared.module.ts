@@ -38,6 +38,7 @@ import { DiscountModule } from './discount/discount.module';
     CourseCategoryModule,
     CourseModule,
     LessonModule,
+    DiscountModule,
     GrammarModule,
     QuestionModule,
     QuestionGroupModule,

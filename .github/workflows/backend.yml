@@ -53,11 +53,9 @@ jobs:
         run: |
           pwd
           echo "${PRIVATE_KEY}" > key.pem
-          echo "${APP_SECRET}" > env
           chmod 600 key.pem env
           chmod 600 docker-compose.yml
           chmod 600 docker-compose.override.yml
-          scp -o StrictHostKeyChecking=no -i key.pem env $EC2_USER@$EC2_HOST:/path/on/ec2/env
           scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker-compose.yml
           scp -o StrictHostKeyChecking=no -i key.pem docker-compose.override.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker-compose.override.yml
           echo "Begin ssh"
@@ -68,4 +66,4 @@ jobs:
             docker compose -f /home/ubuntu/docker-compose.yml -f /home/ubuntu/docker-compose.override.yml up -d
           EOF
           echo "Finish ssh"
-          rm key.pem env
+          rm key.pem 
