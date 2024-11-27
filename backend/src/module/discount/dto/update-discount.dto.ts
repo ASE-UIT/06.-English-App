@@ -1,4 +1,4 @@
-import { DiscountType } from '../../../../dist/types/discount';
+import { DiscountType } from '../../../types/discount';
 
 import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
