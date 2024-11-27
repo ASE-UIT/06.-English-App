@@ -6,10 +6,6 @@ import Profile from "../screens/Profile/Profile";
 
 import Vocabulary from "../screens/Vocabulary";
 
-import LearningStackNavigation from "./LearningStackNavigation";
-import GrammarStackNavigation from "./GrammarStackNavigation";
-import CourseDetail from "../screens/CourseDetail";
-import HomeStackNavigation from "./HomeStackNavigation";
 import Grammar from "../screens/Grammar";
 import Learning from "../screens/Learning";
 const Tab = createMaterialBottomTabNavigator();

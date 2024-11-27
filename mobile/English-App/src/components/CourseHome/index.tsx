@@ -38,6 +38,8 @@ export default function CourseViewer() {
     try {
       const res = await lessonService.getAllLessonsByCourse(course.id);
       if (res.statusCode === 200) {
+        console.log(res.data);
+        
         const lessonsWithSections = await Promise.all(
           res.data.map(async (lesson: Lesson) => {
             const sections = await fetchSection(lesson.id);
@@ -61,6 +63,8 @@ export default function CourseViewer() {
       const res = await sectionService.getSection(lessonId);
       if (res.statusCode === 200) {
         return res.data;
+        console.log(res.data);
+        
       } else {
         console.error("Error fetching sections, status code: ", res);
         return [];
