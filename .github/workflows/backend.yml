@@ -53,7 +53,7 @@ jobs:
         run: |
           pwd
           echo "${PRIVATE_KEY}" > key.pem
-          chmod 600 key.pem env
+          chmod 600 key.pem 
           chmod 600 docker-compose.yml
           chmod 600 docker-compose.override.yml
           scp -o StrictHostKeyChecking=no -i key.pem docker-compose.yml $EC2_USER@$EC2_HOST:/home/ubuntu/docker-compose.yml
