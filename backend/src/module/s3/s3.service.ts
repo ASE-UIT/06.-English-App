@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import {
   DeleteObjectCommand,
   GetObjectCommand,
@@ -8,7 +8,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuidV4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
-import mime from 'mime';
+import { PresignedUrlDto } from './dto/presigned-url.dto';
 
 @Injectable()
 export class S3Service {
@@ -26,21 +26,13 @@ export class S3Service {
     this.bucketName = this.configService.get<string>('awsBucketName');
   }
 
-  getExtensionFromContentType(mimeType: string) {
-    return mime.extension(mimeType);
-  }
-
-  async generatePreSignedUrl(type: string) {
-    const extension = this.getExtensionFromContentType(type);
-    if (!extension) {
-      throw new BadRequestException('Invalid file type');
-    }
-    const key = `${uuidV4()}.${extension}`;
+  async generatePreSignedUrl(presignedUrlDto: PresignedUrlDto) {
+    const key = `${uuidV4()}.${presignedUrlDto.extension}`;
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
       ACL: 'public-read',
-      ContentType: type,
+      ContentType: presignedUrlDto.contentType,
     });
 
     const preSignedUrl = await getSignedUrl(this.s3Client, command, {
