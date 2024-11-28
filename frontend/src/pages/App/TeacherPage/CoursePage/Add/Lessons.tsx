@@ -4,7 +4,6 @@ import { EyeOpenIcon, CheckIcon, PlusIcon } from "@radix-ui/react-icons"
 import CourseCreateLesson from "@/components/Course/Create/Lesson"
 
 const CourseAddLessons = () => {
-
   return (
     <div className="p-3">
       <CourseCreateHeader>

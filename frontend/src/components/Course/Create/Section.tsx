@@ -1,5 +1,5 @@
 const CourseCreateSection = () => {
-    return (<div>Create section</div>);
+  return <div>Create section</div>
 }
- 
-export default CourseCreateSection;
+
+export default CourseCreateSection

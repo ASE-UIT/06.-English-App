@@ -6,11 +6,12 @@ import { BiHelpCircle } from "react-icons/bi"
 import LOGO from "@/assets/Logo.svg"
 import LogoTeacher from "../../../assets/header_image_teacher.svg"
 import { BellIcon } from "@radix-ui/react-icons"
+import { useAuth } from "@/hooks/useAuth"
 
 const links = [
   {
     label: "Course",
-    href: "#",
+    href: "/course",
     icon: <MdOutlineMonitor className="h-5 w-5 flex-shrink-0 text-headerIcon dark:text-neutral-200" />,
   },
   {
@@ -32,6 +33,8 @@ const links = [
 
 export default function TeacherLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { isLoggedIn } = useAuth()
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <div className="flex h-screen max-w-screen-2xl flex-row">
@@ -56,16 +59,14 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
             </div>
           </SidebarBody>
         </Sidebar>
-        <div className="flex-1 overflow-auto flex flex-col">
-      <div className="flex justify-end p-4 border-b items-center gap-4">
-        <span className="text-lg font-semibold">Teacher</span>
-        <BellIcon width={24} height={24}/>
-        <img src={LogoTeacher} alt="" className="h-10 w-10 rounded-full bg-pink-200 p-1" />
-      </div>
-      <div className="p-5 d-flex flex-col overflow-auto">
-        {children}
-      </div>
-    </div>
+        <div className="flex flex-1 flex-col overflow-auto">
+          <div className="flex items-center justify-end gap-4 border-b p-4">
+            <span className="text-lg font-semibold">Teacher</span>
+            <BellIcon width={24} height={24} />
+            <img src={LogoTeacher} alt="" className="h-10 w-10 rounded-full bg-pink-200 p-1" />
+          </div>
+          <div className="d-flex flex-col overflow-auto p-5">{children}</div>
+        </div>
       </div>
     </div>
   )
