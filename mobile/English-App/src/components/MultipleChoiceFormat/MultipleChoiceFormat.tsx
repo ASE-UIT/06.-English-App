@@ -36,6 +36,7 @@ export default function MultipleChoiceFormat() {
             number={index + 1}
             question={question.question}
             options={question.options}
+            onAnswer={() => {}}
           />
         ))}
       </View>
