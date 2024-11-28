@@ -33,6 +33,15 @@ export class CreateCourseDto {
 
   @AutoMap()
   @ApiProperty({
+    description: 'Thumbnail of the course',
+    type: String,
+    example: 'https://example.com/thumbnail.jpg',
+  })
+  @IsString()
+  thumbnail_image: string;
+
+  @AutoMap()
+  @ApiProperty({
     description: 'Category id of the course',
     type: String,
     example: '41fdc3d9-2b25-4fd8-adae-0c4c9ac91ee8',
