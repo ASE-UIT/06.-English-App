@@ -12,6 +12,8 @@
     "format:fix": "prettier ./src/**/*.{js,jsx} --write"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.1",
+    "@radix-ui/react-accordion": "^1.2.1",
     "@radix-ui/react-checkbox": "^1.1.2",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-icons": "^1.3.0",
@@ -22,6 +24,7 @@
     "@radix-ui/react-select": "^2.1.2",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toggle": "^1.1.0",
+    "@radix-ui/themes": "^3.1.6",
     "@reduxjs/toolkit": "^2.2.7",
     "@tanstack/react-query": "^5.52.1",
     "axios": "^1.7.3",
@@ -29,18 +32,22 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
+    "font-awesome": "^4.7.0",
     "framer-motion": "^11.11.10",
     "lodash": "^4.17.21",
     "lucide-react": "^0.419.0",
     "primereact": "^10.8.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-froala-wysiwyg": "^4.3.0",
     "react-hook-form": "^7.52.1",
     "react-icons": "^5.3.0",
+    "react-images-uploading": "^3.1.7",
     "react-redux": "^9.1.2",
     "react-router": "^6.26.0",
     "react-router-dom": "^6.26.0",
     "react-speech-recognition": "^3.10.0",
+    "react-toastify": "^10.0.6",
     "redux": "^5.0.1",
     "redux-injectors": "^2.1.0",
     "redux-saga": "^1.3.0",
@@ -49,10 +56,12 @@
     "tailwind-merge": "^2.5.4",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.25.9",
+    "@types/jwt-decode": "^3.1.0",
     "@types/lodash": "^4.17.10",
     "@types/node": "^22.7.3",
     "@types/react": "^18.3.3",
@@ -71,5 +80,8 @@
     "tailwindcss": "^3.4.7",
     "typescript": "^5.2.2",
     "vite": "^5.3.4"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.6.1"
   }
 }

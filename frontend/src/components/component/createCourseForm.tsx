@@ -1,37 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState } from "react"
 
 interface CourseData {
-  title: string;
-  description: string;
-  category: string;
+  title: string
+  description: string
+  category: string
 }
 
 interface CreateCourseFormProps {
-  onSubmit: (courseData: CourseData) => void;
-  isLoading: boolean;
+  onSubmit: (courseData: CourseData) => void
+  isLoading: boolean
 }
 
-const CreateCourseForm: React.FC<CreateCourseFormProps> = ({
-  onSubmit,
-  isLoading,
-}) => {
+const CreateCourseForm: React.FC<CreateCourseFormProps> = ({ onSubmit, isLoading }) => {
   const [courseData, setCourseData] = useState<CourseData>({
-    title: '',
-    description: '',
-    category: '',
-  });
+    title: "",
+    description: "",
+    category: "",
+  })
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
-    setCourseData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target
+    setCourseData((prevData) => ({ ...prevData, [name]: value }))
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSubmit(courseData);
-  };
+    event.preventDefault()
+    onSubmit(courseData)
+  }
 
   return (
     <form onSubmit={handleSubmit} className="create-course-form">
@@ -64,11 +59,13 @@ const CreateCourseForm: React.FC<CreateCourseFormProps> = ({
           required
         />
       </label>
-      <button type="submit" disabled={isLoading}> {/* Sử dụng isLoading */}
-        {isLoading ? 'Đang gửi...' : 'Gửi'}
+      <button type="submit" disabled={isLoading}>
+        {" "}
+        {/* Sử dụng isLoading */}
+        {isLoading ? "Đang gửi..." : "Gửi"}
       </button>
     </form>
-  );
-};
+  )
+}
 
-export default CreateCourseForm;
+export default CreateCourseForm
