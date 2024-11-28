@@ -23,7 +23,6 @@ export const studentRoutes = {
   DoTestSpeaking: "/do-test/speaking",
 }
 export const teacherRoutes = {
-  Home: "/teacher-home",
   Course: {
     Base: "/course",
     Create: "/course/create",

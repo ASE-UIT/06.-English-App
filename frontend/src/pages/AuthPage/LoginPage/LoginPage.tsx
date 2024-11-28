@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { useAuth } from "@/hooks/useAuth"
+import { teacherRoutes } from "@/config/routes"
 
 const LoginPage = () => {
   const { logIn } = useAuth()
@@ -17,7 +18,7 @@ const LoginPage = () => {
     if (token) {
       toast.success("Đăng nhập thành công!")
       console.log("Login success")
-      navigate("/teacher-home")
+      navigate(teacherRoutes.Course.Base)
       toast.success("Đăng nhập thành công")
     } else toast.error("Sai tài khoản hoặc mật khẩu!")
   }
