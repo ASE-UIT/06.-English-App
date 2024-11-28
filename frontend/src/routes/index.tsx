@@ -12,7 +12,6 @@ import WritingTestPage from "@/pages/App/StudentPage/TestPage/WritingTestPage/Wr
 import SpeakingTestPage from "@/pages/App/StudentPage/TestPage/SpeakingTestPage/SpeakingTestPage"
 import ListeningTestPage from "@/pages/App/StudentPage/TestPage/ListeningTestPage/ListeningTestPage"
 import MyCoursePage from "@/pages/App/TeacherPage/CoursePage/MyCoursePage"
-import InstructorHome from "@/pages/App/TeacherPage/HomePage/InstructorHome"
 import ReadingPage from "@/pages/App/StudentPage/TestPage/ReadingTestPage/ReadingPage"
 import { MyLessonPage } from "@/pages/App/TeacherPage/LessonPage/MyLessonPage"
 import { CreateVocab } from "@/pages/App/TeacherPage/LessonPage/CreateVocab"
@@ -70,11 +69,6 @@ const protectedRoutes = [
     path: studentRoutes.DoTestReading,
     component: <ReadingPage></ReadingPage>,
     layout: DoTestLayout,
-  },
-  {
-    path: teacherRoutes.Home,
-    component: <InstructorHome></InstructorHome>,
-    layout: Fragment,
   },
   {
     path: teacherRoutes.Course.Base,
