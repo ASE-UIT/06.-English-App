@@ -101,7 +101,6 @@ export default function LearningScreen() {
             rated={course.ratingCount}
             onPressItem={() => {
               nav.navigate("CourseHome", { course: course });
-              
             }}
             progress={50}
           />

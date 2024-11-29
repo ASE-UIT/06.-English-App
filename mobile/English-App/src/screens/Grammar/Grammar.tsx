@@ -31,7 +31,7 @@ const Grammar = () => {
         {grammars.map((grammar, index) => {
           return (
             <TouchableOpacity
-              onPress={() => navigation.navigate("GrammarDetail")}
+              onPress={() => navigation.navigate("GrammarDetail", {grammar: grammar})}
               key={index}
               className="flex flex-row justify-start items-center p-2  gap-3"
             >

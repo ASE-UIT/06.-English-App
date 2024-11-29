@@ -1,13 +1,13 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Course, MyCourse } from "./models";
+import { Course, MyCourse,GrammarModel } from "./models";
 
 export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
   Reading: undefined;
   Grammar: undefined;
-  GrammarDetail: undefined;
+  GrammarDetail: {grammar: GrammarModel};
   CourseDetail: { course: Course };
   CourseHome: { course: Course };
   PayWithBank: undefined;
