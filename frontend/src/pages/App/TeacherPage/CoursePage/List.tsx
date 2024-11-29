@@ -19,6 +19,7 @@ export default function CourseList() {
   const { data: courseList } = useCourseTeacher()
   const [category, setCategory] = useState<string>("all")
   const { data: categories } = useCourseCategory()
+  const [paginationLength, setPaginationLength] = useState<number>(courseList?.data.length || 0)
 
   const currentItems = useMemo(() => {
     let fakeCourseList = courseList?.data
@@ -40,9 +41,16 @@ export default function CourseList() {
         })
       }
     }
+    if (query !== "" || category !== "all")
+    {
+      setPaginationLength(fakeCourseList?.length || 0)
+    }
+    else {
+      setPaginationLength(courseList?.data.length || 0)
+    }
     return fakeCourseList
   }, [category, courseList?.data, page, query])
-
+  console.log("courseList",courseList,currentItems)
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const gotoCreate = () => {
     navigate("/course/create")
@@ -124,7 +132,7 @@ export default function CourseList() {
         <PaginationSearchResult
           itemsPerPage={5}
           selectPage={setPage}
-          totalItemsInAllPages={currentItems?.length || 0}
+          totalItemsInAllPages={paginationLength}
           isSearch={isSearch}
           currentPageNumber={currentPageOffset}
           onSearch={() => setIsSearch(false)}
