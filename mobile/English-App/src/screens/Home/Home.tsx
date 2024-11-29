@@ -26,7 +26,13 @@ const Home = () => {
     const fetchCourseCategories = async () => {
       try {
         const result = await courseCategoryService.getCourseCategories();
-        setCourseCategories(result.data);
+        if(result.statusCode === 200) {
+        
+        setCourseCategories(result.data);}
+        else {
+          console.error("Error fetching course categories, status code: ", result.statusCode
+          );}
+
       } catch (error) {
         console.error("Error fetching course categories:", error);
       }
