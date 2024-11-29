@@ -6,6 +6,7 @@ import PaginationSearchResult from "@/components/ui/paginationSearch"
 // import { Pagination } from "@/type"
 import { useMemo, useState } from "react"
 import { useCourseCategory, useCourseTeacher } from "@/features/course/hooks"
+import { Course } from "@/type/course"
 
 export default function CourseList() {
   const navigate = useNavigate()
@@ -19,7 +20,7 @@ export default function CourseList() {
   const { data: courseList } = useCourseTeacher()
   const [category, setCategory] = useState<string>("all")
   const { data: categories } = useCourseCategory()
-  const [paginationLength, setPaginationLength] = useState<number>(courseList?.data.length || 0)
+  const [paginationArr, setPaginationArr] = useState<Course[]>(courseList?.data || [])
 
   const currentItems = useMemo(() => {
     let fakeCourseList = courseList?.data
@@ -43,10 +44,10 @@ export default function CourseList() {
     }
     if (query !== "" || category !== "all")
     {
-      setPaginationLength(fakeCourseList?.length || 0)
+      setPaginationArr(fakeCourseList || [])
     }
     else {
-      setPaginationLength(courseList?.data.length || 0)
+      setPaginationArr(courseList?.data || [])
     }
     return fakeCourseList
   }, [category, courseList?.data, page, query])
@@ -105,14 +106,17 @@ export default function CourseList() {
           </Button>
         </div>
       </div>
-      <Tabs.Root defaultValue="DRAFT">
+      <Tabs.Root onValueChange={() => {
+        setCurrentPageOffset(1)
+        setPage(0)
+      }} defaultValue="DRAFT">
         <Tabs.List color="pink" size="2">
           <Tabs.Trigger value="DRAFT">Drafts</Tabs.Trigger>
           <Tabs.Trigger value="PUBLISHED">Published</Tabs.Trigger>
         </Tabs.List>
-      </Tabs.Root>
-      <div className="mt-6 flex max-w-5xl flex-col gap-5">
-        {(currentItems || []).map((course) => (
+        <Tabs.Content value="DRAFT">
+          <div className="mt-6 flex max-w-5xl flex-col gap-5">
+        {(currentItems || []).filter((course)=> course.state === "DRAFT").map((course) => (
           <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
             <div>
               <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
@@ -132,7 +136,7 @@ export default function CourseList() {
         <PaginationSearchResult
           itemsPerPage={5}
           selectPage={setPage}
-          totalItemsInAllPages={paginationLength}
+          totalItemsInAllPages={paginationArr.filter((course)=> course.state === "DRAFT").length}
           isSearch={isSearch}
           currentPageNumber={currentPageOffset}
           onSearch={() => setIsSearch(false)}
@@ -140,6 +144,39 @@ export default function CourseList() {
           setCurrentPageOffset={setCurrentPageOffset}
         />
       </div>
+        </Tabs.Content>
+        <Tabs.Content value="PUBLISHED">
+          <div className="mt-6 flex max-w-5xl flex-col gap-5">
+        {(currentItems || []).filter((course)=> course.state === "PUBLISHED").map((course) => (
+          <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
+            <div>
+              <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
+            </div>
+            <div className="flex-1 pl-3">
+              <div className="text-lg font-bold text-blue-700">{course.title}</div>
+              <div className="text-zinc-400">Finish your course</div>
+            </div>
+            <div className="flex h-full items-center">
+              <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
+              <Button variant="solid" size="3">
+                Delete
+              </Button>
+            </div>
+          </div>
+        ))}
+        <PaginationSearchResult
+          itemsPerPage={5}
+          selectPage={setPage}
+          totalItemsInAllPages={paginationArr.filter((course)=> course.state === "PUBLISHED").length}
+          isSearch={isSearch}
+          currentPageNumber={currentPageOffset}
+          onSearch={() => setIsSearch(false)}
+          hasApi={false}
+          setCurrentPageOffset={setCurrentPageOffset}
+        />
+      </div>
+        </Tabs.Content>
+      </Tabs.Root>
     </div>
   )
 }
