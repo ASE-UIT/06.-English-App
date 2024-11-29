@@ -38,7 +38,7 @@ export interface CourseCreate {
   title: string
   price: number
   state: string
-  thumbnail_image: string
+  thumbnail_image?: string
   categoryId: string
 }
 

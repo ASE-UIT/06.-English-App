@@ -42,16 +42,14 @@ export default function CourseList() {
         })
       }
     }
-    if (query !== "" || category !== "all")
-    {
+    if (query !== "" || category !== "all") {
       setPaginationArr(fakeCourseList || [])
-    }
-    else {
+    } else {
       setPaginationArr(courseList?.data || [])
     }
     return fakeCourseList
   }, [category, courseList?.data, page, query])
-  console.log("courseList",courseList,currentItems)
+  console.log("courseList", courseList, currentItems)
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const gotoCreate = () => {
     navigate("/course/create")
@@ -106,75 +104,82 @@ export default function CourseList() {
           </Button>
         </div>
       </div>
-      <Tabs.Root onValueChange={() => {
-        setCurrentPageOffset(1)
-        setPage(0)
-      }} defaultValue="DRAFT">
+      <Tabs.Root
+        onValueChange={() => {
+          setCurrentPageOffset(1)
+          setPage(0)
+        }}
+        defaultValue="DRAFT"
+      >
         <Tabs.List color="pink" size="2">
           <Tabs.Trigger value="DRAFT">Drafts</Tabs.Trigger>
           <Tabs.Trigger value="PUBLISHED">Published</Tabs.Trigger>
         </Tabs.List>
         <Tabs.Content value="DRAFT">
           <div className="mt-6 flex max-w-5xl flex-col gap-5">
-        {(currentItems || []).filter((course)=> course.state === "DRAFT").map((course) => (
-          <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
-            <div>
-              <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
-            </div>
-            <div className="flex-1 pl-3">
-              <div className="text-lg font-bold text-blue-700">{course.title}</div>
-              <div className="text-zinc-400">Finish your course</div>
-            </div>
-            <div className="flex h-full items-center">
-              <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
-              <Button variant="solid" size="3">
-                Delete
-              </Button>
-            </div>
+            {(currentItems || [])
+              .filter((course) => course.state === "DRAFT")
+              .map((course) => (
+                <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
+                  <div>
+                    <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
+                  </div>
+                  <div className="flex-1 pl-3">
+                    <div className="text-lg font-bold text-blue-700">{course.title}</div>
+                    <div className="text-zinc-400">Finish your course</div>
+                  </div>
+                  <div className="flex h-full items-center">
+                    <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
+                    <Button variant="solid" size="3">
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            <PaginationSearchResult
+              itemsPerPage={5}
+              selectPage={setPage}
+              totalItemsInAllPages={paginationArr.filter((course) => course.state === "DRAFT").length}
+              isSearch={isSearch}
+              currentPageNumber={currentPageOffset}
+              onSearch={() => setIsSearch(false)}
+              hasApi={false}
+              setCurrentPageOffset={setCurrentPageOffset}
+            />
           </div>
-        ))}
-        <PaginationSearchResult
-          itemsPerPage={5}
-          selectPage={setPage}
-          totalItemsInAllPages={paginationArr.filter((course)=> course.state === "DRAFT").length}
-          isSearch={isSearch}
-          currentPageNumber={currentPageOffset}
-          onSearch={() => setIsSearch(false)}
-          hasApi={false}
-          setCurrentPageOffset={setCurrentPageOffset}
-        />
-      </div>
         </Tabs.Content>
         <Tabs.Content value="PUBLISHED">
           <div className="mt-6 flex max-w-5xl flex-col gap-5">
-        {(currentItems || []).filter((course)=> course.state === "PUBLISHED").map((course) => (
-          <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
-            <div>
-              <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
-            </div>
-            <div className="flex-1 pl-3">
-              <div className="text-lg font-bold text-blue-700">{course.title}</div>
-              <div className="text-zinc-400">Finish your course</div>
-            </div>
-            <div className="flex h-full items-center">
-              <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
-              <Button variant="solid" size="3">
-                Delete
-              </Button>
-            </div>
+            {(currentItems || [])
+              .filter((course) => course.state === "PUBLISHED")
+              .map((course) => (
+                <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
+                  <div>
+                    <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
+                  </div>
+                  <div className="flex-1 pl-3">
+                    <div className="text-lg font-bold text-blue-700">{course.title}</div>
+                    <div className="text-zinc-400">Finish your course</div>
+                  </div>
+                  <div className="flex h-full items-center">
+                    <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
+                    <Button variant="solid" size="3">
+                      Delete
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            <PaginationSearchResult
+              itemsPerPage={5}
+              selectPage={setPage}
+              totalItemsInAllPages={paginationArr.filter((course) => course.state === "PUBLISHED").length}
+              isSearch={isSearch}
+              currentPageNumber={currentPageOffset}
+              onSearch={() => setIsSearch(false)}
+              hasApi={false}
+              setCurrentPageOffset={setCurrentPageOffset}
+            />
           </div>
-        ))}
-        <PaginationSearchResult
-          itemsPerPage={5}
-          selectPage={setPage}
-          totalItemsInAllPages={paginationArr.filter((course)=> course.state === "PUBLISHED").length}
-          isSearch={isSearch}
-          currentPageNumber={currentPageOffset}
-          onSearch={() => setIsSearch(false)}
-          hasApi={false}
-          setCurrentPageOffset={setCurrentPageOffset}
-        />
-      </div>
         </Tabs.Content>
       </Tabs.Root>
     </div>

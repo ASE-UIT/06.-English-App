@@ -8,7 +8,7 @@ class HttpClient {
   instance: AxiosInstance
 
   constructor() {
-    this.baseUrl = "https://ec2-13-229-207-229.ap-southeast-1.compute.amazonaws.com/api"
+    this.baseUrl = "https://api.engdigo.loingtan.id.vn/api"
     this.instance = axios.create({
       baseURL: this.baseUrl,
       withCredentials: true,

@@ -12,7 +12,7 @@ import { useCourseCategory } from "@/features/course/hooks"
 import generateFroalaConfig from "@/config/froala.config"
 import FroalaEditorComponent from "@/components/Layout/Components/ui/FroalaEditorComponent"
 import { useMutation } from "@tanstack/react-query"
-import { courseApi } from "@/apis"
+import { courseApi, fileApi } from "@/apis"
 import { toast } from "react-toastify"
 
 const formSchema = z.object({
@@ -26,18 +26,23 @@ type CreateCourseDTO = z.infer<typeof formSchema>
 export default function CourseCreate() {
   const navigate = useNavigate()
   const [images, setImages] = useState<Array<ImageType>>([])
+  // const [imageUrl, setImageUrl] = useState<string>("")
   console.log("images", images)
   const froalaConfig = useMemo(() => generateFroalaConfig(), [])
   const [category, setCategory] = useState<string>("")
   const [description, setDescription] = useState<string>("")
   const { data: categoryData } = useCourseCategory()
   console.log("categoryData", categoryData)
-  const onChange = (imageList: Array<ImageType>) => {
-    setImages(imageList)
-  }
-
-  function onSave() {
-    navigate("/course/123/add/lessons")
+  const onChange = async (imageList: Array<ImageType>) => {
+    const contentType = imageList[0].file?.type || "image/jpeg"
+    console.log("contentType", imageList[0].file?.type)
+    const getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
+    console.log("getPreUrl", getPreUrl)
+    if (getPreUrl?.data.preSignedUrl && imageList[0].file) {
+      const uploadFile = await fileApi.uploadFile(getPreUrl?.data.preSignedUrl, imageList[0].file)
+      setImages(imageList)
+      console.log("uploadFile", uploadFile)
+    }
   }
 
   function goBack() {
@@ -69,7 +74,7 @@ export default function CourseCreate() {
     onSuccess: (Res) => {
       if (Res?.message === "Course created") {
         toast.success(`${Res.message}`)
-        navigate("/login")
+        navigate("/course")
       } else {
         toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
       }
@@ -86,7 +91,6 @@ export default function CourseCreate() {
       price: values.price,
       description: values.description,
       state: "DRAFT",
-      thumbnail_image: images[0].dataURL || "",
       categoryId: category,
     }
     CreateCourse.mutate(data)
@@ -95,70 +99,73 @@ export default function CourseCreate() {
   return (
     <div className="p-3">
       <div className="mb-8 text-2xl font-semibold text-blue-700">Course information</div>
-      <div className="grid grid-cols-2 gap-6">
-        <div className="grid gap-6">
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
-            <div>
+      <form className="grid grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-6">
+          <div>
+            <label>
+              <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
+                Title
+              </Text>
+              <TextField.Root type="text" {...register("title")} placeholder="Enter your course title" size="3" />
+              {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+            </label>
+          </div>
+          <div>
+            <div className="grid grid-cols-2 gap-6">
               <label>
                 <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
-                  Title
+                  Price
                 </Text>
-                <TextField.Root type="text" {...register("title")} placeholder="Enter your course title" size="3" />
-                {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+                <TextField.Root
+                  type="number"
+                  {...register("price", { valueAsNumber: true })}
+                  placeholder="Enter price"
+                  size="3"
+                />
+                {errors.price && <p className="text-red-500">{errors.price.message}</p>}
+              </label>
+              <label>
+                <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
+                  Category
+                </Text>
+                <div className="flex w-full flex-col">
+                  <Select key="category" onValueChange={(value) => setCategory(value)}>
+                    <div className="flex w-full space-x-3">
+                      <SelectTrigger className="h-10 !w-full !cursor-pointer rounded-md border-[1.5px] border-slate-300 bg-white text-base !font-normal text-black">
+                        <SelectValue placeholder="Chọn danh mục"></SelectValue>
+                      </SelectTrigger>
+                    </div>
+                    <SelectContent>
+                      {categoryData &&
+                        "data" in categoryData &&
+                        Array.isArray(categoryData.data) &&
+                        categoryData?.data.map((i) => (
+                          <SelectItem
+                            className="text-sm text-black hover:text-navTitle focus:text-navTitle"
+                            key={i.id}
+                            value={i.id}
+                          >
+                            {i.name}
+                          </SelectItem>
+                        ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </label>
             </div>
-            <div>
-              <div className="grid grid-cols-2 gap-6">
-                <label>
-                  <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
-                    Price
-                  </Text>
-                  <TextField.Root type="number" {...register("price")} placeholder="Enter price" size="3" />
-                  {errors.price && <p className="text-red-500">{errors.price.message}</p>}
-                </label>
-                <label>
-                  <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
-                    Category
-                  </Text>
-                  <div className="flex w-full flex-col">
-                    <Select key="category" onValueChange={(value) => setCategory(value)}>
-                      <div className="flex w-full space-x-3">
-                        <SelectTrigger className="h-10 !w-full !cursor-pointer rounded-md border-[1.5px] border-slate-300 bg-white text-base !font-normal text-black">
-                          <SelectValue placeholder="Chọn danh mục"></SelectValue>
-                        </SelectTrigger>
-                      </div>
-                      <SelectContent>
-                        {categoryData &&
-                          "data" in categoryData &&
-                          Array.isArray(categoryData.data) &&
-                          categoryData?.data.map((i) => (
-                            <SelectItem
-                              className="text-sm text-black hover:text-navTitle focus:text-navTitle"
-                              key={i.id}
-                              value={i.id}
-                            >
-                              {i.name}
-                            </SelectItem>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <div>
-              <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
-                Description
-              </Text>
-              <FroalaEditorComponent
-                tag="textarea"
-                config={froalaConfig}
-                model={description}
-                onModelChange={(e: string) => setDescription(e)}
-              />
-              {errors.description && <p className="text-red-500">{errors.description.message}</p>}
-            </div>
-          </form>
+          </div>
+          <div>
+            <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
+              Description
+            </Text>
+            <FroalaEditorComponent
+              tag="textarea"
+              config={froalaConfig}
+              model={description}
+              onModelChange={(e: string) => setDescription(e)}
+            />
+            {errors.description && <p className="text-red-500">{errors.description.message}</p>}
+          </div>
         </div>
         <div className="flex h-full flex-col">
           {/* <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
@@ -223,11 +230,11 @@ export default function CourseCreate() {
           </Button>
         </div>
         <div>
-          <Button variant="solid" size="3" className="cursor-pointer" onClick={onSave}>
+          <Button variant="solid" size="3" className="cursor-pointer" type="submit">
             Save & Continue{" "}
           </Button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
