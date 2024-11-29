@@ -6,8 +6,8 @@ export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
   Reading: undefined;
-  Grammar: undefined;
-  GrammarDetail: {grammar: GrammarModel};
+  Grammar: {grammarmodel: GrammarModel};
+  GrammarDetail: { grammarmodel: GrammarModel };
   CourseDetail: { course: Course };
   CourseHome: { course: Course };
   PayWithBank: undefined;
