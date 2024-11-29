@@ -1,19 +1,11 @@
 import { API_URL, ACCESS_TOKEN } from "@env";
+import http from "./Http";
 
-const API = process.env.API_URL;
-const accessToken = process.env.ACCESS_TOKEN;
 
-let url = API + 'section/get-all-section-by-lesson';
 class SectionService {
     async getSection(id:string) {
-        url = url + '/' + id;
-        const response = await fetch(url, {
-            headers: {
-                'accept': '*/*',
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-        return response.json();
+        const response = await http.get('section/get-all-section-by-lesson/' + id);
+        return response; 
     }
 }
 const sectionService = new SectionService();

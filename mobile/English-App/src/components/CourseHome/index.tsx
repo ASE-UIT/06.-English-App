@@ -38,14 +38,21 @@ export default function CourseViewer() {
     try {
       const res = await lessonService.getAllLessonsByCourse(course.id);
       if (res.statusCode === 200) {
-        console.log(res.data);
-        
         const lessonsWithSections = await Promise.all(
           res.data.map(async (lesson: Lesson) => {
             const sections = await fetchSection(lesson.id);
+            const mappedData = sections.map((item: { id: any; createDate: any; updateDate: any; name: any; content: any; type: any; }) => ({
+              id: item.id,
+              createDate: item.createDate,
+              updateDate: item.updateDate,
+              title: item.name,
+              content: item.content,
+              type: item.type,
+              lessonId: lesson.id
+            }));
             return {
               ...lesson,
-              sections: sections ? sections : ([] as Section[]),
+              sections: mappedData ?? ([] as Section[]), 
             };
           })
         );
@@ -57,24 +64,21 @@ export default function CourseViewer() {
       console.error("Error fetching lessons: ", error);
     }
   };
-  
+
   const fetchSection = async (lessonId: string) => {
     try {
       const res = await sectionService.getSection(lessonId);
-      if (res.statusCode === 200) {
-        return res.data;
-        console.log(res.data);
-        
-      } else {
-        console.error("Error fetching sections, status code: ", res);
-        return [];
+      if (res.data && Array.isArray(res.data)) {
+        return res.data; 
       }
+      return [];
+
     } catch (error) {
       console.error("Error fetching sections: ", error);
       return [];
     }
   };
-  
+
   useEffect(() => {
     fetchLessons();
   }, [course]);
@@ -182,38 +186,37 @@ export default function CourseViewer() {
               <Text style={styles.lessonTitle}>{lesson.name}</Text>
               <View style={styles.sectionListContainer}>
                 <View style={styles.row}>
-                  {lesson.sections
-                    .filter(
+                  {lesson.sections &&
+                    Array.isArray(lesson.sections) && lesson.sections.filter(
                       (section) =>
                         section.type === "vocab" || section.type === "grammar"
                     )
-                    .map((section) => (
-                      <TouchableOpacity
-                        key={section.id}
-                        style={[
-                          styles.sectionButton,
-                          currentSectionId === section.id &&
-                            styles.sectionButtonActive,
-                          section.type === "vocab" && {
-                            backgroundColor: colors.blue4,
-                            borderRadius: 20,
-                          },
-                          section.type === "grammar" && {
-                            backgroundColor: colors.blue4,
-                            borderRadius: 20,
-                          },
-                        ]}
-                        onPress={() => handleSectionPress(section)}
-                      >
-                        <Icon
-                          name={section.type === "vocab" ? "book" : "list"}
-                          size={20}
-                          color="#666"
-                          style={styles.sectionIcon}
-                        />
-                        <Text style={styles.sectionTitle}>{section.title}</Text>
-                      </TouchableOpacity>
-                    ))}
+                      .map((section) => (
+                        <TouchableOpacity
+                          key={section.id}
+                          style={[
+                            styles.sectionButton,
+                            currentSectionId === section.id && styles.sectionButtonActive,
+                            section.type === "vocab" && {
+                              backgroundColor: colors.blue4,
+                              borderRadius: 20,
+                            },
+                            section.type === "grammar" && {
+                              backgroundColor: colors.blue4,
+                              borderRadius: 20,
+                            },
+                          ]}
+                          onPress={() => handleSectionPress(section)}
+                        >
+                          <Icon
+                            name={section.type === "vocab" ? "book" : "list"}
+                            size={20}
+                            color="#666"
+                            style={styles.sectionIcon}
+                          />
+                          <Text style={styles.sectionTitle}>{section.title}</Text>
+                        </TouchableOpacity>
+                      ))}
                 </View>
                 {lesson.sections
                   .filter(
@@ -226,7 +229,7 @@ export default function CourseViewer() {
                       style={[
                         styles.sectionButton,
                         currentSectionId === section.id &&
-                          styles.sectionButtonActive,
+                        styles.sectionButtonActive,
                       ]}
                       onPress={() => handleSectionPress(section)}
                     >
@@ -235,14 +238,14 @@ export default function CourseViewer() {
                           section.type === "video"
                             ? "play"
                             : section.type === "speaking"
-                            ? "mic"
-                            : section.type === "listening"
-                            ? "headphones"
-                            : section.type === "writing"
-                            ? "edit-3"
-                            : section.type === "reading"
-                            ? "book-open"
-                            : "circle"
+                              ? "mic"
+                              : section.type === "listening"
+                                ? "headphones"
+                                : section.type === "writing"
+                                  ? "edit-3"
+                                  : section.type === "reading"
+                                    ? "book-open"
+                                    : "circle"
                         }
                         size={20}
                         color="#666"
