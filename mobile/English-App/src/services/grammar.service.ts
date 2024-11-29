@@ -1,22 +1,10 @@
-import { API_URL, ACCESS_TOKEN } from "@env";
-
-const API = process.env.API_URL;
-const accessToken = process.env.ACCESS_TOKEN;
-class grammarService {
+import http from "./Http";
+class GrammarService {
     //global grammer
     async getGrammar() {
-        const url = API + 'grammar';
-        const response = await fetch(url, {
-            method: "GET",
-            headers: {
-                'accept': '*/*',
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-        
-        return response.json();
+        const response = await http.get('grammar');
+        return response;
     }
-    
 }
-
-export default new grammarService();
+const grammarService = new GrammarService()
+export default grammarService;

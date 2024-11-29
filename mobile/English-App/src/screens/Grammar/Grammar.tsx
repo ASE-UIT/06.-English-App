@@ -1,33 +1,25 @@
 import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import { GrammarScreenNavigationProp } from "../../type";
 import grammarService from "../../services/grammar.service";
-import sectionService from "../../services/section.service";
+import GrammarModel from "../../models/GrammarModel";
 
 const Grammar = () => {
-  const titles = [
-    "Present perfect tense",
-    "Past perfect tense",
-    "Future perfect tense",
-    "Present perfect continuous tense",
-    "Past perfect continuous tense",
-    "Future perfect continuous tense",
-    "Present simple tense",
-    "Past simple tense",
-  ];
-
+  const [grammars, setGrammars] = useState<GrammarModel[]>([]);
+  const fetchGrammar = async () => {
+    try {
+      const res = await grammarService.getGrammar();
+      setGrammars(res.data)
+    } catch (error) {
+      console.error("Error fetching grammar:", error);
+    }
+  };
   useEffect(() => {
-    grammarService.getGrammar()
-      .then((response) => {
-        
-      })
-      .catch((error) => {
-        
-      });
+    fetchGrammar();
 
-  },[]);
+  }, [grammars]);
 
   const navigation = useNavigation<GrammarScreenNavigationProp>();
   return (
@@ -36,7 +28,7 @@ const Grammar = () => {
         style={{ marginLeft: 40, marginRight: 40 }}
         className="flex border p-5 mt-[35px] mx-10  w-full h-fit flex-col justify-center items-start"
       >
-        {titles.map((title, index) => {
+        {grammars.map((grammar, index) => {
           return (
             <TouchableOpacity
               onPress={() => navigation.navigate("GrammarDetail")}
@@ -44,7 +36,7 @@ const Grammar = () => {
               className="flex flex-row justify-start items-center p-2  gap-3"
             >
               <Icon name="play" type="material-community" size={20} />
-              <Text className="text-black text-base">{title}</Text>
+              <Text className="text-black text-base">{grammar.title}</Text>
             </TouchableOpacity>
           );
         })}

@@ -1,4 +1,4 @@
-import { API_URL, ACCESS_TOKEN } from "@env";
+
 import http from "./Http";
 
 
