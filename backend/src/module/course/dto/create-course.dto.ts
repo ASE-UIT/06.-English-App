@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { STATE } from 'src/utils/constants';
 
 export class CreateCourseDto {
@@ -37,6 +37,7 @@ export class CreateCourseDto {
     type: String,
     example: 'https://example.com/thumbnail.jpg',
   })
+  @IsOptional()
   @IsString()
   thumbnail_image: string;
 
