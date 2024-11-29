@@ -1,7 +1,8 @@
 import { View, Text, Image, ScrollView } from "react-native";
 import MultipleChoiceFormat from "../../components/MultipleChoiceFormat/MultipleChoiceFormat";
 import MultiSelectFormat from "../../components/MultiSelectFormat/MultiSelectFormat";
-export default function ReadingExercise() {
+import { useRef } from "react";
+export default function ReadingExercise({scrollRef}: {scrollRef: React.RefObject<ScrollView>}) {
   // hard-coded data for now
   const section = {
     title: "Australian artist Margaret Preston",
@@ -14,6 +15,7 @@ export default function ReadingExercise() {
     <ScrollView
       className="reading-exercise flex gap-4"
       style={{ paddingHorizontal: 10 }}
+      ref={scrollRef}
     >
       <View className="reading-content flex gap-2 items-center">
         <Text className="text-black text-lg font-bold">{section.title}</Text>

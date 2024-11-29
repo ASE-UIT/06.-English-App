@@ -1,11 +1,12 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Course, MyCourse } from "./models";
+import { ScrollView } from "react-native";
 
 export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
-  Reading: undefined;
+  Reading: {scrollRef: React.RefObject<ScrollView>};
   Grammar: undefined;
   GrammarDetail: undefined;
   CourseDetail: { course: Course };
