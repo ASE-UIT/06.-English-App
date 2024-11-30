@@ -1,6 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsEnum, IsString } from 'class-validator';
+import { STATE } from 'src/utils/constants';
 
 export class CourseResponseDto {
   @ApiProperty({
@@ -47,6 +48,13 @@ export class CourseResponseDto {
     example: 'Adam Smith',
     description: 'Name of teacher',
   })
+  @ApiProperty({
+    example: 'DRAFT',
+    description: 'Status of course',
+  })
+  @AutoMap()
+  @IsEnum(STATE)
+  state: STATE;
   @AutoMap()
   @IsString()
   teacherName: string;

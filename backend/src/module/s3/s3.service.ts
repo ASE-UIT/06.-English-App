@@ -8,6 +8,7 @@ import {
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { v4 as uuidV4 } from 'uuid';
 import { ConfigService } from '@nestjs/config';
+import { PresignedUrlDto } from './dto/presigned-url.dto';
 
 @Injectable()
 export class S3Service {
@@ -25,18 +26,18 @@ export class S3Service {
     this.bucketName = this.configService.get<string>('awsBucketName');
   }
 
-  async generatePreSignedUrl(type: string) {
-    const key = uuidV4();
+  async generatePreSignedUrl(presignedUrlDto: PresignedUrlDto) {
+    const key = `${uuidV4()}.${presignedUrlDto.extension}`;
     const command = new PutObjectCommand({
       Bucket: this.bucketName,
       Key: key,
-      ContentType: type,
+      ACL: 'public-read',
+      ContentType: presignedUrlDto.contentType,
     });
 
     const preSignedUrl = await getSignedUrl(this.s3Client, command, {
       expiresIn: 1800,
     });
-
     return { preSignedUrl, key };
   }
 

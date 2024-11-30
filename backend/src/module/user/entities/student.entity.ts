@@ -6,7 +6,6 @@ import { CourseBuying } from '../../course-buying/entities/course-buying.entity'
 import { CourseReviewing } from 'src/module/course-reviewing/entities/course-reviewing.entity';
 import { StudentAnswer } from 'src/module/student-answer/entities/student-answer.entity';
 import { FeedBack } from 'src/module/feed-back/entities/feed-back.entity';
-import { CourseViewing } from 'src/module/course-viewing/entities/course-viewing.entity';
 
 @Entity()
 export class Student extends Base {
@@ -24,8 +23,6 @@ export class Student extends Base {
   courseReviewings: CourseReviewing[];
   @OneToMany(() => StudentAnswer, (studentAnswer) => studentAnswer.student)
   studentAnswers: StudentAnswer[];
-  @OneToMany(() => CourseViewing, (courseViewing) => courseViewing.student)
-  courseViewings: CourseViewing[];
   @OneToMany(() => FeedBack, (feedBack) => feedBack.student)
   feedBacks: FeedBack[];
   @Column({

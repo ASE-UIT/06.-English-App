@@ -11,6 +11,9 @@ import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
 import { LessonDiscussionModule } from './lesson-discussion/lesson-discussion.module';
+import { CourseBuyingModule } from './course-buying/course-buying.module';
+import { StudentAnswerModule } from './student-answer/student-answer.module';
+import { DiscountModule } from './discount/discount.module';
 
 @Module({
   imports: [
@@ -26,6 +29,9 @@ import { LessonDiscussionModule } from './lesson-discussion/lesson-discussion.mo
     SectionModule,
     HttpModule,
     LessonDiscussionModule,
+    CourseBuyingModule,
+    StudentAnswerModule,
+    DiscountModule,
   ],
   exports: [
     AuthModule,
@@ -34,11 +40,14 @@ import { LessonDiscussionModule } from './lesson-discussion/lesson-discussion.mo
     CourseCategoryModule,
     CourseModule,
     LessonModule,
+    DiscountModule,
     GrammarModule,
     QuestionModule,
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    CourseBuyingModule,
+    StudentAnswerModule,
     LessonDiscussionModule,
   ],
 })

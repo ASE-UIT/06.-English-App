@@ -35,6 +35,19 @@ export const END_POINTS = {
     UPDATE: '',
     DELETE: '',
   },
+  COURSE_BUYING: {
+    BASE: '/course-buying',
+    CREATE: '',
+    CREATE_PAY_ORDER_URL: '/create-pay-order-url',
+    VALIDATE_PAY_ORDER: '/validate-pay-order',
+    VNPAY_IPN: '/vnpay-ipn',
+    TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
+  },
+  COURSE_OWNING: {
+    BASE: '/course-owning',
+    ACTIVE_COURSE: '/active-course',
+    TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
+  },
   COURSE_CATEGORY: {
     BASE: '/course-category',
     CREATE: '',
@@ -50,6 +63,14 @@ export const END_POINTS = {
     LIST: '',
     UPDATE: '',
     DELETE: '',
+  },
+  DISCOUNT: {
+    BASE: '/discount',
+    CREATE: '',
+    GET_ALL_DISCOUNTS_BY_OWNER: '/get-all-discounts-by-owner',
+    UPDATE: ':id',
+    GET_ALL_DISCOUNTS_BY_COURSE: '/get-all-discounts-by-course/:courseId',
+    DISABLE_DISCOUNT: '/disable-discount/:id',
   },
   GRAMMAR: {
     BASE: '/grammar',
@@ -74,10 +95,18 @@ export const END_POINTS = {
   },
   SECTION: {
     BASE: '/section',
+    GET_ALL_SECTION_BY_LESSON: '/get-all-section-by-lesson/:lessonId',
     CREATE: '',
     LIST: '',
     UPDATE: '',
     DELETE: '',
+  },
+  STUDENT_ANSWER: {
+    SUBMIT_ANSWER: '/submit-answer',
+    BASE: '/student-answer',
+    GET_SOLUTION: '/get-solution',
+    GET_HISTORY_RESULT: '/get-history-result',
+    REDO_SECTION: '/redo-section',
   },
   LESSON_DISCUSSION: {
     BASE: '/lesson-discussion',
@@ -101,12 +130,15 @@ export const DOCUMENTATION = {
     USER: 'USER',
     FILE: 'FILE',
     COURSE: 'COURSE',
+    DISCOUNT: 'DISCOUNT',
     COURSE_CATEGORY: 'COURSE_CATEGORY',
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',
     SECTION: 'SECTION',
     QUESTION: 'QUESTION',
     QUESTION_GROUP: 'QUESTION_GROUP',
+    STUDENT_ANSWER: 'STUDENT_ANSWER',
+    COURSE_BUYING: 'COURSE_BUYING',
     LESSON_DISCUSSION: 'LESSON_DISCUSSION',
   },
 };
@@ -178,4 +210,14 @@ export enum STATE {
   PUBLISHED = 'PUBLISHED',
 }
 
+export enum SECTION_STATUS {
+  NOT_STARTED = 'NOT_STARTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+}
+
+export const INJECTION_DEPS = {
+  DISCOUNT_PACKAGE: 'DISCOUNT_PACKAGE',
+  PUB_SUB_SERVICE: 'PUB_SUB_SERVICE',
+};
 export const COURSE_THUMBNAIL_IMAGE = '';
