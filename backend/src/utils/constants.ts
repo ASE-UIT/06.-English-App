@@ -115,9 +115,9 @@ export const END_POINTS = {
     UPDATE: '/:id',
     DELETE: '/:id',
     CREATE_REPLY: '/reply',
-    LIST_REPLY: '/:id/reply',
-    UPDATE_REPLY: '/:id/reply/:replyId',
-    DELETE_REPLY: '/:id/reply/:replyId',
+    LIST_REPLY: '/reply',
+    UPDATE_REPLY: '/reply/:replyId',
+    DELETE_REPLY: '/reply/:replyId',
   },
 };
 export const DOCUMENTATION = {

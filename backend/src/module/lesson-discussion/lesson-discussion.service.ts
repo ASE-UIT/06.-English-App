@@ -107,4 +107,48 @@ export class LessonDiscussionService {
       throw new HttpException(error.message, 500);
     }
   }
+
+  async findAllReply(lessonDiscussionId: string) {
+    try {
+      const lessonDiscussionReplies = await this.dataSource.getRepository(LessonDiscussionReply)
+        .createQueryBuilder('lessonDiscussionReply')
+        .innerJoin('lessonDiscussionReply.lessonDiscussion', 'lessonDiscussion')
+        .where('lessonDiscussion.id = :lessonDiscussionId', { lessonDiscussionId })
+        .getMany();
+      
+      return lessonDiscussionReplies;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async updateReply(updateLessonDiscussionReply: LessonDiscussionReply) {
+    try {
+      const updatedLessonDiscussionReply = await this.dataSource
+        .getRepository(LessonDiscussionReply)
+        .save(updateLessonDiscussionReply);
+      
+      return updatedLessonDiscussionReply;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async removeReply(replyId: string) {
+    try {
+      const lessonDiscussionReply = await this.dataSource
+        .getRepository(LessonDiscussionReply)
+        .findOne({ where: { id: replyId } });
+      if (!lessonDiscussionReply) {
+        throw new BadRequestException('Lesson Discussion Reply not found');
+      }
+      const result = await this.dataSource.getRepository(LessonDiscussionReply).remove(lessonDiscussionReply);
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
 }

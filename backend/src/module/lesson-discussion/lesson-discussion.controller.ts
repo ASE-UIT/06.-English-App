@@ -33,7 +33,7 @@ export class LessonDiscussionController {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new InternalServerErrorException('Error creating lesson');
+      throw new InternalServerErrorException('Error creating lesson discussion');
     }
   }
 
@@ -53,7 +53,7 @@ export class LessonDiscussionController {
       const result = await this.lessonDiscussionService.updateLessonDiscussion(updateLessonDiscussion);
       return ResponseObject.create('Lesson Discussion updated', result);
     } catch (error) {
-      throw new InternalServerErrorException('Error updating lesson');
+      throw new InternalServerErrorException('Error updating lesson discussion');
     }
   }
 
@@ -64,7 +64,7 @@ export class LessonDiscussionController {
       const result = await this.lessonDiscussionService.remove(id);
       return ResponseObject.create('Lesson Discussion deleted', result);
     } catch (error) {
-      throw new InternalServerErrorException('Error deleting lesson');
+      throw new InternalServerErrorException('Error deleting lesson discussion');
     }
   }
 
@@ -83,9 +83,45 @@ export class LessonDiscussionController {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new InternalServerErrorException('Error creating lesson');
+      throw new InternalServerErrorException('Error creating reply');
     }
   }
+
+  @ApiOperation({ summary: 'Get all replies of one lessonDiscussion' })
+  @Get(END_POINTS.LESSON_DISCUSSION.LIST_REPLY)
+  async findAllReply(@Query('id') id: string) {
+    try {
+      const res = await this.lessonDiscussionService.findAllReply(id);
+      return ResponseObject.create('Lesson Discussion Reply array:', res);
+    } catch (error) {
+      throw new InternalServerErrorException('Error getting replies');
+    }
+  }
+
+  @ApiOperation({ summary: 'Update a reply' })
+  @Patch(END_POINTS.LESSON_DISCUSSION.UPDATE_REPLY)
+  async updateReply(@Param('replyId') replyId: string, @Body() updateLessonDiscussionReplyDto: CreateLessonDiscussionReplyDto) {
+    const updateLessonDiscussionReply = this.mapper.map(updateLessonDiscussionReplyDto, CreateLessonDiscussionReplyDto, LessonDiscussionReply);
+
+    try {
+      const result = await this.lessonDiscussionService.updateReply(updateLessonDiscussionReply);
+      return ResponseObject.create('Lesson Discussion Reply updated', result);
+    } catch (error) {
+      throw new InternalServerErrorException('Error updating reply');
+    }
+  }
+
+  @ApiOperation({ summary: 'Delete a reply' })
+  @Delete(END_POINTS.LESSON_DISCUSSION.DELETE_REPLY)
+  async removeReply(@Param('replyId') replyId: string) {
+    try {
+      const result = await this.lessonDiscussionService.removeReply(replyId);
+      return ResponseObject.create('Lesson Discussion Reply deleted', result);
+    } catch (error) {
+      throw new InternalServerErrorException('Error deleting reply');
+    }
+  }
+  
 
   @Get(':id')
   findOne(@Param('id') id: string) {
