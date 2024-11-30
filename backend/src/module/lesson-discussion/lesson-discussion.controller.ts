@@ -44,16 +44,26 @@ export class LessonDiscussionController {
 
   @ApiOperation({ summary: 'Update a lesson discussion' })
   @Patch(END_POINTS.LESSON_DISCUSSION.UPDATE)
-  async update(@Param('id') id: string, @Body() updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
+  async updateLessonDiscussion(@Param('id') id: string, @Body() updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
     const updateLessonDiscussion = this.mapper.map(updateLessonDiscussionDto, UpdateLessonDiscussionDto, LessonDiscussion);
 
     try {
-      const result = await this.lessonDiscussionService.update(updateLessonDiscussion);
+      const result = await this.lessonDiscussionService.updateLessonDiscussion(updateLessonDiscussion);
       return ResponseObject.create('Lesson Discussion updated', result);
     } catch (error) {
       throw new InternalServerErrorException('Error updating lesson');
     }
-    
+  }
+
+  @ApiOperation({ summary: 'Delete a lesson discussion' })
+  @Delete(END_POINTS.LESSON_DISCUSSION.DELETE)
+  async remove(@Param('id') id: string) {
+    try {
+      const result = await this.lessonDiscussionService.remove(id);
+      return ResponseObject.create('Lesson Discussion deleted', result);
+    } catch (error) {
+      throw new InternalServerErrorException('Error deleting lesson');
+    }
   }
 
   @Get(':id')
@@ -63,8 +73,5 @@ export class LessonDiscussionController {
 
   
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.lessonDiscussionService.remove(+id);
-  }
+  
 }

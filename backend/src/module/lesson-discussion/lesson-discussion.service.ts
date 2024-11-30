@@ -50,7 +50,7 @@ export class LessonDiscussionService {
     }
   }
 
-  async update(updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
+  async updateLessonDiscussion(updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
     try {
       const updatedlessonDiscussion = await this.dataSource
         .getRepository(LessonDiscussion)
@@ -67,7 +67,19 @@ export class LessonDiscussionService {
     return `This action returns a #${id} lessonDiscussion`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} lessonDiscussion`;
+  async remove(id: string) {
+    try {
+      const lessonDiscussion = await this.dataSource
+        .getRepository(LessonDiscussion)
+        .findOne({ where: { id } });
+      if (!lessonDiscussion) {
+        throw new BadRequestException('Lesson Discussion not found');
+      }
+      const result = await this.dataSource.getRepository(LessonDiscussion).remove(lessonDiscussion);
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
   }
 }
