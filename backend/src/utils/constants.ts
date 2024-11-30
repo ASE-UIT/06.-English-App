@@ -114,7 +114,7 @@ export const END_POINTS = {
     LIST: '',
     UPDATE: '/:id',
     DELETE: '/:id',
-    CREATE_REPLY: '/:id/reply',
+    CREATE_REPLY: '/reply',
     LIST_REPLY: '/:id/reply',
     UPDATE_REPLY: '/:id/reply/:replyId',
     DELETE_REPLY: '/:id/reply/:replyId',

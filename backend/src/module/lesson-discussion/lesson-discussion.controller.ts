@@ -8,6 +8,8 @@ import { Mapper } from '@automapper/core';
 import { LessonDiscussion } from './entities/lesson-discussion.entity';
 import { ResponseObject } from 'src/utils/objects';
 import { ApiOperation } from '@nestjs/swagger';
+import { CreateLessonDiscussionReplyDto } from './dto/create-lesson-discussion-reply.dto';
+import { LessonDiscussionReply } from './entities/lesson-discussion-reply.entity';
 
 @Controller(END_POINTS.LESSON_DISCUSSION.BASE)
 export class LessonDiscussionController {
@@ -63,6 +65,25 @@ export class LessonDiscussionController {
       return ResponseObject.create('Lesson Discussion deleted', result);
     } catch (error) {
       throw new InternalServerErrorException('Error deleting lesson');
+    }
+  }
+
+  @ApiOperation({ summary: 'Create a new reply' })
+  @Post(END_POINTS.LESSON_DISCUSSION.CREATE_REPLY)
+  async createReply(@Body() createLessonDiscussionReplyDto: CreateLessonDiscussionReplyDto) {
+    try {
+      const lessonDiscussionReply = this.mapper.map(createLessonDiscussionReplyDto, CreateLessonDiscussionReplyDto, LessonDiscussionReply);
+      const res = await this.lessonDiscussionService.createReply(
+        lessonDiscussionReply, 
+        createLessonDiscussionReplyDto.lessonDiscussionId,
+        createLessonDiscussionReplyDto.userId);
+
+      return ResponseObject.create('Lesson Discussion Reply created', res);
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Error creating lesson');
     }
   }
 

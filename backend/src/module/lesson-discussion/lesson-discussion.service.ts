@@ -5,6 +5,7 @@ import { LessonDiscussion } from './entities/lesson-discussion.entity';
 import { DataSource } from 'typeorm';
 import { Lesson } from '../lesson/entities/lesson.entity';
 import { User } from '../user/entities/user.entity';
+import { LessonDiscussionReply } from './entities/lesson-discussion-reply.entity';
 
 @Injectable()
 export class LessonDiscussionService {
@@ -77,6 +78,30 @@ export class LessonDiscussionService {
       }
       const result = await this.dataSource.getRepository(LessonDiscussion).remove(lessonDiscussion);
       return result;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async createReply(lessonDiscussionReply: LessonDiscussionReply, lessonDiscussionId: string, userId: string) {
+    try {
+      const [lessonDiscussion, user] = await Promise.all([
+        this.dataSource.getRepository(LessonDiscussion).find({ where: { id: lessonDiscussionId } }),
+        this.dataSource.getRepository(User).find({ where: { id: userId } })
+      ]);
+  
+      if (!lessonDiscussion.length) {
+        throw new BadRequestException('Lesson Discussion not found');
+      }
+      if (!user.length) {
+        throw new BadRequestException('User not found');
+      }
+  
+      lessonDiscussionReply.lessonDiscussion = lessonDiscussion[0];
+      lessonDiscussionReply.user = user[0];
+      const newLessonDiscussionReply = await this.dataSource.getRepository(LessonDiscussion).save(lessonDiscussionReply);
+      return newLessonDiscussionReply;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, 500);
