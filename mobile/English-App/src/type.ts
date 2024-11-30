@@ -3,24 +3,12 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Course, MyCourse } from "./models";
 import { ScrollView } from "react-native";
 
-export type SectionType = {
-  id: string;
-  title: string;
-  description: string;
-  thumbnail_image: string;
-  state: string;
-  ratingCount: number;
-  ratingAverage: number;
-  teacherName: string;
-  createdAt: string;
-  updatedAt: string;
-  categoryName: string;
-};
+
 
 export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
-  Reading: { scrollRef?: React.RefObject<ScrollView>; section: SectionType };
+  Reading: { scrollRef?: React.RefObject<ScrollView>; sectionID: any };
   Grammar: undefined;
   GrammarDetail: undefined;
   CourseDetail: { course: Course };
@@ -28,7 +16,7 @@ export type RootStackParamList = {
   PayWithBank: undefined;
   PayWithCard: undefined;
   Notification: undefined;
-  Listening: { section: SectionType; scrollRef?: React.RefObject<ScrollView> };
+  Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
 };
 
 export type HeaderNavigationProp = StackNavigationProp<

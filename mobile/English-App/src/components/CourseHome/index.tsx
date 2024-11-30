@@ -18,11 +18,11 @@ import Icon from "react-native-vector-icons/Feather";
 import colors from "../../../colors";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
+import sectionService from "../../services/section.service";
 import {
   CourseDetailScreenNavigationProp,
-  CourseScreenRouteProp,
+  CourseScreenRouteProp
 } from "../../type";
-import sectionService from "../../services/section.service";
 
 const { height } = Dimensions.get("window");
 
@@ -111,17 +111,15 @@ export default function CourseViewer() {
     
     switch (section.type) {
       case "LISTENING":
-        navigation.navigate("Listening", { section });
+        navigation.navigate("Listening",{sectionID:section.id} );
+        console.log(section.id);
+        
         break;
       case "READING":
-        navigation.navigate("Reading", { section });
+        navigation.navigate("Reading",{sectionID:section.id} );
+        console.log(section.id);
         break;
-      case "WRITING":
-        navigation.navigate("Writing", { section });
-        break;
-      case "SPEAKING":
-        navigation.navigate("Speaking", { section });
-        break;
+   
       default:
         break;
     }
