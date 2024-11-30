@@ -13,6 +13,7 @@ import { HttpModule } from '@nestjs/axios';
 import { CourseBuyingModule } from './course-buying/course-buying.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { DiscountModule } from './discount/discount.module';
+import { CourseReviewingModule } from './course-reviewing/course-reviewing.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { DiscountModule } from './discount/discount.module';
     S3Module,
     CourseCategoryModule,
     CourseModule,
+    CourseReviewingModule,
     LessonModule,
     GrammarModule,
     QuestionModule,
@@ -36,6 +38,7 @@ import { DiscountModule } from './discount/discount.module';
     UserModule,
     S3Module,
     CourseCategoryModule,
+    CourseReviewingModule,
     CourseModule,
     LessonModule,
     DiscountModule,
