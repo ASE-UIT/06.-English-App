@@ -42,15 +42,26 @@ export class LessonDiscussionController {
     return ResponseObject.create('Lesson Discussion array:', res);
   }
 
+  @ApiOperation({ summary: 'Update a lesson discussion' })
+  @Patch(END_POINTS.LESSON_DISCUSSION.UPDATE)
+  async update(@Param('id') id: string, @Body() updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
+    const updateLessonDiscussion = this.mapper.map(updateLessonDiscussionDto, UpdateLessonDiscussionDto, LessonDiscussion);
+
+    try {
+      const result = await this.lessonDiscussionService.update(updateLessonDiscussion);
+      return ResponseObject.create('Lesson Discussion updated', result);
+    } catch (error) {
+      throw new InternalServerErrorException('Error updating lesson');
+    }
+    
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.lessonDiscussionService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
-    return this.lessonDiscussionService.update(+id, updateLessonDiscussionDto);
-  }
+  
 
   @Delete(':id')
   remove(@Param('id') id: string) {

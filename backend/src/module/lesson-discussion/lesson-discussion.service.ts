@@ -50,12 +50,21 @@ export class LessonDiscussionService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lessonDiscussion`;
+  async update(updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
+    try {
+      const updatedlessonDiscussion = await this.dataSource
+        .getRepository(LessonDiscussion)
+        .save(updateLessonDiscussionDto);
+      
+      return updatedlessonDiscussion;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
   }
 
-  update(id: number, updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
-    return `This action updates a #${id} lessonDiscussion`;
+  findOne(id: number) {
+    return `This action returns a #${id} lessonDiscussion`;
   }
 
   remove(id: number) {
