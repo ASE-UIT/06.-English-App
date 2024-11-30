@@ -7,6 +7,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { LessonDiscussion } from './entities/lesson-discussion.entity';
 import { ResponseObject } from 'src/utils/objects';
+import { ApiOperation } from '@nestjs/swagger';
 
 @Controller(END_POINTS.LESSON_DISCUSSION.BASE)
 export class LessonDiscussionController {
@@ -14,7 +15,8 @@ export class LessonDiscussionController {
     private readonly lessonDiscussionService: LessonDiscussionService,
     @InjectMapper() private readonly mapper: Mapper,
     ) {}
-
+  
+  @ApiOperation({ summary: 'Create a new lesson discussion' })
   @Post(END_POINTS.LESSON_DISCUSSION.CREATE)
   async create(@Body() createLessonDiscussionDto: CreateLessonDiscussionDto) {
     try {
@@ -33,6 +35,7 @@ export class LessonDiscussionController {
     }
   }
 
+  @ApiOperation({ summary: 'Get all lesson discussions' })
   @Get(END_POINTS.LESSON_DISCUSSION.LIST)
   async findAll(@Query('courseId') courseId: string) {
     const res = await this.lessonDiscussionService.findByCourse(courseId);
