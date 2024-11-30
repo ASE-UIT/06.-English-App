@@ -11,6 +11,7 @@ import Notification from "../screens/Notification";
 import HeaderRight from "./HeaderRight";
 import { useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
+import ListeningExerciseScreen from "../screens/Listening/ListeningExercise";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
@@ -45,6 +46,7 @@ export default function RootStack() {
           headerShown: false,
         }}
       />
+      <Stack.Screen name="Listening" component={ListeningExerciseScreen} />
     </Stack.Navigator>
   );
 }
