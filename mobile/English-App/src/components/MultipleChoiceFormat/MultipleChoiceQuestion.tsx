@@ -5,10 +5,12 @@ export default function MultipleChoiceQuestion({
   number,
   question,
   options,
+  onAnswer, // Add onAnswer prop
 }: {
   number: number;
   question: string;
   options: string[];
+  onAnswer: () => void; // Define onAnswer type
 }) {
   const [checked, setChecked] = useState<string | null>(null);
 
@@ -23,7 +25,10 @@ export default function MultipleChoiceQuestion({
             <RadioButton
               value={option}
               status={checked === option ? "checked" : "unchecked"}
-              onPress={() => setChecked(option)}
+              onPress={() => {
+                setChecked(option);
+                onAnswer(); // Call onAnswer callback
+              }}
               color="#5D5FEF"
               uncheckedColor="#000"
             />

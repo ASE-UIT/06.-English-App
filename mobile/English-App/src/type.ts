@@ -1,11 +1,14 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Course, MyCourse,GrammarModel } from "./models";
+import { ScrollView } from "react-native";
+
+
 
 export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
-  Reading: undefined;
+  Reading: { scrollRef?: React.RefObject<ScrollView>; sectionID: any };
   Grammar: {grammarmodel: GrammarModel};
   GrammarDetail: { grammarmodel: GrammarModel };
   CourseDetail: { course: Course };
@@ -13,14 +16,13 @@ export type RootStackParamList = {
   PayWithBank: undefined;
   PayWithCard: undefined;
   Notification: undefined;
+  Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
 };
 
 export type HeaderNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Notification"
-
 >;
-  
 
 export type LearningScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -39,7 +41,7 @@ export type GrammarDetailScreenNavigationProp = StackNavigationProp<
 
 export type CourseDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "CourseDetail"
+  "CourseDetail" | "Listening" | "Reading"
 >;
 
 export type LearningScreenRouteProp = RouteProp<RootStackParamList, "Learning">;

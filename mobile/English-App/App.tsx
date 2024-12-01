@@ -11,7 +11,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <SafeAreaView style={styles.container}>
-        <MainHeader title="English App" />
+       
         <RootStack />
       </SafeAreaView>
     </NavigationContainer>
