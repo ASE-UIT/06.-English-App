@@ -4,7 +4,6 @@ import CourseDetail from "../screens/CourseDetail";
 import CourseHome from "../components/CourseHome";
 import GrammarDetail from "../screens/Grammar/GrammarDetail";
 import Reading from "../screens/Reading";
-import ListeningExercise from "../screens/Listening/ListeningExercise";
 import PayWithBank from "../screens/CourseDetail/PayWithBank";
 import PayWithCard from "../screens/CourseDetail/PayWithCard";
 import Notification from "../screens/Notification";
@@ -39,15 +38,6 @@ export default function RootStack() {
       >
         {() => <Reading scrollRef={scrollRef} />}
       </Stack.Screen>
-      <Stack.Screen
-        name="Listening"
-        options={({ route }) => ({
-          headerRight: () => <HeaderRight scrollRef={scrollRef} />,
-          title: "Listening Section",
-        })}
-      >
-        {() => <ListeningExercise scrollRef={scrollRef} />}
-      </Stack.Screen>
       <Stack.Screen name="PayWithBank" component={PayWithBank} />
       <Stack.Screen name="PayWithCard" component={PayWithCard} />
       <Stack.Screen
@@ -57,6 +47,7 @@ export default function RootStack() {
           headerShown: false,
         }}
       />
+      <Stack.Screen name="Listening" component={ListeningExerciseScreen} />
     </Stack.Navigator>
   );
 }

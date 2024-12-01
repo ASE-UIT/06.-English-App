@@ -16,16 +16,15 @@ import questionsData from './question.json'; // Import questions from JSON file
 import colors from '../../../colors';
 
 const audio_uri = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
-export default function ListeningExerciseScreen({ scrollRef }: { scrollRef?: React.RefObject<ScrollView> }) {
+export default function ListeningExerciseScreen() {
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0); // Initialize duration to 0
+  const [duration] = useState(137); // Example duration in seconds
   const [isPlaying, setIsPlaying] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState<string[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(1);
-  const scrollViewRef = scrollRef || useRef<ScrollView>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
   const [questions, setQuestions] = useState<{ id: string; text: string; options: string[]; answered: boolean }[]>(questionsData);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1.0); // Initialize playback speed
 
   useEffect(() => {
     const fetchQuestions = async () => {
@@ -39,25 +38,9 @@ export default function ListeningExerciseScreen({ scrollRef }: { scrollRef?: Rea
   useEffect(() => {
     const loadAudio = async () => {
       const { sound } = await Audio.Sound.createAsync(
-        { uri: audio_uri } // Online audio URL for testing
+        { uri:  audio_uri} // Online audio URL for testing
       );
       setSound(sound);
-
-      const status = await sound.getStatusAsync();
-      if (status.isLoaded) {
-        if (status.durationMillis !== undefined) {
-          setDuration(status.durationMillis / 1000); // Set the duration in seconds
-        }
-      }
-
-      sound.setOnPlaybackStatusUpdate((status) => {
-        if (status.isLoaded) {
-          setCurrentTime(status.positionMillis / 1000);
-          if (status.didJustFinish) {
-            setIsPlaying(false);
-          }
-        }
-      });
     };
 
     loadAudio();
@@ -96,26 +79,10 @@ export default function ListeningExerciseScreen({ scrollRef }: { scrollRef?: Rea
     if (sound) {
       if (isPlaying) {
         await sound.pauseAsync();
-        setIsPlaying(false);
       } else {
         await sound.playAsync();
-        setIsPlaying(true);
       }
-    }
-  };
-
-  const handleSliderValueChange = async (value: number) => {
-    if (sound) {
-      await sound.setPositionAsync(value * 1000);
-      setCurrentTime(value);
-    }
-  };
-
-  const handlePlaybackSpeedChange = async () => {
-    if (sound) {
-      const newSpeed = playbackSpeed === 1.0 ? 1.5 : 1.0; // Toggle between 1.0x and 1.5x
-      await sound.setRateAsync(newSpeed, true);
-      setPlaybackSpeed(newSpeed);
+      setIsPlaying(!isPlaying);
     }
   };
 
@@ -129,6 +96,8 @@ export default function ListeningExerciseScreen({ scrollRef }: { scrollRef?: Rea
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Section 2</Text>
           <View style={styles.headerRight}>
+            <Icon name="volume-high-outline" size={24} color="#000" />
+            <Icon name="download-outline" size={24} color="#000" />
           </View>
         </View>
 
@@ -149,15 +118,13 @@ export default function ListeningExerciseScreen({ scrollRef }: { scrollRef?: Rea
               minimumValue={0}
               maximumValue={duration}
               value={currentTime}
-              onValueChange={handleSliderValueChange}
+              onValueChange={setCurrentTime}
               minimumTrackTintColor="#6b4ce6"
               maximumTrackTintColor="#ddd"
               thumbTintColor="#6b4ce6"
             />
             <Text style={styles.timeText}>{formatTime(duration)}</Text>
-            <TouchableOpacity onPress={handlePlaybackSpeedChange}>
-              <Text style={styles.playbackSpeed}>{playbackSpeed}x</Text>
-            </TouchableOpacity>
+            <Text style={styles.playbackSpeed}>Playback speed</Text>
           </View>
         </View>
 
@@ -176,12 +143,6 @@ export default function ListeningExerciseScreen({ scrollRef }: { scrollRef?: Rea
               onAnswer={() => handleAnswer(question.id)} // Pass handleAnswer as a callback
             />
           ))}
-        </View>
-        {/* Submit Button */}
-        <View style={styles.submitButtonContainer}>
-          <TouchableOpacity style={styles.submitButton} onPress={() => alert('Submit pressed')}>
-            <Text style={styles.submitButtonText}>Submit</Text>
-          </TouchableOpacity>
         </View>
       </ScrollView>
 
@@ -287,21 +248,6 @@ const styles = StyleSheet.create({
   optionText: {
     color: colors.pink1,
     fontSize: 14,
-  },
-  submitButtonContainer: {
-    alignItems: 'center',
-    marginVertical: 20,
-  },
-  submitButton: {
-    backgroundColor: colors.pink1,
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 25,
-  },
-  submitButtonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
   },
 });
 
