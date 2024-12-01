@@ -8,7 +8,7 @@ import { ScrollView } from "react-native";
 export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
-  Reading: { scrollRef?: React.RefObject<ScrollView>; sectionID: any };
+  Reading: { scrollRef?: React.RefObject<ScrollView>; sectionID: string };
   Grammar: {grammarmodel: GrammarModel};
   GrammarDetail: { grammarmodel: GrammarModel };
   CourseDetail: { course: Course };

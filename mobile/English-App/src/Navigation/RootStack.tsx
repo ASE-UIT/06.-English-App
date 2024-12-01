@@ -31,9 +31,10 @@ export default function RootStack() {
       <Stack.Screen name="GrammarDetail" component={GrammarDetail} />
       <Stack.Screen
         name="Reading"
-        options={{
+        options={({ route }) => ({
           headerRight: () => <HeaderRight scrollRef={scrollRef} />,
-        }}
+          title: "Reading Section",
+        })}
       >
         {() => <Reading scrollRef={scrollRef} />}
       </Stack.Screen>
