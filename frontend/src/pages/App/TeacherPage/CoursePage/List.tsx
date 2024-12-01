@@ -7,6 +7,8 @@ import PaginationSearchResult from "@/components/ui/paginationSearch"
 import { useMemo, useState } from "react"
 import { useCourseCategory, useCourseTeacher } from "@/features/course/hooks"
 import { Course } from "@/type/course"
+import { courseApi } from "@/apis"
+import { toast } from "react-toastify"
 
 export default function CourseList() {
   const navigate = useNavigate()
@@ -17,7 +19,7 @@ export default function CourseList() {
   const [page, setPage] = useState<number>(1)
   const [query, setQuery] = useState<string>("")
   const [currentPageOffset, setCurrentPageOffset] = useState<number>(1)
-  const { data: courseList } = useCourseTeacher()
+  const { data: courseList, refetch: refetchCourse } = useCourseTeacher()
   const [category, setCategory] = useState<string>("all")
   const { data: categories } = useCourseCategory()
   const [paginationArr, setPaginationArr] = useState<Course[]>(courseList?.data || [])
@@ -130,7 +132,17 @@ export default function CourseList() {
                   </div>
                   <div className="flex h-full items-center">
                     <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
-                    <Button variant="solid" size="3">
+                    <Button onClick={async () => {
+                      const deleteRes = await courseApi.DeleteCourse(course.id)
+                      if (deleteRes?.message === "Success")
+                      {
+                        toast.success("Delete Success")
+                        refetchCourse()
+                      }
+                      else {
+                        toast.info(`${deleteRes?.message}`)
+                      }
+                    }} variant="solid" size="3">
                       Delete
                     </Button>
                   </div>
@@ -163,7 +175,18 @@ export default function CourseList() {
                   </div>
                   <div className="flex h-full items-center">
                     <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
-                    <Button variant="solid" size="3">
+                    <Button onClick={async () => {
+                      const deleteRes = await courseApi.DeleteCourse(course.id)
+                      console.log("deleteRes",deleteRes)
+                      if (deleteRes?.message === "Success")
+                      {
+                        toast.success("Delete Success")
+                        refetchCourse()
+                      }
+                      else {
+                        toast.info(`${deleteRes?.message}`)
+                      }
+                    }} variant="solid" size="3">
                       Delete
                     </Button>
                   </div>

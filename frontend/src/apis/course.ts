@@ -1,4 +1,5 @@
 import { httpClient } from "@/services"
+import { Response } from "@/type"
 import { CategoryByIdRes, CourseCreate, CourseRes, CourseCreateRes, CategoryRes } from "@/type/course"
 
 class CouseApi {
@@ -53,6 +54,14 @@ class CouseApi {
   async CreateCourse(data: CourseCreate) {
     try {
       const res = await httpClient.post<CourseCreateRes>("/course", data)
+      return res
+    } catch (error) {
+      console.log(error)
+    }
+  }
+   async DeleteCourse(id: string) {
+    try {
+      const res = await httpClient.delete<Response>(`/course/${id}`)
       return res
     } catch (error) {
       console.log(error)

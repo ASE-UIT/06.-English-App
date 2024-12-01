@@ -26,7 +26,7 @@ type CreateCourseDTO = z.infer<typeof formSchema>
 export default function CourseCreate() {
   const navigate = useNavigate()
   const [images, setImages] = useState<Array<ImageType>>([])
-  // const [imageUrl, setImageUrl] = useState<string>("")
+  const [imageUrl, setImageUrl] = useState<string>("")
   console.log("images", images)
   const froalaConfig = useMemo(() => generateFroalaConfig(), [])
   const [category, setCategory] = useState<string>("")
@@ -42,6 +42,7 @@ export default function CourseCreate() {
       const uploadFile = await fileApi.uploadFile(getPreUrl?.data.preSignedUrl, imageList[0].file)
       setImages(imageList)
       console.log("uploadFile", uploadFile)
+      setImageUrl(getPreUrl?.data.key)
     }
   }
 
@@ -92,6 +93,7 @@ export default function CourseCreate() {
       description: values.description,
       state: "DRAFT",
       categoryId: category,
+      thumbnail_image: imageUrl,
     }
     CreateCourse.mutate(data)
   }
