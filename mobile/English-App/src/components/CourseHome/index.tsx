@@ -107,17 +107,17 @@ export default function CourseViewer() {
       setCurrentVideoUri(section.uri);
       setIsPlaying(true);
     }
-    console.log(section.type);
+    
     
     switch (section.type) {
       case "LISTENING":
         navigation.navigate("Listening",{sectionID:section.id} );
-        console.log(section.id);
+        
         
         break;
       case "READING":
         navigation.navigate("Reading",{sectionID:section.id} );
-        console.log(section.id);
+        
         break;
    
       default:
