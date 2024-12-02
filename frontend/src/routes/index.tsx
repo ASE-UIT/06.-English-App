@@ -118,7 +118,7 @@ const protectedRoutes = [
   },
   {
     path: teacherRoutes.Lesson.Base,
-    component: <MyLessonPage></MyLessonPage>,
+    component: <MyLessonPage courseId={undefined}></MyLessonPage>,
     layout: DoTestLayout,
   },
   {

@@ -34,7 +34,7 @@ const links = [
 export default function TeacherLayout({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isLoggedIn } = useAuth()
+  useAuth()
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <div className="flex h-screen max-w-screen-2xl flex-row">

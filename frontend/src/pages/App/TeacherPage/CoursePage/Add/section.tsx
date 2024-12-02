@@ -27,6 +27,12 @@ export const SectionComp = () => {
   const [content, setContent] = useState<string>("")
   const [type, setType] = useState<string>("")
   const [files, setFiles] = useState<File[]>([])
+  
+  useEffect(() => {
+    // Cuộn lên đầu trang khi component được mount
+    window.scrollTo(0, 0);
+  }, []);
+    
   const handleFileUpload = (files: File[]) => {
     setFiles(files)
     console.log(files)
