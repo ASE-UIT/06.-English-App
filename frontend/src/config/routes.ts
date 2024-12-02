@@ -26,7 +26,7 @@ export const teacherRoutes = {
   Course: {
     Base: "/course",
     Create: "/course/create",
-    Lesson: "/course/:id/:mode/lessons",
+    Lesson: "/course/:id",
     ReadingSection: "/course/:id/:mode/reading-section",
     WritingSection: "/course/:id/:mode/writing-section",
     ListeningSection: "/course/:id/:mode/listening-section",

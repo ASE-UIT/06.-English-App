@@ -9,6 +9,7 @@ import { useCourseCategory, useCourseTeacher } from "@/features/course/hooks"
 import { Course } from "@/type/course"
 import { courseApi } from "@/apis"
 import { toast } from "react-toastify"
+import _ from "lodash"
 
 export default function CourseList() {
   const navigate = useNavigate()
@@ -22,13 +23,19 @@ export default function CourseList() {
   const { data: courseList, refetch: refetchCourse } = useCourseTeacher()
   const [category, setCategory] = useState<string>("all")
   const { data: categories } = useCourseCategory()
-  const [paginationArr, setPaginationArr] = useState<Course[]>(courseList?.data || [])
+  const [paginationDraftArr, setPaginationDraftArr] = useState<Course[]>(
+    courseList?.data.filter((course) => course.state === "DRAFT") || [],
+  )
+  const [paginationPublishedArr, setPaginationPublishedArr] = useState<Course[]>(
+    courseList?.data.filter((course) => course.state === "PUBLISHED") || [],
+  )
 
-  const currentItems = useMemo(() => {
+  const currentDraftItems = useMemo(() => {
     let fakeCourseList = courseList?.data
     const endOffset = page + 5
+    const orderList = _.orderBy(fakeCourseList, ["state"], ["asc"]).filter((course) => course.state === "DRAFT")
     if (fakeCourseList) {
-      fakeCourseList = fakeCourseList.slice(page, endOffset)
+      fakeCourseList = orderList.slice(page, endOffset)
       if (query !== "") {
         fakeCourseList = fakeCourseList.filter((course) => {
           const title = course.title.normalize().toLowerCase()
@@ -45,18 +52,46 @@ export default function CourseList() {
       }
     }
     if (query !== "" || category !== "all") {
-      setPaginationArr(fakeCourseList || [])
+      setPaginationDraftArr(fakeCourseList || [])
     } else {
-      setPaginationArr(courseList?.data || [])
+      setPaginationDraftArr(orderList || [])
     }
     return fakeCourseList
   }, [category, courseList?.data, page, query])
-  console.log("courseList", courseList, currentItems)
+
+  const currentPublishedItems = useMemo(() => {
+    let fakeCourseList = courseList?.data
+    const endOffset = page + 5
+    const orderList = _.orderBy(fakeCourseList, ["state"], ["asc"]).filter((course) => course.state === "PUBLISHED")
+    if (fakeCourseList) {
+      fakeCourseList = orderList.slice(page, endOffset)
+      if (query !== "") {
+        fakeCourseList = fakeCourseList.filter((course) => {
+          const title = course.title.normalize().toLowerCase()
+          const keywords = query.normalize().toLowerCase().split(" ")
+          const isMatch = keywords.every((keyword) => title.includes(keyword))
+          return isMatch
+        })
+      }
+      if (category) {
+        fakeCourseList = fakeCourseList.filter((course) => {
+          if (category === "all") return true
+          return course.categoryName === category
+        })
+      }
+    }
+    if (query !== "" || category !== "all") {
+      setPaginationPublishedArr(fakeCourseList || [])
+    } else {
+      setPaginationPublishedArr(orderList || [])
+    }
+    return fakeCourseList
+  }, [category, courseList?.data, page, query])
+  console.log("courseList", courseList, currentDraftItems, currentPublishedItems, paginationDraftArr)
   const [isSearch, setIsSearch] = useState<boolean>(false)
   const gotoCreate = () => {
     navigate("/course/create")
   }
-  console.log("courseList", courseList, currentItems)
   return (
     <div className="flex-1 bg-white p-3">
       <div className="mb-6 grid grid-cols-12 gap-3">
@@ -119,39 +154,44 @@ export default function CourseList() {
         </Tabs.List>
         <Tabs.Content value="DRAFT">
           <div className="mt-6 flex max-w-5xl flex-col gap-5">
-            {(currentItems || [])
-              .filter((course) => course.state === "DRAFT")
-              .map((course) => (
-                <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
-                  <div>
-                    <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
-                  </div>
-                  <div className="flex-1 pl-3">
-                    <div className="text-lg font-bold text-blue-700">{course.title}</div>
-                    <div className="text-zinc-400">Finish your course</div>
-                  </div>
-                  <div className="flex h-full items-center">
-                    <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
-                    <Button onClick={async () => {
+            {(currentDraftItems || []).map((course) => (
+              <div key={course.id} className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
+                <div>
+                  <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
+                </div>
+                <div className="flex-1 pl-3">
+                  <div className="text-lg font-bold text-blue-700">{course.title}</div>
+                  <div className="text-zinc-400">Finish your course</div>
+                </div>
+                <div className="flex h-full items-center">
+                  <Text
+                    onClick={() => navigate(`/course/${course.id}`)}
+                    className="mr-3 cursor-pointer hover:text-blue-700"
+                  >
+                    Continue editing
+                  </Text>
+                  <Button
+                    onClick={async () => {
                       const deleteRes = await courseApi.DeleteCourse(course.id)
-                      if (deleteRes?.message === "Success")
-                      {
+                      if (deleteRes?.message === "Success") {
                         toast.success("Delete Success")
                         refetchCourse()
-                      }
-                      else {
+                      } else {
                         toast.info(`${deleteRes?.message}`)
                       }
-                    }} variant="solid" size="3">
-                      Delete
-                    </Button>
-                  </div>
+                    }}
+                    variant="solid"
+                    size="3"
+                  >
+                    Delete
+                  </Button>
                 </div>
-              ))}
+              </div>
+            ))}
             <PaginationSearchResult
               itemsPerPage={5}
               selectPage={setPage}
-              totalItemsInAllPages={paginationArr.filter((course) => course.state === "DRAFT").length}
+              totalItemsInAllPages={paginationDraftArr.length}
               isSearch={isSearch}
               currentPageNumber={currentPageOffset}
               onSearch={() => setIsSearch(false)}
@@ -162,40 +202,40 @@ export default function CourseList() {
         </Tabs.Content>
         <Tabs.Content value="PUBLISHED">
           <div className="mt-6 flex max-w-5xl flex-col gap-5">
-            {(currentItems || [])
-              .filter((course) => course.state === "PUBLISHED")
-              .map((course) => (
-                <div className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
-                  <div>
-                    <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
-                  </div>
-                  <div className="flex-1 pl-3">
-                    <div className="text-lg font-bold text-blue-700">{course.title}</div>
-                    <div className="text-zinc-400">Finish your course</div>
-                  </div>
-                  <div className="flex h-full items-center">
-                    <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
-                    <Button onClick={async () => {
+            {(currentPublishedItems || []).map((course) => (
+              <div key={course.id} className="flex items-center rounded-lg border border-solid border-zinc-200 p-3">
+                <div>
+                  <ArrowTopRightIcon height="24" width="24" color="#1d4ed8" />
+                </div>
+                <div className="flex-1 pl-3">
+                  <div className="text-lg font-bold text-blue-700">{course.title}</div>
+                  <div className="text-zinc-400">Finish your course</div>
+                </div>
+                <div className="flex h-full items-center">
+                  <Text className="mr-3 cursor-pointer hover:text-blue-700">Continue editing</Text>
+                  <Button
+                    onClick={async () => {
                       const deleteRes = await courseApi.DeleteCourse(course.id)
-                      console.log("deleteRes",deleteRes)
-                      if (deleteRes?.message === "Success")
-                      {
+                      console.log("deleteRes", deleteRes)
+                      if (deleteRes?.message === "Success") {
                         toast.success("Delete Success")
                         refetchCourse()
-                      }
-                      else {
+                      } else {
                         toast.info(`${deleteRes?.message}`)
                       }
-                    }} variant="solid" size="3">
-                      Delete
-                    </Button>
-                  </div>
+                    }}
+                    variant="solid"
+                    size="3"
+                  >
+                    Delete
+                  </Button>
                 </div>
-              ))}
+              </div>
+            ))}
             <PaginationSearchResult
               itemsPerPage={5}
               selectPage={setPage}
-              totalItemsInAllPages={paginationArr.filter((course) => course.state === "PUBLISHED").length}
+              totalItemsInAllPages={paginationPublishedArr.length}
               isSearch={isSearch}
               currentPageNumber={currentPageOffset}
               onSearch={() => setIsSearch(false)}

@@ -59,7 +59,7 @@ class CouseApi {
       console.log(error)
     }
   }
-   async DeleteCourse(id: string) {
+  async DeleteCourse(id: string) {
     try {
       const res = await httpClient.delete<Response>(`/course/${id}`)
       return res
