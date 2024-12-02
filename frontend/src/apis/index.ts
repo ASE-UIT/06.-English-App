@@ -2,3 +2,4 @@
 export { default as userApi } from "./userApi"
 export { default as courseApi } from "./course"
 export { default as fileApi } from "./file"
+export { default as sectionApi } from "./sectionApi"

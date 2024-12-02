@@ -24,6 +24,7 @@ import CourseAddReadingSection from "@/pages/App/TeacherPage/CoursePage/Add/Read
 import CourseAddWritingSection from "@/pages/App/TeacherPage/CoursePage/Add/WritingSection"
 import CourseAddListeningSection from "@/pages/App/TeacherPage/CoursePage/Add/ListeningSection"
 import TeacherLayout from "@/components/Layout/Teacher"
+import { SectionComp } from "@/pages/App/TeacherPage/CoursePage/Add/section"
 const publicRoutes = [
   {
     path: routes.LandingPage,
@@ -83,6 +84,11 @@ const protectedRoutes = [
   {
     path: teacherRoutes.Course.Lesson,
     component: <CourseAddLessons></CourseAddLessons>,
+    layout: TeacherLayout,
+  },
+  {
+    path: teacherRoutes.Section.Create,
+    component: <SectionComp></SectionComp>,
     layout: TeacherLayout,
   },
   {

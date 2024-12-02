@@ -21,7 +21,7 @@ const CourseAddLessons = () => {
         </div>
       </CourseCreateHeader>
       <div className="w-full">
-        <MyLessonPage />
+        <MyLessonPage courseId={id} />
       </div>
     </div>
   )

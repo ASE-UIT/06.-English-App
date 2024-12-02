@@ -1,20 +1,8 @@
 import { Button } from "@/components/ui/button"
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Section } from "@/type/section"
 import { BiPlus } from "react-icons/bi"
 import { useNavigate } from "react-router"
 
-export const MyLessonPage = () => {
+export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => {
   const navigate = useNavigate()
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-white py-[64px]">
@@ -62,42 +50,13 @@ export const MyLessonPage = () => {
             </div>
           </div>
           <div>
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="mr-[19px] rounded-lg border-2 border-fuschia bg-lessonbg p-3 text-[16px] font-normal text-headerIcon hover:border-fuschia hover:bg-fuschia hover:text-white">
-                  <BiPlus className="mr-[1.5px]" size={20} />
-                  Add section
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="w-[384px] bg-white">
-                <DialogHeader>
-                  <DialogTitle className="text-2xl font-bold text-black">Create a new section</DialogTitle>
-                  <DialogDescription className="text-sm font-normal text-sectionDesriptionModal">
-                    Please choose section type
-                  </DialogDescription>
-                </DialogHeader>
-                <RadioGroup>
-                  {Section.map((ans) => (
-                    <div className="flex items-center space-x-[6px]">
-                      <RadioGroupItem value={ans.key} id={ans.key} />
-                      <label htmlFor={ans.key} className="text-left text-sm font-normal text-black">
-                        {ans.text}
-                      </label>
-                    </div>
-                  ))}
-                </RadioGroup>
-                <DialogFooter className="bg-white">
-                  <DialogClose className="flex w-full justify-between gap-2 border-0 bg-white px-0 text-sm">
-                    <Button className="w-full rounded-lg border-fuschia bg-white py-[13.5] text-center font-normal text-fuschia">
-                      Cancel
-                    </Button>
-                    <Button className="w-full rounded-lg bg-fuschia py-[13.5] text-center font-normal text-white">
-                      OK
-                    </Button>
-                  </DialogClose>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <Button
+              onClick={() => navigate(`/course/${courseId}/lesson/1/section/create`)}
+              className="mr-[19px] rounded-lg border-2 border-fuschia bg-lessonbg p-3 text-[16px] font-normal text-headerIcon hover:border-fuschia hover:bg-fuschia hover:text-white"
+            >
+              <BiPlus className="mr-[1.5px]" size={20} />
+              Add section
+            </Button>
           </div>
         </div>
       </div>

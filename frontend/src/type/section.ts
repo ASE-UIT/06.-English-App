@@ -1,3 +1,5 @@
+import { Response } from "."
+
 export const Section = [
   {
     key: "READING",
@@ -18,3 +20,23 @@ export const Section = [
 ]
 
 export const sectionNameMap = Object.fromEntries(Section.map(({ key, text }) => [key, text]))
+
+export interface Section {
+  lessionId: string
+  title: string
+  content: string
+  type: string
+  sectionMedia: string
+}
+
+export interface SectionRes extends Response {
+  data: Section[]
+}
+
+export interface SectionCreate {
+  lessionId: string
+  title: string
+  content: string
+  type: string
+  sectionMedia: string
+}
