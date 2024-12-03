@@ -5,14 +5,14 @@ import _ from "lodash"
 export const SectionByLesson = ({ lessonId }: { lessonId: string }) => {
   const { data: sectionData } = useSectionByLesson(lessonId)
   return (
-    <div>
+    <div className="flex w-full flex-col gap-[23px]">
       {sectionData?.data && sectionData.data.length > 0 ? (
         _.orderBy(sectionData.data, ["createDate"]).map((section) => (
           <div
             key={section.id}
-            className="flex h-[73px] w-full cursor-pointer border-[1px] border-headerIcon shadow-sectionCard"
+            className="flex h-full w-full cursor-pointer border-[1px] border-headerIcon py-[11px] shadow-sectionCard"
           >
-            <div className="flex flex-col bg-lessonbg px-[26px] py-[9px]">
+            <div className="flex flex-col px-[26px]">
               <div className="flex w-full items-center gap-[23px]">
                 <span className="text-2xl font-normal text-headerIcon">Section: {section.title}</span>
                 <span className="text-xl font-extralight text-headerIcon">{sectionNameMap[section.type]}</span>

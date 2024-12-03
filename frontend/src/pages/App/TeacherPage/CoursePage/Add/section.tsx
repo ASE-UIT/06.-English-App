@@ -10,7 +10,7 @@ import generateFroalaConfig from "@/config/froala.config"
 import { FileUpload } from "@/components/ui/fileInput"
 import { useMutation } from "@tanstack/react-query"
 import { fileApi, sectionApi } from "@/apis"
-import { toast } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
 import { useNavigate, useParams } from "react-router"
 import { useLessonById } from "@/features/lesson/hooks"
 
@@ -61,7 +61,7 @@ export const SectionComp = () => {
   const CreateSection = useMutation({
     mutationFn: sectionApi.CreateSection,
     onSuccess: (Res) => {
-      if (Res?.message === "Course created") {
+      if (Res?.message === "Section created successfully") {
         toast.success(`${Res.message}`)
         navigate(`/course/${courseId}`)
       } else {
@@ -77,7 +77,7 @@ export const SectionComp = () => {
     console.log("onSubmit", values, typeof (lessonId as string))
     let sectionMedia = ""
     let getPreUrl = null
-    console.log("files", files)
+    console.log("files", files, lessonData?.data.type)
     if (files.length > 0) {
       const contentType = files[0].type
       let error = "Something error"
@@ -96,12 +96,13 @@ export const SectionComp = () => {
           error = "Incorrect file type: Reading lesson only accept image file"
         }
       }
+      console.log("error", error)
       if (getPreUrl?.data.preSignedUrl && files[0]) {
         const uploadFile = await fileApi.uploadFile(getPreUrl?.data.preSignedUrl, files[0])
         console.log("uploadFile", uploadFile)
         sectionMedia = getPreUrl?.data.key
       } else {
-        toast.error(error)
+        toast.error(`${error}`)
         return
       }
       const data = {
@@ -117,6 +118,7 @@ export const SectionComp = () => {
 
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-white py-[27px]">
+      <ToastContainer />
       <form className="flex w-full flex-col gap-5 px-[78px] py-[56px]" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex w-full items-center gap-5">
           <label className="w-full">
