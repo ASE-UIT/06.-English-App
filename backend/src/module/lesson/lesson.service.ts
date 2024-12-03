@@ -27,35 +27,6 @@ export class LessonService {
       throw new HttpException(error.message, 500);
     }
   }
-  async createGrammarLesson(
-    lesson: Lesson,
-    courseId: string,
-    grammarIds: string[],
-  ) {
-    try {
-      const course = await this.courseService.findOne(courseId);
-      if (!course) {
-        throw new BadRequestException('Course not found');
-      }
-      const grammars = await Promise.all(
-        grammarIds.map(async (grammarId) => {
-          const grammar = await this.grammarService.findOne(grammarId);
-          if (!grammar) {
-            throw new BadRequestException(
-              `Grammar with id ${grammarId} not found`,
-            );
-          }
-          return grammar;
-        }),
-      );
-      lesson.course = course;
-      lesson.grammars = grammars;
-      return await this.dataSource.getRepository(Lesson).save(lesson);
-    } catch (error) {
-      console.log(error);
-      throw new HttpException(error.message, 500);
-    }
-  }
   async getAllLessonOfCourse(courseId: string) {
     try {
       const lessons = await this.dataSource
@@ -65,6 +36,36 @@ export class LessonService {
         .where('course.id = :courseId', { courseId })
         .getMany();
       return lessons;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+  async addGrammarToLesson(lessonId: string, grammarIds: string[]) {
+    try {
+      const lesson = await this.dataSource
+        .getRepository(Lesson)
+        .findOne({ where: { id: lessonId } });
+      const grammars = await Promise.all(
+        grammarIds.map(async (grammarId) => {
+          const grammar = await this.grammarService.findOne(grammarId);
+          return grammar;
+        }),
+      );
+      lesson.grammars = grammars;
+      return lesson;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async addVocabularyToLesson(lesson: Lesson) {
+    try {
+      const updatedLesson = await this.dataSource
+        .getRepository(Lesson)
+        .save(lesson);
+      return updatedLesson;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, 500);
