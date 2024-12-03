@@ -60,6 +60,8 @@ export const END_POINTS = {
     CREATE_VOCABULARY: '/vocabulary',
     GET_ALL_LESSONS_BY_COURSE: '/get-all-lessons-by-course/:courseId',
     CREATE_NORMAL: '/normal',
+    ADD_GRAMMAR_TO_LESSON: '/add-grammar-to-lesson/:lessonId',
+    ADD_VOCABULARY_TO_LESSON: '/add-vocabulary-to-lesson/:lessonId',
     LIST: '',
     UPDATE: '',
     DELETE: '',
