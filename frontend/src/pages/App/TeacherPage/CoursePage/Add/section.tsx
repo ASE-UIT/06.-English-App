@@ -9,9 +9,10 @@ import FroalaEditorComponent from "react-froala-wysiwyg"
 import generateFroalaConfig from "@/config/froala.config"
 import { FileUpload } from "@/components/ui/fileInput"
 import { useMutation } from "@tanstack/react-query"
-import { sectionApi } from "@/apis"
+import { fileApi, sectionApi } from "@/apis"
 import { toast } from "react-toastify"
 import { useNavigate, useParams } from "react-router"
+import { useLessonById } from "@/features/lesson/hooks"
 
 const formSchema = z.object({
   title: z.string().min(1, "Vui lòng điền vào chỗ trống"),
@@ -23,6 +24,7 @@ type CreateSectionDTO = z.infer<typeof formSchema>
 export const SectionComp = () => {
   const { courseId, lessonId } = useParams()
   const navigate = useNavigate()
+  const { data: lessonData } = useLessonById(lessonId as string)
   const froalaConfig = useMemo(() => generateFroalaConfig(), [])
   const [content, setContent] = useState<string>("")
   const [type, setType] = useState<string>("")
@@ -71,16 +73,46 @@ export const SectionComp = () => {
     },
   })
 
-  function onSubmit(values: CreateSectionDTO) {
-    console.log("onSubmit", values)
-    const data = {
-      title: values.title,
-      content: values.content,
-      type: type,
-      lessionId: lessonId as string,
-      sectionMedia: files[0].name,
+  async function onSubmit(values: CreateSectionDTO) {
+    console.log("onSubmit", values, typeof (lessonId as string))
+    let sectionMedia = ""
+    let getPreUrl = null
+    console.log("files", files)
+    if (files.length > 0) {
+      const contentType = files[0].type
+      let error = "Something error"
+      if (
+        ["audio/mpeg", "audio/wav", "audio/ogg", "audio/aac", "audio/aiff", "audio/webm", "audio/amr"].includes(
+          contentType,
+        )
+      ) {
+        if (lessonData?.data.type === "LISTENING") getPreUrl = await fileApi.getPresignedUrl(contentType, "mp3")
+        else {
+          error = "Incorrect file type: Listening lesson only accept audio file"
+        }
+      } else if (["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp"].includes(contentType)) {
+        if (lessonData?.data.type === "READING") getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
+        else {
+          error = "Incorrect file type: Reading lesson only accept image file"
+        }
+      }
+      if (getPreUrl?.data.preSignedUrl && files[0]) {
+        const uploadFile = await fileApi.uploadFile(getPreUrl?.data.preSignedUrl, files[0])
+        console.log("uploadFile", uploadFile)
+        sectionMedia = getPreUrl?.data.key
+      } else {
+        toast.error(error)
+        return
+      }
+      const data = {
+        title: values.title,
+        content: values.content,
+        type: type,
+        lessonId: lessonId as string,
+        sectionMedia: sectionMedia,
+      }
+      CreateSection.mutate(data)
     }
-    CreateSection.mutate(data)
   }
 
   return (

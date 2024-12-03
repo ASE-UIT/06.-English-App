@@ -23,4 +23,13 @@ export const queryKeys = {
   grammar: {
     gen: () => ["grammar"],
   },
+  lessonByCourse: {
+    gen: (courseId: string) => ["lessonByCourse", courseId],
+  },
+  sectionByLesson: {
+    gen: (lessonId: string) => ["sectionByLesson", lessonId],
+  },
+  lessonById: {
+    gen: (lessonId: string) => ["lessonById", lessonId],
+  },
 }

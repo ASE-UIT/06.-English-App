@@ -3,6 +3,7 @@ import { useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { UploadIcon } from "@radix-ui/react-icons"
 import { useDropzone } from "react-dropzone"
+import { Button } from "./button"
 
 const mainVariant = {
   initial: {
@@ -30,12 +31,16 @@ export const FileUpload = ({ onChange }: { onChange?: (files: File[]) => void })
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFileChange = (newFiles: File[]) => {
-    setFiles((prevFiles) => [...prevFiles, ...newFiles])
+    setFiles([...newFiles])
     onChange && onChange(newFiles)
   }
 
   const handleClick = () => {
     fileInputRef.current?.click()
+  }
+
+  const handleFile = () => {
+    setFiles([])
   }
 
   const { getRootProps, isDragActive } = useDropzone({
@@ -50,7 +55,6 @@ export const FileUpload = ({ onChange }: { onChange?: (files: File[]) => void })
   return (
     <div className="w-full" {...getRootProps()}>
       <motion.div
-        onClick={handleClick}
         whileHover="animate"
         className="group/file relative block w-full cursor-pointer overflow-hidden rounded-lg p-10"
       >
@@ -58,7 +62,11 @@ export const FileUpload = ({ onChange }: { onChange?: (files: File[]) => void })
           ref={fileInputRef}
           id="file-upload-handle"
           type="file"
-          onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
+          accept="image/*,audio/*"
+          onChange={(e) => {
+            console.log("THEM", e.target.files?.length)
+            if ((e.target.files || []).length > 0) handleFileChange(Array.from(e.target.files || []))
+          }}
           className="hidden"
         />
         <div className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
@@ -119,6 +127,7 @@ export const FileUpload = ({ onChange }: { onChange?: (files: File[]) => void })
               ))}
             {!files.length && (
               <motion.div
+                onClick={handleClick}
                 layoutId="file-upload"
                 variants={mainVariant}
                 transition={{
@@ -151,6 +160,19 @@ export const FileUpload = ({ onChange }: { onChange?: (files: File[]) => void })
                 variants={secondaryVariant}
                 className="absolute inset-0 z-30 mx-auto mt-4 flex h-32 w-full max-w-[8rem] items-center justify-center rounded-md border border-dashed border-sky-400 bg-transparent opacity-0"
               ></motion.div>
+            )}
+            {files.length > 0 && (
+              <div className="mt-2 flex w-full items-center justify-center">
+                <Button
+                  onClick={(e) => {
+                    handleFile()
+                    e.preventDefault()
+                  }}
+                  className="rounded-lg bg-red-600 px-2 py-1 text-base font-semibold text-white transition-all hover:bg-red-700"
+                >
+                  Remove File
+                </Button>
+              </div>
             )}
           </div>
         </div>
