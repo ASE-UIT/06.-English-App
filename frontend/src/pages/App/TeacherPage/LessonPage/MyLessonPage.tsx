@@ -18,7 +18,10 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
             <BiPlus className="mr-[1.5px]" size={20} />
             Vocabulary
           </Button>
-          <Button className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white">
+          <Button
+            onClick={() => navigate(`/course/${courseId}/1/Grammar`)}
+            className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
+          >
             <BiPlus className="mr-[1.5px]" size={20} />
             Grammar
           </Button>

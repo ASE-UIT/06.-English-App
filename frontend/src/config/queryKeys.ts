@@ -20,4 +20,7 @@ export const queryKeys = {
   detailCourse: {
     gen: (id: string) => ["detailCourse", id],
   },
+  grammar: {
+    gen: () => ["grammar"],
+  },
 }

@@ -65,7 +65,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
             <BellIcon width={24} height={24} />
             <img src={LogoTeacher} alt="" className="h-10 w-10 rounded-full bg-pink-200 p-1" />
           </div>
-          <div className="d-flex flex-col overflow-auto p-5">{children}</div>
+          <div className="flex flex-col p-5">{children}</div>
         </div>
       </div>
     </div>

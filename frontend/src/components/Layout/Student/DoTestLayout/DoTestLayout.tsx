@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button"
 import BackIconButton from "../../../../assets/back_button_icon.svg"
+import { useAuth } from "@/hooks/useAuth"
 const SectionData = {
   title: "Reading task 1",
 }
 export default function DoTestLayout({ children }: { children: React.ReactNode }) {
+  useAuth()
   return (
     <div className="flex flex-col">
       <div className="sticky top-0 z-10 flex h-[70px] items-center gap-[10px] bg-[#fff4f9] shadow-custom">
