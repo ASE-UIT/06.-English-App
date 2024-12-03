@@ -1,5 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { Base } from 'src/module/base/base.entity';
+import { SectionProgress } from 'src/module/course-owning/entities/section-progress.entity';
 import { Lesson } from 'src/module/lesson/entities/lesson.entity';
 import { QuestionGroup } from 'src/module/question-group/entities/question-group.entity';
 import { Question } from 'src/module/question/entities/question.entity';
@@ -33,4 +34,9 @@ export class Section extends Base {
   questionGroups: QuestionGroup[];
   @OneToMany(() => Question, (question) => question.section)
   questions: Question[];
+  @OneToMany(
+    () => SectionProgress,
+    (sectionProgress) => sectionProgress.section,
+  )
+  sectionProgresses: SectionProgress[];
 }
