@@ -65,7 +65,7 @@ function generateFroalaConfig() {
       "clearFormatting",
       "selectAll",
     ],
-    toolbarSticky: true,
+    toolbarSticky: false,
     theme: "gray",
     heightMin: 300,
     heightMax: 600,

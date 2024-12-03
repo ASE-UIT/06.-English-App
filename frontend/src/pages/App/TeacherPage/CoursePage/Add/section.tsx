@@ -126,7 +126,7 @@ export const SectionComp = () => {
             </div>
           </label>
         </div>
-        <div>
+        <div className="relative">
           <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
             Content
           </Text>
