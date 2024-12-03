@@ -61,9 +61,19 @@ export const END_POINTS = {
     CREATE_VOCABULARY: '/vocabulary',
     GET_ALL_LESSONS_BY_COURSE: '/get-all-lessons-by-course/:courseId',
     CREATE_NORMAL: '/normal',
+    ADD_GRAMMAR_TO_LESSON: '/add-grammar-to-lesson/:lessonId',
+    ADD_VOCABULARY_TO_LESSON: '/add-vocabulary-to-lesson/:lessonId',
     LIST: '',
     UPDATE: '',
     DELETE: '',
+  },
+  DISCOUNT: {
+    BASE: '/discount',
+    CREATE: '',
+    GET_ALL_DISCOUNTS_BY_OWNER: '/get-all-discounts-by-owner',
+    UPDATE: ':id',
+    GET_ALL_DISCOUNTS_BY_COURSE: '/get-all-discounts-by-course/:courseId',
+    DISABLE_DISCOUNT: '/disable-discount/:id',
   },
   GRAMMAR: {
     BASE: '/grammar',
@@ -88,6 +98,7 @@ export const END_POINTS = {
   },
   SECTION: {
     BASE: '/section',
+    GET_ALL_SECTION_BY_LESSON: '/get-all-section-by-lesson/:lessonId',
     CREATE: '',
     LIST: '',
     UPDATE: '',
@@ -111,6 +122,7 @@ export const DOCUMENTATION = {
     USER: 'USER',
     FILE: 'FILE',
     COURSE: 'COURSE',
+    DISCOUNT: 'DISCOUNT',
     COURSE_BUYING: 'COURSE_BUYING',
     COURSE_OWNING: 'COURSE_OWNING',
     COURSE_CATEGORY: 'COURSE_CATEGORY',
@@ -196,4 +208,8 @@ export enum SECTION_STATUS {
   DONE = 'DONE',
 }
 
+export const INJECTION_DEPS = {
+  DISCOUNT_PACKAGE: 'DISCOUNT_PACKAGE',
+  PUB_SUB_SERVICE: 'PUB_SUB_SERVICE',
+};
 export const COURSE_THUMBNAIL_IMAGE = '';

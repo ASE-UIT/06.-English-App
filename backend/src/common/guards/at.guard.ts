@@ -13,6 +13,7 @@ import { ConfigService } from '@nestjs/config';
 export interface IUser {
   userAwsId: string;
   userName: string;
+  roles: string[];
 }
 
 @Injectable()

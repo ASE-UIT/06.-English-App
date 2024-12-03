@@ -4,6 +4,7 @@ import { Response } from 'express';
 import { DOCUMENTATION, END_POINTS } from '../../utils/constants';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ResponseObject } from '../../utils/objects';
+import { PresignedUrlDto } from './dto/presigned-url.dto';
 
 @ApiBearerAuth()
 @ApiTags(DOCUMENTATION.TAGS.FILE)
@@ -15,8 +16,8 @@ export class S3Controller {
   @ApiOperation({
     summary: 'Get a pre-signed URL to upload a file',
   })
-  async getPreSignedUrl(@Query('contentType') contentType: string) {
-    const res = await this.s3Service.generatePreSignedUrl(contentType);
+  async getPreSignedUrl(@Query() presignedUrlDto: PresignedUrlDto) {
+    const res = await this.s3Service.generatePreSignedUrl(presignedUrlDto);
     return ResponseObject.create('Pre-signed URL generated', res);
   }
 
