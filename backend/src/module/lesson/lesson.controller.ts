@@ -75,6 +75,14 @@ export class LessonController {
       updatedLesson,
     );
   }
+  @Get(END_POINTS.LESSON.GET_ONE)
+  @ApiOperation({
+    summary: 'Get one lesson by id',
+  })
+  async findOne(@Param('id') id: string) {
+    const lesson = await this.lessonService.findOne(id);
+    return ResponseObject.create('Get lesson successfully', lesson);
+  }
   @Get(END_POINTS.LESSON.GET_ALL_LESSONS_BY_COURSE)
   async getAllLessonOfCourse(@Param('courseId') courseId: string) {
     const result = await this.lessonService.getAllLessonOfCourse(courseId);

@@ -3,7 +3,6 @@ import { DataSource } from 'typeorm';
 import { CourseOwning } from './entities/course-owning.entity';
 import { Student } from '../user/entities/student.entity';
 import { Course } from '../course/entities/course.entity';
-import { CourseProgress } from './entities/course-progress.entity';
 import { LessonProgress } from './entities/lesson-progress.entity';
 import { SectionProgress } from './entities/section-progress.entity';
 
@@ -21,28 +20,35 @@ export class CourseOwningService {
       courseOwning.course = course;
       courseOwning.student = student;
       return await this.dataSource.transaction(async (manager) => {
+        const existingCourseOwning = await manager
+          .getRepository(CourseOwning)
+          .createQueryBuilder('courseOwning')
+          .leftJoinAndSelect('courseOwning.student', 'student')
+          .leftJoinAndSelect('courseOwning.course', 'course')
+          .where('student.id = :studentId', { studentId: student.id })
+          .andWhere('course.id = :courseId', { courseId: course.id })
+          .getOne();
+        if (existingCourseOwning) {
+          await manager
+            .getRepository(CourseOwning)
+            .remove(existingCourseOwning);
+        }
         const newCourseOwning = await manager
           .getRepository(CourseOwning)
           .save(courseOwning);
-
-        const newCourseProgress = await manager
-          .getRepository(CourseProgress)
-          .save({
-            courseOwning: newCourseOwning,
-            course: course,
-          });
         await Promise.all(
           courseOwning.course.lessons.map(async (lesson) => {
             const newLessonProgress = await manager
               .getRepository(LessonProgress)
               .save({
-                courseProgress: newCourseProgress,
+                courseOwning: newCourseOwning,
                 lesson: lesson,
               });
             await Promise.all(
               lesson.sections.map(async (section) => {
                 await manager.getRepository(SectionProgress).save({
                   lessonProgress: newLessonProgress,
+                  courseOwning: newCourseOwning,
                   section: section,
                 });
               }),

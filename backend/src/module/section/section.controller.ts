@@ -22,6 +22,7 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { Section } from './entities/section.entity';
 import { ResponseObject } from 'src/utils/objects';
+import { ResponseSectionDto } from './dto/response-section.dto';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.SECTION.BASE)
@@ -43,10 +44,15 @@ export class SectionController {
       Section,
     );
     const newSection = await this.sectionService.create(
-      createSectionDto.lessionId,
+      createSectionDto.lessonId,
       section,
     );
-    return ResponseObject.create('Section created successfully', newSection);
+    const response = await this.mapper.mapAsync(
+      newSection,
+      Section,
+      ResponseSectionDto,
+    );
+    return ResponseObject.create('Section created successfully', response);
   }
 
   @Get(END_POINTS.SECTION.GET_ALL_SECTION_BY_LESSON)
@@ -62,7 +68,12 @@ export class SectionController {
   })
   async findAllByLesson(@Param('lessonId') lessonId: string) {
     const sections = await this.sectionService.findAllByLesson(lessonId);
-    return ResponseObject.create('Sections found', sections);
+    const responses = await this.mapper.mapArrayAsync(
+      sections,
+      Section,
+      ResponseSectionDto,
+    );
+    return ResponseObject.create('Sections found', responses);
   }
 
   @Get(':id')
