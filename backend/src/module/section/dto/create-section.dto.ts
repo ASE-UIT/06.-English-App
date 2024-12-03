@@ -8,10 +8,10 @@ export class CreateSectionDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({
-    description: 'Lession Id of the section',
+    description: 'Lesson Id of the section',
     type: String,
   })
-  lessionId: string;
+  lessonId: string;
   @AutoMap()
   @IsString()
   @IsNotEmpty()

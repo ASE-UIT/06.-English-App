@@ -31,9 +31,12 @@ export class SectionService {
   }
   async findAllByLesson(lessonId: string) {
     try {
-      const sections = await this.dataSource.getRepository(Section).find({
-        where: { lesson: { id: lessonId } },
-      });
+      const sections = await this.dataSource
+        .getRepository(Section)
+        .createQueryBuilder('section')
+        .leftJoinAndSelect('section.lesson', 'lesson')
+        .where('lesson.id = :id', { id: lessonId })
+        .getMany();
       return sections;
     } catch (error) {
       throw new HttpException(

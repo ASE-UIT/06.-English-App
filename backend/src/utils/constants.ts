@@ -63,6 +63,7 @@ export const END_POINTS = {
     CREATE_NORMAL: '/normal',
     ADD_GRAMMAR_TO_LESSON: '/add-grammar-to-lesson/:lessonId',
     ADD_VOCABULARY_TO_LESSON: '/add-vocabulary-to-lesson/:lessonId',
+    GET_ONE: '/get-one/:id',
     LIST: '',
     UPDATE: '',
     DELETE: '',

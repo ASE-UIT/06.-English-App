@@ -1,8 +1,10 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Base } from '../../base/base.entity';
 import { Student } from '../../user/entities/student.entity';
 import { Course } from 'src/module/course/entities/course.entity';
 import { AutoMap } from '@automapper/classes';
+import { LessonProgress } from './lesson-progress.entity';
+import { SectionProgress } from './section-progress.entity';
 
 @Entity()
 export class CourseOwning extends Base {
@@ -16,4 +18,18 @@ export class CourseOwning extends Base {
   course: Course;
   @ManyToOne(() => Student, (student) => student.courseOwnings)
   student: Student;
+  @OneToMany(
+    () => LessonProgress,
+    (lessonProgress) => lessonProgress.courseOwning,
+  )
+  lessonProgresses: LessonProgress[];
+  @OneToMany(
+    () => SectionProgress,
+    (sectionProgress) => sectionProgress.courseOwning,
+  )
+  sectionProgresses: SectionProgress[];
+  @Column({
+    default: 0,
+  })
+  progress: number;
 }

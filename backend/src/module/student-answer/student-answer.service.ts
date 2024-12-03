@@ -5,6 +5,9 @@ import { DataSource } from 'typeorm';
 import { Student } from '../user/entities/student.entity';
 import { Question } from '../question/entities/question.entity';
 import { QUESTION_TYPE } from 'src/utils/constants';
+import { SectionProgress } from '../course-owning/entities/section-progress.entity';
+import { CourseOwning } from '../course-owning/entities/course-owning.entity';
+import { LessonProgress } from '../course-owning/entities/lesson-progress.entity';
 
 @Injectable()
 export class StudentAnswerService {
@@ -72,6 +75,47 @@ export class StudentAnswerService {
         }),
       );
       await this.dataSource.getRepository(StudentAnswer).save(studentAnswers);
+      const courseOwning = await this.dataSource
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoin('courseOwning.student', 'student')
+        .leftJoin('courseOwning.lessonProgresses', 'lessonProgresses')
+        .select(['courseOwning', 'student', 'lessonProgresses'])
+        .where('student.id = :studentId', { studentId: student.id })
+        .andWhere('courseOwning.expiredDate > :currDate', {
+          currDate: new Date(),
+        })
+        .getOneOrFail();
+      const sectionProgress = await this.dataSource
+        .getRepository(SectionProgress)
+        .createQueryBuilder('sectionProgress')
+        .leftJoinAndSelect('sectionProgress.courseOwning', 'courseOwning')
+        .where('courseOwning.id = :courseOwningId', {
+          courseOwningId: courseOwning.id,
+        })
+        .getOneOrFail();
+      sectionProgress.isCompleted = true;
+      const lessonProgress = await this.dataSource
+        .getRepository(LessonProgress)
+        .createQueryBuilder('lessonProgress')
+        .leftJoinAndSelect(
+          'lessonProgress.sectionProgresses',
+          'sectionProgresses',
+        )
+        .leftJoinAndSelect('lessonProgress.courseOwning', 'courseOwning')
+        .where('courseOwning.id = :courseOwningId', {
+          courseOwningId: courseOwning.id,
+        })
+        .getOneOrFail();
+      const isLessonCompleted = lessonProgress.sectionProgresses.every(
+        (section) => section.isCompleted,
+      );
+      lessonProgress.isCompleted = isLessonCompleted;
+      const numberOfLesson = courseOwning.lessonProgresses.length;
+      const numberOfCompletedLesson = courseOwning.lessonProgresses.filter(
+        (lesson) => lesson.isCompleted,
+      ).length;
+      courseOwning.progress = (numberOfCompletedLesson / numberOfLesson) * 100;
       return studentAnswers;
     } catch (error) {
       console.log(error);
