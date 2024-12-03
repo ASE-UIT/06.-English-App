@@ -20,7 +20,7 @@ export class CourseOwningController {
   ) {}
   @Post(END_POINTS.COURSE_OWNING.ACTIVE_COURSE)
   @ApiOperation({
-    summary: 'Create new course owning, in case student buy course by cash',
+    summary: 'Create new course owning',
   })
   async createCourseOwning(
     @Body() createCourseOwningDto: CreateCourseOwningDto,
