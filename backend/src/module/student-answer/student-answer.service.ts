@@ -14,8 +14,9 @@ export class StudentAnswerService {
       const student = await this.dataSource
         .getRepository(Student)
         .createQueryBuilder('student')
-        .leftJoin('student.user', 'user')
-        .where('user.awsId = :awsId', { awsId: userAwsId })
+        .leftJoin('student.userInfo', 'userInfo')
+        .select(['student', 'userInfo'])
+        .where('userInfo.awsCognitoId = :awsId', { awsId: userAwsId })
         .getOne();
       if (!student) {
         throw new HttpException('Student not found', HttpStatusCode.NOT_FOUND);
@@ -28,7 +29,6 @@ export class StudentAnswerService {
             .findOne({ where: { id: studentAnswer.question.id } });
         }),
       );
-      await this.dataSource.getRepository(StudentAnswer).save(studentAnswers);
       await Promise.all(
         studentAnswers.map(async (studentAnswer) => {
           const correctAnswer = studentAnswer.question.answers.filter(
@@ -71,6 +71,7 @@ export class StudentAnswerService {
           }
         }),
       );
+      await this.dataSource.getRepository(StudentAnswer).save(studentAnswers);
       return studentAnswers;
     } catch (error) {
       console.log(error);
