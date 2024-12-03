@@ -20,7 +20,7 @@ export class CourseOwningService {
       });
       courseOwning.course = course;
       courseOwning.student = student;
-      await this.dataSource.transaction(async (manager) => {
+      return await this.dataSource.transaction(async (manager) => {
         const newCourseOwning = await manager
           .getRepository(CourseOwning)
           .save(courseOwning);
