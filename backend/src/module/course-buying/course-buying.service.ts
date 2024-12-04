@@ -1,4 +1,9 @@
-import { HttpException, Injectable, Req } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  Req,
+} from '@nestjs/common';
 import { CourseBuying } from './entities/course-buying.entity';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +15,8 @@ import { User } from '../user/entities/user.entity';
 import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
+import { CheckKeyDto } from './dto/check-key.dto';
+import { CourseOwning } from '../course-owning/entities/course-owning.entity';
 
 @Injectable()
 export class CourseBuyingService {
@@ -188,19 +195,40 @@ export class CourseBuyingService {
       return { message: 'Pay fail', code: '97' };
     }
   }
+  async checkKey(checkKeyDto: CheckKeyDto, userAwsId: string) {
+    return this.dataSource.transaction(async (transactionalEntityManager) => {
+      const courseBuying = await transactionalEntityManager
+        .getRepository(CourseBuying)
+        .createQueryBuilder('courseBuying')
+        .innerJoin('courseBuying.course', 'course')
+        .innerJoin('courseBuying.student', 'student')
+        .innerJoin('student.userInfo', 'userInfo')
+        .select([
+          'courseBuying.id',
+          'courseBuying.key',
+          'course.id',
+          'student.id',
+        ])
+        .where('courseBuying.id = :courseBuyingId', {
+          courseBuyingId: checkKeyDto.courseBuyingId,
+        })
+        .andWhere('userInfo.id = :userAwsId', { userAwsId })
+        .andWhere('courseBuying.key = :key', { key: checkKeyDto.key })
+        .getOne();
 
-  findAll() {
-    return `This action returns all courseBuying`;
-  }
+      if (!courseBuying) {
+        throw new NotFoundException('Course buying not found');
+      }
 
-  findOne(id: number) {
-    return `This action returns a #${id} courseBuying`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} courseBuying`;
-  }
-  async markAsCompleted(sectionId: string) { 
-    return 'CourseBuying marked as completed successfully';
+      await transactionalEntityManager.getRepository(CourseOwning).insert({
+        course: { id: courseBuying.course.id },
+        student: { id: courseBuying.student.id },
+        active: true,
+        expiredDate: new Date(
+          new Date().setFullYear(new Date().getFullYear() + 1),
+        ),
+      });
+      return { message: 'Success' };
+    });
   }
 }

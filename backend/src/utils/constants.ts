@@ -41,6 +41,7 @@ export const END_POINTS = {
     CREATE_PAY_ORDER_URL: '/create-pay-order-url',
     VALIDATE_PAY_ORDER: '/validate-pay-order',
     VNPAY_IPN: '/vnpay-ipn',
+    CHECK_KEY: '/check-key',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
   },
   COURSE_OWNING: {
@@ -62,6 +63,7 @@ export const END_POINTS = {
     CREATE_NORMAL: '/normal',
     ADD_GRAMMAR_TO_LESSON: '/add-grammar-to-lesson/:lessonId',
     ADD_VOCABULARY_TO_LESSON: '/add-vocabulary-to-lesson/:lessonId',
+    GET_ONE: '/get-one/:id',
     LIST: '',
     UPDATE: '',
     DELETE: '',
@@ -122,6 +124,8 @@ export const DOCUMENTATION = {
     FILE: 'FILE',
     COURSE: 'COURSE',
     DISCOUNT: 'DISCOUNT',
+    COURSE_BUYING: 'COURSE_BUYING',
+    COURSE_OWNING: 'COURSE_OWNING',
     COURSE_CATEGORY: 'COURSE_CATEGORY',
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',
@@ -129,7 +133,6 @@ export const DOCUMENTATION = {
     QUESTION: 'QUESTION',
     QUESTION_GROUP: 'QUESTION_GROUP',
     STUDENT_ANSWER: 'STUDENT_ANSWER',
-    COURSE_BUYING: 'COURSE_BUYING',
   },
 };
 export const TIMEOUT = 5000;

@@ -1,4 +1,4 @@
-import { IsOptional } from 'class-validator';
+import { AutoMap } from '@automapper/classes';
 import { Base } from 'src/module/base/base.entity';
 import { Question } from 'src/module/question/entities/question.entity';
 import { Student } from 'src/module/user/entities/student.entity';
@@ -9,12 +9,17 @@ export class StudentAnswer extends Base {
   question: Question;
   @ManyToOne(() => Student, (student) => student.studentAnswers)
   student: Student;
+  @AutoMap()
   @Column()
   answer: string;
-  @Column()
-  @IsOptional()
+  @AutoMap()
+  @Column({
+    nullable: true,
+  })
   isCorrect: boolean;
-  @Column()
-  @IsOptional()
+  @Column({
+    nullable: true,
+  })
+  @AutoMap()
   feedback: string;
 }
