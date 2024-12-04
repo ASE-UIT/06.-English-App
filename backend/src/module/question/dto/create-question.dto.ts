@@ -4,6 +4,7 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
+  IsInt,
   IsNumber,
   IsOptional,
   IsString,
@@ -21,7 +22,8 @@ export class CreateQuestionDto {
 
   @AutoMap()
   @ApiProperty({ description: 'Section ID' })
-  @IsString()
+  @IsOptional()
+  @IsString({})
   section?: string;
 
   @AutoMap()
@@ -45,7 +47,7 @@ export class CreateQuestionDto {
     description: 'Order of the question',
     type: Number,
   })
-  @IsNumber()
+  @IsInt()
   order: number;
 
   @ApiProperty({
