@@ -30,3 +30,7 @@ export type Response = {
   message: string
   data: unknown
 }
+export interface Pagination {
+  page: number
+  limit: number
+}

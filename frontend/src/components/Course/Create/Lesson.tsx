@@ -15,8 +15,7 @@ const CourseCreateLesson = () => {
 
   function onOk() {
     navigate(`/course/123/add/${createSectionMode}-section`)
-    console.log('fileDuration ', fileDuration);
-    
+    console.log("fileDuration ", fileDuration)
   }
 
   const onBrowseFile = useCallback(() => inputRef?.current?.click(), [])

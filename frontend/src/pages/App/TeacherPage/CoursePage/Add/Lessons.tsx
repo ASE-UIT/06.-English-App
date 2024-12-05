@@ -1,10 +1,11 @@
 import CourseCreateHeader from "@/components/Course/Create/Header"
 import { Button } from "@radix-ui/themes"
-import { EyeOpenIcon, CheckIcon, PlusIcon } from "@radix-ui/react-icons"
-import CourseCreateLesson from "@/components/Course/Create/Lesson"
+import { EyeOpenIcon, CheckIcon } from "@radix-ui/react-icons"
+import { MyLessonPage } from "../../LessonPage/MyLessonPage"
+import { useParams } from "react-router"
 
 const CourseAddLessons = () => {
-
+  const { id } = useParams()
   return (
     <div className="p-3">
       <CourseCreateHeader>
@@ -19,12 +20,8 @@ const CourseAddLessons = () => {
           </Button>
         </div>
       </CourseCreateHeader>
-      <div className="px-10">
-        <CourseCreateLesson></CourseCreateLesson>
-        <Button variant="solid" size="3" className="cursor-pointer bg-pink-500">
-          <PlusIcon></PlusIcon>
-          Add lesson
-        </Button>
+      <div className="w-full">
+        <MyLessonPage courseId={id} />
       </div>
     </div>
   )

@@ -12,7 +12,6 @@ import WritingTestPage from "@/pages/App/StudentPage/TestPage/WritingTestPage/Wr
 import SpeakingTestPage from "@/pages/App/StudentPage/TestPage/SpeakingTestPage/SpeakingTestPage"
 import ListeningTestPage from "@/pages/App/StudentPage/TestPage/ListeningTestPage/ListeningTestPage"
 import MyCoursePage from "@/pages/App/TeacherPage/CoursePage/MyCoursePage"
-import InstructorHome from "@/pages/App/TeacherPage/HomePage/InstructorHome"
 import ReadingPage from "@/pages/App/StudentPage/TestPage/ReadingTestPage/ReadingPage"
 import { MyLessonPage } from "@/pages/App/TeacherPage/LessonPage/MyLessonPage"
 import { CreateVocab } from "@/pages/App/TeacherPage/LessonPage/CreateVocab"
@@ -25,6 +24,7 @@ import CourseAddReadingSection from "@/pages/App/TeacherPage/CoursePage/Add/Read
 import CourseAddWritingSection from "@/pages/App/TeacherPage/CoursePage/Add/WritingSection"
 import CourseAddListeningSection from "@/pages/App/TeacherPage/CoursePage/Add/ListeningSection"
 import TeacherLayout from "@/components/Layout/Teacher"
+import { SectionComp } from "@/pages/App/TeacherPage/CoursePage/Add/section"
 const publicRoutes = [
   {
     path: routes.LandingPage,
@@ -72,11 +72,6 @@ const protectedRoutes = [
     layout: DoTestLayout,
   },
   {
-    path: teacherRoutes.Home,
-    component: <InstructorHome></InstructorHome>,
-    layout: Fragment,
-  },
-  {
     path: teacherRoutes.Course.Base,
     component: <CourseList></CourseList>,
     layout: TeacherLayout,
@@ -89,6 +84,11 @@ const protectedRoutes = [
   {
     path: teacherRoutes.Course.Lesson,
     component: <CourseAddLessons></CourseAddLessons>,
+    layout: TeacherLayout,
+  },
+  {
+    path: teacherRoutes.Section.Create,
+    component: <SectionComp></SectionComp>,
     layout: TeacherLayout,
   },
   {
@@ -118,7 +118,7 @@ const protectedRoutes = [
   },
   {
     path: teacherRoutes.Lesson.Base,
-    component: <MyLessonPage></MyLessonPage>,
+    component: <MyLessonPage courseId={undefined}></MyLessonPage>,
     layout: DoTestLayout,
   },
   {
