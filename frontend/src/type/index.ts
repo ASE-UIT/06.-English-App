@@ -36,35 +36,35 @@ export interface Pagination {
 }
 export const WordType = [
   {
-    key: "Noun",
+    key: "NOUN",
     text: "Noun",
   },
   {
-    key: "Verb",
+    key: "VERB",
     text: "Verb",
   },
   {
-    key: "Adjective",
+    key: "ADJECTIVE",
     text: "Adjective",
   },
   {
-    key: "Adverb",
+    key: "ADVERB",
     text: "Adverb",
   },
   {
-    key: "Pronoun",
+    key: "PRONOUN",
     text: "Pronoun",
   },
   {
-    key: "Preposition",
+    key: "PREPOSITION",
     text: "Preposition",
   },
   {
-    key: "Conjunction",
+    key: "CONJUNCTION",
     text: "Conjunction",
   },
   {
-    key: "Interjection",
+    key: "INTERJECTION",
     text: "Interjection",
   },
 ]

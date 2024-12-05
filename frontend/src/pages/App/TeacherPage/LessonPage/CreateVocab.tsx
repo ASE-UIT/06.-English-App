@@ -13,6 +13,7 @@ import { useMutation } from "@tanstack/react-query"
 import { fileApi, lessonApi } from "@/apis"
 import { toast } from "react-toastify"
 import { vocabularyDTO } from "@/type/vocabulary"
+import { useParams } from "react-router"
 
 export const formSchema = z.object({
   Term: z.string().min(1, ""),
@@ -21,10 +22,11 @@ export const formSchema = z.object({
   file:
     typeof window === "undefined"
       ? z.any()
-      : z.instanceof(File).refine((files) => files !== null, "Tài liệu không được để trống"),
+      : z.instanceof(FileList).refine((files) => files !== null, "Tài liệu không được để trống"),
 })
 
 export const CreateVocab = () => {
+  const { lessonId } = useParams()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,7 +38,7 @@ export const CreateVocab = () => {
     mutationFn: ({ lessonId, vocabularies }: { lessonId: string; vocabularies: vocabularyDTO[] }) =>
       lessonApi.AddVocabToLesson(lessonId, vocabularies),
     onSuccess: (Res) => {
-      if (Res?.message === "Create lesson successfully") {
+      if (Res?.message === "Add vocabularies to lesson successfully") {
         toast.success(`${Res.message}`)
         form.reset()
       } else {
@@ -50,13 +52,13 @@ export const CreateVocab = () => {
   const fileRef = form.register("file")
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const contentType = values.file?.type || "image/jpeg"
+    const contentType = values.file[0].type || "image/jpeg"
     let mediaUrl = ""
-    console.log("contentType", values.file?.type)
+    console.log("contentType", values.file?.type, values.file[0])
     const getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
     console.log("getPreUrl", getPreUrl)
     if (getPreUrl?.data.preSignedUrl && values.file) {
-      const uploadFile = await fileApi.uploadFile(getPreUrl?.data.preSignedUrl, values.file)
+      const uploadFile = await fileApi.uploadFile(getPreUrl?.data.preSignedUrl, values.file[0])
       console.log("uploadFile", uploadFile)
       mediaUrl = getPreUrl?.data.key
     }
@@ -70,7 +72,7 @@ export const CreateVocab = () => {
       mediaWord: mediaUrl,
       wordType: values.Type,
     }
-    CreateVocab.mutate({ lessonId: "lessonId", vocabularies: [data] })
+    CreateVocab.mutate({ lessonId: lessonId as string, vocabularies: [data] })
   }
 
   return (
@@ -144,7 +146,10 @@ export const CreateVocab = () => {
         </Button>
       </div>
       <div className="mt-[38px]">
-        <Button className="mr-[19px] rounded-lg border-2 bg-fuschia p-3 text-[16px] font-normal text-white">
+        <Button
+          onClick={form.handleSubmit(onSubmit)}
+          className="mr-[19px] rounded-lg border-2 bg-fuschia p-3 text-[16px] font-normal text-white"
+        >
           <BiPlus className="mr-[1.5px]" size={20} />
           Add New
         </Button>
