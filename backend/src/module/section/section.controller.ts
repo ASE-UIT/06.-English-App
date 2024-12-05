@@ -53,18 +53,42 @@ export class SectionController {
     const questionGroups = [];
     const questions = [];
 
-    createSectionDto.sectionQuestionGroup.forEach((sectionQuestionGroup) => {
-      const newQuestionGroup = this.mapper.map(
-        sectionQuestionGroup,
-        SectionQuestionDto,
-        QuestionGroup,
-      );
-      if (!newQuestionGroup.questions) {
-        newQuestionGroup.questions = [];
-      }
-      sectionQuestionGroup.questions.forEach((question) => {
+    if (createSectionDto.sectionQuestionGroup) {
+      createSectionDto.sectionQuestionGroup.forEach((sectionQuestionGroup) => {
+        const newQuestionGroup = this.mapper.map(
+          sectionQuestionGroup,
+          SectionQuestionDto,
+          QuestionGroup,
+        );
+        if (!newQuestionGroup.questions) {
+          newQuestionGroup.questions = [];
+        }
+        sectionQuestionGroup.questions.forEach((question) => {
+          const newQuestion = this.mapper.map(
+            question,
+            CreateQuestionDto,
+            Question,
+          );
+          newQuestion.section = section;
+          if (!newQuestion.answers) {
+            newQuestion.answers = [];
+          }
+          question.answers.forEach((answer) => {
+            const newAnswer = this.mapper.map(answer, CreateAnswerDto, Answer);
+            newAnswer.question = newQuestion;
+            newQuestion.answers.push(newAnswer);
+          });
+          newQuestionGroup.questions.push(newQuestion);
+        });
+
+        newQuestionGroup.section = section;
+        questionGroups.push(newQuestionGroup);
+      });
+    }
+    if (createSectionDto.sectionQuestion) {
+      createSectionDto.sectionQuestion.forEach((sectionQuestion) => {
         const newQuestion = this.mapper.map(
-          question,
+          sectionQuestion,
           CreateQuestionDto,
           Question,
         );
@@ -72,42 +96,15 @@ export class SectionController {
         if (!newQuestion.answers) {
           newQuestion.answers = [];
         }
-        question.answers.forEach((answer) => {
-          const newAnswer = this.mapper.map(
-            answer,
-            CreateAnswerDto,
-            Answer,
-          );
+        sectionQuestion.answers.forEach((answer) => {
+          const newAnswer = this.mapper.map(answer, CreateAnswerDto, Answer);
           newAnswer.question = newQuestion;
           newQuestion.answers.push(newAnswer);
         });
-        newQuestionGroup.questions.push(newQuestion);
+
+        questions.push(newQuestion);
       });
-      
-      newQuestionGroup.section = section;
-      questionGroups.push(newQuestionGroup);
-    });
-
-
-    createSectionDto.sectionQuestion.forEach((sectionQuestion) => {
-      const newQuestion = this.mapper.map(sectionQuestion, CreateQuestionDto, Question);
-      newQuestion.section = section;
-      if (!newQuestion.answers) {
-        newQuestion.answers = [];
-      }
-      sectionQuestion.answers.forEach((answer) => {
-        const newAnswer = this.mapper.map(
-          answer,
-          CreateAnswerDto,
-          Answer,
-        );
-        newAnswer.question = newQuestion;
-        newQuestion.answers.push(newAnswer);
-      });
-
-      questions.push(newQuestion);
-    });
-
+    }
     section.questionGroups = questionGroups;
     section.questions = questions;
 
@@ -115,8 +112,12 @@ export class SectionController {
       createSectionDto.lessonId,
       section,
     );
-  
-    const response = await this.mapper.mapAsync(newSection, Section, ResponseSectionDto);
+
+    const response = await this.mapper.mapAsync(
+      newSection,
+      Section,
+      ResponseSectionDto,
+    );
 
     return ResponseObject.create('Section created successfully', response);
   }
