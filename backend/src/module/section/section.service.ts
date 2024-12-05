@@ -3,6 +3,7 @@ import { Section } from './entities/section.entity';
 import { DataSource } from 'typeorm';
 import HttpStatusCode from 'src/utils/HttpStatusCode';
 import { Lesson } from '../lesson/entities/lesson.entity';
+import { CreateSectionDto } from './dto/create-section.dto';
 
 @Injectable()
 export class SectionService {

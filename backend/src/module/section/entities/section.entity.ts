@@ -30,9 +30,13 @@ export class Section extends Base {
   sectionMedia?: string;
   @ManyToOne(() => Lesson, (lesson) => lesson.sections)
   lesson: Lesson;
-  @OneToMany(() => QuestionGroup, (questionGroup) => questionGroup.section)
+  @OneToMany(() => QuestionGroup, (questionGroup) => questionGroup.section, {
+    cascade: true,
+  })
   questionGroups: QuestionGroup[];
-  @OneToMany(() => Question, (question) => question.section)
+  @OneToMany(() => Question, (question) => question.section, { 
+    cascade: true 
+  })
   questions: Question[];
   @OneToMany(
     () => SectionProgress,
