@@ -3,6 +3,8 @@ import { Lesson } from './entities/lesson.entity';
 import { DataSource } from 'typeorm';
 import { CourseService } from '../course/course.service';
 import { GrammarService } from '../grammar/grammar.service';
+import { Grammar } from '../grammar/entities/grammar.entity';
+import { LessonVocabulary } from './entities/lesson-vocabulary.entity';
 
 @Injectable()
 export class LessonService {
@@ -100,6 +102,34 @@ export class LessonService {
     try {
       const result = await this.dataSource.getRepository(Lesson).delete(id);
       return result;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+  async getAllGrammarByLesson(lessonId: string) {
+    try {
+      const grammars = await this.dataSource
+        .getRepository(Grammar)
+        .createQueryBuilder('grammar')
+        .leftJoin('grammar.lessons', 'lesson')
+        .where('lesson.id = :lessonId', { lessonId })
+        .getMany();
+      return grammars;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+  async getAllVocabularyByLesson(lessonId: string) {
+    try {
+      const vocabularies = await this.dataSource
+        .getRepository(LessonVocabulary)
+        .createQueryBuilder('lessonVocabulary')
+        .leftJoin('lessonVocabulary.lesson', 'lesson')
+        .where('lesson.id = :lessonId', { lessonId })
+        .getMany();
+      return vocabularies;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, 500);
