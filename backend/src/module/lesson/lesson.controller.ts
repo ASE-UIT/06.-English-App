@@ -88,4 +88,20 @@ export class LessonController {
     const result = await this.lessonService.getAllLessonOfCourse(courseId);
     return ResponseObject.create('Get all lessons successfully', result);
   }
+  @Get(END_POINTS.LESSON.GET_ALL_GRAMMAR_BY_LESSON)
+  async getAllGrammarByLesson(@Param('lessonId') lessonId: string) {
+    const result = await this.lessonService.getAllGrammarByLesson(lessonId);
+    return ResponseObject.create(
+      'Get all grammar by lesson successfully',
+      result,
+    );
+  }
+  @Get(END_POINTS.LESSON.GET_ALL_VOCABULARY_BY_LESSON)
+  async getAllVocabularyByLesson(@Param('lessonId') lessonId: string) {
+    const result = await this.lessonService.getAllVocabularyByLesson(lessonId);
+    return ResponseObject.create(
+      'Get all vocabulary by lesson successfully',
+      result,
+    );
+  }
 }
