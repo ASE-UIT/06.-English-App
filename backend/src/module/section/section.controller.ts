@@ -53,26 +53,25 @@ export class SectionController {
     const questionGroups = [];
     const questions = [];
 
-    createSectionDto.sectionQuestion.forEach((sectionQuestion) => {
-      if (sectionQuestion instanceof CreateQuestionDto) { return; }
+    createSectionDto.sectionQuestionGroup.forEach((sectionQuestionGroup) => {
       const newQuestionGroup = this.mapper.map(
-        sectionQuestion,
+        sectionQuestionGroup,
         SectionQuestionDto,
         QuestionGroup,
       );
       if (!newQuestionGroup.questions) {
         newQuestionGroup.questions = [];
       }
-      sectionQuestion.questions.forEach((question) => {
+      sectionQuestionGroup.questions.forEach((question) => {
         const newQuestion = this.mapper.map(
           question,
           CreateQuestionDto,
           Question,
         );
+        newQuestion.section = section;
         if (!newQuestion.answers) {
           newQuestion.answers = [];
         }
-      
         question.answers.forEach((answer) => {
           const newAnswer = this.mapper.map(
             answer,
@@ -91,7 +90,6 @@ export class SectionController {
 
 
     createSectionDto.sectionQuestion.forEach((sectionQuestion) => {
-      if (sectionQuestion instanceof SectionQuestionDto) { return; }
       const newQuestion = this.mapper.map(sectionQuestion, CreateQuestionDto, Question);
       newQuestion.section = section;
       if (!newQuestion.answers) {

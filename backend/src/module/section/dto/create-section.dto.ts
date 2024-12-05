@@ -1,7 +1,7 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsDefined, IsEnum, IsNotEmpty, IsNotEmptyObject, IsObject, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsDefined, IsEnum, IsNotEmpty, IsNotEmptyObject, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { IsQuestionGroupOrQuestion } from 'src/common/validators/is-questionGroup-or-question.validator';
 import { CreateQuestionDto } from 'src/module/question/dto/create-question.dto';
 import { SECTION_TYPE } from 'src/utils/constants';
@@ -70,35 +70,24 @@ export class CreateSectionDto {
   sectionMedia: string;
 
   @ApiProperty({
-    description: 'Questions of the section',
+    description: 'Question groups (with question) of the section',
     type: [SectionQuestionDto],
   })
   @IsArray()
+  @IsOptional()
   @ValidateNested({ each: true })
-  @IsQuestionGroupOrQuestion()
-  // @Type((options) => {
-  //   const value = options.object[options.property];
-  //   console.log('Inspecting Value for Type Mapping:', value);
-  //   if (Array.isArray(value)) {
-  //     const isSection = value.some((item) => 'questions' in item);
-  //     console.log('Determined Type:', isSection ? 'SectionQuestionDto' : 'CreateQuestionDto');
-  //     return isSection ? SectionQuestionDto : CreateQuestionDto;
-  //   }
-  //   return CreateQuestionDto;
-  // })
-  @Type((options) => {
-    const value = options.object[options.property];
-    // console.log('Inspecting Value for Type Mapping:', value);
-    if (Array.isArray(value)) {
-      const isSection = value.some((item) => 'questions' in item);
-      // console.log('Determined Type:', isSection ? 'SectionQuestionDto' : 'CreateQuestionDto');
-    }
-    return value 
-      && Array.isArray(value) 
-      && value.some(item => item.questions) 
-      ? SectionQuestionDto : CreateQuestionDto;
+  @Type(() => SectionQuestionDto)
+  sectionQuestionGroup: (SectionQuestionDto)[];
+
+  @ApiProperty({
+    description: 'Questions of the section',
+    type: [CreateQuestionDto],
   })
-  sectionQuestion: (SectionQuestionDto | CreateQuestionDto)[];
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateQuestionDto)
+  sectionQuestion: CreateQuestionDto[];
 }
 
 
