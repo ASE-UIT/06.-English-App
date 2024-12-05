@@ -5,10 +5,14 @@ import FormGroup from "@/components/Layout/Components/ui/form-group"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/Layout/Components/ui/form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/Layout/Components/ui/Select"
 import { Input } from "@/components/Layout/Components/ui/Input"
-import { Section, sectionNameMap } from "@/type/section"
 import { Button } from "@/components/Layout/Components/ui/Button"
 import { BiPlus } from "react-icons/bi"
 import { GiGlobe } from "react-icons/gi"
+import { WordType } from "@/type"
+import { useMutation } from "@tanstack/react-query"
+import { fileApi, lessonApi } from "@/apis"
+import { toast } from "react-toastify"
+import { vocabularyDTO } from "@/type/vocabulary"
 
 export const formSchema = z.object({
   Term: z.string().min(1, ""),
@@ -17,7 +21,7 @@ export const formSchema = z.object({
   file:
     typeof window === "undefined"
       ? z.any()
-      : z.instanceof(FileList).refine((files) => files !== null && files.length > 0, "Tài liệu không được để trống"),
+      : z.instanceof(File).refine((files) => files !== null, "Tài liệu không được để trống"),
 })
 
 export const CreateVocab = () => {
@@ -28,11 +32,45 @@ export const CreateVocab = () => {
       Definition: "",
     },
   })
-
+  const CreateVocab = useMutation({
+    mutationFn: ({ lessonId, vocabularies }: { lessonId: string; vocabularies: vocabularyDTO[] }) =>
+      lessonApi.AddVocabToLesson(lessonId, vocabularies),
+    onSuccess: (Res) => {
+      if (Res?.message === "Create lesson successfully") {
+        toast.success(`${Res.message}`)
+        form.reset()
+      } else {
+        toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
+      }
+    },
+    onError: () => {
+      toast.error("Something error")
+    },
+  })
   const fileRef = form.register("file")
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("VocabSubmit", values)
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const contentType = values.file?.type || "image/jpeg"
+    let mediaUrl = ""
+    console.log("contentType", values.file?.type)
+    const getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
+    console.log("getPreUrl", getPreUrl)
+    if (getPreUrl?.data.preSignedUrl && values.file) {
+      const uploadFile = await fileApi.uploadFile(getPreUrl?.data.preSignedUrl, values.file)
+      console.log("uploadFile", uploadFile)
+      mediaUrl = getPreUrl?.data.key
+    }
+    if (mediaUrl === "") {
+      toast.error("Something error")
+      return
+    }
+    const data = {
+      vocabulary: values.Term,
+      note: values.Definition,
+      mediaWord: mediaUrl,
+      wordType: values.Type,
+    }
+    CreateVocab.mutate({ lessonId: "lessonId", vocabularies: [data] })
   }
 
   return (
@@ -58,14 +96,12 @@ export const CreateVocab = () => {
                       <FormControl>
                         <div className="flex w-full space-x-3">
                           <SelectTrigger className="mt-2 h-10 w-[243px] !cursor-pointer rounded-md border-[1.5px] border-slate-300 bg-white text-base !font-normal text-placeHolder">
-                            <SelectValue placeholder="Chọn danh mục">
-                              <span className="text-black">{sectionNameMap[field.value]}</span>
-                            </SelectValue>
+                            <SelectValue placeholder="Chọn danh mục"></SelectValue>
                           </SelectTrigger>
                         </div>
                       </FormControl>
                       <SelectContent className="w-[243px]">
-                        {Section.map((i) => (
+                        {WordType.map((i) => (
                           <SelectItem key={i.key} value={i.key}>
                             {i.text}
                           </SelectItem>

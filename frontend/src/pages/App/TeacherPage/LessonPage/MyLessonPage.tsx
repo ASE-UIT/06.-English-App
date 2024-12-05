@@ -102,14 +102,14 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
                 </span>
               </span>
               <Button
-                onClick={() => navigate("/course/1/lesson/Vocabulary")}
+                onClick={() => navigate(`/course/${courseId}/${lesson.id}/Vocabulary`)}
                 className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
               >
                 <BiPlus className="mr-[1.5px]" size={20} />
                 Vocabulary
               </Button>
               <Button
-                onClick={() => navigate(`/course/${courseId}/1/Grammar`)}
+                onClick={() => navigate(`/course/${courseId}/${lesson.id}/Grammar`)}
                 className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
               >
                 <BiPlus className="mr-[1.5px]" size={20} />

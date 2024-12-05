@@ -34,3 +34,37 @@ export interface Pagination {
   page: number
   limit: number
 }
+export const WordType = [
+  {
+    key: "Noun",
+    text: "Noun",
+  },
+  {
+    key: "Verb",
+    text: "Verb",
+  },
+  {
+    key: "Adjective",
+    text: "Adjective",
+  },
+  {
+    key: "Adverb",
+    text: "Adverb",
+  },
+  {
+    key: "Pronoun",
+    text: "Pronoun",
+  },
+  {
+    key: "Preposition",
+    text: "Preposition",
+  },
+  {
+    key: "Conjunction",
+    text: "Conjunction",
+  },
+  {
+    key: "Interjection",
+    text: "Interjection",
+  },
+]
