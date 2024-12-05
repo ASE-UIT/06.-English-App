@@ -35,5 +35,6 @@ export class CreateLessonVocabularyDto {
   @IsString()
   mediaWord: string;
   @IsString()
+  @AutoMap()
   note: string;
 }

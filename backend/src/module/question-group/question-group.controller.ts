@@ -21,13 +21,19 @@ import { ResponseObject } from 'src/utils/objects';
 @Controller(END_POINTS.QUESTION_GROUP.BASE)
 @ApiTags(DOCUMENTATION.TAGS.QUESTION_GROUP)
 export class QuestionGroupController {
-  constructor(private readonly questionGroupService: QuestionGroupService,
-    @InjectMapper() private readonly mapper: Mapper) {}
+  constructor(
+    private readonly questionGroupService: QuestionGroupService,
+    @InjectMapper() private readonly mapper: Mapper,
+  ) {}
 
   @Post(END_POINTS.QUESTION_GROUP.CREATE)
   @ApiOperation({ summary: 'Create a new question group' })
   async create(@Body() createQuestionGroupDto: CreateQuestionGroupDto) {
-    const newQuestionGroup = this.mapper.map(createQuestionGroupDto, CreateQuestionGroupDto, QuestionGroup);
+    const newQuestionGroup = this.mapper.map(
+      createQuestionGroupDto,
+      CreateQuestionGroupDto,
+      QuestionGroup,
+    );
     const result = await this.questionGroupService.create(newQuestionGroup);
     return ResponseObject.create('Question group created', result);
   }
@@ -40,10 +46,12 @@ export class QuestionGroupController {
 
   @Patch(END_POINTS.QUESTION_GROUP.UPDATE)
   @ApiOperation({ summary: 'Update a question group' })
-  async update(
-    @Body() updateQuestionGroupDto: UpdateQuestionGroupDto,
-  ) {
-    const questionGroup = this.mapper.map(updateQuestionGroupDto, UpdateQuestionGroupDto, QuestionGroup);
+  async update(@Body() updateQuestionGroupDto: UpdateQuestionGroupDto) {
+    const questionGroup = this.mapper.map(
+      updateQuestionGroupDto,
+      UpdateQuestionGroupDto,
+      QuestionGroup,
+    );
     const result = await this.questionGroupService.update(questionGroup);
     return ResponseObject.create('Question group updated', result);
   }
