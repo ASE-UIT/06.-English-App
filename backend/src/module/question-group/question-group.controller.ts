@@ -11,12 +11,13 @@ import { QuestionGroupService } from './question-group.service';
 import { CreateQuestionGroupDto } from './dto/create-question-group.dto';
 import { UpdateQuestionGroupDto } from './dto/update-question-group.dto';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { QuestionGroup } from './entities/question-group.entity';
 import { ResponseObject } from 'src/utils/objects';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.QUESTION_GROUP.BASE)
 @ApiTags(DOCUMENTATION.TAGS.QUESTION_GROUP)
 export class QuestionGroupController {
