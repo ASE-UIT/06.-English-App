@@ -14,6 +14,7 @@ export class LessonVocabulary extends Base {
   note: string;
   @Column({
     enum: WORD_TYPE,
+    default: WORD_TYPE.NOUN,
   })
   @AutoMap()
   wordType: WORD_TYPE;
