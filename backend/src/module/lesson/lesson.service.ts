@@ -55,7 +55,10 @@ export class LessonService {
         }),
       );
       lesson.grammars = grammars;
-      return lesson;
+      const updatedLesson = await this.dataSource
+        .getRepository(Lesson)
+        .save(lesson);
+      return updatedLesson;
     } catch (error) {
       console.log(error);
       throw new HttpException(error.message, 500);
@@ -78,7 +81,11 @@ export class LessonService {
     try {
       const lesson = await this.dataSource
         .getRepository(Lesson)
-        .findOne({ where: { id } });
+        .createQueryBuilder('lesson')
+        .leftJoinAndSelect('lesson.grammars', 'grammars')
+        .leftJoinAndSelect('lesson.lessonVocabularies', 'lessonVocabularies')
+        .where('lesson.id = :id', { id })
+        .getOneOrFail();
       return lesson;
     } catch (error) {
       console.log(error);
@@ -112,7 +119,7 @@ export class LessonService {
       const grammars = await this.dataSource
         .getRepository(Grammar)
         .createQueryBuilder('grammar')
-        .leftJoin('grammar.lessons', 'lesson')
+        .leftJoinAndSelect('grammar.lessons', 'lesson')
         .where('lesson.id = :lessonId', { lessonId })
         .getMany();
       return grammars;
