@@ -21,6 +21,8 @@ export const studentRoutes = {
   DoTestListening: "/do-test/listening",
   DoTestWriting: "/do-test/writing",
   DoTestSpeaking: "/do-test/speaking",
+  LessonGrammar: "/my-course/:courseId/:lessonId/grammar",
+  LessonVocabulary: "/my-course/:courseId/:lessonId/vocabulary",
 }
 export const teacherRoutes = {
   Course: {

@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify"
 import "@radix-ui/themes/styles.css"
 import { Theme } from "@radix-ui/themes"
 import "regenerator-runtime/runtime"
+
 const queryClient = new QueryClient()
 function App() {
   return (
