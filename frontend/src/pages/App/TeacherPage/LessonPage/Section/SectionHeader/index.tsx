@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import BackIconButton from "../../../../assets/back_button_icon.svg"
+import BackIconButton from "../../../../../../assets/back_button_icon.svg"
 import { useAuth } from "@/hooks/useAuth"
 import { useDispatch, useSelector } from "react-redux"
 import { selectCourseView, selectLessonView, selectSectionView } from "@/features/course/store/selectors"

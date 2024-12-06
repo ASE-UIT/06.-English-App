@@ -146,7 +146,7 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
         <span className="text-xl font-extralight text-black">15.00</span>
       </div>
     </div> */}
-              <SectionByLesson lessonId={lesson.id} />
+              <SectionByLesson lessonId={lesson.id} lessonName={lesson.name} />
               <div>
                 <Button
                   onClick={() => navigate(`/course/${courseId}/lesson/${lesson.id}/section/create`)}

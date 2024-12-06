@@ -34,6 +34,10 @@ export interface SectionRes extends Response {
   data: Section[]
 }
 
+export interface SectionDetailRes extends Response {
+  data: Section
+}
+
 export interface SectionCreate {
   title: string
   content: string

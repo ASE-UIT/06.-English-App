@@ -6,7 +6,7 @@ import _ from "lodash"
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router"
 
-export const SectionByLesson = ({ lessonId }: { lessonId: string }) => {
+export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; lessonName: string }) => {
   const { data: sectionData } = useSectionByLesson(lessonId)
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -25,7 +25,14 @@ export const SectionByLesson = ({ lessonId }: { lessonId: string }) => {
                 sectionDetail: false,
                 createQuestion: true,
               }
+              const lessonView = {
+                id: lessonId,
+                name: lessonName,
+                vocab: false,
+                grammar: false,
+              }
               dispatch(courseActions.updateSelectedSection(view))
+              dispatch(courseActions.updateSelectedLesson(lessonView))
               navigate(`/course/${id}/lesson/${lessonId}/${section.id}`)
             }}
             className="flex h-full w-full cursor-pointer border-[1px] border-headerIcon py-[11px] shadow-sectionCard"
