@@ -19,6 +19,8 @@ import { useLessonByCourse } from "@/features/lesson/hooks"
 import _ from "lodash"
 import { SectionByLesson } from "./Section/SectionByLesson"
 import { Input } from "@/components/ui/input"
+import { useDispatch } from "react-redux"
+import { useCourseSlice } from "@/features/course/store"
 
 const formSchema = z.object({
   name: z.string().min(1, "Vui lòng điền vào chỗ trống"),
@@ -30,6 +32,8 @@ type CreateLessonDTO = z.infer<typeof formSchema>
 
 export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { actions: courseActions } = useCourseSlice()
   const { data: lessonList, refetch: refetchLesson } = useLessonByCourse(courseId as string)
   const froalaConfig = useMemo(() => generateFroalaConfig(), [])
   const [openDialog, setOpenDialog] = useState(false)
@@ -102,14 +106,32 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
                 </span>
               </span>
               <Button
-                onClick={() => navigate(`/course/${courseId}/${lesson.id}/Vocabulary`)}
+                onClick={() => {
+                  const view = {
+                    id: lesson.id,
+                    name: lesson.name,
+                    vocab: true,
+                    grammar: false,
+                  }
+                  dispatch(courseActions.updateSelectedLesson(view))
+                  navigate(`/course/${courseId}/${lesson.id}/Vocabulary`)
+                }}
                 className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
               >
                 <BiPlus className="mr-[1.5px]" size={20} />
                 Vocabulary
               </Button>
               <Button
-                onClick={() => navigate(`/course/${courseId}/${lesson.id}/Grammar`)}
+                onClick={() => {
+                  const view = {
+                    id: lesson.id,
+                    name: lesson.name,
+                    vocab: false,
+                    grammar: true,
+                  }
+                  dispatch(courseActions.updateSelectedLesson(view))
+                  navigate(`/course/${courseId}/${lesson.id}/Grammar`)
+                }}
                 className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
               >
                 <BiPlus className="mr-[1.5px]" size={20} />

@@ -10,6 +10,8 @@ import { Course } from "@/type/course"
 import { courseApi } from "@/apis"
 import { toast } from "react-toastify"
 import _ from "lodash"
+import { useDispatch } from "react-redux"
+import { useCourseSlice } from "@/features/course/store"
 
 export default function CourseList() {
   const navigate = useNavigate()
@@ -17,6 +19,8 @@ export default function CourseList() {
   // const selectPage = (page: number) => {
   //   setPagination({ ...pagination, page: page })
   // }
+  const dispatch = useDispatch()
+  const { actions: courseActions } = useCourseSlice()
   const [page, setPage] = useState<number>(1)
   const [query, setQuery] = useState<string>("")
   const [currentPageOffset, setCurrentPageOffset] = useState<number>(1)
@@ -165,7 +169,10 @@ export default function CourseList() {
                 </div>
                 <div className="flex h-full items-center">
                   <Text
-                    onClick={() => navigate(`/course/${course.id}`)}
+                    onClick={() => {
+                      dispatch(courseActions.updateSelectedCourse({ id: course.id, name: course.title }))
+                      navigate(`/course/${course.id}`)
+                    }}
                     className="mr-3 cursor-pointer hover:text-blue-700"
                   >
                     Continue editing

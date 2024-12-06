@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createSelector } from "@reduxjs/toolkit"
-const _ = require("lodash")
+import _ from "lodash"
 import { User } from "../interface"
 
 export const initialState: User = {
