@@ -24,6 +24,7 @@ export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; le
                 name: section.title,
                 sectionDetail: false,
                 createQuestion: true,
+                type: section.type,
               }
               const lessonView = {
                 id: lessonId,

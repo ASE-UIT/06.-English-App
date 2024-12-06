@@ -21,6 +21,8 @@ import { SectionByLesson } from "./Section/SectionByLesson"
 import { Input } from "@/components/ui/input"
 import { useDispatch } from "react-redux"
 import { useCourseSlice } from "@/features/course/store"
+import LoadingScreen from "@/components/Layout/loadingScreen"
+import { AnimatePresence, motion } from "framer-motion"
 
 const formSchema = z.object({
   name: z.string().min(1, "Vui lòng điền vào chỗ trống"),
@@ -31,10 +33,27 @@ const formSchema = z.object({
 type CreateLessonDTO = z.infer<typeof formSchema>
 
 export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => {
+  const parent = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  }
+  const child = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+    },
+  }
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { actions: courseActions } = useCourseSlice()
-  const { data: lessonList, refetch: refetchLesson } = useLessonByCourse(courseId as string)
+  const { data: lessonList, refetch: refetchLesson, isLoading } = useLessonByCourse(courseId as string)
   const froalaConfig = useMemo(() => generateFroalaConfig(), [])
   const [openDialog, setOpenDialog] = useState(false)
   const [content, setContent] = useState<string>("")
@@ -94,74 +113,97 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
   }
 
   return (
-    <div className="flex h-full min-h-screen w-full flex-col gap-[28px] bg-white py-[64px]">
-      {lessonList?.data && lessonList.data.length > 0 ? (
-        _.sortBy(lessonList.data, ["createDate"]).map((lesson, index) => (
-          <div key={lesson.id} className="flex flex-col rounded-md border-2 border-fuschia px-[78px] py-[56px]">
-            <div className="flex items-center text-headerIcon">
-              <span className="mr-[30px] text-2xl font-semibold">
-                Lesson {index + 1}:{" "}
-                <span className="font-normal text-black">
-                  {lesson.name} {lesson.type}
+    <motion.div
+      variants={parent}
+      initial="hidden"
+      animate="visible"
+      className="flex h-full min-h-screen w-full flex-col gap-[28px] bg-white py-[64px]"
+    >
+      {isLoading ? <LoadingScreen /> : null}
+      <AnimatePresence>
+        {lessonList?.data && lessonList.data.length > 0 ? (
+          _.sortBy(lessonList.data, ["createDate"]).map((lesson, index) => (
+            <motion.div
+              variants={child}
+              initial="hidden"
+              animate="visible"
+              key={lesson.id}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col rounded-md border-2 border-fuschia px-[78px] py-[56px]"
+            >
+              <div className="flex items-center text-headerIcon">
+                <span className="mr-[30px] text-2xl font-semibold">
+                  Lesson {index + 1}:{" "}
+                  <span className="font-normal text-black">
+                    {lesson.name} {lesson.type}
+                  </span>
                 </span>
-              </span>
-              <Button
-                onClick={() => {
-                  const view = {
-                    id: lesson.id,
-                    name: lesson.name,
-                    vocab: true,
-                    grammar: false,
-                  }
-                  dispatch(courseActions.updateSelectedLesson(view))
-                  navigate(`/course/${courseId}/${lesson.id}/Vocabulary`)
-                }}
-                className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
-              >
-                <BiPlus className="mr-[1.5px]" size={20} />
-                Vocabulary
-              </Button>
-              <Button
-                onClick={() => {
-                  const view = {
-                    id: lesson.id,
-                    name: lesson.name,
-                    vocab: false,
-                    grammar: true,
-                  }
-                  dispatch(courseActions.updateSelectedLesson(view))
-                  navigate(`/course/${courseId}/${lesson.id}/Grammar`)
-                }}
-                className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
-              >
-                <BiPlus className="mr-[1.5px]" size={20} />
-                Grammar
-              </Button>
-            </div>
-            <div className="mt-[33px] flex w-full flex-col gap-[23px]">
-              {/* <div className="flex h-[73px] w-full cursor-pointer shadow-sectionCard">
+                <Button
+                  onClick={() => {
+                    const view = {
+                      id: lesson.id,
+                      name: lesson.name,
+                      vocab: true,
+                      grammar: false,
+                    }
+                    dispatch(courseActions.updateSelectedLesson(view))
+                    navigate(`/course/${courseId}/${lesson.id}/Vocabulary`)
+                  }}
+                  className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
+                >
+                  <BiPlus className="mr-[1.5px]" size={20} />
+                  Vocabulary
+                </Button>
+                <Button
+                  onClick={() => {
+                    const view = {
+                      id: lesson.id,
+                      name: lesson.name,
+                      vocab: false,
+                      grammar: true,
+                    }
+                    dispatch(courseActions.updateSelectedLesson(view))
+                    navigate(`/course/${courseId}/${lesson.id}/Grammar`)
+                  }}
+                  className="mr-[19px] rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal hover:border-fuschia hover:bg-fuschia hover:text-white"
+                >
+                  <BiPlus className="mr-[1.5px]" size={20} />
+                  Grammar
+                </Button>
+              </div>
+              <div className="mt-[33px] flex w-full flex-col gap-[23px]">
+                {/* <div className="flex h-[73px] w-full cursor-pointer shadow-sectionCard">
       <div className="w-[96px] bg-white"></div>
       <div className="flex w-full flex-col bg-lessonbg px-[26px] py-[9px]">
         <span className="text-2xl font-normal text-black">VideoLecture1.mp4</span>
         <span className="text-xl font-extralight text-black">15.00</span>
       </div>
     </div> */}
-              <SectionByLesson lessonId={lesson.id} lessonName={lesson.name} />
-              <div>
-                <Button
-                  onClick={() => navigate(`/course/${courseId}/lesson/${lesson.id}/section/create`)}
-                  className="mr-[19px] rounded-lg border-2 border-fuschia bg-lessonbg p-3 text-[16px] font-normal text-headerIcon hover:border-fuschia hover:bg-fuschia hover:text-white"
-                >
-                  <BiPlus className="mr-[1.5px]" size={20} />
-                  Add section
-                </Button>
+                <SectionByLesson lessonId={lesson.id} lessonName={lesson.name} />
+                <div>
+                  <Button
+                    onClick={() => navigate(`/course/${courseId}/lesson/${lesson.id}/section/create`)}
+                    className="mr-[19px] rounded-lg border-2 border-fuschia bg-lessonbg p-3 text-[16px] font-normal text-headerIcon hover:border-fuschia hover:bg-fuschia hover:text-white"
+                  >
+                    <BiPlus className="mr-[1.5px]" size={20} />
+                    Add section
+                  </Button>
+                </div>
               </div>
-            </div>
-          </div>
-        ))
-      ) : (
-        <span className="text-base font-semibold text-black">No lesson in this course...</span>
-      )}
+            </motion.div>
+          ))
+        ) : (
+          <motion.p
+            variants={child}
+            initial="hidden"
+            animate="visible"
+            transition={{ duration: 0.5 }}
+            className="text-base font-semibold text-black"
+          >
+            No lesson in this course...
+          </motion.p>
+        )}
+      </AnimatePresence>
       <div className="mt-[38px]">
         <Dialog
           open={openDialog}
@@ -268,6 +310,6 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
           </DialogContent>
         </Dialog>
       </div>
-    </div>
+    </motion.div>
   )
 }
