@@ -35,4 +35,7 @@ export const queryKeys = {
   grammarByLessonId: {
     gen: (lessonId: string) => ["grammarByLessonId", lessonId],
   },
+  vocabByLessonId: {
+    gen: (lessonId: string) => ["vocabByLessonId", lessonId],
+  },
 }

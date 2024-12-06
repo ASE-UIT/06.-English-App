@@ -2,7 +2,7 @@ import { httpClient } from "@/services"
 import { Response } from "@/type"
 import { GrammarRes } from "@/type/grammar"
 import { LessonCreate, LessonCreateRes, LessonDetailRes, LessonRes } from "@/type/lesson"
-import { vocabularyDTO } from "@/type/vocabulary"
+import { vocabulariesRes, vocabularyDTO } from "@/type/vocabulary"
 
 class LessonApi {
   constructor() {
@@ -54,6 +54,14 @@ class LessonApi {
   async getGrammarByLesson(lessonId: string) {
     try {
       const res = await httpClient.get<GrammarRes>(`/lesson/get-all-grammar-by-lesson/${lessonId}`)
+      return res
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  async getVocabByLesson(lessonId: string) {
+    try {
+      const res = await httpClient.get<vocabulariesRes>(`/lesson/get-all-vocabulary-by-lesson/${lessonId}`)
       return res
     } catch (error) {
       console.log(error)

@@ -68,3 +68,4 @@ export const WordType = [
     text: "Interjection",
   },
 ]
+export const WordTypeMap = Object.fromEntries(WordType.map(({ key, text }) => [key, text]))

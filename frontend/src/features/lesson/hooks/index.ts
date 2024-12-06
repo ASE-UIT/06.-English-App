@@ -18,3 +18,8 @@ export const useGrammarByLesson = (lessonId: string) =>
     queryKey: queryKeys.grammarByLessonId.gen(lessonId),
     queryFn: () => lessonApi.getGrammarByLesson(lessonId),
   })
+export const useVocabByLesson = (lessonId: string) =>
+  useQuery({
+    queryKey: queryKeys.vocabByLessonId.gen(lessonId),
+    queryFn: () => lessonApi.getVocabByLesson(lessonId),
+  })

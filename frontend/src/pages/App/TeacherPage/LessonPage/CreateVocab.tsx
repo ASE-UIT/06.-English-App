@@ -8,12 +8,15 @@ import { Input } from "@/components/Layout/Components/ui/Input"
 import { Button } from "@/components/Layout/Components/ui/Button"
 import { BiPlus } from "react-icons/bi"
 import { GiGlobe } from "react-icons/gi"
-import { WordType } from "@/type"
-import { useMutation } from "@tanstack/react-query"
+import { WordType, WordTypeMap } from "@/type"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { fileApi, lessonApi } from "@/apis"
 import { toast } from "react-toastify"
 import { vocabularyDTO } from "@/type/vocabulary"
 import { useParams } from "react-router"
+import { useVocabByLesson } from "@/features/lesson/hooks"
+import _ from "lodash"
+import { queryKeys } from "@/config"
 
 export const formSchema = z.object({
   Term: z.string().min(1, ""),
@@ -27,6 +30,8 @@ export const formSchema = z.object({
 
 export const CreateVocab = () => {
   const { lessonId } = useParams()
+  const queryClient = useQueryClient()
+  const { data: vocabByLesson } = useVocabByLesson(lessonId as string)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,6 +46,9 @@ export const CreateVocab = () => {
       if (Res?.message === "Add vocabularies to lesson successfully") {
         toast.success(`${Res.message}`)
         form.reset()
+        if (lessonId) {
+          queryClient.invalidateQueries({ queryKey: queryKeys.vocabByLessonId.gen(lessonId) })
+        }
       } else {
         toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
       }
@@ -76,7 +84,24 @@ export const CreateVocab = () => {
   }
 
   return (
-    <div className="flex h-full min-h-screen w-full flex-col bg-white px-[66px] py-[64px]">
+    <div className="flex h-full min-h-screen w-full flex-col gap-5 bg-white px-[66px] py-[64px]">
+      <div className="flex w-full flex-wrap gap-5">
+        {(vocabByLesson?.data ?? []).length > 0 ? (
+          _.orderBy(vocabByLesson?.data ?? [], ["createDate"]).map((vocab) => (
+            <div key={vocab.vocabulary} className="flex items-center gap-2">
+              <img src={vocab.mediaWord} alt={vocab.vocabulary} className="h-20 w-20" />
+              <div className="flex flex-col gap-2">
+                <p className="text-base font-medium text-black">
+                  {vocab.vocabulary} {WordTypeMap[vocab.wordType]}
+                </p>
+                <p className="text-sm font-normal text-zinc-700">{vocab.note}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p className="text-base font-normal text-zinc-700">No vocabulary in this lesson</p>
+        )}
+      </div>
       <div className="flex flex-wrap rounded-md border-2 border-fuschia px-[78px] py-[56px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="">
@@ -145,7 +170,7 @@ export const CreateVocab = () => {
           Add from dictionary
         </Button>
       </div>
-      <div className="mt-[38px]">
+      <div className="mt-[25px]">
         <Button
           onClick={form.handleSubmit(onSubmit)}
           className="mr-[19px] rounded-lg border-2 bg-fuschia p-3 text-[16px] font-normal text-white"
