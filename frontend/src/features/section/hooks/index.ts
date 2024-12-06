@@ -15,3 +15,8 @@ export const useSectionByLesson = (lessonId: string) =>
     queryFn: () => sectionApi.GetSectionByLesson(lessonId),
     refetchOnMount: "always",
   })
+export const useSectionById = (id: string) =>
+  useQuery({
+    queryKey: queryKeys.sectionById.gen(id),
+    queryFn: () => sectionApi.GetSectionById(id),
+  })

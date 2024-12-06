@@ -25,6 +25,7 @@ import CourseAddWritingSection from "@/pages/App/TeacherPage/CoursePage/Add/Writ
 import CourseAddListeningSection from "@/pages/App/TeacherPage/CoursePage/Add/ListeningSection"
 import TeacherLayout from "@/components/Layout/Teacher"
 import { SectionComp } from "@/pages/App/TeacherPage/CoursePage/Add/section"
+import { Section } from "@/pages/App/TeacherPage/LessonPage/Section"
 import { LessonGrammar} from "@/pages/App/StudentPage/TestPage/LessonGrammarPage"
 import { LessonVocabulary } from "@/pages/App/StudentPage/TestPage/LessonVocabularyPage"
 
@@ -148,6 +149,11 @@ const protectedRoutes = [
     path: teacherRoutes.Section.CreateWriting,
     component: <CreateWriting></CreateWriting>,
     layout: DoTestLayout,
+  },
+  {
+    path: teacherRoutes.Section.Base,
+    component: <Section></Section>,
+    layout: Fragment,
   },
 ]
 export { publicRoutes, protectedRoutes }
