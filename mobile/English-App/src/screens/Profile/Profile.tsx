@@ -10,6 +10,8 @@ import {
 import { Avatar, Icon } from "react-native-elements";
 import InputField from "./InputField"; // Adjust the import path as needed
 import userService from "../../services/user.service";
+import MainHeader from "../../components/MainHeader";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -51,7 +53,10 @@ const Profile = () => {
   };
 
   return (
+    <SafeAreaView>
+      <MainHeader/>
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      
       <View className="flex flex-col justify-center items-center">
         <Avatar
           source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
@@ -141,6 +146,7 @@ const Profile = () => {
         </View>
       </View>
     </TouchableWithoutFeedback>
+    </SafeAreaView>
   );
 };
 
