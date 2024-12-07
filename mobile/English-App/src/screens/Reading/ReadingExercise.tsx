@@ -37,6 +37,7 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
       style={{ paddingHorizontal: 10 }}
       ref={scrollRef}
     >
+     
       <View className="reading-content flex gap-2 items-center">
         <Text className="text-black text-lg font-bold">{section.title}</Text>
         {/* <Image src={section.imgUrl} className="h-60 w-40" /> */}

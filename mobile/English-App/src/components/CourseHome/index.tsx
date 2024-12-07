@@ -21,7 +21,7 @@ import lessonService from "../../services/lesson.service";
 import sectionService from "../../services/section.service";
 import {
   CourseDetailScreenNavigationProp,
-  CourseScreenRouteProp
+  CourseScreenRouteProp,
 } from "../../type";
 
 const { height } = Dimensions.get("window");
@@ -44,31 +44,16 @@ export default function CourseViewer() {
         const lessonsWithSections = await Promise.all(
           res.data.map(async (lesson: Lesson) => {
             const sections = await fetchSection(lesson.id);
-            const mappedData = sections.map(
-              (item: {
-                id: any;
-                createDate: any;
-                updateDate: any;
-                name: any;
-                content: any;
-                type: any;
-              }) => ({
-                id: item.id,
-                createDate: item.createDate,
-                updateDate: item.updateDate,
-                title: item.name,
-                content: item.content,
-                type: item.type,
-                lessonId: lesson.id,
-              })
-            );
+
             return {
               ...lesson,
-              sections: mappedData ?? ([] as Section[]),
+
+              sections: sections ?? ([] as Section[]),
             };
           })
         );
         setLessons(lessonsWithSections);
+        
       } else {
         console.error("Error fetching lessons, status code: ", res.statusCode);
       }
@@ -107,19 +92,17 @@ export default function CourseViewer() {
       setCurrentVideoUri(section.uri);
       setIsPlaying(true);
     }
-    
-    
+
     switch (section.type) {
       case "LISTENING":
-        navigation.navigate("Listening",{sectionID:section.id} );
-        
-        
+        navigation.navigate("Listening", { sectionID: section.id });
+
         break;
       case "READING":
-        navigation.navigate("Reading",{sectionID:section.id} );
-        
+        navigation.navigate("Reading", { sectionID: section.id });
+
         break;
-   
+
       default:
         break;
     }

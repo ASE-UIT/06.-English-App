@@ -47,7 +47,9 @@ export default function RootStack() {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Listening" component={ListeningExerciseScreen} />
+      <Stack.Screen name="Listening" component={ListeningExerciseScreen} options={{
+        headerRight: () => <HeaderRight scrollRef={scrollRef} />,
+      }} />
     </Stack.Navigator>
   );
 }
