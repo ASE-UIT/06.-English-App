@@ -17,7 +17,7 @@ export default function ListeningTestPage() {
               </div>
               <div className="w-full rounded-md border-2 border-[#fcddec] p-[20px]">
                 <div className="flex flex-[8] flex-col">
-                  <ReadingTestPage />
+                  <ReadingTestPage questionGroups={[]}/>
                 </div>
               </div>
             </div>

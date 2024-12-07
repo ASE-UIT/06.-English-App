@@ -1,4 +1,10 @@
 import { Input } from "@/components/ui/input"
+
+interface MatchingQuestionProps {
+  order: number
+  text: string
+}
+
 export const MatchingQuestion = () => {
   return (
     <div className="flex w-full items-center space-x-2">
