@@ -21,8 +21,6 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
       try {
         const response = await sectionService.getSectionById(sectionID);
         setSection(response.data);
-        
-       
       } catch (err) {
         console.log(err);
       }
@@ -32,6 +30,35 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   }, [sectionID]);
 
   const { width } = Dimensions.get("window");
+  console.log(section.content);
+
+  const tagsStyles = {
+    p: {
+      color: "blue",
+      fontSize: 16,
+    },
+    h1: {
+      color: "red",
+      fontSize: 24,
+    },
+    strong: {
+      fontWeight: "bold",
+      fontSize: 18,
+    },
+    td: {
+      marginTop: 10, // Add margin to create space above <td>
+    },
+    // Add more tag styles as needed
+  };
+  const customRenderers = {
+    td: ({ TDefaultRenderer, ...props }) => {
+      return (
+        <View style={{ marginTop: 10 }}>
+          <TDefaultRenderer {...props} />
+        </View>
+      );
+    },
+  };
 
   return (
     <ScrollView
@@ -54,6 +81,7 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
             <Text>No Image Available</Text>
           )}
           <RenderHtml
+            renderers={customRenderers}
             contentWidth={width}
             source={{ html: section.content || "" }}
           />
