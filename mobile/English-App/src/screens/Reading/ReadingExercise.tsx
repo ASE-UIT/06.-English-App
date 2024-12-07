@@ -30,7 +30,7 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   }, [sectionID]);
 
   const { width } = Dimensions.get("window");
-  console.log(section.content);
+  console.log(section?.questionGroups);
 
   const tagsStyles = {
     p: {
@@ -51,7 +51,7 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
     // Add more tag styles as needed
   };
   const customRenderers = {
-    td: ({ TDefaultRenderer, ...props }) => {
+    td: ({ TDefaultRenderer, ...props }: { TDefaultRenderer: any; [key: string]: any }) => {
       return (
         <View style={{ marginTop: 10 }}>
           <TDefaultRenderer {...props} />

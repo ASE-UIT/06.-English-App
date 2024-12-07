@@ -1,3 +1,5 @@
+import QuestionGroup from "./QuestionGroup";
+
 type Section = {
   id: string;
   createDate: string;
@@ -6,9 +8,7 @@ type Section = {
   content: string;
   type: string;
   sectionMedia: string;
-  questionGroups: {
-    [key: string]: any;
-  };
+  questionGroups: QuestionGroup[];
 };
 
 export default Section;
