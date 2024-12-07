@@ -23,9 +23,9 @@ export const ReadingTestPage: React.FC<ReadingTestPageProps> = ({ questionGroups
             {/* Questions */}
             {group.questions.map((question, qIndex) => (
               <div key={qIndex} className="mb-4">
-                {question.type === "BLANK" && <MatchingQuestion question={question} />}
-                {question.type === "MULTIPLECHOICE" && <MultipleChoiceQuestion question={question} />}
-                {question.type === "COMBOBOX" && <ComboBoxQuestion question={question} />}
+                {question.type === "BLANK" && <MatchingQuestion text={} order={} />}
+                {question.type === "MULTIPLECHOICE" && <MultipleChoiceQuestion text={} order={} />}
+                {question.type === "COMBOBOX" && <ComboBoxQuestion text={} order={} />}
               </div>
             ))}
           </div>
