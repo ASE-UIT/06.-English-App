@@ -1,35 +1,37 @@
-import { View, Text, Image, ScrollView, Dimensions } from "react-native";
-import MultipleChoiceFormat from "../../components/MultipleChoiceFormat/MultipleChoiceFormat";
-import MultiSelectFormat from "../../components/MultiSelectFormat/MultiSelectFormat";
-import { useEffect, useRef, useState } from "react";
-import { RouteProp, useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, Image, Dimensions } from "react-native";
+import { useRoute, RouteProp } from "@react-navigation/native";
+import RenderHtml from "react-native-render-html";
 import { RootStackParamList } from "../../type";
 import sectionService from "../../services/section.service";
-import RenderHtml from "react-native-render-html";
-type ReadingExerciseProps = {
-  scrollRef: React.RefObject<ScrollView>;
-};
-export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
+import Section from "../../models/Section";
 
+type ReadingExerciseProps = {
+  scrollRef?: React.RefObject<ScrollView>; // scrollRef is optional
+};
+
+export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   const route = useRoute<RouteProp<RootStackParamList, "Reading">>();
   const { sectionID } = route.params;
-  const [section, setSection] = useState({});
+  const [section, setSection] = useState<Section | null>(null);
 
-  const width = Dimensions.get("window").width;
-  // fetch section data from API
+  // Fetch section data from API
   useEffect(() => {
     const fetchSection = async () => {
       try {
         const response = await sectionService.getSectionById(sectionID);
         setSection(response.data);
+        
+       
       } catch (err) {
         console.log(err);
       }
     };
+
     fetchSection();
   }, [sectionID]);
 
-  console.log(sectionID);
+  const { width } = Dimensions.get("window");
 
   return (
     <ScrollView
@@ -37,18 +39,29 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
       style={{ paddingHorizontal: 10 }}
       ref={scrollRef}
     >
-     
-      <View className="reading-content flex gap-2 items-center">
-        <Text className="text-black text-lg font-bold">{section.title}</Text>
-        {/* <Image src={section.imgUrl} className="h-60 w-40" /> */}
-        <RenderHtml
-          contentWidth={width}
-          source={{ html: section.content || "" }}
-        />
-      </View>
+      {section && (
+        <View className="reading-content flex gap-2 items-center">
+          <Text className="text-black text-lg font-bold">{section.title}</Text>
+          {section.sectionMedia ? (
+            <Image
+              source={{ uri: section.sectionMedia }}
+              style={{ height: 240, width: 160 }}
+              onError={(error) =>
+                console.log("Image Load Error:", error.nativeEvent.error)
+              }
+            />
+          ) : (
+            <Text>No Image Available</Text>
+          )}
+          <RenderHtml
+            contentWidth={width}
+            source={{ html: section.content || "" }}
+          />
+        </View>
+      )}
       <View className="reading-questions" style={{ display: "flex", gap: 20 }}>
         {/* questions.map()... */}
-        <MultipleChoiceFormat />
+        {/* <MultipleChoiceFormat /> */}
       </View>
     </ScrollView>
   );

@@ -1,6 +1,6 @@
 import Course from "./Course";
 import Lesson from "./Lesson";
-import Section from "./Section";
+import Section from "./SectionByLesson";
 import MyCourse from "./MyCourse";
 import GrammarModel from "./GrammarModel";
-export { Course, Lesson, Section, MyCourse,GrammarModel };
+export { Course, Lesson, Section, MyCourse, GrammarModel };

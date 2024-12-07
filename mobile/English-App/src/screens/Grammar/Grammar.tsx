@@ -20,6 +20,7 @@ const Grammar = () => {
     fetchGrammar();
 
   }, [grammars]);
+ 
 
   const navigation = useNavigation<GrammarScreenNavigationProp>();
   return (

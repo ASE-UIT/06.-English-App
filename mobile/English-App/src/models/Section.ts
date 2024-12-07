@@ -5,6 +5,10 @@ type Section = {
   title: string;
   content: string;
   type: string;
-  lessonId: string;
+  sectionMedia: string;
+  questionGroups: {
+    [key: string]: any;
+  };
 };
+
 export default Section;
