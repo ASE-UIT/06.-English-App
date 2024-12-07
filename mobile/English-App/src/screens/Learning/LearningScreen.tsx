@@ -7,6 +7,8 @@ import { useNavigation } from "@react-navigation/native";
 import { LearningScreenNavigationProp } from "../../type";
 import courseService from "../../services/course.service";
 import { MyCourse } from "../../models";
+import MainHeader from "../../components/MainHeader";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function LearningScreen() {
   const nav = useNavigation<LearningScreenNavigationProp>();
@@ -31,6 +33,8 @@ export default function LearningScreen() {
     fetchStudentCourses();
   }, []);
   return (
+    <SafeAreaView>
+      <MainHeader  />
     <ScrollView className="w-full px-[24px] py-6">
       <Text className="font-semibold text-base text-[#5D5FEF] mb-4">
         My Courses
@@ -107,5 +111,6 @@ export default function LearningScreen() {
         ))}
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 }

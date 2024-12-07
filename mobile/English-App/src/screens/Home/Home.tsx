@@ -7,6 +7,8 @@ import colors from "../../../colors";
 import courseCategoryService from "../../services/courseCategory.service";
 import courseService from "../../services/course.service";
 import { Course } from "../../models";
+import MainHeader from "../../components/MainHeader";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
   const userName = "Emma";
@@ -58,6 +60,8 @@ const Home = () => {
   }, []);
 
   return (
+    <SafeAreaView>
+      <MainHeader  showSearchButton={true} />
     <ScrollView
       style={{
         padding: 10,
@@ -135,6 +139,7 @@ const Home = () => {
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

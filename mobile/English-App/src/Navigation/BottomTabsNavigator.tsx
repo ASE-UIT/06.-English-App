@@ -14,7 +14,7 @@ const Tab = createMaterialBottomTabNavigator();
 export default function BottomTabsNavigator() {
   return (
     <>
-      <MainHeader title="English App" />
+      
       <Tab.Navigator
         initialRouteName="Reading"
         activeColor="#5D5FEF"

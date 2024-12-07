@@ -5,6 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import { GrammarScreenNavigationProp } from "../../type";
 import grammarService from "../../services/grammar.service";
 import GrammarModel from "../../models/GrammarModel";
+import MainHeader from "../../components/MainHeader";
 
 const Grammar = () => {
   const [grammars, setGrammars] = useState<GrammarModel[]>([]);
@@ -25,6 +26,7 @@ const Grammar = () => {
   const navigation = useNavigation<GrammarScreenNavigationProp>();
   return (
     <SafeAreaView className=" justify-center items-center flex ">
+      <MainHeader />
       <View
         style={{ marginLeft: 40, marginRight: 40 }}
         className="flex border p-5 mt-[35px] mx-10  w-full h-fit flex-col justify-center items-start"
