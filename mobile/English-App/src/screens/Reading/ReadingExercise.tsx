@@ -30,28 +30,16 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   }, [sectionID]);
 
   const { width } = Dimensions.get("window");
-  console.log(section?.questionGroups);
+  const questionGroups = section ? section.questionGroups : [];
 
-  const tagsStyles = {
-    p: {
-      color: "blue",
-      fontSize: 16,
-    },
-    h1: {
-      color: "red",
-      fontSize: 24,
-    },
-    strong: {
-      fontWeight: "bold",
-      fontSize: 18,
-    },
-    td: {
-      marginTop: 10, // Add margin to create space above <td>
-    },
-    // Add more tag styles as needed
-  };
   const customRenderers = {
-    td: ({ TDefaultRenderer, ...props }: { TDefaultRenderer: any; [key: string]: any }) => {
+    td: ({
+      TDefaultRenderer,
+      ...props
+    }: {
+      TDefaultRenderer: any;
+      [key: string]: any;
+    }) => {
       return (
         <View style={{ marginTop: 10 }}>
           <TDefaultRenderer {...props} />
@@ -90,6 +78,33 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
       <View className="reading-questions" style={{ display: "flex", gap: 20 }}>
         {/* questions.map()... */}
         {/* <MultipleChoiceFormat /> */}
+        {questionGroups ? (
+          <>
+            {questionGroups.map((questionGroup) => (
+              <View key={questionGroup.id}>
+                <RenderHtml
+                  contentWidth={width}
+                  source={{ html: questionGroup.text || "" }}
+                />
+                <View>
+                  {questionGroup.questions.map((question)=>{
+                    return(
+                      <View key={question.id}>
+                        <RenderHtml
+                          contentWidth={width}
+                          source={{ html: question.text || "" }}
+                        />
+                      </View>
+                    )
+
+                  })}
+                </View>
+              </View>
+            ))}
+          </>
+        ) : (
+          <Text>null</Text>
+        )}
       </View>
     </ScrollView>
   );
