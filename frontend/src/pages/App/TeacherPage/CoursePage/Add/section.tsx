@@ -88,12 +88,12 @@ export const SectionComp = () => {
       ) {
         if (lessonData?.data.type === "LISTENING") getPreUrl = await fileApi.getPresignedUrl(contentType, "mp3")
         else {
-          error = "Incorrect file type: Listening lesson only accept audio file"
+          error = "Incorrect file type: Reading lesson only accept image file"
         }
       } else if (["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp"].includes(contentType)) {
         if (lessonData?.data.type === "READING") getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
         else {
-          error = "Incorrect file type: Reading lesson only accept image file"
+          error = "Incorrect file type: Listening lesson only accept audio file"
         }
       }
       console.log("error", error)

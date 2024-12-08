@@ -1,8 +1,26 @@
 import { Button } from "@/components/ui/button"
 import SubmitLogo from "@/assets/submit_icon.svg"
 import { ReadingTestPage } from "../ReadingTestPage/ReadingTestPage"
-
+import { Section } from "@/type/section"
+import { useEffect, useState } from "react"
+import { useParams } from "react-router-dom"
+import sectionApi from "@/apis/sectionApi"
 export default function ListeningTestPage() {
+  const [data, setData] = useState<Section | null>(null);
+  const { id } = useParams();
+  useEffect(
+    () => {
+      if (id) {
+        sectionApi.GetSectionById(id).then((res) => {
+          if (res) {
+            setData(res.data);
+            console.log(res.data)
+          }
+        });
+      }
+    }
+    , [id]);
+
   return (
     <div className="mb-[20px] ml-[75px] mr-[40px] mt-[45px] flex">
       <div className="flex flex-[7] flex-col">
@@ -12,12 +30,12 @@ export default function ListeningTestPage() {
             <div className="flex flex-col">
               <div className="my-8 bg-transparent">
                 <audio className="-z-10 w-full bg-[#fff5fa]" controls autoPlay muted loop>
-                  <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg" />
+                  <source src={data?.sectionMedia} type="audio/mpeg" />
                 </audio>
               </div>
               <div className="w-full rounded-md border-2 border-[#fcddec] p-[20px]">
                 <div className="flex flex-[8] flex-col">
-                  <ReadingTestPage />
+                  <ReadingTestPage questionGroups={data ? data.questionGroups : []} />
                 </div>
               </div>
             </div>
@@ -32,7 +50,7 @@ export default function ListeningTestPage() {
               {Array.from({ length: 10 }, (_, i) => (
                 <Button
                   key={i}
-                  className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-inherit hover:outline-none focus:outline-none"
+                  className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-inherit hover:bg-[#5d5fef] hover:outline-none focus:outline-none focus:bg-[#5d5fef]" 
                 >
                   {i + 1}
                 </Button>

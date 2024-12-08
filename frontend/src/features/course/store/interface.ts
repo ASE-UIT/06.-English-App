@@ -14,5 +14,6 @@ export interface CourseView {
     name: string
     sectionDetail: boolean
     createQuestion: boolean
+    type: ""
   }
 }

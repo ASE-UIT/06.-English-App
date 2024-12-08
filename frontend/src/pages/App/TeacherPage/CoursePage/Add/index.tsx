@@ -11,9 +11,10 @@ import { ImageType } from "react-images-uploading/dist/typings"
 import { useCourseCategory } from "@/features/course/hooks"
 import generateFroalaConfig from "@/config/froala.config"
 import FroalaEditorComponent from "@/components/Layout/Components/ui/FroalaEditorComponent"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { courseApi, fileApi } from "@/apis"
 import { toast } from "react-toastify"
+import LoadingScreen from "@/components/Layout/loadingScreen"
 
 const formSchema = z.object({
   title: z.string().min(1, "Vui lòng điền vào chỗ trống"),
@@ -25,6 +26,7 @@ type CreateCourseDTO = z.infer<typeof formSchema>
 
 export default function CourseCreate() {
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [images, setImages] = useState<Array<ImageType>>([])
   const [imageUrl, setImageUrl] = useState<string>("")
   console.log("images", images)
@@ -75,6 +77,7 @@ export default function CourseCreate() {
     onSuccess: (Res) => {
       if (Res?.message === "Course created") {
         toast.success(`${Res.message}`)
+        queryClient.invalidateQueries({ queryKey: ["courseByTeacher"] })
         navigate("/course")
       } else {
         toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
@@ -100,6 +103,7 @@ export default function CourseCreate() {
 
   return (
     <div className="p-3">
+      {CreateCourse.isPending ? <LoadingScreen message="Đang tạo khóa học..." /> : null}
       <div className="mb-8 text-2xl font-semibold text-blue-700">Course information</div>
       <form className="grid grid-cols-2 gap-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-6">

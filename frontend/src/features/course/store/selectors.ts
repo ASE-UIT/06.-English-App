@@ -18,6 +18,7 @@ export const initialState: CourseView = {
     name: "",
     sectionDetail: false,
     createQuestion: false,
+    type: "",
   },
 }
 

@@ -16,6 +16,7 @@ import { useLessonById } from "@/features/lesson/hooks"
 import { useSectionById } from "@/features/section/hooks"
 import { useSelector } from "react-redux"
 import { selectSectionView } from "@/features/course/store/selectors"
+import LoadingScreen from "@/components/Layout/loadingScreen"
 
 const formSchema = z.object({
   title: z.string().min(1, "Vui lòng điền vào chỗ trống"),
@@ -127,6 +128,7 @@ export const SectionDetail = () => {
 
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-white py-[27px]">
+      {isLoading ? <LoadingScreen /> : null}
       <ToastContainer />
       {!isLoading && (
         <form className="flex w-full flex-col gap-5 px-[78px] py-[56px]" onSubmit={handleSubmit(onSubmit)}>
