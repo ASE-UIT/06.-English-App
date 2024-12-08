@@ -1,0 +1,44 @@
+[
+  {
+    "vocabulary": "home",
+    "note": "nhà",
+    "mediaWord": "https://via.placeholder.com/150?text=home",
+    "wordType": "noun",
+    "learned": true
+  },
+  {
+    "vocabulary": "house",
+    "note": "nhà",
+    "mediaWord": "https://via.placeholder.com/150?text=house",
+    "wordType": "noun",
+    "learned": true
+  },
+  {
+    "vocabulary": "residence",
+    "note": "nhà",
+    "mediaWord": "https://via.placeholder.com/150?text=residence",
+    "wordType": "noun",
+    "learned": true
+  },
+  {
+    "vocabulary": "dwelling",
+    "note": "nhà",
+    "mediaWord": "https://via.placeholder.com/150?text=dwelling",
+    "wordType": "noun",
+    "learned": false
+  },
+  {
+    "vocabulary": "abode",
+    "note": "nhà",
+    "mediaWord": "https://via.placeholder.com/150?text=abode",
+    "wordType": "noun",
+    "learned": false
+  },
+  {
+    "vocabulary": "habitat",
+    "note": "nhà",
+    "mediaWord": "https://via.placeholder.com/150?text=habitat",
+    "wordType": "noun",
+    "learned": false
+  }
+]
