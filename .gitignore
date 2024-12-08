@@ -400,4 +400,4 @@ dist
 .serverless/**/*.zip
 bin
 obj
-06.-English-App.sln
+*.sln

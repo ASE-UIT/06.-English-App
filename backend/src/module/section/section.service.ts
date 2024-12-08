@@ -3,6 +3,7 @@ import { Section } from './entities/section.entity';
 import { DataSource } from 'typeorm';
 import HttpStatusCode from 'src/utils/HttpStatusCode';
 import { Lesson } from '../lesson/entities/lesson.entity';
+import { CreateSectionDto } from './dto/create-section.dto';
 
 @Injectable()
 export class SectionService {
@@ -31,9 +32,12 @@ export class SectionService {
   }
   async findAllByLesson(lessonId: string) {
     try {
-      const sections = await this.dataSource.getRepository(Section).find({
-        where: { lesson: { id: lessonId } },
-      });
+      const sections = await this.dataSource
+        .getRepository(Section)
+        .createQueryBuilder('section')
+        .leftJoinAndSelect('section.lesson', 'lesson')
+        .where('lesson.id = :id', { id: lessonId })
+        .getMany();
       return sections;
     } catch (error) {
       throw new HttpException(

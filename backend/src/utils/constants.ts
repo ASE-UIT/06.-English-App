@@ -41,6 +41,7 @@ export const END_POINTS = {
     CREATE_PAY_ORDER_URL: '/create-pay-order-url',
     VALIDATE_PAY_ORDER: '/validate-pay-order',
     VNPAY_IPN: '/vnpay-ipn',
+    CHECK_KEY: '/check-key',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
   },
   COURSE_OWNING: {
@@ -59,7 +60,12 @@ export const END_POINTS = {
     CREATE_GRAMMAR: '/grammar',
     CREATE_VOCABULARY: '/vocabulary',
     GET_ALL_LESSONS_BY_COURSE: '/get-all-lessons-by-course/:courseId',
+    GET_ALL_GRAMMAR_BY_LESSON: '/get-all-grammar-by-lesson/:lessonId',
+    GET_ALL_VOCABULARY_BY_LESSON: '/get-all-vocabulary-by-lesson/:lessonId',
     CREATE_NORMAL: '/normal',
+    ADD_GRAMMAR_TO_LESSON: '/add-grammar-to-lesson/:lessonId',
+    ADD_VOCABULARY_TO_LESSON: '/add-vocabulary-to-lesson/:lessonId',
+    GET_ONE: '/get-one/:id',
     LIST: '',
     UPDATE: '',
     DELETE: '',
@@ -120,6 +126,8 @@ export const DOCUMENTATION = {
     FILE: 'FILE',
     COURSE: 'COURSE',
     DISCOUNT: 'DISCOUNT',
+    COURSE_BUYING: 'COURSE_BUYING',
+    COURSE_OWNING: 'COURSE_OWNING',
     COURSE_CATEGORY: 'COURSE_CATEGORY',
     LESSON: 'LESSON',
     GRAMMAR: 'GRAMMAR',
@@ -127,7 +135,6 @@ export const DOCUMENTATION = {
     QUESTION: 'QUESTION',
     QUESTION_GROUP: 'QUESTION_GROUP',
     STUDENT_ANSWER: 'STUDENT_ANSWER',
-    COURSE_BUYING: 'COURSE_BUYING',
   },
 };
 export const TIMEOUT = 5000;
@@ -202,6 +209,17 @@ export enum SECTION_STATUS {
   NOT_STARTED = 'NOT_STARTED',
   IN_PROGRESS = 'IN_PROGRESS',
   DONE = 'DONE',
+}
+
+export enum WORD_TYPE {
+  NOUN = 'NOUN',
+  VERB = 'VERB',
+  ADJECTIVE = 'ADJECTIVE',
+  ADVERB = 'ADVERB',
+  PRONOUN = 'PRONOUN',
+  PREPOSITION = 'PREPOSITION',
+  CONJUNCTION = 'CONJUNCTION',
+  INTERJECTION = 'INTERJECTION',
 }
 
 export const INJECTION_DEPS = {

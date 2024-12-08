@@ -1,4 +1,9 @@
-import { HttpException, Injectable, Req } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  Req,
+} from '@nestjs/common';
 import { CourseBuying } from './entities/course-buying.entity';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +15,10 @@ import { User } from '../user/entities/user.entity';
 import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
+import { CheckKeyDto } from './dto/check-key.dto';
+import { CourseOwning } from '../course-owning/entities/course-owning.entity';
+import { LessonProgress } from '../course-owning/entities/lesson-progress.entity';
+import { SectionProgress } from '../course-owning/entities/section-progress.entity';
 
 @Injectable()
 export class CourseBuyingService {
@@ -188,19 +197,87 @@ export class CourseBuyingService {
       return { message: 'Pay fail', code: '97' };
     }
   }
+  async checkKey(checkKeyDto: CheckKeyDto, userAwsId: string) {
+    return this.dataSource.transaction(async (transactionalEntityManager) => {
+      const courseBuying = await transactionalEntityManager
+        .getRepository(CourseBuying)
+        .createQueryBuilder('courseBuying')
+        .innerJoin('courseBuying.course', 'course')
+        .innerJoin('courseBuying.student', 'student')
+        .innerJoin('student.userInfo', 'userInfo')
+        .select([
+          'courseBuying.id',
+          'courseBuying.key',
+          'course.id',
+          'student.id',
+        ])
+        .where('courseBuying.id = :courseBuyingId', {
+          courseBuyingId: checkKeyDto.courseBuyingId,
+        })
+        .andWhere('userInfo.awsCognitoId = :userAwsId', { userAwsId })
+        .andWhere('courseBuying.key = :key', { key: checkKeyDto.key })
+        .getOne();
 
-  findAll() {
-    return `This action returns all courseBuying`;
-  }
+      if (!courseBuying) {
+        throw new NotFoundException('Course buying not found');
+      }
+      const existingCourseOwning = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .where('student.id = :studentId', {
+          studentId: courseBuying.student.id,
+        })
+        .andWhere('course.id = :courseId', { courseId: courseBuying.course.id })
+        .getOne();
+      if (existingCourseOwning) {
+        await transactionalEntityManager
+          .getRepository(CourseOwning)
+          .remove(existingCourseOwning);
+      }
+      const newCourseOwningId = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .insert({
+          course: { id: courseBuying.course.id },
+          student: { id: courseBuying.student.id },
+          active: true,
+          expiredDate: new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1),
+          ),
+        });
+      const newCourseOwning = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .where('courseOwning.id = :id', {
+          id: newCourseOwningId.identifiers[0].id,
+        })
+        .getOne();
 
-  findOne(id: number) {
-    return `This action returns a #${id} courseBuying`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} courseBuying`;
-  }
-  async markAsCompleted(sectionId: string) { 
-    return 'CourseBuying marked as completed successfully';
+      await Promise.all(
+        newCourseOwning.course.lessons.map(async (lesson) => {
+          const newLessonProgress = await transactionalEntityManager
+            .getRepository(LessonProgress)
+            .save({
+              courseOwning: newCourseOwning,
+              lesson: lesson,
+            });
+          await Promise.all(
+            lesson.sections.map(async (section) => {
+              await transactionalEntityManager
+                .getRepository(SectionProgress)
+                .save({
+                  lessonProgress: newLessonProgress,
+                  courseOwning: newCourseOwning,
+                  section: section,
+                });
+            }),
+          );
+        }),
+      );
+      return newCourseOwning;
+    });
   }
 }

@@ -13,6 +13,7 @@ import { HttpModule } from '@nestjs/axios';
 import { CourseBuyingModule } from './course-buying/course-buying.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { DiscountModule } from './discount/discount.module';
+import { CourseOwningModule } from './course-owning/course-owning.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { DiscountModule } from './discount/discount.module';
     CourseBuyingModule,
     StudentAnswerModule,
     DiscountModule,
+    CourseOwningModule,
   ],
   exports: [
     AuthModule,
@@ -46,6 +48,7 @@ import { DiscountModule } from './discount/discount.module';
     HttpModule,
     CourseBuyingModule,
     StudentAnswerModule,
+    CourseOwningModule,
   ],
 })
 export class SharedModule {}

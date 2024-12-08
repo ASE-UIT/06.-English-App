@@ -12,7 +12,7 @@ import {
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
-import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Question } from './entities/question.entity';
@@ -23,6 +23,7 @@ import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { UpdateAnswerDto } from '../answer/dto/update-answer.dto';
 import { groupQuestionsByQuestionGroup } from './functions/functions';
 
+@ApiBearerAuth()
 @Controller(END_POINTS.QUESTION.BASE)
 @ApiTags(DOCUMENTATION.TAGS.QUESTION)
 export class QuestionController {

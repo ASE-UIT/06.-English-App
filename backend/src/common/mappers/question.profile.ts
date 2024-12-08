@@ -10,6 +10,7 @@ import { UpdateQuestionDto } from 'src/module/question/dto/update-question.dto';
 import { QuestionGroup } from 'src/module/question-group/entities/question-group.entity';
 import { CreateQuestionGroupDto } from 'src/module/question-group/dto/create-question-group.dto';
 import { UpdateQuestionGroupDto } from 'src/module/question-group/dto/update-question-group.dto';
+import { SectionQuestionDto } from 'src/module/section/dto/create-section.dto';
 
 @Injectable()
 export class QuestionProfile extends AutomapperProfile {
@@ -26,7 +27,7 @@ export class QuestionProfile extends AutomapperProfile {
             createMap(mapper, UpdateAnswerDto, Answer);
             createMap(mapper, CreateQuestionGroupDto, QuestionGroup);
             createMap(mapper, UpdateQuestionGroupDto, QuestionGroup);
-            
+            createMap(mapper, SectionQuestionDto, QuestionGroup);
         };
     }
 }

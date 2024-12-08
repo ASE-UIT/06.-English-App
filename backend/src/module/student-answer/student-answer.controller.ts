@@ -26,11 +26,12 @@ export class StudentAnswerController {
     @User() user: IUser,
     @Body() createStudentAnswerDto: CreateSubmitAnswerDto,
   ) {
-    const studentAnswers = await this.mapper.mapArray(
+    const studentAnswers = this.mapper.mapArray(
       createStudentAnswerDto.answers,
       CreateStudentAnswerDto,
       StudentAnswer,
     );
+    console.log('helllllllllllllo', createStudentAnswerDto, studentAnswers);
     const result = await this.studentAnswerService.submit(
       studentAnswers,
       user.userAwsId,
