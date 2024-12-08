@@ -17,6 +17,8 @@ import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
 import { CheckKeyDto } from './dto/check-key.dto';
 import { CourseOwning } from '../course-owning/entities/course-owning.entity';
+import { LessonProgress } from '../course-owning/entities/lesson-progress.entity';
+import { SectionProgress } from '../course-owning/entities/section-progress.entity';
 
 @Injectable()
 export class CourseBuyingService {
@@ -212,23 +214,70 @@ export class CourseBuyingService {
         .where('courseBuying.id = :courseBuyingId', {
           courseBuyingId: checkKeyDto.courseBuyingId,
         })
-        .andWhere('userInfo.id = :userAwsId', { userAwsId })
+        .andWhere('userInfo.awsCognitoId = :userAwsId', { userAwsId })
         .andWhere('courseBuying.key = :key', { key: checkKeyDto.key })
         .getOne();
 
       if (!courseBuying) {
         throw new NotFoundException('Course buying not found');
       }
+      const existingCourseOwning = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .where('student.id = :studentId', {
+          studentId: courseBuying.student.id,
+        })
+        .andWhere('course.id = :courseId', { courseId: courseBuying.course.id })
+        .getOne();
+      if (existingCourseOwning) {
+        await transactionalEntityManager
+          .getRepository(CourseOwning)
+          .remove(existingCourseOwning);
+      }
+      const newCourseOwningId = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .insert({
+          course: { id: courseBuying.course.id },
+          student: { id: courseBuying.student.id },
+          active: true,
+          expiredDate: new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1),
+          ),
+        });
+      const newCourseOwning = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .where('courseOwning.id = :id', {
+          id: newCourseOwningId.identifiers[0].id,
+        })
+        .getOne();
 
-      await transactionalEntityManager.getRepository(CourseOwning).insert({
-        course: { id: courseBuying.course.id },
-        student: { id: courseBuying.student.id },
-        active: true,
-        expiredDate: new Date(
-          new Date().setFullYear(new Date().getFullYear() + 1),
-        ),
-      });
-      return { message: 'Success' };
+      await Promise.all(
+        newCourseOwning.course.lessons.map(async (lesson) => {
+          const newLessonProgress = await transactionalEntityManager
+            .getRepository(LessonProgress)
+            .save({
+              courseOwning: newCourseOwning,
+              lesson: lesson,
+            });
+          await Promise.all(
+            lesson.sections.map(async (section) => {
+              await transactionalEntityManager
+                .getRepository(SectionProgress)
+                .save({
+                  lessonProgress: newLessonProgress,
+                  courseOwning: newCourseOwning,
+                  section: section,
+                });
+            }),
+          );
+        }),
+      );
+      return newCourseOwning;
     });
   }
 }
