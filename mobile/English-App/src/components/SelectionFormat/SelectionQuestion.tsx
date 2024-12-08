@@ -4,8 +4,8 @@ import { Dropdown } from "react-native-element-dropdown";
 import DropdownComponent from "../DropdownComponent";
 
 type SelectionFormatProps = {
-  id: number;
-  question: string;
+  id: string;
+  text: string;
   options: string[];
 };
 
