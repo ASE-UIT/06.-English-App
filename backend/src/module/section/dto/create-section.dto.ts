@@ -72,6 +72,7 @@ export class CreateSectionDto {
   @ApiProperty({
     description: 'Question groups (with question) of the section',
     type: [SectionQuestionDto],
+    required: false,
   })
   @IsArray()
   @IsOptional()
@@ -82,6 +83,7 @@ export class CreateSectionDto {
   @ApiProperty({
     description: 'Questions of the section',
     type: [CreateQuestionDto],
+    required: false,
   })
   @IsArray()
   @IsOptional()

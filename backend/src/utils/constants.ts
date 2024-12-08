@@ -32,8 +32,8 @@ export const END_POINTS = {
     GET_MY_COURSE_BY_STUDENT: '/student/my-course/',
     GET_DETAIL: '/detail/:id',
     CREATE: '',
-    UPDATE: '',
-    DELETE: '',
+    UPDATE: '/update-one/:id',
+    DELETE: '/delete-one/:id',
   },
   COURSE_BUYING: {
     BASE: '/course-buying',
