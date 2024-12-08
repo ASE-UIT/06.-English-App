@@ -7,6 +7,8 @@ class SectionApi {
     //   this.logOut()
     //   window.location.href = AUTH_PATH_NAME.DANG_NHAP
     // })
+
+    httpClient.setAuthHeader(localStorage.getItem("accessToken") || "")
   }
   async CreateSection(data: SectionCreate) {
     try {
