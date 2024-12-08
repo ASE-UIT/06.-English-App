@@ -8,8 +8,15 @@ const data = [
   { label: "C", value: "C" },
   { label: "D", value: "D" },
 ];
+type DropdownComponentProps = {
+  options: string[];
+};
 
 const DropdownComponent = () => {
+  const hardOptions = ["A", "B", "C", "D"];
+  const data = hardOptions.map((option) => {
+    return { label: option, value: option };
+  });
   return (
     <View className=" w-[80px] pl-3 flex justify-center px-2  ">
       <Dropdown
@@ -32,37 +39,34 @@ const DropdownComponent = () => {
 export default DropdownComponent;
 
 const styles = StyleSheet.create({
-  container:{
-    justifyContent: 'center',
+  container: {
+    justifyContent: "center",
     borderWidth: 2,
-    borderRadius:10,
-    borderStyle: 'solid',
-    borderColor: '#F178B6',
-    backgroundColor: 'white',
-    width:60,
-
+    borderRadius: 10,
+    borderStyle: "solid",
+    borderColor: "#F178B6",
+    backgroundColor: "white",
+    width: 60,
   },
-  placeholder:{
-    width:100,
+  placeholder: {
+    width: 100,
 
-    textAlign: 'center',
-    borderWidth:1,
-    borderRadius:10,
-    borderStyle: 'solid',
-    borderColor: '#F178B6',
-    backgroundColor: 'white',
-    flex:1,
+    textAlign: "center",
+    borderWidth: 1,
+    borderRadius: 10,
+    borderStyle: "solid",
+    borderColor: "#F178B6",
+    backgroundColor: "white",
+    flex: 1,
   },
-  selectedText:{
-    width:100,
-    textAlign: 'center',
-    borderWidth:2,
-    borderRadius:10,
-    borderStyle: 'solid',
-    borderColor: '#5D5FEF',
-    backgroundColor: '#FCDDEC',
-    flex:1,
-  }
-
-
+  selectedText: {
+    width: 100,
+    textAlign: "center",
+    borderWidth: 2,
+    borderRadius: 10,
+    borderStyle: "solid",
+    borderColor: "#5D5FEF",
+    backgroundColor: "#FCDDEC",
+    flex: 1,
+  },
 });

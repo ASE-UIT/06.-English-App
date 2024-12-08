@@ -5,6 +5,7 @@ import RenderHtml from "react-native-render-html";
 import { RootStackParamList } from "../../type";
 import sectionService from "../../services/section.service";
 import Section from "../../models/Section";
+import SelectionFormat from "../../components/SelectionFormat/SelectionFormat";
 
 type ReadingExerciseProps = {
   scrollRef?: React.RefObject<ScrollView>; // scrollRef is optional
@@ -48,6 +49,10 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
     },
   };
 
+  if (!section) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <ScrollView
       className="reading-exercise flex gap-4"
@@ -76,31 +81,11 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
         </View>
       )}
       <View className="reading-questions" style={{ display: "flex", gap: 20 }}>
-        {/* questions.map()... */}
-        {/* <MultipleChoiceFormat /> */}
+       
         {questionGroups ? (
           <>
-            {questionGroups.map((questionGroup) => (
-              <View key={questionGroup.id}>
-                <RenderHtml
-                  contentWidth={width}
-                  source={{ html: questionGroup.text || "" }}
-                />
-                <View>
-                  {questionGroup.questions.map((question)=>{
-                    return(
-                      <View key={question.id}>
-                        <RenderHtml
-                          contentWidth={width}
-                          source={{ html: question.text || "" }}
-                        />
-                      </View>
-                    )
-
-                  })}
-                </View>
-              </View>
-            ))}
+          <SelectionFormat questionGroup={questionGroups[0]} />
+           
           </>
         ) : (
           <Text>null</Text>
