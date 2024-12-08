@@ -15,7 +15,7 @@ export class UpdateCourseCategoryDto {
   @ApiProperty({
     description: 'The name of the course category',
     type: String,
-    example: 'Web Development',
+    example: 'IELTS Listening',
   })
   @IsString()
   name: string;

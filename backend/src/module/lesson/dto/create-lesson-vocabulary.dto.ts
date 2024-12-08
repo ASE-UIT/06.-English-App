@@ -35,6 +35,11 @@ export class CreateLessonVocabularyDto {
   @IsString()
   mediaWord: string;
   @IsString()
+  @ApiProperty({
+    type: String,
+    description: 'Note of vocabulary',
+    example: 'This is a note',
+  })
   @AutoMap()
   note: string;
 }
