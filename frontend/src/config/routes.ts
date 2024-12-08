@@ -19,8 +19,8 @@ export const studentRoutes = {
   SearchVocabulary: "/search-vocabulary",
   DoTestReading: "/do-test/reading/:id",
   DoTestListening: "/do-test/listening/:id",
-  DoTestWriting: "/do-test/writing",
-  DoTestSpeaking: "/do-test/speaking",
+  DoTestWriting: "/do-test/writing/:sectionId",
+  DoTestSpeaking: "/do-test/speaking/:sectionId",
 }
 export const teacherRoutes = {
   Course: {
