@@ -23,6 +23,7 @@ import {
   CourseDetailScreenNavigationProp,
   CourseScreenRouteProp,
 } from "../../type";
+import More from "./More";
 
 const { height } = Dimensions.get("window");
 
@@ -280,53 +281,7 @@ export default function CourseViewer() {
 
         {/* content của tab more */}
         {activeTab === "more" && (
-          <View style={styles.moreContent}>
-            <TouchableOpacity style={styles.menuItem}>
-              <Icon
-                name="info"
-                size={20}
-                color="#666"
-                style={styles.menuIcon}
-              />
-              <Text style={styles.menuText}>About this course</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Icon
-                name="share-2"
-                size={20}
-                color="#666"
-                style={styles.menuIcon}
-              />
-              <Text style={styles.menuText}>Share this course</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Icon
-                name="message-circle"
-                size={20}
-                color="#666"
-                style={styles.menuIcon}
-              />
-              <Text style={styles.menuText}>Q&A</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Icon
-                name="bell"
-                size={20}
-                color="#666"
-                style={styles.menuIcon}
-              />
-              <Text style={styles.menuText}>Announcements</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.menuItem}>
-              <Icon
-                name="heart"
-                size={20}
-                color="#666"
-                style={styles.menuIcon}
-              />
-              <Text style={styles.menuText}>Add course to favorite</Text>
-            </TouchableOpacity>
-          </View>
+         <More/>
         )}
       </ScrollView>
     </View>
@@ -454,4 +409,5 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
   },
+ 
 });
