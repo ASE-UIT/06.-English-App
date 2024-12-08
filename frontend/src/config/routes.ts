@@ -17,8 +17,8 @@ export const studentRoutes = {
   Section: "/my-course/:courseId/lesson/:lessonId/section",
   SectionDetail: "/my-course/:courseId/lesson/:lessonId/section/:sectionId",
   SearchVocabulary: "/search-vocabulary",
-  DoTestReading: "/do-test/reading",
-  DoTestListening: "/do-test/listening",
+  DoTestReading: "/do-test/reading/:sectionId",
+  DoTestListening: "/do-test/listening/:sectionId",
   DoTestWriting: "/do-test/writing/:sectionId",
   DoTestSpeaking: "/do-test/speaking/:sectionId",
 }
