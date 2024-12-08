@@ -43,7 +43,7 @@ export default function ReadingPage() {
       </div>
       <div className="flex flex-1 flex-col">
         <div className="w-full rounded-md border-2 border-b-0 border-[#fcddec] p-[20px]">
-          <ReadingTestPage questionGroups={data && data.questionGroups} />
+          <ReadingTestPage questionGroups={data ? data.questionGroups : []} />
         </div>
         <div className="flex h-[60px] justify-between bg-[#fff4f9]">
           <Button className="h-full bg-inherit hover:bg-inherit hover:outline-none focus:outline-none">
