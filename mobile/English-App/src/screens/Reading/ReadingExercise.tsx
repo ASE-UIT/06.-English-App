@@ -6,6 +6,7 @@ import { RootStackParamList } from "../../type";
 import sectionService from "../../services/section.service";
 import Section from "../../models/Section";
 import SelectionFormat from "../../components/SelectionFormat/SelectionFormat";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 type ReadingExerciseProps = {
   scrollRef?: React.RefObject<ScrollView>; // scrollRef is optional
@@ -54,43 +55,53 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   }
 
   return (
-    <ScrollView
-      className="reading-exercise flex gap-4"
-      style={{ paddingHorizontal: 10 }}
-      ref={scrollRef}
-    >
-      {section && (
-        <View className="reading-content flex gap-2 items-center">
-          <Text className="text-black text-lg font-bold">{section.title}</Text>
-          {section.sectionMedia ? (
-            <Image
-              source={{ uri: section.sectionMedia }}
-              style={{ height: 240, width: 160 }}
-              onError={(error) =>
-                console.log("Image Load Error:", error.nativeEvent.error)
-              }
+    <SafeAreaView className="mb-4 p-5">
+      <ScrollView
+        className="reading-exercise flex gap-4"
+        
+        ref={scrollRef}
+      >
+        {section && (
+          <View className="reading-content flex gap-2 items-center">
+            <Text className="text-black text-lg font-bold">
+              {section.title}
+            </Text>
+            {section.sectionMedia ? (
+              <Image
+                source={{ uri: section.sectionMedia }}
+                style={{ height: 240, width: 160 }}
+                onError={(error) =>
+                  console.log("Image Load Error:", error.nativeEvent.error)
+                }
+              />
+            ) : (
+              <Text>No Image Available</Text>
+            )}
+            <RenderHtml
+              renderers={customRenderers}
+              contentWidth={width}
+              source={{ html: section.content || "" }}
             />
-          ) : (
-            <Text>No Image Available</Text>
-          )}
-          <RenderHtml
-            renderers={customRenderers}
-            contentWidth={width}
-            source={{ html: section.content || "" }}
-          />
-        </View>
-      )}
-      <View className="reading-questions" style={{ display: "flex", gap: 20 }}>
-       
-        {questionGroups ? (
-          <>
-          <SelectionFormat questionGroup={questionGroups[0]} />
-           
-          </>
-        ) : (
-          <Text>null</Text>
+          </View>
         )}
-      </View>
-    </ScrollView>
+        <View
+          className="reading-questions"
+          style={{ display: "flex", gap: 20 }}
+        >
+          {questionGroups ? (
+            <>
+              {questionGroups.map((questionGroup) => (
+                <SelectionFormat
+                  key={questionGroup.id}
+                  questionGroup={questionGroup}
+                />
+              ))}
+            </>
+          ) : (
+            <Text>null</Text>
+          )}
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
