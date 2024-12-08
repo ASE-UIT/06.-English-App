@@ -70,7 +70,7 @@ export class CourseBuyingController {
   async ipnVnpayUrl(@Query() query: VnpayIPNRequest, @Res() res: Response) {
     return await this.courseBuyingService.ipnVnpayUrl(query, res);
   }
-  @Get(END_POINTS.COURSE_BUYING.CHECK_KEY)
+  @Post(END_POINTS.COURSE_BUYING.CHECK_KEY)
   async checkKey(@Body() body: CheckKeyDto, @User() user: IUser) {
     const result = await this.courseBuyingService.checkKey(
       body,
