@@ -8,7 +8,7 @@ import { FaMicrophoneSlash } from "react-icons/fa"
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition"
 import { useParams } from "react-router"
 import { httpClient } from "@/services"
-import { set } from "lodash"
+// import { set } from "lodash"
 type Question = {
   // place type Question here just for now
   id: string
