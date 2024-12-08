@@ -63,6 +63,9 @@ const WritingTestPage = () => {
   }, [sectionId])
 
   const handleSubmit = async () => {
+    const currentAnswers = [...answers]
+    currentAnswers[currentQuestionIndex] = currentAnswer
+    setAnswers(currentAnswers)
     const studentAnswer: StudentAnswerDTO = {
       answers: questions.map((question, index) => {
         return {
