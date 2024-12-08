@@ -60,7 +60,7 @@ export default function SectionHeader({ children }: { children: React.ReactNode 
           </div>
         </div>
       </div>
-      <div className="bg-white">{children}</div>
+      <div className="bg-white ml-[62px]">{children}</div>
     </div>
   )
 }
