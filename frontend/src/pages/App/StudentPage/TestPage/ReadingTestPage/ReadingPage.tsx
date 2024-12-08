@@ -50,8 +50,11 @@ export default function ReadingPage() {
             <img src={LeftNav} />
           </Button>
           <div className="flex items-center gap-2">
-            {Array.from({ length: 5 }, (_, i) => (
-              <Button className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-inherit hover:outline-none focus:outline-none">
+            {Array.from({ length: 10 }, (_, i) => (
+              <Button
+                key={i}
+                className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-inherit hover:bg-[#5d5fef] hover:outline-none focus:outline-none focus:bg-[#5d5fef]"
+              >
                 {i + 1}
               </Button>
             ))}
@@ -61,7 +64,7 @@ export default function ReadingPage() {
           </Button>
         </div>
         <div className="mt-[50px] flex justify-center">
-          <Button className="w-[120px] items-center bg-[#ef5da8] text-2xl text-white" onClick={ handleNext}>
+          <Button className="w-[120px] items-center bg-[#ef5da8] text-2xl text-white" onClick={handleNext}>
             <img className="bg-[#ef5da8]" src={SubmitLogo}></img> Submit
           </Button>
         </div>
