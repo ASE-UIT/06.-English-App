@@ -32,7 +32,7 @@ export const ReadingTestPage: React.FC<ReadingTestPageProps> = ({ questionGroups
           <div className="mt-4">
             {group.questions.map((Question: Question, id: number) => (
               <div key={id} className="mb-4">
-                {Question.type === "BLANK" && <MatchingQuestion text={Question.text} order={Question.order} />}
+                {Question.type === "BLANK" && <MatchingQuestion text={Question.text} />}
                 {/* Uncomment and handle other question types */}
                 {/* {question.type === "MULTIPLECHOICE" && <MultipleChoiceQuestion text={question.text} order={question.order} />} */}
                 {/* {question.type === "COMBOBOX" && <ComboBoxQuestion text={question.text} order={question.order} />} */}
