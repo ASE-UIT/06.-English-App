@@ -54,7 +54,7 @@ export class LessonService {
           return grammar;
         }),
       );
-      lesson.grammars = grammars;
+      grammars.forEach((grammar) => lesson.grammars.push(grammar));
       const updatedLesson = await this.dataSource
         .getRepository(Lesson)
         .save(lesson);

@@ -67,7 +67,9 @@ export class LessonController {
       CreateLessonVocabularyDto,
       LessonVocabulary,
     );
-    lesson.lessonVocabularies = vocabularies;
+    vocabularies.forEach((vocabulary) =>
+      lesson.lessonVocabularies.push(vocabulary),
+    );
     const updatedLesson =
       await this.lessonService.addVocabularyToLesson(lesson);
     return ResponseObject.create(
