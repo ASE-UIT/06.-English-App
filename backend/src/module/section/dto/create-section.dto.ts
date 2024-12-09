@@ -88,7 +88,7 @@ export class CreateSectionDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => SectionQuestionDto)
-  sectionQuestionGroup: SectionQuestionDto[];
+  sectionQuestionGroups: SectionQuestionDto[];
 
   @ApiProperty({
     description: 'Questions of the section',
@@ -99,7 +99,7 @@ export class CreateSectionDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => CreateQuestionDto)
-  sectionQuestion: CreateQuestionDto[];
+  sectionQuestions: CreateQuestionDto[];
 }
 
 // Example JSON

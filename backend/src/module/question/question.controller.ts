@@ -44,7 +44,6 @@ export class QuestionController {
       CreateAnswerDto,
       Answer,
     );
-    console.log(createQuestionDto.answers);
     question.answers = answer;
     const newQuestion = await this.questionService.create(question);
 
