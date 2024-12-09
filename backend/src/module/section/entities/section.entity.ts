@@ -12,9 +12,11 @@ export class Section extends Base {
   @Column()
   @AutoMap()
   title: string;
-  @Column()
+  @Column({
+    nullable: true,
+  })
   @AutoMap()
-  content: string;
+  content?: string;
   @Column()
   @Column({
     type: 'enum',
@@ -34,8 +36,8 @@ export class Section extends Base {
     cascade: true,
   })
   questionGroups: QuestionGroup[];
-  @OneToMany(() => Question, (question) => question.section, { 
-    cascade: true 
+  @OneToMany(() => Question, (question) => question.section, {
+    cascade: true,
   })
   questions: Question[];
   @OneToMany(

@@ -1,8 +1,14 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsArray, IsDefined, IsEnum, IsNotEmpty, IsNotEmptyObject, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
-import { IsQuestionGroupOrQuestion } from 'src/common/validators/is-questionGroup-or-question.validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { CreateQuestionDto } from 'src/module/question/dto/create-question.dto';
 import { SECTION_TYPE } from 'src/utils/constants';
 
@@ -41,14 +47,17 @@ export class CreateSectionDto {
   @ApiProperty({
     description: 'Title of the section',
     type: String,
+    required: true,
   })
   title: string;
   @AutoMap()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
-    description: 'Content of the section',
+    description:
+      'Content of the section, required for type READING, ROOT, VOCABULARY',
     type: String,
+    required: false,
   })
   content: string;
   @ApiProperty()
@@ -62,10 +71,11 @@ export class CreateSectionDto {
   type: SECTION_TYPE;
   @AutoMap()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @ApiProperty({
-    description: 'Media of the section',
+    description: 'Media of the section, required for type LISTENING',
     type: String,
+    required: false,
   })
   sectionMedia: string;
 
@@ -78,7 +88,7 @@ export class CreateSectionDto {
   @IsOptional()
   @ValidateNested({ each: true })
   @Type(() => SectionQuestionDto)
-  sectionQuestionGroup: (SectionQuestionDto)[];
+  sectionQuestionGroup: SectionQuestionDto[];
 
   @ApiProperty({
     description: 'Questions of the section',
@@ -91,8 +101,6 @@ export class CreateSectionDto {
   @Type(() => CreateQuestionDto)
   sectionQuestion: CreateQuestionDto[];
 }
-
-
 
 // Example JSON
 
@@ -137,7 +145,7 @@ export class CreateSectionDto {
 //           ]
 //         }
 //       ]
-//     }, 
+//     },
 //     {
 //       "questionGroupText": "question group text 2 (title)",
 //       "questions": [

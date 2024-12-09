@@ -1,7 +1,16 @@
 import { AutoMap } from '@automapper/classes';
-import { IsEnum, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+  IsArray,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { SECTION_TYPE } from 'src/utils/constants';
+import { UpdateQuestionDto } from 'src/module/question/dto/update-question.dto';
+import { UpdateQuestionGroupDto } from 'src/module/question-group/dto/update-question-group.dto';
 
 export class UpdateSectionDto {
   @AutoMap()
@@ -36,7 +45,6 @@ export class UpdateSectionDto {
     type: String,
   })
   content?: string;
-  @ApiProperty()
   @IsEnum(SECTION_TYPE)
   @IsOptional()
   @AutoMap()
@@ -45,7 +53,6 @@ export class UpdateSectionDto {
     enum: SECTION_TYPE,
   })
   type?: SECTION_TYPE;
-  @ApiProperty()
   @IsString()
   @IsOptional()
   @AutoMap()
@@ -54,4 +61,24 @@ export class UpdateSectionDto {
     type: String,
   })
   sectionMedia?: string;
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @AutoMap()
+  @ApiProperty({
+    description: 'Questions of the section',
+    type: [UpdateQuestionDto],
+  })
+  sectionQuestion?: UpdateQuestionDto[];
+
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @AutoMap()
+  @ApiProperty({
+    description: 'question group of the section',
+    type: [UpdateQuestionGroupDto],
+  })
+  sectionQuestionGroup?: UpdateQuestionGroupDto[];
 }

@@ -153,9 +153,16 @@ export class SectionController {
     return ResponseObject.create('Section found', section);
   }
 
-  @Patch()
+  @Patch(END_POINTS.SECTION.UPDATE)
   @ApiOperation({
     summary: 'Update a section',
+  })
+  @ApiParam({
+    name: 'id',
+    example: 'cccf75c7-7390-4517-a2a8-be451eacd5ba',
+    type: String,
+    description: 'ID của Section cần cập nhật',
+    required: true,
   })
   async update(@Body() updateSectionDto: UpdateSectionDto) {
     const section = await this.mapper.mapAsync(
@@ -173,8 +180,18 @@ export class SectionController {
     );
   }
 
-  @Delete(':id')
-  async sremove(@Param('id') id: string) {
+  @Delete(END_POINTS.SECTION.DELETE)
+  @ApiOperation({
+    summary: 'Delete a section',
+  })
+  @ApiParam({
+    name: 'id',
+    example: 'cccf75c7-7390-4517-a2a8-be451eacd5ba',
+    type: String,
+    description: 'ID của Section cần xóa',
+    required: true,
+  })
+  async remove(@Param('id') id: string) {
     return this.sectionService.remove(+id);
   }
 }
