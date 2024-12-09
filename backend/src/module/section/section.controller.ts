@@ -53,8 +53,8 @@ export class SectionController {
     const questionGroups = [];
     const questions = [];
 
-    if (createSectionDto.sectionQuestionGroup) {
-      createSectionDto.sectionQuestionGroup.forEach((sectionQuestionGroup) => {
+    if (createSectionDto.sectionQuestionGroups) {
+      createSectionDto.sectionQuestionGroups.forEach((sectionQuestionGroup) => {
         const newQuestionGroup = this.mapper.map(
           sectionQuestionGroup,
           SectionQuestionDto,
@@ -69,7 +69,7 @@ export class SectionController {
             CreateQuestionDto,
             Question,
           );
-          newQuestion.section = section;
+          newQuestion.questionGroup = newQuestionGroup;
           if (!newQuestion.answers) {
             newQuestion.answers = [];
           }
@@ -85,8 +85,8 @@ export class SectionController {
         questionGroups.push(newQuestionGroup);
       });
     }
-    if (createSectionDto.sectionQuestion) {
-      createSectionDto.sectionQuestion.forEach((sectionQuestion) => {
+    if (createSectionDto.sectionQuestions) {
+      createSectionDto.sectionQuestions.forEach((sectionQuestion) => {
         const newQuestion = this.mapper.map(
           sectionQuestion,
           CreateQuestionDto,
@@ -148,21 +148,22 @@ export class SectionController {
     status: 200,
     description: 'Section found',
   })
+  @ApiParam({
+    name: 'id',
+    example: '3fa394d0-3aa7-4f6f-9684-9eada252e639',
+    type: String,
+    description: 'ID of Section to get',
+    required: true,
+  })
   async findOne(@Param('id') id: string) {
     const section = await this.sectionService.findOne(id);
     return ResponseObject.create('Section found', section);
   }
 
-  @Patch(END_POINTS.SECTION.UPDATE)
+  @Post()
+  @Patch()
   @ApiOperation({
     summary: 'Update a section',
-  })
-  @ApiParam({
-    name: 'id',
-    example: 'cccf75c7-7390-4517-a2a8-be451eacd5ba',
-    type: String,
-    description: 'ID của Section cần cập nhật',
-    required: true,
   })
   async update(@Body() updateSectionDto: UpdateSectionDto) {
     const section = await this.mapper.mapAsync(
@@ -180,18 +181,8 @@ export class SectionController {
     );
   }
 
-  @Delete(END_POINTS.SECTION.DELETE)
-  @ApiOperation({
-    summary: 'Delete a section',
-  })
-  @ApiParam({
-    name: 'id',
-    example: 'cccf75c7-7390-4517-a2a8-be451eacd5ba',
-    type: String,
-    description: 'ID của Section cần xóa',
-    required: true,
-  })
-  async remove(@Param('id') id: string) {
+  @Delete(':id')
+  async sremove(@Param('id') id: string) {
     return this.sectionService.remove(+id);
   }
 }
