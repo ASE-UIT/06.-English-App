@@ -104,8 +104,8 @@ export const END_POINTS = {
     GET_ALL_SECTION_BY_LESSON: '/get-all-section-by-lesson/:lessonId',
     CREATE: '',
     LIST: '',
-    UPDATE: '',
-    DELETE: '',
+    UPDATE: '/update-one/:id',
+    DELETE: '/delete-one/:id',
   },
   STUDENT_ANSWER: {
     SUBMIT_ANSWER: '/submit-answer',
@@ -137,7 +137,7 @@ export const DOCUMENTATION = {
     STUDENT_ANSWER: 'STUDENT_ANSWER',
   },
 };
-export const TIMEOUT = 5000;
+export const TIMEOUT = 20000;
 export const AUTH_FLOW = 'ADMIN_USER_PASSWORD_AUTH';
 
 export enum STATUS {

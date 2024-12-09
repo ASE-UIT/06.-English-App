@@ -3,7 +3,6 @@ import { Section } from './entities/section.entity';
 import { DataSource } from 'typeorm';
 import HttpStatusCode from 'src/utils/HttpStatusCode';
 import { Lesson } from '../lesson/entities/lesson.entity';
-import { CreateSectionDto } from './dto/create-section.dto';
 
 @Injectable()
 export class SectionService {
@@ -18,10 +17,8 @@ export class SectionService {
         throw new HttpException('Lesson not found', HttpStatusCode.NOT_FOUND);
       }
       section.lesson = lesson;
-      const newSection = await this.dataSource
-        .getRepository(Section)
-        .save(section);
-      return newSection;
+      await this.dataSource.getRepository(Section).save(section);
+      return section;
     } catch (error) {
       console.log(error);
       throw new HttpException(

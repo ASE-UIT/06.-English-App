@@ -1,6 +1,6 @@
-import { AutoMap } from "@automapper/classes";
-import { ApiProperty } from "@nestjs/swagger";
-import { IsString } from "class-validator";
+import { AutoMap } from '@automapper/classes';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsString } from 'class-validator';
 
 export class CreateQuestionGroupDto {
   @AutoMap()
@@ -11,5 +11,5 @@ export class CreateQuestionGroupDto {
   @AutoMap()
   @IsString()
   @ApiProperty({ description: 'Section ID' })
-  section: string; 
+  section: string;
 }
