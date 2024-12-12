@@ -5,7 +5,6 @@ import {
   IsArray,
   IsEnum,
   IsInt,
-  IsNumber,
   IsOptional,
   IsString,
   ValidateNested,
@@ -38,6 +37,7 @@ export class CreateQuestionDto {
   @ApiProperty({
     description: 'Type of the question',
     enum: QUESTION_TYPE,
+    example: QUESTION_TYPE.BLANK,
   })
   @IsEnum(QUESTION_TYPE)
   type: QUESTION_TYPE;
@@ -57,5 +57,5 @@ export class CreateQuestionDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateAnswerDto)
-  answers: CreateAnswerDto[];
+  answers: CreateAnswerDto[] = [];
 }

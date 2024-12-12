@@ -67,6 +67,7 @@ export class LessonController {
       CreateLessonVocabularyDto,
       LessonVocabulary,
     );
+    console.log('lesson', lesson);
     vocabularies.forEach((vocabulary) =>
       lesson.lessonVocabularies.push(vocabulary),
     );
