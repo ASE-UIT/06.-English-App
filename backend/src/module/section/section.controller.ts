@@ -160,7 +160,6 @@ export class SectionController {
     return ResponseObject.create('Section found', section);
   }
 
-  @Post()
   @Patch()
   @ApiOperation({
     summary: 'Update a section',
