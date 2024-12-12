@@ -1,5 +1,3 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateQuestionDto } from './create-question.dto';
 import {
   IsArray,
   IsEnum,
@@ -9,7 +7,7 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { AutoMap } from '@automapper/classes';
-import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { UpdateAnswerDto } from 'src/module/answer/dto/update-answer.dto';
 import { QUESTION_TYPE } from 'src/utils/constants';
