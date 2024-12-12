@@ -10,9 +10,18 @@ import {
   ValidateNested,
 } from 'class-validator';
 import { CreateQuestionDto } from 'src/module/question/dto/create-question.dto';
-import { SECTION_TYPE } from 'src/utils/constants';
+import { QUESTION_GROUP_TYPE, SECTION_TYPE } from 'src/utils/constants';
 
 export class SectionQuestionDto {
+  @AutoMap()
+  @IsEnum(QUESTION_GROUP_TYPE)
+  @IsNotEmpty()
+  @ApiProperty({
+    description: 'Question group type',
+    enum: QUESTION_GROUP_TYPE,
+  })
+  type: QUESTION_GROUP_TYPE;
+
   @AutoMap()
   @IsString()
   @IsNotEmpty()
@@ -21,7 +30,6 @@ export class SectionQuestionDto {
     type: String,
   })
   text: string;
-
   @ApiProperty({
     description: 'Questions of the section',
     type: [CreateQuestionDto],
