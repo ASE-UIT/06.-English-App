@@ -31,7 +31,6 @@ export class StudentAnswerController {
       CreateStudentAnswerDto,
       StudentAnswer,
     );
-    console.log('helllllllllllllo', createStudentAnswerDto, studentAnswers);
     const result = await this.studentAnswerService.submit(
       studentAnswers,
       user.userAwsId,
