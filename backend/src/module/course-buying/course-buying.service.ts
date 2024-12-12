@@ -88,12 +88,20 @@ export class CourseBuyingService {
       //   req.headers['x-forwarded-for'] ||
       //   req.connection.remoteAddress ||
       //   req.socket.remoteAddress;
-      const vnpIpAddr = '127.0.0.1';
+      const vnpIpAddr = '172.31.31.205';
       const vnpAmount = courseBuying.course.price;
       const vnpOrderInfo = 'Thanh toán khóa học ' + courseBuying.course.title;
       const vnpTxnRef = orderId;
-      now.setMinutes(now.getMinutes() + 15);
-      const vnpExpireDate = formatDateToVnpCreateDate(now);
+
+      const gmt7Offset = 7 * 60;
+      const localOffset = now.getTimezoneOffset();
+      const gmt7Time = new Date(
+        now.getTime() + (gmt7Offset + localOffset) * 60 * 1000,
+      );
+
+      gmt7Time.setMinutes(gmt7Time.getMinutes() + 15);
+
+      const vnpExpireDate = formatDateToVnpCreateDate(gmt7Time);
       let vnp_Params = {};
       vnp_Params['vnp_Version'] = '2.1.0';
       vnp_Params['vnp_Command'] = 'pay';
@@ -202,19 +210,22 @@ export class CourseBuyingService {
       const courseBuying = await transactionalEntityManager
         .getRepository(CourseBuying)
         .createQueryBuilder('courseBuying')
-        .innerJoin('courseBuying.course', 'course')
-        .innerJoin('courseBuying.student', 'student')
-        .innerJoin('student.userInfo', 'userInfo')
+        .leftJoin('courseBuying.course', 'course')
+        .leftJoin('courseBuying.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
         .select([
           'courseBuying.id',
           'courseBuying.key',
           'course.id',
           'student.id',
+          'userInfo.awsCognitoId',
         ])
         .where('courseBuying.id = :courseBuyingId', {
           courseBuyingId: checkKeyDto.courseBuyingId,
         })
-        .andWhere('userInfo.awsCognitoId = :userAwsId', { userAwsId })
+        .andWhere('userInfo.awsCognitoId = :userAwsId', {
+          userAwsId: userAwsId,
+        })
         .andWhere('courseBuying.key = :key', { key: checkKeyDto.key })
         .getOne();
 
@@ -251,6 +262,8 @@ export class CourseBuyingService {
         .createQueryBuilder('courseOwning')
         .leftJoinAndSelect('courseOwning.student', 'student')
         .leftJoinAndSelect('courseOwning.course', 'course')
+        .leftJoinAndSelect('course.lessons', 'lessons')
+        .leftJoinAndSelect('lessons.sections', 'sections')
         .where('courseOwning.id = :id', {
           id: newCourseOwningId.identifiers[0].id,
         })
