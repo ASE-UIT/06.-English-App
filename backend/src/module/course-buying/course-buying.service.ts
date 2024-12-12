@@ -84,16 +84,24 @@ export class CourseBuyingService {
       const orderId = courseBuying.id;
       const now = new Date();
       const vnpCreateDate = formatDateToVnpCreateDate(now);
-      // const vnpIpAddr =
-      //   req.headers['x-forwarded-for'] ||
-      //   req.connection.remoteAddress ||
-      //   req.socket.remoteAddress;
-      const vnpIpAddr = '127.0.0.1';
+      const vnpIpAddr =
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress;
+      // const vnpIpAddr = this.config.get<string>('ipAddress');
       const vnpAmount = courseBuying.course.price;
       const vnpOrderInfo = 'Thanh toán khóa học ' + courseBuying.course.title;
       const vnpTxnRef = orderId;
-      now.setMinutes(now.getMinutes() + 15);
-      const vnpExpireDate = formatDateToVnpCreateDate(now);
+
+      const gmt7Offset = 7 * 60;
+      const localOffset = now.getTimezoneOffset();
+      const gmt7Time = new Date(
+        now.getTime() + (gmt7Offset + localOffset) * 60 * 1000,
+      );
+
+      gmt7Time.setMinutes(gmt7Time.getMinutes() + 15);
+
+      const vnpExpireDate = formatDateToVnpCreateDate(gmt7Time);
       let vnp_Params = {};
       vnp_Params['vnp_Version'] = '2.1.0';
       vnp_Params['vnp_Command'] = 'pay';
@@ -152,7 +160,7 @@ export class CourseBuyingService {
       checkOrderId = false;
     }
     const checkAmount =
-      order.course.price / 100 === vnp_Params['vnp_Amout'] ? true : false; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
+      order.course.price === vnp_Params['vnp_Amout'] / 100 ? true : false; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
     if (secureHash === signed) {
       if (checkOrderId) {
         if (checkAmount) {
@@ -183,6 +191,7 @@ export class CourseBuyingService {
 
   async validatePayOrder(query: any) {
     let vnp_Params = query;
+    const courseBuyingId = vnp_Params['vnp_TxnRef'];
     const secureHash = vnp_Params['vnp_SecureHash'];
     delete vnp_Params['vnp_SecureHash'];
     delete vnp_Params['vnp_SecureHashType'];
@@ -191,8 +200,17 @@ export class CourseBuyingService {
     const signData = qs.stringify(vnp_Params, { encode: false });
     const hmac = crypto.createHmac('sha512', vnpHashSecret);
     const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+    const courseBuying = await this.dataSource
+      .getRepository(CourseBuying)
+      .findOne({
+        where: { id: courseBuyingId },
+      });
     if (secureHash === signed) {
-      return { message: 'Success', code: vnp_Params['vnp_ResponseCode'] };
+      return {
+        message: 'Success',
+        code: vnp_Params['vnp_ResponseCode'],
+        courseBuying: courseBuying,
+      };
     } else {
       return { message: 'Pay fail', code: '97' };
     }
@@ -202,19 +220,22 @@ export class CourseBuyingService {
       const courseBuying = await transactionalEntityManager
         .getRepository(CourseBuying)
         .createQueryBuilder('courseBuying')
-        .innerJoin('courseBuying.course', 'course')
-        .innerJoin('courseBuying.student', 'student')
-        .innerJoin('student.userInfo', 'userInfo')
+        .leftJoin('courseBuying.course', 'course')
+        .leftJoin('courseBuying.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
         .select([
           'courseBuying.id',
           'courseBuying.key',
           'course.id',
           'student.id',
+          'userInfo.awsCognitoId',
         ])
         .where('courseBuying.id = :courseBuyingId', {
           courseBuyingId: checkKeyDto.courseBuyingId,
         })
-        .andWhere('userInfo.awsCognitoId = :userAwsId', { userAwsId })
+        .andWhere('userInfo.awsCognitoId = :userAwsId', {
+          userAwsId: userAwsId,
+        })
         .andWhere('courseBuying.key = :key', { key: checkKeyDto.key })
         .getOne();
 
@@ -251,6 +272,8 @@ export class CourseBuyingService {
         .createQueryBuilder('courseOwning')
         .leftJoinAndSelect('courseOwning.student', 'student')
         .leftJoinAndSelect('courseOwning.course', 'course')
+        .leftJoinAndSelect('course.lessons', 'lessons')
+        .leftJoinAndSelect('lessons.sections', 'sections')
         .where('courseOwning.id = :id', {
           id: newCourseOwningId.identifiers[0].id,
         })
