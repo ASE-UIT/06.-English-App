@@ -6,7 +6,7 @@ export class CreateStudentAnswerDto {
   @ApiProperty({
     description: 'Question ID',
     type: String,
-    example: '40ec21fc-9108-48f3-827b-85de9416dda2',
+    example: 'bdcd1638-f161-4caf-8722-f7aa47ebbe79',
   })
   @IsString()
   @IsNotEmpty()
@@ -18,7 +18,7 @@ export class CreateStudentAnswerDto {
   @ApiProperty({
     description: 'Answer',
     type: String,
-    example: 'political',
+    example: 'ABCD',
   })
   answer: string;
 }
