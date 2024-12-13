@@ -4,8 +4,8 @@ services:
       - GRPC_DISCOUNT_URL=discount-api:8080
       - REDIS_HOST=redis
       - REDIS_PORT=6379
-  #    env_file:
-  #      - /path/on/ec2/env
+    env_file:
+      - /path/on/ec2/env
   discount-api:
     environment:
       - ASPNETCORE_HTTP_PORTS=8080

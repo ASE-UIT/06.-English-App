@@ -1,11 +1,16 @@
-import { AutoMap } from "@automapper/classes";
-import { ApiProperty } from "@nestjs/swagger";
-import { Type } from "class-transformer";
-import { IsArray, IsEnum, IsNumber, IsOptional, IsString, ValidateNested, ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
-import { CreateAnswerDto } from "src/module/answer/dto/create-answer.dto";
-import { QUESTION_TYPE } from "src/utils/constants";
-
-
+import { AutoMap } from '@automapper/classes';
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsEnum,
+  IsInt,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { CreateAnswerDto } from 'src/module/answer/dto/create-answer.dto';
+import { QUESTION_TYPE } from 'src/utils/constants';
 
 export class CreateQuestionDto {
   @AutoMap()
@@ -16,39 +21,41 @@ export class CreateQuestionDto {
 
   @AutoMap()
   @ApiProperty({ description: 'Section ID' })
-  @IsString()
+  @IsOptional()
+  @IsString({})
   section?: string;
 
   @AutoMap()
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Text of the question',
-    type: String
+    type: String,
   })
   @IsString()
   text: string;
 
   @AutoMap()
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Type of the question',
-    enum: QUESTION_TYPE
+    enum: QUESTION_TYPE,
+    example: QUESTION_TYPE.BLANK,
   })
   @IsEnum(QUESTION_TYPE)
   type: QUESTION_TYPE;
 
   @AutoMap()
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Order of the question',
-    type: Number
+    type: Number,
   })
-  @IsNumber()
+  @IsInt()
   order: number;
 
-  @ApiProperty({ 
+  @ApiProperty({
     description: 'Answers of the question',
-    type: [CreateAnswerDto]
+    type: [CreateAnswerDto],
   })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateAnswerDto)
-  answers: CreateAnswerDto[];
+  answers: CreateAnswerDto[] = [];
 }

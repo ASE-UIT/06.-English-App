@@ -9,10 +9,10 @@ import {
 import { Base } from '../../base/base.entity';
 import { LessonVocabulary } from './lesson-vocabulary.entity';
 import { Grammar } from '../../grammar/entities/grammar.entity';
-import { TYPES } from '../../../utils/constants';
 import { Section } from 'src/module/section/entities/section.entity';
 import { Course } from 'src/module/course/entities/course.entity';
 import { AutoMap } from '@automapper/classes';
+import { LessonProgress } from 'src/module/course-owning/entities/lesson-progress.entity';
 
 @Entity()
 export class Lesson extends Base {
@@ -25,13 +25,6 @@ export class Lesson extends Base {
   @Column('text')
   @AutoMap()
   content: string;
-  @Column({
-    type: 'enum',
-    enum: TYPES,
-  })
-  @AutoMap()
-  type: TYPES;
-
   @OneToMany(
     () => LessonVocabulary,
     (lessonVocabulary) => lessonVocabulary.lesson,
@@ -47,4 +40,6 @@ export class Lesson extends Base {
   grammars?: Grammar[];
   @ManyToOne(() => Course, (course) => course.lessons)
   course: Course;
+  @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
+  lessonProgresses: LessonProgress[];
 }

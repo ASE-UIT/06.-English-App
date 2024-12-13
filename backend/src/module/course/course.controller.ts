@@ -19,7 +19,12 @@ import { Course } from './entities/course.entity';
 import { ResponseObject } from 'src/utils/objects';
 import { User } from 'src/common/decorators/user.decorator';
 import { IUser } from 'src/common/guards/at.guard';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CourseCategoryService } from '../course-category/course-category.service';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
 import {
@@ -56,7 +61,9 @@ export class CourseController {
   }
 
   @Get(END_POINTS.COURSE.GET_ALL_COURSES)
-  @ApiOperation({ summary: 'Get all courses in home page' })
+  @ApiOperation({
+    summary: 'Get all courses in home page, but only get public course',
+  })
   async findAllCourses(@Query() query: GetAllCourseQuery) {
     const { courses, count } = await this.courseService.findAllCourses(query);
     const coursesReponse = this.mapper.mapArray(
@@ -123,14 +130,28 @@ export class CourseController {
   @ApiOperation({
     summary: 'Get course detail by id',
   })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Course id',
+    example: 'd1911740-84e0-4778-9c0d-4465dcb1d13e',
+  })
   async findOne(@Param('id') id: string) {
     const result = await this.courseService.findOne(id);
     return ResponseObject.create('Course retrieved successfully', result);
   }
 
-  @Put()
+  @Put(END_POINTS.COURSE.UPDATE)
   @ApiOperation({
     summary: 'Update course',
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Course id',
+    example: 'd1911740-84e0-4778-9c0d-4465dcb1d13e',
   })
   async update(@User() user: IUser, @Body() updateCourseDto: UpdateCourseDto) {
     const category = await this.courseCategoryService.findOne(
@@ -151,7 +172,17 @@ export class CourseController {
     return ResponseObject.create('Course updated', result);
   }
 
-  @Delete(':id')
+  @Delete(END_POINTS.COURSE.DELETE)
+  @ApiOperation({
+    summary: 'Delete course',
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Course id',
+    example: 'd1911740-84e0-4778-9c0d-4465dcb1d13e',
+  })
   remove(@Param('id') id: string) {
     return this.courseService.remove(id);
   }

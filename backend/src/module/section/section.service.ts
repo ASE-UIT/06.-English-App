@@ -17,10 +17,7 @@ export class SectionService {
         throw new HttpException('Lesson not found', HttpStatusCode.NOT_FOUND);
       }
       section.lesson = lesson;
-      const newSection = await this.dataSource
-        .getRepository(Section)
-        .save(section);
-      return newSection;
+      return await this.dataSource.getRepository(Section).save(section);
     } catch (error) {
       console.log(error);
       throw new HttpException(
@@ -31,9 +28,12 @@ export class SectionService {
   }
   async findAllByLesson(lessonId: string) {
     try {
-      const sections = await this.dataSource.getRepository(Section).find({
-        where: { lesson: { id: lessonId } },
-      });
+      const sections = await this.dataSource
+        .getRepository(Section)
+        .createQueryBuilder('section')
+        .leftJoinAndSelect('section.lesson', 'lesson')
+        .where('lesson.id = :id', { id: lessonId })
+        .getMany();
       return sections;
     } catch (error) {
       throw new HttpException(
@@ -48,8 +48,9 @@ export class SectionService {
         .getRepository(Section)
         .createQueryBuilder('section')
         .leftJoin('section.questionGroups', 'questionGroups')
+        .leftJoin('section.questions', 'sectionQuestions')
         .leftJoin('questionGroups.questions', 'questions')
-        .select(['section', 'questionGroups', 'questions'])
+        .select(['section', 'questionGroups', 'questions', 'sectionQuestions'])
         .where('section.id = :id', { id })
         .getOne();
       return section;

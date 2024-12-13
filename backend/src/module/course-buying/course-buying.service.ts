@@ -1,4 +1,9 @@
-import { HttpException, Injectable, Req } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  Req,
+} from '@nestjs/common';
 import { CourseBuying } from './entities/course-buying.entity';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -10,6 +15,10 @@ import { User } from '../user/entities/user.entity';
 import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
+import { CheckKeyDto } from './dto/check-key.dto';
+import { CourseOwning } from '../course-owning/entities/course-owning.entity';
+import { LessonProgress } from '../course-owning/entities/lesson-progress.entity';
+import { SectionProgress } from '../course-owning/entities/section-progress.entity';
 
 @Injectable()
 export class CourseBuyingService {
@@ -75,16 +84,24 @@ export class CourseBuyingService {
       const orderId = courseBuying.id;
       const now = new Date();
       const vnpCreateDate = formatDateToVnpCreateDate(now);
-      // const vnpIpAddr =
-      //   req.headers['x-forwarded-for'] ||
-      //   req.connection.remoteAddress ||
-      //   req.socket.remoteAddress;
-      const vnpIpAddr = '127.0.0.1';
+      const vnpIpAddr =
+        req.headers['x-forwarded-for'] ||
+        req.connection.remoteAddress ||
+        req.socket.remoteAddress;
+      // const vnpIpAddr = this.config.get<string>('ipAddress');
       const vnpAmount = courseBuying.course.price;
       const vnpOrderInfo = 'Thanh toán khóa học ' + courseBuying.course.title;
       const vnpTxnRef = orderId;
-      now.setMinutes(now.getMinutes() + 15);
-      const vnpExpireDate = formatDateToVnpCreateDate(now);
+
+      const gmt7Offset = 7 * 60;
+      const localOffset = now.getTimezoneOffset();
+      const gmt7Time = new Date(
+        now.getTime() + (gmt7Offset + localOffset) * 60 * 1000,
+      );
+
+      gmt7Time.setMinutes(gmt7Time.getMinutes() + 15);
+
+      const vnpExpireDate = formatDateToVnpCreateDate(gmt7Time);
       let vnp_Params = {};
       vnp_Params['vnp_Version'] = '2.1.0';
       vnp_Params['vnp_Command'] = 'pay';
@@ -143,7 +160,7 @@ export class CourseBuyingService {
       checkOrderId = false;
     }
     const checkAmount =
-      order.course.price / 100 === vnp_Params['vnp_Amout'] ? true : false; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
+      order.course.price === vnp_Params['vnp_Amout'] / 100 ? true : false; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
     if (secureHash === signed) {
       if (checkOrderId) {
         if (checkAmount) {
@@ -174,6 +191,7 @@ export class CourseBuyingService {
 
   async validatePayOrder(query: any) {
     let vnp_Params = query;
+    const courseBuyingId = vnp_Params['vnp_TxnRef'];
     const secureHash = vnp_Params['vnp_SecureHash'];
     delete vnp_Params['vnp_SecureHash'];
     delete vnp_Params['vnp_SecureHashType'];
@@ -182,25 +200,107 @@ export class CourseBuyingService {
     const signData = qs.stringify(vnp_Params, { encode: false });
     const hmac = crypto.createHmac('sha512', vnpHashSecret);
     const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+    const courseBuying = await this.dataSource
+      .getRepository(CourseBuying)
+      .findOne({
+        where: { id: courseBuyingId },
+      });
     if (secureHash === signed) {
-      return { message: 'Success', code: vnp_Params['vnp_ResponseCode'] };
+      return {
+        message: 'Success',
+        code: vnp_Params['vnp_ResponseCode'],
+        courseBuying: courseBuying,
+      };
     } else {
       return { message: 'Pay fail', code: '97' };
     }
   }
+  async checkKey(checkKeyDto: CheckKeyDto, userAwsId: string) {
+    return this.dataSource.transaction(async (transactionalEntityManager) => {
+      const courseBuying = await transactionalEntityManager
+        .getRepository(CourseBuying)
+        .createQueryBuilder('courseBuying')
+        .leftJoin('courseBuying.course', 'course')
+        .leftJoin('courseBuying.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
+        .select([
+          'courseBuying.id',
+          'courseBuying.key',
+          'course.id',
+          'student.id',
+          'userInfo.awsCognitoId',
+        ])
+        .where('courseBuying.id = :courseBuyingId', {
+          courseBuyingId: checkKeyDto.courseBuyingId,
+        })
+        .andWhere('userInfo.awsCognitoId = :userAwsId', {
+          userAwsId: userAwsId,
+        })
+        .andWhere('courseBuying.key = :key', { key: checkKeyDto.key })
+        .getOne();
 
-  findAll() {
-    return `This action returns all courseBuying`;
-  }
+      if (!courseBuying) {
+        throw new NotFoundException('Course buying not found');
+      }
+      const existingCourseOwning = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .where('student.id = :studentId', {
+          studentId: courseBuying.student.id,
+        })
+        .andWhere('course.id = :courseId', { courseId: courseBuying.course.id })
+        .getOne();
+      if (existingCourseOwning) {
+        await transactionalEntityManager
+          .getRepository(CourseOwning)
+          .remove(existingCourseOwning);
+      }
+      const newCourseOwningId = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .insert({
+          course: { id: courseBuying.course.id },
+          student: { id: courseBuying.student.id },
+          active: true,
+          expiredDate: new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1),
+          ),
+        });
+      const newCourseOwning = await transactionalEntityManager
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .leftJoinAndSelect('course.lessons', 'lessons')
+        .leftJoinAndSelect('lessons.sections', 'sections')
+        .where('courseOwning.id = :id', {
+          id: newCourseOwningId.identifiers[0].id,
+        })
+        .getOne();
 
-  findOne(id: number) {
-    return `This action returns a #${id} courseBuying`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} courseBuying`;
-  }
-  async markAsCompleted(sectionId: string) { 
-    return 'CourseBuying marked as completed successfully';
+      await Promise.all(
+        newCourseOwning.course.lessons.map(async (lesson) => {
+          const newLessonProgress = await transactionalEntityManager
+            .getRepository(LessonProgress)
+            .save({
+              courseOwning: newCourseOwning,
+              lesson: lesson,
+            });
+          await Promise.all(
+            lesson.sections.map(async (section) => {
+              await transactionalEntityManager
+                .getRepository(SectionProgress)
+                .save({
+                  lessonProgress: newLessonProgress,
+                  courseOwning: newCourseOwning,
+                  section: section,
+                });
+            }),
+          );
+        }),
+      );
+      return newCourseOwning;
+    });
   }
 }

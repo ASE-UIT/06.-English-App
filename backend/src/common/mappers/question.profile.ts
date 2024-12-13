@@ -10,23 +10,44 @@ import { UpdateQuestionDto } from 'src/module/question/dto/update-question.dto';
 import { QuestionGroup } from 'src/module/question-group/entities/question-group.entity';
 import { CreateQuestionGroupDto } from 'src/module/question-group/dto/create-question-group.dto';
 import { UpdateQuestionGroupDto } from 'src/module/question-group/dto/update-question-group.dto';
+import { SectionQuestionDto } from 'src/module/section/dto/create-section.dto';
 
 @Injectable()
 export class QuestionProfile extends AutomapperProfile {
-    constructor(@InjectMapper() mapper: Mapper) {
-        super(mapper);
-    }
+  constructor(@InjectMapper() mapper: Mapper) {
+    super(mapper);
+  }
 
-    override get profile() {
-        return (mapper) => {
-            createMap(mapper, Question, CreateQuestionDto);
-            createMap(mapper, CreateQuestionDto, Question);
-            createMap(mapper, CreateAnswerDto, Answer);
-            createMap(mapper, UpdateQuestionDto, Question);
-            createMap(mapper, UpdateAnswerDto, Answer);
-            createMap(mapper, CreateQuestionGroupDto, QuestionGroup);
-            createMap(mapper, UpdateQuestionGroupDto, QuestionGroup);
-            
-        };
-    }
+  override get profile() {
+    return (mapper) => {
+      createMap(mapper, Question, CreateQuestionDto);
+      createMap(
+        mapper,
+        CreateQuestionDto,
+        Question,
+        forMember(
+          (dest) => dest.section.id,
+          mapFrom((src) => src.section),
+        ),
+        forMember(
+          (dest) => dest.questionGroup.id,
+          mapFrom((src) => src.questionGroup),
+        ),
+      );
+      createMap(mapper, CreateAnswerDto, Answer);
+      createMap(mapper, UpdateQuestionDto, Question);
+      createMap(mapper, UpdateAnswerDto, Answer);
+      createMap(
+        mapper,
+        CreateQuestionGroupDto,
+        QuestionGroup,
+        forMember(
+          (dest) => dest.section.id,
+          mapFrom((src) => src.section),
+        ),
+      );
+      createMap(mapper, UpdateQuestionGroupDto, QuestionGroup);
+      createMap(mapper, SectionQuestionDto, QuestionGroup);
+    };
+  }
 }
