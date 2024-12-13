@@ -43,6 +43,7 @@ export class SectionQuestionDto {
 export class CreateSectionDto {
   @AutoMap()
   @IsString()
+  @IsOptional()
   @IsNotEmpty()
   @ApiProperty({
     description: 'Lesson Id of the section',
@@ -75,8 +76,9 @@ export class CreateSectionDto {
   @ApiProperty({
     description: 'Type of the section',
     enum: SECTION_TYPE,
+    default: SECTION_TYPE.ROOT,
   })
-  type: SECTION_TYPE;
+  type: SECTION_TYPE = SECTION_TYPE.ROOT;
   @AutoMap()
   @IsString()
   @IsOptional()

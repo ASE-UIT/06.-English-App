@@ -11,6 +11,8 @@ import { AddGrammarToLessonDto } from './dto/add-grammar-to-lesson.dto';
 import { AddVocabularyToLessonDto } from './dto/add-vocabulary-to-lesson.dto';
 import { CreateLessonVocabularyDto } from './dto/create-lesson-vocabulary.dto';
 import { LessonVocabulary } from './entities/lesson-vocabulary.entity';
+import { CreateSectionDto } from '../section/dto/create-section.dto';
+import { Section } from '../section/entities/section.entity';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.LESSON.BASE)
@@ -30,6 +32,16 @@ export class LessonController {
       CreateLessonDto,
       Lesson,
     );
+    const sectionRoot = this.mapper.map(
+      createLessonDto.sectionRoot,
+      CreateSectionDto,
+      Section,
+    );
+    if (sectionRoot.content === undefined) sectionRoot.content = '';
+    sectionRoot.title = 'Tìm hiểu lý thuyết';
+    sectionRoot.content = lesson.content;
+    if (lesson.sections === undefined) lesson.sections = [];
+    lesson.sections.push(sectionRoot);
     const newLesson = await this.lessonService.create(
       lesson,
       createLessonDto.courseId,
