@@ -11,6 +11,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch --inspect-brk=0.0.0.0:9229",
     "start:prod": "node dist/main",
+    "typeorm": "typeorm-ts-node-commonjs",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "proto:generate": "npx protoc --plugin=protoc-gen-ts_proto=\".\\\\node_modules\\\\.bin\\\\protoc-gen-ts_proto.cmd\" --ts_proto_opt=esModuleInterop=true --ts_proto_out=C:\\Users\\Loi\\WebstormProjects\\English-Learning\\backend\\src\\types --ts_proto_opt=nestJs=true -I=C:\\Users\\Loi\\WebstormProjects\\English-Learning\\backend\\src\\services\\DiscountService\\Protos C:\\Users\\Loi\\WebstormProjects\\English-Learning\\backend\\src\\services\\DiscountService\\Protos\\discount.proto",

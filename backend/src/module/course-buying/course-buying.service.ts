@@ -36,6 +36,20 @@ export class CourseBuyingService {
     awsCognitoId: string,
   ) {
     try {
+      const existingCourseBuying = await this.dataSource
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('student.userInfo', 'userInfo')
+        .where('userInfo.awsCognitoId = :awsCognitoId', {
+          awsCognitoId: awsCognitoId,
+        })
+        .andWhere('course.id = :courseId', { courseId: courseId })
+        .getOne();
+      if (existingCourseBuying) {
+        throw new HttpException('Course already bought', 400);
+      }
       const user = await this.dataSource.getRepository(User).findOneOrFail({
         where: { awsCognitoId: awsCognitoId },
       });
@@ -91,7 +105,6 @@ export class CourseBuyingService {
         req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress ||
         req.socket.remoteAddress;
-      // const vnpIpAddr = this.config.get<string>('ipAddress');
       const vnpAmount = courseBuying.course.price;
       const vnpOrderInfo = 'Thanh toán khóa học ' + courseBuying.course.title;
       const vnpTxnRef = orderId;
@@ -109,7 +122,6 @@ export class CourseBuyingService {
       vnp_Params['vnp_Version'] = '2.1.0';
       vnp_Params['vnp_Command'] = 'pay';
       vnp_Params['vnp_TmnCode'] = vnpTmnCode;
-      // vnp_Params['vnp_Merchant'] = ''
       vnp_Params['vnp_Locale'] = 'vn';
       vnp_Params['vnp_CurrCode'] = 'VND';
       vnp_Params['vnp_TxnRef'] = vnpTxnRef;
@@ -163,7 +175,7 @@ export class CourseBuyingService {
       checkOrderId = false;
     }
     const checkAmount =
-      order.course.price === vnp_Params['vnp_Amout'] / 100 ? true : false; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
+      order.course.price === vnp_Params['vnp_Amout'] / 100 ? true : false;
     if (secureHash === signed) {
       if (checkOrderId) {
         if (checkAmount) {

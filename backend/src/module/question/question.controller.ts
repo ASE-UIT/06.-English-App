@@ -67,7 +67,7 @@ export class QuestionController {
       return ResponseObject.create('Questions found', res);
     } catch (error) {
       throw new HttpException(error.message, 500);
-    }  
+    }
   }
 
   @Post(END_POINTS.QUESTION.CREATE_MANY_QUESTIONS)
@@ -77,12 +77,6 @@ export class QuestionController {
   ) {
     const questions = [];
     createManyQuestionsDto.questions.map((questionDto) => {
-      if (createManyQuestionsDto.sectionId) {
-        questionDto.section = createManyQuestionsDto.sectionId;
-      }
-      if (createManyQuestionsDto.questionGroupId) {
-        questionDto.questionGroup = createManyQuestionsDto.questionGroupId;
-      }
       const answers = this.mapper.mapArray(
         questionDto.answers,
         CreateAnswerDto,
@@ -94,10 +88,13 @@ export class QuestionController {
         Question,
       );
       newQuestion.answers = answers;
-      console.log(newQuestion);
       questions.push(newQuestion);
     });
-    const result = await this.questionService.createMany(questions);
+    const result = await this.questionService.createMany(
+      questions,
+      createManyQuestionsDto.sectionId,
+      createManyQuestionsDto.questionGroupId,
+    );
     return ResponseObject.create('Create successfully', result);
   }
 

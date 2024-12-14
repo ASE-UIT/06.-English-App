@@ -45,17 +45,20 @@ export class QuestionService {
     }
   }
 
-  async createMany(questions: Question[]) {
+  async createMany(
+    questions: Question[],
+    sectionId?: string,
+    questionGroupId?: string,
+  ) {
     try {
       const questionResult = await Promise.all(
         questions.map(async (question) => {
-          console.log(question);
           const questionGroup = await this.dataSource
             .getRepository(QuestionGroup)
-            .findOne({ where: { id: question.questionGroup.id } });
+            .findOne({ where: { id: sectionId } });
           const section = await this.dataSource
             .getRepository(Section)
-            .findOne({ where: { id: question.section.id } });
+            .findOne({ where: { id: questionGroupId } });
           question.questionGroup = questionGroup;
           question.section = section;
           return await this.dataSource.getRepository(Question).save(question);

@@ -182,6 +182,7 @@ export enum GENDER {
 }
 
 export enum PAYMENT_METHOD {
+  ATM = 'ATM',
   QR_CODE = 'QR_CODE',
   E_WALLET = 'E_WALLET',
 }
