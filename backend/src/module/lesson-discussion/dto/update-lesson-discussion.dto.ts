@@ -1,16 +1,27 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateLessonDiscussionDto } from './create-lesson-discussion.dto';
 import { AutoMap } from '@automapper/classes';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateLessonDiscussionDto extends PartialType(CreateLessonDiscussionDto) {
+export class UpdateLessonDiscussionDto {
   @AutoMap()
   @ApiProperty({
     type: String,
-    description: 'Id of lesson discussion',
-    example: '1',
+    description: 'Title of lesson discussion',
+    example: 'UPDATED - What is the meaning of this vocabulary?',
   })
   @IsString()
-  id: string;
+  @IsOptional()
+  title: string;
+
+  @AutoMap()
+  @ApiProperty({
+    type: String,
+    description: 'Content of lesson discussion',
+    example: 'UPDATED - I want to know the meaning of this vocabulary',
+  })
+  @IsString()
+  @IsOptional()
+  content: string;
 }
