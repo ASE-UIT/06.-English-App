@@ -1,6 +1,4 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { CreateQuestionGroupDto } from './dto/create-question-group.dto';
-import { UpdateQuestionGroupDto } from './dto/update-question-group.dto';
 import { QuestionGroup } from './entities/question-group.entity';
 import { DataSource } from 'typeorm';
 import { Section } from '../section/entities/section.entity';
@@ -9,18 +7,17 @@ import { Section } from '../section/entities/section.entity';
 export class QuestionGroupService {
   constructor(private readonly dataSource: DataSource) {}
 
-  async create(questionGroup: QuestionGroup) {
+  async create(questionGroup: QuestionGroup, sectionId: string) {
     try {
       const section = await this.dataSource
         .getRepository(Section)
         .findOneOrFail({
-          where: { id: questionGroup.section.id },
+          where: { id: sectionId },
         });
       questionGroup.section = section;
       const newQuestionGroup = await this.dataSource
         .getRepository(QuestionGroup)
         .save(questionGroup);
-
       return newQuestionGroup;
     } catch (err) {
       throw new HttpException(err.message, 500);
