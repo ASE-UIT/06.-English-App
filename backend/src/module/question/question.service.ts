@@ -41,6 +41,7 @@ export class QuestionService {
 
       return questions;
     } catch (error) {
+      console.error(error);
       throw new HttpException(error.message, 500);
     }
   }

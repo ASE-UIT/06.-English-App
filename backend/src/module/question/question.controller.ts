@@ -7,6 +7,7 @@ import {
   Delete,
   Query,
   Put,
+  HttpException,
 } from '@nestjs/common';
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
@@ -54,10 +55,13 @@ export class QuestionController {
   @ApiOperation({ summary: 'Find all questions belong to a section' })
   @ApiParam({ name: 'sectionId', type: 'string' })
   async findBySection(@Query('sectionId') sectionId: string) {
-    const questions = await this.questionService.findBySection(sectionId);
-    const res = groupQuestionsByQuestionGroup(questions);
-
-    return ResponseObject.create('Questions found', res);
+    try {
+      const questions = await this.questionService.findBySection(sectionId);
+      const res = groupQuestionsByQuestionGroup(questions);
+      return ResponseObject.create('Questions found', res);
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }  
   }
 
   @ApiOperation({ summary: "Update a question and it's answers" })
