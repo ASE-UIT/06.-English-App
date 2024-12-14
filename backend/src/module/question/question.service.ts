@@ -34,12 +34,33 @@ export class QuestionService {
 
   async findBySection(sectionId: string) {
     try {
-      // find all questions by sectionId
       const questions = await this.dataSource
         .getRepository(Question)
         .find({ where: { section: { id: sectionId } } });
 
       return questions;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async createMany(questions: Question[]) {
+    try {
+      const questionResult = await Promise.all(
+        questions.map(async (question) => {
+          console.log(question);
+          const questionGroup = await this.dataSource
+            .getRepository(QuestionGroup)
+            .findOne({ where: { id: question.questionGroup.id } });
+          const section = await this.dataSource
+            .getRepository(Section)
+            .findOne({ where: { id: question.section.id } });
+          question.questionGroup = questionGroup;
+          question.section = section;
+          return await this.dataSource.getRepository(Question).save(question);
+        }),
+      );
+      return questionResult;
     } catch (error) {
       throw new HttpException(error.message, 500);
     }

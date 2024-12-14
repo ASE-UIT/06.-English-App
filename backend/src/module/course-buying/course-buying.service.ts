@@ -19,6 +19,9 @@ import { CheckKeyDto } from './dto/check-key.dto';
 import { CourseOwning } from '../course-owning/entities/course-owning.entity';
 import { LessonProgress } from '../course-owning/entities/lesson-progress.entity';
 import { SectionProgress } from '../course-owning/entities/section-progress.entity';
+import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
+import * as moment from 'moment';
+import * as axios from 'axios';
 
 @Injectable()
 export class CourseBuyingService {
@@ -302,5 +305,117 @@ export class CourseBuyingService {
       );
       return newCourseOwning;
     });
+  }
+
+  async createPayOrderUrlZalopay(req: Request, dto: createPayOrderUrlDto) {
+    try {
+      const courseBuying = await this.dataSource
+        .getRepository(CourseBuying)
+        .createQueryBuilder('courseBuying')
+        .leftJoin('courseBuying.course', 'course')
+        .leftJoin('courseBuying.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
+        .select(['courseBuying', 'course', 'student', 'userInfo'])
+        .where('courseBuying.id = :id', { id: dto.courseBuyingId })
+        .getOne();
+      if (!courseBuying) {
+        throw new HttpException('Course buying not found', 404);
+      }
+      const appIdZaloPay = this.config.get<string>('appIdZaloPay');
+      const endpointZaloPay = this.config.get<string>('endpointZaloPay');
+      const key1ZaloPay = this.config.get<string>('key1ZaloPay');
+      const embed_data = {
+        redirecturl: this.config.get<string>('redirect_url_payment'),
+      };
+      const items = [
+        {
+          itemid: courseBuying.id,
+          itemname: `${courseBuying.course.title}`,
+          itemprice: courseBuying.course.price,
+          itemquantity: 1,
+        },
+      ];
+      const transID = Math.floor(Math.random() * 1000000);
+
+      const orderData = {
+        app_id: appIdZaloPay,
+        app_trans_id: `${moment().format('YYMMDD')}_${transID}`,
+        app_user: courseBuying.student.userInfo.awsCognitoId,
+        app_time: Date.now(),
+        bank_code: '',
+        item: JSON.stringify(items),
+        embed_data: JSON.stringify(embed_data),
+        amount: Number(courseBuying.course.price),
+        callback_url: this.config.get<string>('ipn_url_zalopay'),
+        description: 'Thanh toán đơn hàng',
+        mac: '',
+      };
+      const data =
+        appIdZaloPay +
+        '|' +
+        orderData.app_trans_id +
+        '|' +
+        orderData.app_user +
+        '|' +
+        orderData.amount +
+        '|' +
+        orderData.app_time +
+        '|' +
+        orderData.embed_data +
+        '|' +
+        orderData.item;
+      orderData.mac = crypto
+        .createHmac('sha256', key1ZaloPay)
+        .update(data)
+        .digest('hex');
+      console.log(orderData);
+      const response = await axios.default.post(endpointZaloPay, null, {
+        params: orderData,
+      });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async callbackHandler(body: any) {
+    const result = {
+      return_code: -1,
+      return_message: 'some errors',
+    };
+    try {
+      const key2ZaloPay = this.config.get<string>('key2ZaloPay');
+      const dataStr = body.data;
+      const reqMac = body.mac;
+      const mac = crypto
+        .createHmac('sha256', key2ZaloPay)
+        .update(dataStr)
+        .digest('hex');
+      console.log('mac =', mac);
+
+      if (reqMac !== mac) {
+        result.return_code = -1;
+        result.return_message = 'mac not equal';
+        return result;
+      } else {
+        const dataJson = JSON.parse(dataStr);
+        const items = dataJson['item'];
+        const courseBuyingId = items[0].itemid;
+        await this.dataSource
+          .getRepository(CourseBuying)
+          .update({ id: courseBuyingId }, { active: true });
+        console.log(
+          "update order's status = success where app_trans_id =",
+          dataJson['app_trans_id'],
+        );
+        result.return_code = 1;
+        result.return_message = 'success';
+        return result;
+      }
+    } catch (ex) {
+      result.return_code = 0;
+      result.return_message = ex.message;
+    }
   }
 }

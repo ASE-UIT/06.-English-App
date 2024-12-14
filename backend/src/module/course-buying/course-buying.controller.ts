@@ -78,4 +78,26 @@ export class CourseBuyingController {
     );
     return ResponseObject.create('Check key successfully', result);
   }
+
+  @ApiOperation({ summary: 'Create pay order url with zalopay' })
+  @Post(END_POINTS.COURSE_BUYING.CREATE_PAY_ORDER_URL_ZALOPAY)
+  async createPayOrderUrlZalopay(
+    @Req() req: Request,
+    @Body() body: createPayOrderUrlDto,
+  ) {
+    const result = await this.courseBuyingService.createPayOrderUrlZalopay(
+      req,
+      body,
+    );
+    return ResponseObject.create('Pay order url created successfully', {
+      result,
+    });
+  }
+
+  @ApiOperation({ summary: 'IPN callback from Zalopay' })
+  @Post(END_POINTS.COURSE_BUYING.CALLBACK_URL)
+  async callBackHandler(@Body() body: any, @Res() res: Response) {
+    const result = await this.courseBuyingService.callbackHandler(body);
+    return res.json(result);
+  }
 }

@@ -14,7 +14,7 @@ export class CourseBuying extends Base {
   paymentMethod: PAYMENT_METHOD;
   @Column()
   key: string;
-  @Column('boolean', { default: true })
+  @Column('boolean', { default: false })
   active: boolean;
   @ManyToOne(() => Student, (student) => student.courseBuyings)
   student: Student;
