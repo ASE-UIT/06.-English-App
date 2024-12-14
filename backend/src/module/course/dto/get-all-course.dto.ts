@@ -5,6 +5,7 @@ export class GetAllCourseQuery extends CoursePaginatedQuery {
   @ApiProperty({
     required: false,
     description: 'Category id',
+    example: '493ff37a-136c-4607-af3d-f5bc1c35f718',
   })
   @IsOptional()
   @IsString()

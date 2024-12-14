@@ -7,12 +7,16 @@ import { Section } from '../section/entities/section.entity';
 
 @Injectable()
 export class QuestionGroupService {
-  constructor(
-    private readonly dataSource: DataSource,
-  ) {}
+  constructor(private readonly dataSource: DataSource) {}
 
   async create(questionGroup: QuestionGroup) {
     try {
+      const section = await this.dataSource
+        .getRepository(Section)
+        .findOneOrFail({
+          where: { id: questionGroup.section.id },
+        });
+      questionGroup.section = section;
       const newQuestionGroup = await this.dataSource
         .getRepository(QuestionGroup)
         .save(questionGroup);
@@ -44,11 +48,11 @@ export class QuestionGroupService {
 
   remove(id: string) {
     try {
-      const deleteResult = this.dataSource.getRepository(QuestionGroup)
+      const deleteResult = this.dataSource
+        .getRepository(QuestionGroup)
         .delete(id);
       return deleteResult;
-    }
-    catch (err) {
+    } catch (err) {
       throw new HttpException(err.message, 500);
     }
   }

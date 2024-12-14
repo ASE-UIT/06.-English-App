@@ -9,6 +9,7 @@ export class CreateCourseDto {
     description: 'Description of the course',
     type: String,
     example: 'This is a course about how to create a course',
+    required: true,
   })
   @IsString()
   description: string;
@@ -18,6 +19,7 @@ export class CreateCourseDto {
     description: 'Title of the course',
     type: String,
     example: 'Toeic Listening Compact Online 450+',
+    required: true,
   })
   @IsString()
   title: string;
@@ -27,6 +29,7 @@ export class CreateCourseDto {
     description: 'State of the course',
     enum: STATE,
     example: STATE.DRAFT,
+    required: true,
   })
   @IsEnum(STATE)
   state: STATE = STATE.DRAFT;
@@ -36,6 +39,7 @@ export class CreateCourseDto {
     description: 'Thumbnail of the course',
     type: String,
     example: 'https://example.com/thumbnail.jpg',
+    required: true,
   })
   @IsOptional()
   @IsString()
@@ -46,15 +50,17 @@ export class CreateCourseDto {
     description: 'Category id of the course',
     type: String,
     example: '41fdc3d9-2b25-4fd8-adae-0c4c9ac91ee8',
+    required: true,
   })
   @IsString()
   categoryId: string;
 
   @AutoMap()
   @ApiProperty({
-    description: 'Price of the course',
+    description: 'Price of the course, in VND',
     type: Number,
-    example: 10.99,
+    example: 599000,
+    required: true,
   })
   @IsNumber()
   price: number;

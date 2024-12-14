@@ -19,6 +19,7 @@ export default () => ({
   vnpayUrl: process.env.VNPAY_URL,
   vnpTmnCode: process.env.VNP_TMN_CODE,
   vnpHashSecret: process.env.VNP_HASH_SECRET,
+  ipAddress: process.env.IP_ADDRESS_PRODUCTION,
   redis: {
     host: process.env.REDIS_HOST,
     port: parseInt(process.env.REDIS_PORT, 10) || 6379,

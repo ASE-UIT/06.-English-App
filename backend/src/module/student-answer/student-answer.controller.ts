@@ -26,7 +26,7 @@ export class StudentAnswerController {
     @User() user: IUser,
     @Body() createStudentAnswerDto: CreateSubmitAnswerDto,
   ) {
-    const studentAnswers = await this.mapper.mapArray(
+    const studentAnswers = this.mapper.mapArray(
       createStudentAnswerDto.answers,
       CreateStudentAnswerDto,
       StudentAnswer,
