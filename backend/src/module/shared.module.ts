@@ -10,6 +10,7 @@ import { QuestionModule } from './question/question.module';
 import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
+import { LessonDiscussionModule } from './lesson-discussion/lesson-discussion.module';
 import { CourseBuyingModule } from './course-buying/course-buying.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { DiscountModule } from './discount/discount.module';
@@ -28,6 +29,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    LessonDiscussionModule,
     CourseBuyingModule,
     StudentAnswerModule,
     DiscountModule,
@@ -48,6 +50,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     HttpModule,
     CourseBuyingModule,
     StudentAnswerModule,
+    LessonDiscussionModule,
     CourseOwningModule,
   ],
 })
