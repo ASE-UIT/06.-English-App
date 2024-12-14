@@ -9,7 +9,7 @@ export class CreateCourseReviewingDto {
     type: String,
     required: true,
     example: 'This course is amazing!',
-   })
+  })
   @IsString()
   content: string;
 
@@ -19,8 +19,8 @@ export class CreateCourseReviewingDto {
     type: Number,
     required: true,
     example: 5,
-   })
-   @IsNumber()
+  })
+  @IsNumber()
   rating: number;
 
   @AutoMap()
@@ -29,7 +29,7 @@ export class CreateCourseReviewingDto {
     type: Number,
     required: true,
     example: 50,
-   })
+  })
   @IsNumber()
   currentProgress: number;
 
@@ -39,7 +39,7 @@ export class CreateCourseReviewingDto {
     type: String,
     required: true,
     example: '1',
-   })
+  })
   @IsString()
   courseId: string;
    
@@ -49,7 +49,7 @@ export class CreateCourseReviewingDto {
     type: String,
     required: true,
     example: '1',
-   })
+  })
   @IsString()
   studentId: string;
 }
