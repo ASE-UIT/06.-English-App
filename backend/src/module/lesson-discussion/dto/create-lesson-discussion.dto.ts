@@ -26,7 +26,7 @@ export class CreateLessonDiscussionDto {
   @ApiProperty({
     type: String,
     description: 'Lesson Id',
-    example: '1',
+    example: '03315cdb-732a-4e63-ac8b-8bed5a40b374',
   })
   @IsString()
   lessonId: string;
@@ -35,7 +35,7 @@ export class CreateLessonDiscussionDto {
   @ApiProperty({
     type: String,
     description: 'User Id - The user who created this lesson discussion',
-    example: '1',
+    example: '77adbeb4-7e51-490c-b2f5-dd5c09e6ddcd',
   })
   @IsString()
   userId: string;

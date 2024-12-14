@@ -100,7 +100,7 @@ export class LessonDiscussionService {
   
       lessonDiscussionReply.lessonDiscussion = lessonDiscussion[0];
       lessonDiscussionReply.user = user[0];
-      const newLessonDiscussionReply = await this.dataSource.getRepository(LessonDiscussion).save(lessonDiscussionReply);
+      const newLessonDiscussionReply = await this.dataSource.getRepository(LessonDiscussionReply).save(lessonDiscussionReply);
       return newLessonDiscussionReply;
     } catch (error) {
       console.log(error);
@@ -110,8 +110,10 @@ export class LessonDiscussionService {
 
   async findAllReply(lessonDiscussionId: string) {
     try {
+      // include user
       const lessonDiscussionReplies = await this.dataSource.getRepository(LessonDiscussionReply)
         .createQueryBuilder('lessonDiscussionReply')
+        .innerJoinAndSelect('lessonDiscussionReply.user', 'user')
         .innerJoin('lessonDiscussionReply.lessonDiscussion', 'lessonDiscussion')
         .where('lessonDiscussion.id = :lessonDiscussionId', { lessonDiscussionId })
         .getMany();

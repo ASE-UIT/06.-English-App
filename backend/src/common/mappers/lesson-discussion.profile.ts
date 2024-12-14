@@ -6,12 +6,9 @@ import { CreateLessonDiscussionDto } from 'src/module/lesson-discussion/dto/crea
 import { UpdateLessonDiscussionDto } from 'src/module/lesson-discussion/dto/update-lesson-discussion.dto';
 import { LessonDiscussionReply } from 'src/module/lesson-discussion/entities/lesson-discussion-reply.entity';
 import { LessonDiscussion } from 'src/module/lesson-discussion/entities/lesson-discussion.entity';
-import { CreateLessonDto } from 'src/module/lesson/dto/create-lesson.dto';
-import { UpdateLessonDto } from 'src/module/lesson/dto/update-lesson.dto';
-import { Lesson } from 'src/module/lesson/entities/lesson.entity';
 
 @Injectable()
-export class LessonProfile extends AutomapperProfile {
+export class LessonDiscussionProfile extends AutomapperProfile {
   constructor(@InjectMapper() mapper: Mapper) {
     super(mapper);
   }

@@ -2,15 +2,17 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, InternalServerErrorE
 import { LessonDiscussionService } from './lesson-discussion.service';
 import { CreateLessonDiscussionDto } from './dto/create-lesson-discussion.dto';
 import { UpdateLessonDiscussionDto } from './dto/update-lesson-discussion.dto';
-import { END_POINTS } from 'src/utils/constants';
+import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { LessonDiscussion } from './entities/lesson-discussion.entity';
 import { ResponseObject } from 'src/utils/objects';
-import { ApiOperation } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CreateLessonDiscussionReplyDto } from './dto/create-lesson-discussion-reply.dto';
 import { LessonDiscussionReply } from './entities/lesson-discussion-reply.entity';
+import { UpdateLessonDiscussionReplyDto } from './dto/update-lesson-discussion-reply.dto';
 
+@ApiTags(DOCUMENTATION.TAGS.LESSON_DISCUSSION)
 @Controller(END_POINTS.LESSON_DISCUSSION.BASE)
 export class LessonDiscussionController {
   constructor(
@@ -30,6 +32,7 @@ export class LessonDiscussionController {
 
       return ResponseObject.create('Lesson Discussion created', res);
     } catch (error) {
+      console.error(error);
       if (error instanceof BadRequestException) {
         throw error;
       }
@@ -38,6 +41,12 @@ export class LessonDiscussionController {
   }
 
   @ApiOperation({ summary: 'Get all lesson discussions' })
+  @ApiQuery({
+    name: 'courseId',
+    description: 'Course Id',
+    example: '449dd3c4-1eee-4ee7-a4d3-18fa1c8d64fb',
+    required: true,
+  })
   @Get(END_POINTS.LESSON_DISCUSSION.LIST)
   async findAll(@Query('courseId') courseId: string) {
     const res = await this.lessonDiscussionService.findByCourse(courseId);
@@ -48,7 +57,8 @@ export class LessonDiscussionController {
   @Patch(END_POINTS.LESSON_DISCUSSION.UPDATE)
   async updateLessonDiscussion(@Param('id') id: string, @Body() updateLessonDiscussionDto: UpdateLessonDiscussionDto) {
     const updateLessonDiscussion = this.mapper.map(updateLessonDiscussionDto, UpdateLessonDiscussionDto, LessonDiscussion);
-
+    updateLessonDiscussion.id = id;
+    
     try {
       const result = await this.lessonDiscussionService.updateLessonDiscussion(updateLessonDiscussion);
       return ResponseObject.create('Lesson Discussion updated', result);
@@ -100,9 +110,9 @@ export class LessonDiscussionController {
 
   @ApiOperation({ summary: 'Update a reply' })
   @Patch(END_POINTS.LESSON_DISCUSSION.UPDATE_REPLY)
-  async updateReply(@Param('replyId') replyId: string, @Body() updateLessonDiscussionReplyDto: CreateLessonDiscussionReplyDto) {
+  async updateReply(@Param('replyId') replyId: string, @Body() updateLessonDiscussionReplyDto: UpdateLessonDiscussionReplyDto) {
     const updateLessonDiscussionReply = this.mapper.map(updateLessonDiscussionReplyDto, CreateLessonDiscussionReplyDto, LessonDiscussionReply);
-
+    updateLessonDiscussionReply.id = replyId;
     try {
       const result = await this.lessonDiscussionService.updateReply(updateLessonDiscussionReply);
       return ResponseObject.create('Lesson Discussion Reply updated', result);
