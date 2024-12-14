@@ -123,6 +123,9 @@ export const END_POINTS = {
     GET_SOLUTION: '/get-solution',
     GET_HISTORY_RESULT: '/get-history-result',
     REDO_SECTION: '/redo-section',
+    SUBMIT_SPEAKING_ANSWER: '/submit-speaking-answer',
+    UPDATE_SPEAKING_ANSWER: '/update-speaking-answer',
+    SUBMIT_WRITING_ANSWER: '/submit-writing-answer',
   },
   LESSON_DISCUSSION: {
     BASE: '/lesson-discussion',

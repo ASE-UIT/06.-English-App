@@ -8,6 +8,8 @@ import { QUESTION_TYPE } from 'src/utils/constants';
 import { SectionProgress } from '../course-owning/entities/section-progress.entity';
 import { CourseOwning } from '../course-owning/entities/course-owning.entity';
 import { LessonProgress } from '../course-owning/entities/lesson-progress.entity';
+import { Section } from '../section/entities/section.entity';
+import { GetHistoryResultDto } from './dto/get-history-result.dto';
 
 @Injectable()
 export class StudentAnswerService {
@@ -126,6 +128,78 @@ export class StudentAnswerService {
     }
   }
 
+  async submitSpeaking(studentAnswer: StudentAnswer, userAwsId: string) {
+    try {
+      const newAnswer = await this.dataSource
+        .getRepository(StudentAnswer)
+        .save(studentAnswer);
+      return newAnswer;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async submitWriting(studentAnswer: StudentAnswer, userAwsId: string) {
+    try {
+      const newAnswer = await this.dataSource
+        .getRepository(StudentAnswer)
+        .save(studentAnswer);
+      return newAnswer;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getSolution(sectionId: string) {
+    try {
+      const section = await this.dataSource
+        .getRepository(Section)
+        .createQueryBuilder('section')
+        .leftJoinAndSelect('section.questions', 'questions')
+        .leftJoinAndSelect('questions.answers', 'answers')
+        .where('section.id = :sectionId', { sectionId })
+        .andWhere('answers.isCorrect = true')
+        .getOneOrFail();
+      return section;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async getHistoryResult(body: GetHistoryResultDto, userAwsId: string) {
+    try {
+      const sectionResult = await this.dataSource
+        .getRepository(Section)
+        .createQueryBuilder('section')
+        .leftJoinAndSelect('section.questionGroups', 'questionGroups')
+        .leftJoinAndSelect('questionGroups.questions', 'questions')
+        .leftJoinAndSelect('questions.studentAnswers', 'studentAnswers')
+        .leftJoinAndSelect('studentAnswers.student', 'student')
+        .leftJoinAndSelect('student.userInfo', 'userInfo')
+        .where('section.id = :sectionId', { sectionId: body.sectionId })
+        .andWhere('userInfo.awsCognitoId = :awsId', { awsId: userAwsId })
+        .getMany();
+      return sectionResult;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        'Internal Server Error',
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
   findAll() {
     return `This action returns all studentAnswer`;
   }

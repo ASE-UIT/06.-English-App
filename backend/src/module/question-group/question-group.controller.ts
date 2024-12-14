@@ -26,7 +26,10 @@ export class QuestionGroupController {
       CreateQuestionGroupDto,
       QuestionGroup,
     );
-    const result = await this.questionGroupService.create(newQuestionGroup);
+    const result = await this.questionGroupService.create(
+      newQuestionGroup,
+      createQuestionGroupDto.section,
+    );
     return ResponseObject.create('Question group created', result);
   }
 
