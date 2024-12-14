@@ -10,9 +10,11 @@ import { QuestionModule } from './question/question.module';
 import { QuestionGroupModule } from './question-group/question-group.module';
 import { SectionModule } from './section/section.module';
 import { HttpModule } from '@nestjs/axios';
+import { LessonDiscussionModule } from './lesson-discussion/lesson-discussion.module';
 import { CourseBuyingModule } from './course-buying/course-buying.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { DiscountModule } from './discount/discount.module';
+import { CourseReviewingModule } from './course-reviewing/course-reviewing.module';
 import { CourseOwningModule } from './course-owning/course-owning.module';
 
 @Module({
@@ -22,12 +24,14 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     S3Module,
     CourseCategoryModule,
     CourseModule,
+    CourseReviewingModule,
     LessonModule,
     GrammarModule,
     QuestionModule,
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    LessonDiscussionModule,
     CourseBuyingModule,
     StudentAnswerModule,
     DiscountModule,
@@ -38,6 +42,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     UserModule,
     S3Module,
     CourseCategoryModule,
+    CourseReviewingModule,
     CourseModule,
     LessonModule,
     DiscountModule,
@@ -48,6 +53,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     HttpModule,
     CourseBuyingModule,
     StudentAnswerModule,
+    LessonDiscussionModule,
     CourseOwningModule,
   ],
 })

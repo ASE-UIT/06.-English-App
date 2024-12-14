@@ -57,6 +57,13 @@ export const END_POINTS = {
     LIST: '',
     UPDATE: '',
   },
+  COURSE_REVIEW: {
+    BASE: '/course-review',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '/:id',
+    DELETE: '/:id',
+  },
   LESSON: {
     BASE: '/lesson',
     CREATE_GRAMMAR: '/grammar',
@@ -117,6 +124,17 @@ export const END_POINTS = {
     GET_HISTORY_RESULT: '/get-history-result',
     REDO_SECTION: '/redo-section',
   },
+  LESSON_DISCUSSION: {
+    BASE: '/lesson-discussion',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '/:id',
+    DELETE: '/:id',
+    CREATE_REPLY: '/reply',
+    LIST_REPLY: '/reply',
+    UPDATE_REPLY: '/reply/:replyId',
+    DELETE_REPLY: '/reply/:replyId',
+  },
 };
 export const DOCUMENTATION = {
   TITLE: 'ENGDIGO API',
@@ -138,6 +156,7 @@ export const DOCUMENTATION = {
     QUESTION: 'QUESTION',
     QUESTION_GROUP: 'QUESTION_GROUP',
     STUDENT_ANSWER: 'STUDENT_ANSWER',
+    LESSON_DISCUSSION: 'LESSON_DISCUSSION',
   },
 };
 export const TIMEOUT = 20000;
