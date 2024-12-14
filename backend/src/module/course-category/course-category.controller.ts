@@ -15,7 +15,12 @@ import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
 import { CourseCategory } from './entities/course-category.entity';
 import { ResponseObject } from 'src/utils/objects';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE_CATEGORY.BASE)
@@ -58,6 +63,13 @@ export class CourseCategoryController {
   @Get(':id')
   @ApiOperation({
     summary: 'Get course category by id',
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Course category id',
+    example: '493ff37a-136c-4607-af3d-f5bc1c35f718',
   })
   async findOne(@Param('id') id: string) {
     const result = await this.courseCategoryService.findOne(id);

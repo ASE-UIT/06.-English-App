@@ -4,7 +4,7 @@ import { Type } from 'class-transformer';
 import {
   IsArray,
   IsEnum,
-  IsNumber,
+  IsInt,
   IsOptional,
   IsString,
   ValidateNested,
@@ -21,7 +21,8 @@ export class CreateQuestionDto {
 
   @AutoMap()
   @ApiProperty({ description: 'Section ID' })
-  @IsString()
+  @IsOptional()
+  @IsString({})
   section?: string;
 
   @AutoMap()
@@ -36,6 +37,7 @@ export class CreateQuestionDto {
   @ApiProperty({
     description: 'Type of the question',
     enum: QUESTION_TYPE,
+    example: QUESTION_TYPE.BLANK,
   })
   @IsEnum(QUESTION_TYPE)
   type: QUESTION_TYPE;
@@ -45,7 +47,7 @@ export class CreateQuestionDto {
     description: 'Order of the question',
     type: Number,
   })
-  @IsNumber()
+  @IsInt()
   order: number;
 
   @ApiProperty({
@@ -55,5 +57,5 @@ export class CreateQuestionDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateAnswerDto)
-  answers: CreateAnswerDto[];
+  answers: CreateAnswerDto[] = [];
 }
