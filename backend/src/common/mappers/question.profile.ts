@@ -1,5 +1,5 @@
 import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
-import { createMap, forMember, mapFrom, type Mapper } from '@automapper/core';
+import { createMap, type Mapper } from '@automapper/core';
 import { Injectable } from '@nestjs/common';
 import { Question } from 'src/module/question/entities/question.entity';
 import { CreateQuestionDto } from 'src/module/question/dto/create-question.dto';
@@ -21,31 +21,11 @@ export class QuestionProfile extends AutomapperProfile {
   override get profile() {
     return (mapper) => {
       createMap(mapper, Question, CreateQuestionDto);
-      createMap(
-        mapper,
-        CreateQuestionDto,
-        Question,
-        forMember(
-          (dest) => dest.section.id,
-          mapFrom((src) => src.section),
-        ),
-        forMember(
-          (dest) => dest.questionGroup.id,
-          mapFrom((src) => src.questionGroup),
-        ),
-      );
+      createMap(mapper, CreateQuestionDto, Question);
       createMap(mapper, CreateAnswerDto, Answer);
       createMap(mapper, UpdateQuestionDto, Question);
       createMap(mapper, UpdateAnswerDto, Answer);
-      createMap(
-        mapper,
-        CreateQuestionGroupDto,
-        QuestionGroup,
-        forMember(
-          (dest) => dest.section.id,
-          mapFrom((src) => src.section),
-        ),
-      );
+      createMap(mapper, CreateQuestionGroupDto, QuestionGroup);
       createMap(mapper, UpdateQuestionGroupDto, QuestionGroup);
       createMap(mapper, SectionQuestionDto, QuestionGroup);
     };
