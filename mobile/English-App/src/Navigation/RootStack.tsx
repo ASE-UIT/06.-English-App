@@ -12,12 +12,15 @@ import HeaderRight from "./HeaderRight";
 import { useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import ListeningExerciseScreen from "../screens/Listening/ListeningExercise";
+import { Login, SignUp } from "../screens/Auth";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
   const scrollRef = useRef<ScrollView>(null);
   return (
     <Stack.Navigator>
+      <Stack.Screen name="Login" component={Login} />
+      <Stack.Screen name="SignUp" component={SignUp} />
       <Stack.Screen
         options={{
           headerShown: false,
@@ -47,9 +50,13 @@ export default function RootStack() {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Listening" component={ListeningExerciseScreen} options={{
-        headerRight: () => <HeaderRight scrollRef={scrollRef} />,
-      }} />
+      <Stack.Screen
+        name="Listening"
+        component={ListeningExerciseScreen}
+        options={{
+          headerRight: () => <HeaderRight scrollRef={scrollRef} />,
+        }}
+      />
     </Stack.Navigator>
   );
 }
