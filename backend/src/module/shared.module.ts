@@ -14,6 +14,7 @@ import { LessonDiscussionModule } from './lesson-discussion/lesson-discussion.mo
 import { CourseBuyingModule } from './course-buying/course-buying.module';
 import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { DiscountModule } from './discount/discount.module';
+import { CourseReviewingModule } from './course-reviewing/course-reviewing.module';
 import { CourseOwningModule } from './course-owning/course-owning.module';
 
 @Module({
@@ -23,6 +24,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     S3Module,
     CourseCategoryModule,
     CourseModule,
+    CourseReviewingModule,
     LessonModule,
     GrammarModule,
     QuestionModule,
@@ -40,6 +42,7 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     UserModule,
     S3Module,
     CourseCategoryModule,
+    CourseReviewingModule,
     CourseModule,
     LessonModule,
     DiscountModule,

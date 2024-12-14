@@ -55,6 +55,13 @@ export const END_POINTS = {
     LIST: '',
     UPDATE: '',
   },
+  COURSE_REVIEW: {
+    BASE: '/course-review',
+    CREATE: '',
+    LIST: '',
+    UPDATE: '/:id',
+    DELETE: '/:id',
+  },
   LESSON: {
     BASE: '/lesson',
     CREATE_GRAMMAR: '/grammar',
