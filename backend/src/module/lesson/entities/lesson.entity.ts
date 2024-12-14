@@ -35,7 +35,7 @@ export class Lesson extends Base {
     },
   )
   lessonVocabularies?: LessonVocabulary[];
-  @OneToMany(() => Section, (section) => section.lesson)
+  @OneToMany(() => Section, (section) => section.lesson, { cascade: true })
   sections?: Section[];
   @ManyToMany(() => Grammar, (grammar) => grammar.lessons)
   @JoinTable()

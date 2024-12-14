@@ -43,6 +43,8 @@ export const END_POINTS = {
     VNPAY_IPN: '/vnpay-ipn',
     CHECK_KEY: '/check-key',
     TRACKING_LESSON_CONTENT: '/tracking-lesson-content',
+    CREATE_PAY_ORDER_URL_ZALOPAY: '/create-pay-order-url-zalopay',
+    CALLBACK_URL: '/zalopay-callback/ipn',
   },
   COURSE_OWNING: {
     BASE: '/course-owning',
@@ -94,6 +96,7 @@ export const END_POINTS = {
   },
   QUESTION: {
     BASE: '/question',
+    CREATE_MANY_QUESTIONS: '/create-many-question',
     CREATE: '',
     FIND_BY_SECTION: '',
     PUT: '',
@@ -201,7 +204,8 @@ export enum SECTION_TYPE {
   ROOT = 'ROOT',
   READING = 'READING',
   LISTENING = 'LISTENING',
-  VOCABULARY = 'VOCABULARY',
+  SPEAKING = 'SPEAKING',
+  WRITING = 'WRITING',
 }
 
 export enum USER_ROLES {

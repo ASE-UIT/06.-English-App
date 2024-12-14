@@ -20,6 +20,7 @@ export class LessonService {
         throw new BadRequestException('Course not found');
       }
       lesson.course = course;
+      console.log(lesson);
       const newLesson = await this.dataSource
         .getRepository(Lesson)
         .save(lesson);

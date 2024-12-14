@@ -33,4 +33,9 @@ export default () => ({
   },
 
   grpcDiscountUrl: process.env.GRPC_DISCOUNT_URL,
+  appIdZaloPay: process.env.APP_ID_ZALOPAY,
+  key1ZaloPay: process.env.KEY1_ZALOPAY,
+  key2ZaloPay: process.env.KEY2_ZALOPAY,
+  endpointZaloPay: process.env.ENDPOINT_ZALOPAY,
+  ipn_url_zalopay: process.env.IPN_URL_ZALOPAY,
 });

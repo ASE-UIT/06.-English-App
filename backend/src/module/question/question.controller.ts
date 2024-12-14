@@ -12,7 +12,12 @@ import {
 import { QuestionService } from './question.service';
 import { CreateQuestionDto } from './dto/create-question.dto';
 import { UpdateQuestionDto } from './dto/update-question.dto';
-import { ApiBearerAuth, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Question } from './entities/question.entity';
@@ -22,6 +27,7 @@ import { ResponseObject } from 'src/utils/objects';
 import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
 import { UpdateAnswerDto } from '../answer/dto/update-answer.dto';
 import { groupQuestionsByQuestionGroup } from './functions/functions';
+import { CreateManyQuestionDto } from './dto/create-many-question';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.QUESTION.BASE)
@@ -62,6 +68,37 @@ export class QuestionController {
     } catch (error) {
       throw new HttpException(error.message, 500);
     }  
+  }
+
+  @Post(END_POINTS.QUESTION.CREATE_MANY_QUESTIONS)
+  @ApiOperation({ summary: 'Create many question' })
+  async createManyQuestions(
+    @Body() createManyQuestionsDto: CreateManyQuestionDto,
+  ) {
+    const questions = [];
+    createManyQuestionsDto.questions.map((questionDto) => {
+      if (createManyQuestionsDto.sectionId) {
+        questionDto.section = createManyQuestionsDto.sectionId;
+      }
+      if (createManyQuestionsDto.questionGroupId) {
+        questionDto.questionGroup = createManyQuestionsDto.questionGroupId;
+      }
+      const answers = this.mapper.mapArray(
+        questionDto.answers,
+        CreateAnswerDto,
+        Answer,
+      );
+      const newQuestion = this.mapper.map(
+        questionDto,
+        CreateQuestionDto,
+        Question,
+      );
+      newQuestion.answers = answers;
+      console.log(newQuestion);
+      questions.push(newQuestion);
+    });
+    const result = await this.questionService.createMany(questions);
+    return ResponseObject.create('Create successfully', result);
   }
 
   @ApiOperation({ summary: "Update a question and it's answers" })
