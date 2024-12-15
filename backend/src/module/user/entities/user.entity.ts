@@ -45,8 +45,14 @@ export class User extends Base {
   @Column()
   awsCognitoId: string;
 
-  @OneToMany(() => LessonDiscussion, (lessonDiscussion) => lessonDiscussion.user)
+  @OneToMany(
+    () => LessonDiscussion,
+    (lessonDiscussion) => lessonDiscussion.user,
+  )
   lessonDiscussions: LessonDiscussion[];
-  @OneToMany(() => LessonDiscussionReply, (lessonDiscussionReply) => lessonDiscussionReply.user)
+  @OneToMany(
+    () => LessonDiscussionReply,
+    (lessonDiscussionReply) => lessonDiscussionReply.user,
+  )
   lessonDiscussionReplies: LessonDiscussionReply[];
 }

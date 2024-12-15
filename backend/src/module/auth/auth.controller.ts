@@ -39,10 +39,7 @@ export class AuthController {
   @Public()
   @Post(END_POINTS.AUTH.SIGN_UP)
   @ApiOperation({ summary: 'Register a new user' })
-  async signUp(
-    @UserReq() user: IUser,
-    @Body() registerAuthDto: RegisterAuthDto,
-  ) {
+  async signUp(@Body() registerAuthDto: RegisterAuthDto) {
     const registerCognitoDto = this.mapper.map(
       registerAuthDto,
       RegisterAuthDto,
@@ -51,7 +48,10 @@ export class AuthController {
     const cognitoId = await this.cognitoService.signUp(registerCognitoDto);
     const userCreated = this.mapper.map(registerAuthDto, RegisterAuthDto, User);
     userCreated.awsCognitoId = cognitoId;
-    const res = await this.authService.create(userCreated, user.userName);
+    const res = await this.authService.create(
+      userCreated,
+      registerAuthDto.username,
+    );
     return ResponseObject.create('User created', res);
   }
 
@@ -88,6 +88,15 @@ export class AuthController {
   async confirmSignUp(@Body() confirmSignUpDto: ConfirmSignUpDto) {
     const res = await this.cognitoService.confirmSignUp(confirmSignUpDto);
     return ResponseObject.create("User's email confirmed", res);
+  }
+
+  @Public()
+  @Post(END_POINTS.AUTH.RESEND_CONFIRMATION_CODE)
+  @ApiOperation({ summary: 'Resend confirmation code' })
+  async resendConfirmationCode(@Body() registerAuthDto: RegisterAuthDto) {
+    const res =
+      await this.cognitoService.resendConfirmationCode(registerAuthDto);
+    return ResponseObject.create('Confirmation code resent', res);
   }
 
   @Public()

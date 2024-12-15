@@ -44,4 +44,18 @@ export class UserService {
     });
     return user.role;
   }
+  async updateUserInfo(awsId: string, user: User) {
+    const userToUpdate = await this.dataSource
+      .getRepository(User)
+      .findOneOrFail({
+        where: { awsCognitoId: awsId },
+      });
+    userToUpdate.firstName = user.firstName;
+    userToUpdate.lastName = user.lastName;
+    userToUpdate.email = user.email;
+    userToUpdate.phone = user.phone;
+    userToUpdate.birthDate = user.birthDate;
+    userToUpdate.avatarURL = user.avatarURL;
+    await this.dataSource.getRepository(User).save(userToUpdate);
+  }
 }
