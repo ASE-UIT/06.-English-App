@@ -146,17 +146,18 @@ const Profile = () => {
               className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3"
               onPress={async () => {
                 try {
+                  loginNav.navigate("Login");
                   const res = await authService.signOut();
+                  console.log(res);
                   if (res.statusCode === 201) {
-                    console.log("Logged out");
                     await SecureStore.deleteItemAsync("accessToken");
                     await SecureStore.deleteItemAsync("refreshToken");
                     loginNav.navigate("Login");
                   } else {
-                    console.error(res.message);
+                    console.error("Logout failed: " + res.message);
                   }
                 } catch (err) {
-                  console.error(err);
+                  console.error("Here:" + err);
                 }
               }}
             >
