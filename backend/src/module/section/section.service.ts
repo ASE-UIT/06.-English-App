@@ -48,9 +48,8 @@ export class SectionService {
         .getRepository(Section)
         .createQueryBuilder('section')
         .leftJoin('section.questionGroups', 'questionGroups')
-        .leftJoin('section.questions', 'sectionQuestions')
-        .leftJoin('questionGroups.questions', 'questions')
-        .select(['section', 'questionGroups', 'questions', 'sectionQuestions'])
+        .leftJoin('section.questions', 'questions')
+        .select(['section', 'questionGroups', 'questions'])
         .where('section.id = :id', { id })
         .getOne();
       return section;
