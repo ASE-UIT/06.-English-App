@@ -155,8 +155,11 @@ export class CourseBuyingService {
     }
   }
 
-  async ipnVnpayUrl(query: any, res: Response) {
-    console.log(query);
+  async ipnVnpayUrl(query: any) {
+    let result = {
+      RspCode: '99',
+      Message: 'Fail',
+    };
     let vnp_Params = query;
     const secureHash = vnp_Params['vnp_SecureHash'];
     const orderId = vnp_Params['vnp_TxnRef'];
@@ -185,7 +188,10 @@ export class CourseBuyingService {
       checkOrderId = false;
     }
     const checkAmount =
-      order.course.price === vnp_Params['vnp_Amout'] / 100 ? true : false;
+      Number(order.course.price) ===
+      Number(Number(vnp_Params['vnp_Amount']) / 100)
+        ? true
+        : false;
     if (secureHash === signed) {
       console.log('Checksum success');
       if (checkOrderId) {
@@ -196,25 +202,27 @@ export class CourseBuyingService {
             if (rspCode == '00') {
               order.active = true;
               await this.dataSource.getRepository(CourseBuying).save(order);
-              res.status(200).json({ RspCode: '00', Message: 'Success' });
+              result = { RspCode: '00', Message: 'Success' };
             } else {
-              res.status(200).json({ RspCode: '00', Message: 'Success' });
+              result = { RspCode: '00', Message: 'Success' };
             }
           } else {
-            res.status(200).json({
+            result = {
               RspCode: '02',
               Message: 'This order has been updated to the payment status',
-            });
+            };
           }
         } else {
-          res.status(200).json({ RspCode: '04', Message: 'Amount invalid' });
+          result = { RspCode: '04', Message: 'Amount invalid' };
         }
       } else {
-        res.status(200).json({ RspCode: '01', Message: 'Order not found' });
+        result = { RspCode: '01', Message: 'Order not found' };
       }
     } else {
-      res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
+      result = { RspCode: '97', Message: 'Checksum failed' };
     }
+    console.log(result);
+    return result;
   }
 
   async validatePayOrder(query: any) {

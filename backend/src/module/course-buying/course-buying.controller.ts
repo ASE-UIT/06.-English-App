@@ -72,8 +72,9 @@ export class CourseBuyingController {
   @Public()
   @ApiOperation({ summary: 'IPN Vnpay Url' })
   @Get(END_POINTS.COURSE_BUYING.VNPAY_IPN)
-  async ipnVnpayUrl(@Query() query: VnpayIPNRequest, @Res() res: Response) {
-    return await this.courseBuyingService.ipnVnpayUrl(query, res);
+  async ipnVnpayUrl(@Query() query: any, @Res() res: Response) {
+    const result = await this.courseBuyingService.ipnVnpayUrl(query);
+    return res.json(result);
   }
   @Post(END_POINTS.COURSE_BUYING.CHECK_KEY)
   async checkKey(@Body() body: CheckKeyDto, @User() user: IUser) {
