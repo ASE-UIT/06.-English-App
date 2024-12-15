@@ -12,17 +12,20 @@ import InputField from "./InputField"; // Adjust the import path as needed
 import userService from "../../services/user.service";
 import MainHeader from "../../components/MainHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { User } from "../../models";
 
 const Profile = () => {
+  const [user, setUser] = useState<User>();
+  const [isEditingName, setIsEditingName] = useState(false);
+  const nameInputRef = useRef<TextInput>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [avatar, setAvatar] = useState();
+
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [name, setName] = useState("");
-  const [isEditingName, setIsEditingName] = useState(false);
-  const nameInputRef = useRef<TextInput>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [avatar, setAvatar] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,10 +33,7 @@ const Profile = () => {
         const result = await userService.getUser();
 
         if (result.statusCode === 200) {
-          const userData = result.data;
-          setUsername(`${userData.firstName} ${userData.lastName}`);
-          setPhoneNumber(userData.phone);
-          setEmail(userData.email);
+          setUser(result.data);
         }
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -66,7 +66,7 @@ const Profile = () => {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View className="flex flex-col justify-center items-center">
           <Avatar
-            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            source={{ uri: user?.avatarURL }}
             size="xlarge"
             rounded
             containerStyle={{ marginTop: 20 }}
