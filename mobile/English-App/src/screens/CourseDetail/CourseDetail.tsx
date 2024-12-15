@@ -7,37 +7,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { CourseDetailScreenRouteProp, PayMentScreenNavigationProp } from "../../type";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
-
-const data: string[] = [
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-  "Lesson 1",
-
-]
+import courseService from "../../services/course.service";
 
 const LessonItem = ({ lesson }: { lesson: Lesson }) => {
   return (
@@ -155,7 +125,7 @@ const CourseDetail = () => {
                 onPress={handleDescription}
               />
             </View>
-            <ScrollView className="h-[307px] w-full">
+            <ScrollView className="h-[250px] w-full">
               {isPlaylist && lessons.length > 0 ? (
                 lessons.map((lesson) => (
                   <LessonItem key={lesson.id} lesson={lesson} />))
@@ -171,25 +141,6 @@ const CourseDetail = () => {
       </ScrollView>
       <View className="flex flex-row bg-white pl-8 pr-8 pb-3 pt-[14px] w-screen justify-around h-[80px] absolute right-0 left-0 bottom-0">
         <Button
-          buttonStyle={{
-            backgroundColor: "#EF5DA8",
-            borderRadius: 20,
-            width: 60,
-            height: 50,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <Icon
-            name="cart-outline"
-            type="material-community"
-            color="white"
-            onPress={() => {
-              console.log("Press");
-            }}
-          />
-        </Button>
-        <Button
           title="BUY NOW"
           onPress={() => {
             setIsBottomSheetVisible(true);
@@ -204,7 +155,6 @@ const CourseDetail = () => {
           }}
         />
       </View>
-
       <BottomSheet
         isVisible={isBottomSheetVisible}
         modalProps={{

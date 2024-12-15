@@ -84,7 +84,7 @@ const Profile = () => {
               />
             ) : (
               <Text className="text-2xl text-primary font-black mr-1">
-                {name}
+                {user?.firstName} {user?.lastName}
               </Text>
             )}
             <Icon
