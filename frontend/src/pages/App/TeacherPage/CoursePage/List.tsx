@@ -42,10 +42,11 @@ export default function CourseList() {
   const dispatch = useDispatch()
   const { actions: courseActions } = useCourseSlice()
   const { actions: userActions } = useUserSlice()
-  const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(0)
   const [query, setQuery] = useState<string>("")
   const [currentPageOffset, setCurrentPageOffset] = useState<number>(1)
   const { data: courseList, refetch: refetchCourse, isLoading } = useCourseTeacher()
+  console.log("courseList", courseList)
   useEffect(() => {
     if (isLoading) {
       dispatch(userActions.updateHanding(true))
@@ -68,6 +69,7 @@ export default function CourseList() {
     const orderList = _.orderBy(fakeCourseList, ["state"], ["asc"]).filter((course) => course.state === "DRAFT")
     if (fakeCourseList) {
       fakeCourseList = orderList.slice(page, endOffset)
+      console.log("fakeCourseList", fakeCourseList)
       if (query !== "") {
         fakeCourseList = fakeCourseList.filter((course) => {
           const title = course.title.normalize().toLowerCase()
@@ -90,7 +92,7 @@ export default function CourseList() {
     }
     return fakeCourseList
   }, [category, courseList?.data, page, query])
-
+  console.log("currentDraftItems", currentDraftItems)
   const currentPublishedItems = useMemo(() => {
     let fakeCourseList = courseList?.data
     const endOffset = page + 5
