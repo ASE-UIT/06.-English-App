@@ -13,21 +13,22 @@ const slice = createSlice({
         ...action.payload,
       }
     },
+    setCurrentSection(state, action) {
+      state.current = action.payload
+    },
     loadSection(state, action) {
       state.data = action.payload
-    },
-    changeType(state, action) {
-      state.pickType = action.payload
     },
     changeCurrentSection(state, action) {
       state.current = action.payload
     },
-    loadSectionData(state, action) {
-      const { id, ...data } = action.payload
-      console.log("loadSectionData", id, data)
-      state.data[id] = {
-        ...data,
-      }
+    updateViewChanged(state, action) {
+      state.changed = action.payload
+    },
+    updateQuestion(state, action) {
+      Object.entries(action.payload).forEach(([key, value]) => {
+        state.update[key as keyof typeof state.update] = value as (typeof state.update)[keyof typeof state.update]
+      })
     },
     close() {
       return initialState

@@ -1,17 +1,20 @@
+import { Section as SectionDetail } from "@/type/section"
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface Section {
   handling: boolean
-  current: number
-  pickType: string
-  data: {
-    [key: number]: {
+  current: string
+  data: SectionDetail
+  changed: boolean
+  update: {
+    [key: string]: {
+      text: string
       type: string
-    }
-  }
-}
-
-export interface SectionData {
-  [key: number]: {
-    type: string
+      order: number
+      answers: {
+        text: string
+        isCorrect: boolean
+      }[]
+    }[]
   }
 }

@@ -6,20 +6,18 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import sectionApi from "@/apis/sectionApi"
 export default function ListeningTestPage() {
-  const [data, setData] = useState<Section | null>(null);
-  const { id } = useParams();
-  useEffect(
-    () => {
-      if (id) {
-        sectionApi.GetSectionById(id).then((res) => {
-          if (res) {
-            setData(res.data);
-            console.log(res.data)
-          }
-        });
-      }
+  const [data, setData] = useState<Section | null>(null)
+  const { id } = useParams()
+  useEffect(() => {
+    if (id) {
+      sectionApi.GetSectionById(id).then((res) => {
+        if (res) {
+          setData(res.data)
+          console.log(res.data)
+        }
+      })
     }
-    , [id]);
+  }, [id])
 
   return (
     <div className="mb-[20px] ml-[75px] mr-[40px] mt-[45px] flex">
@@ -50,7 +48,7 @@ export default function ListeningTestPage() {
               {Array.from({ length: 10 }, (_, i) => (
                 <Button
                   key={i}
-                  className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-inherit hover:bg-[#5d5fef] hover:outline-none focus:outline-none focus:bg-[#5d5fef]" 
+                  className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-[#5d5fef] hover:bg-inherit hover:outline-none focus:bg-[#5d5fef] focus:outline-none"
                 >
                   {i + 1}
                 </Button>

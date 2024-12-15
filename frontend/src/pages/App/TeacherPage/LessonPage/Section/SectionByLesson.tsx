@@ -11,7 +11,7 @@ export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; le
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { actions: courseActions } = useCourseSlice()
-  const { id } = useSelector(selectCourseView)
+  const { id: courseId } = useSelector(selectCourseView)
   return (
     <div className="flex w-full flex-col gap-[23px]">
       {sectionData?.data && sectionData.data.length > 0 ? (
@@ -32,9 +32,10 @@ export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; le
                 vocab: false,
                 grammar: false,
               }
+              const sectionId = section.id
               dispatch(courseActions.updateSelectedSection(view))
               dispatch(courseActions.updateSelectedLesson(lessonView))
-              navigate(`/course/${id}/lesson/${lessonId}/${section.id}`)
+              navigate(`/course/${courseId}/lesson/${lessonId}/${sectionId}`)
             }}
             className="flex h-full w-full cursor-pointer border-[1px] border-headerIcon py-[11px] shadow-sectionCard"
           >

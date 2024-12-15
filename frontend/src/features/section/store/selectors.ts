@@ -5,13 +5,20 @@ import { Section } from "../interface"
 
 export const initialState: Section = {
   handling: false,
-  current: 1,
-  pickType: "",
+  current: "",
   data: {
-    1: {
-      type: "Multiple choices",
-    },
+    id: "",
+    title: "",
+    content: "",
+    type: "",
+    sectionMedia: "",
+    createDate: "",
+    updateDate: "",
+    questionGroups: [],
+    questions: [],
   },
+  changed: false,
+  update: {},
 }
 
 const selectDomain = (state: any) => {
@@ -21,6 +28,7 @@ const selectDomain = (state: any) => {
 const selectPath = (_state: any, path: any) => path
 export const selectSections = createSelector([selectDomain], (state: Section) => state.data ?? {})
 export const selectSectionCurrent = createSelector([selectDomain], (state: Section) => state.current)
-export const selectPickType = createSelector([selectDomain], (state: Section) => state.pickType)
 export const selectSectionData = createSelector([selectSections, selectPath], (state, path) => _.get(state, path))
 export const selectSectionHandling = createSelector([selectDomain], (state) => state.handling)
+export const selectSectionChanged = createSelector([selectDomain], (state) => state.changed)
+export const selectSectionUpdate = createSelector([selectDomain], (state) => state.update)
