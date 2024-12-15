@@ -50,6 +50,10 @@ const SignUp = () => {
       alert("Please accept the Terms & Conditions");
       return;
     }
+    if (values.password !== values.confirmPassword) {
+      console.error("Passwords do not match");
+      return;
+    }
     try {
       const res = await authService.signUp({
         username: values.username,

@@ -16,7 +16,7 @@ import {
   OTPVerificationScreenNavigationProp,
 } from "../../type";
 import authService from "../../services/auth.service";
-
+import * as SecureStore from "expo-secure-store";
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
   password: Yup.string().required("Password is required"),
@@ -31,14 +31,20 @@ const Login = () => {
     try {
       const res = await authService.signIn(values);
       if (res.statusCode === 201) {
+        // res.data: { accessToken: string, refreshToken: string }
+        await SecureStore.setItemAsync("accessToken", res.data.accessToken);
+        await SecureStore.setItemAsync("refreshToken", res.data.refreshToken);
         navigation.navigate("BottomTabsNavigator");
-      } else if (res.statusCode === 400) {
+      } else if (
+        res.message === "Failed to sign in: Incorrect username or password." // temporary condition because statusCode is not different for cases
+      ) {
+        console.error(res.message);
+      } else {
+        console.error(res.message);
         otpVerifyNav.navigate("OTPVerification", {
           username: values.username,
           isConfirmSignUp: true,
         });
-      } else {
-        console.error("Invalid credentials");
       }
     } catch (err) {
       console.error(err);

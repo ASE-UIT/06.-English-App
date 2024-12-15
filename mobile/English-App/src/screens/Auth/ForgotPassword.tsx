@@ -8,6 +8,7 @@ import {
   LoginScreenNavigationProp,
   OTPVerificationScreenNavigationProp,
 } from "../../type";
+import authService from "../../services/auth.service";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -16,6 +17,21 @@ const validationSchema = Yup.object().shape({
 const ForgotPassword = () => {
   const loginNav = useNavigation<LoginScreenNavigationProp>();
   const otpVerifyNav = useNavigation<OTPVerificationScreenNavigationProp>();
+  const handleForgotPassword = async (values: any) => {
+    try {
+      const res = await authService.forgotPassword(values);
+      if (res.statusCode === 201) {
+        otpVerifyNav.navigate("OTPVerification", {
+          username: values.username,
+          isConfirmSignUp: false,
+        });
+      } else {
+        console.error("Invalid username");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <ImageBackground
       source={require("../../../assets/signupbg.png")}
@@ -74,11 +90,7 @@ const ForgotPassword = () => {
                   width: 150,
                 }}
                 onPress={() => {
-                  console.log(values);
-                  otpVerifyNav.navigate("OTPVerification", {
-                    username: values.username,
-                    isConfirmSignUp: false,
-                  });
+                  handleForgotPassword(values);
                 }}
               />
             </View>

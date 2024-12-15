@@ -21,7 +21,12 @@ export type RootStackParamList = {
   PayWithCard: undefined;
   Notification: undefined;
   Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
+  BottomTabsNavigator: undefined;
 };
+export type BottomTabsNavigatorRouteProp = RouteProp<
+  RootStackParamList,
+  "BottomTabsNavigator"
+>;
 export type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Login"

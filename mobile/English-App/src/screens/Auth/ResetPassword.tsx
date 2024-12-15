@@ -1,22 +1,15 @@
-import {
-  View,
-  Text,
-  ImageBackground,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import React, { useState } from "react";
-import { CheckBox, Button } from "@rneui/themed";
-import { Field, Formik } from "formik";
+import { View, Text, ImageBackground, Image, TextInput } from "react-native";
+import React from "react";
+import { Button } from "@rneui/themed";
+import { Formik } from "formik";
 import * as Yup from "yup";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import {
   AuthCongratsScreenNavigationProp,
-  LoginScreenNavigationProp,
-  ResetPasswordScreenNavigationProp,
+  OTPVerificationScreenNavigationProp,
   RootStackParamList,
 } from "../../type";
+import authService from "../../services/auth.service";
 
 const validationSchema = Yup.object().shape({
   newPassword: Yup.string().required("Password is required"),
@@ -26,14 +19,23 @@ const validationSchema = Yup.object().shape({
 });
 type ResetPasswordRouteProp = RouteProp<RootStackParamList, "ResetPassword">;
 const ResetPassword = () => {
-  const [isSelected, setSelection] = useState(false);
-  const handleCheckBox = () => {
-    setSelection(!isSelected);
-    console.log(isSelected);
-  };
   const navigation = useNavigation<AuthCongratsScreenNavigationProp>();
+  const otpVerifyNav = useNavigation<OTPVerificationScreenNavigationProp>();
   const route = useRoute<ResetPasswordRouteProp>();
   const { username, confirmationCode } = route.params;
+
+  const handleResetPassword = async (values: any) => {
+    try {
+      const res = await authService.confirmForgotPassword(values);
+      if (res.statusCode === 201) {
+        navigation.navigate("AuthCongrats", { isConfirmSignUp: false });
+      } else {
+        console.error(res.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <ImageBackground
       source={require("../../../assets/signupbg.png")}
@@ -109,10 +111,15 @@ const ResetPassword = () => {
                 }}
                 onPress={() => {
                   console.log(values);
-                  console.log(username);
-                  console.log(confirmationCode);
-                  navigation.navigate("AuthCongrats", {
-                    isConfirmSignUp: false,
+                  if (values.newPassword !== values.confirmNewPassword) {
+                    console.error("Passwords do not match");
+                    return;
+                  }
+
+                  handleResetPassword({
+                    username,
+                    newPassword: values.newPassword,
+                    confirmationCode,
                   });
                 }}
               />
@@ -120,14 +127,17 @@ const ResetPassword = () => {
           )}
         </Formik>
         <Text>
-          Back to{" "}
+          Wrong confirmation code? Go back to{" "}
           <Text
             style={{ color: "#EF5DA8", textDecorationLine: "underline" }}
             onPress={() => {
-              navigation.navigate("Login");
+              otpVerifyNav.navigate("OTPVerification", {
+                username,
+                isConfirmSignUp: false,
+              });
             }}
           >
-            Login
+            OTP verification
           </Text>{" "}
         </Text>
       </View>
