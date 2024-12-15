@@ -138,6 +138,7 @@ export class CourseBuyingService {
     const signData = qs.stringify(vnp_Params, { encode: false });
     const hmac = crypto.createHmac('sha512', vnpHashSecret);
     const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+    console.log(signed, vnpHashSecret);
 
     const paymentStatus = '0';
     let checkOrderId = true;
@@ -154,8 +155,11 @@ export class CourseBuyingService {
     const checkAmount =
       order.course.price / 100 === vnp_Params['vnp_Amout'] ? true : false; // Kiểm tra số tiền "giá trị của vnp_Amout/100" trùng khớp với số tiền của đơn hàng trong CSDL của bạn
     if (secureHash === signed) {
+      console.log('Checksum success');
       if (checkOrderId) {
+        console.log('Order found');
         if (checkAmount) {
+          console.log('Amount valid');
           if (paymentStatus == '0') {
             if (rspCode == '00') {
               order.active = true;
