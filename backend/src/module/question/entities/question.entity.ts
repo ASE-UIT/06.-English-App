@@ -12,10 +12,13 @@ export class Question extends Base {
   @AutoMap()
   @ManyToOne(() => QuestionGroup, (questionGroup) => questionGroup.questions, {
     eager: true,
+    onDelete: 'CASCADE',
   })
   questionGroup?: QuestionGroup;
   @AutoMap()
-  @ManyToOne(() => Section, (section) => section.questions)
+  @ManyToOne(() => Section, (section) => section.questions, {
+    onDelete: 'CASCADE',
+  })
   section: Section;
   @AutoMap()
   @Column()

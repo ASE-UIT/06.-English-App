@@ -8,7 +8,9 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 @Entity()
 export class QuestionGroup extends Base {
   @AutoMap()
-  @ManyToOne(() => Section, (section) => section.questionGroups)
+  @ManyToOne(() => Section, (section) => section.questionGroups, {
+    onDelete: 'CASCADE',
+  })
   section: Section;
   @AutoMap()
   @Column({

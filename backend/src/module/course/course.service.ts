@@ -167,7 +167,11 @@ export class CourseService {
   }
 
   remove(id: string) {
-    return `This action removes a #${id} course`;
+    try {
+      return this.dataSource.getRepository(Course).delete(id);
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 
   public async findTeacherByAwsId(awsId: string) {
@@ -182,5 +186,18 @@ export class CourseService {
       .where('userInfo.id = :userId', { userId: user.id })
       .getOne();
     return teacher;
+  }
+
+  async publishCourse(id: string) {
+    try {
+      const course = await this.dataSource.getRepository(Course).findOneOrFail({
+        where: { id },
+      });
+      course.state = STATE.PUBLISHED;
+      await this.dataSource.getRepository(Course).save(course);
+      return course;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
   }
 }

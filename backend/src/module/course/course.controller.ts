@@ -172,6 +172,21 @@ export class CourseController {
     return ResponseObject.create('Course updated', result);
   }
 
+  @ApiOperation({
+    summary: 'Update course status for admin to accept',
+  })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    required: true,
+    description: 'Course id',
+  })
+  @Put(END_POINTS.COURSE.PUBLISH_COURSE)
+  async publishCourse(@Param('id') id: string) {
+    const result = await this.courseService.publishCourse(id);
+    return ResponseObject.create('Course published', result);
+  }
+
   @Delete(END_POINTS.COURSE.DELETE)
   @ApiOperation({
     summary: 'Delete course',

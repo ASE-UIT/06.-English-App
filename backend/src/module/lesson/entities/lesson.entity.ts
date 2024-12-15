@@ -15,7 +15,6 @@ import { AutoMap } from '@automapper/classes';
 import { LessonDiscussion } from 'src/module/lesson-discussion/entities/lesson-discussion.entity';
 import { LessonProgress } from 'src/module/course-owning/entities/lesson-progress.entity';
 
-
 @Entity()
 export class Lesson extends Base {
   @Column()
@@ -40,13 +39,15 @@ export class Lesson extends Base {
   @ManyToMany(() => Grammar, (grammar) => grammar.lessons)
   @JoinTable()
   grammars?: Grammar[];
-  @ManyToOne(() => Course, (course) => course.lessons)
+  @ManyToOne(() => Course, (course) => course.lessons, { onDelete: 'CASCADE' })
   course: Course;
 
-  @OneToMany(() => LessonDiscussion, (lessonDiscussion) => lessonDiscussion.lesson)
+  @OneToMany(
+    () => LessonDiscussion,
+    (lessonDiscussion) => lessonDiscussion.lesson,
+  )
   lessonDiscussions: LessonDiscussion[];
 
   @OneToMany(() => LessonProgress, (lessonProgress) => lessonProgress.lesson)
   lessonProgresses: LessonProgress[];
-
 }
