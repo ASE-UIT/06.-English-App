@@ -1,4 +1,5 @@
 import CategoryList from "@/components/Student/CategoryList";
+import CourseRecommendationItem from "@/components/Student/CourseRecommendationItem";
 import Header from "@/components/Student/Header";
 import { DefaultAvatar } from "@/utils/constants.";
 
