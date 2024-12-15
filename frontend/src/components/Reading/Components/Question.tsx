@@ -6,11 +6,12 @@ import Answer from "./Answer"
 import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { AnimatePresence, motion } from "framer-motion"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { selectSectionCurrent, selectSectionUpdate } from "@/features/section/store/selectors"
 import { useParams } from "react-router"
 import FroalaEditorComponent from "@/components/Layout/Components/ui/FroalaEditorComponent"
 import generateFroalaConfig from "@/config/froala.config"
+import { useSectionSlice } from "@/features/section/store"
 
 interface Answer {
   text: string
@@ -62,7 +63,9 @@ const Question = ({
   index: number
   setQuestion: Dispatch<SetStateAction<question[]>>
   type: string
-}) => {
+  }) => {
+  const dispatch = useDispatch()
+  const { actions: sectionActions } = useSectionSlice()
   const { sectionId } = useParams()
   const froalaConfig = useMemo(() => generateFroalaConfig(), [])
   const sectionCurrent = useSelector(selectSectionCurrent)
@@ -75,6 +78,7 @@ const Question = ({
     const newAnswers = [...answers]
     newAnswers.splice(index, 1)
     setAnswers(newAnswers)
+    dispatch(sectionActions.updateViewChanged(true))
   }
 
   const handleKeyDown = (event: { key: string }) => {
@@ -96,6 +100,7 @@ const Question = ({
       }
       setNewAnswerText("")
       setAnswers([...answers, newAnswers])
+      dispatch(sectionActions.updateViewChanged(true))
     }
   }
 
@@ -104,6 +109,7 @@ const Question = ({
     setAnswers((prevAnswers) =>
       prevAnswers.map((answer) => (answer.text === text ? { ...answer, isCorrect: !answer.isCorrect } : answer)),
     )
+    dispatch(sectionActions.updateViewChanged(true))
   }
 
   useEffect(() => {

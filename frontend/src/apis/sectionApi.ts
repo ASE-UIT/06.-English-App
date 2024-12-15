@@ -8,7 +8,7 @@ interface CreateQuestionGroup {
 }
 
 interface CreateQuestion {
-  sectionId: string
+  sectionId?: string
   questionGroupId?: string
   questions: {
     questionGroup?: string

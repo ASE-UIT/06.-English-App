@@ -5,7 +5,8 @@ import Question from "../Components/Question"
 import { useDispatch, useSelector } from "react-redux"
 import { useSectionSlice } from "@/features/section/store"
 import { selectSectionCurrent, selectSectionUpdate } from "@/features/section/store/selectors"
-import { toast } from "react-toastify"
+import { toast, ToastContainer } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css';
 interface question {
   questionGroup?: string
   section: string
@@ -30,6 +31,7 @@ const MultipleChoice = ({ type }: { type: string }) => {
   console.log("update", update, question, currentQuestion)
   return (
     <div className="flex w-full flex-col">
+      <ToastContainer/>
       {
         <Button
           onClick={() => {
