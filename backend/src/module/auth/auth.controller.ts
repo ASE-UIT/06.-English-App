@@ -23,9 +23,11 @@ import { Public } from '../../common/decorators/public.decorator';
 import { ConfirmSignUpDto } from './dto/confirm-sign-up.dto';
 import { IUser } from '../../common/guards/at.guard';
 import { ResponseObject } from '../../utils/objects';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ConfirmForgotPasswordDto } from './dto/confirm-forgot-password.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { ResendConfirmationCodeDto } from './dto/resend-confirmation-code.dto';
 
 @ApiTags(DOCUMENTATION.TAGS.AUTH)
 @Controller(END_POINTS.AUTH.BASE)
@@ -39,10 +41,7 @@ export class AuthController {
   @Public()
   @Post(END_POINTS.AUTH.SIGN_UP)
   @ApiOperation({ summary: 'Register a new user' })
-  async signUp(
-    @UserReq() user: IUser,
-    @Body() registerAuthDto: RegisterAuthDto,
-  ) {
+  async signUp(@Body() registerAuthDto: RegisterAuthDto) {
     const registerCognitoDto = this.mapper.map(
       registerAuthDto,
       RegisterAuthDto,
@@ -51,7 +50,10 @@ export class AuthController {
     const cognitoId = await this.cognitoService.signUp(registerCognitoDto);
     const userCreated = this.mapper.map(registerAuthDto, RegisterAuthDto, User);
     userCreated.awsCognitoId = cognitoId;
-    const res = await this.authService.create(userCreated, user.userName);
+    const res = await this.authService.create(
+      userCreated,
+      registerAuthDto.username,
+    );
     return ResponseObject.create('User created', res);
   }
 
@@ -79,7 +81,10 @@ export class AuthController {
       throw new UnauthorizedException('Email not verified');
     }
     this.authService.setRefreshToken(response, refreshToken);
-    return ResponseObject.create('User signed in', { accessToken });
+    return ResponseObject.create('User signed in', {
+      accessToken,
+      refreshToken,
+    });
   }
 
   @Public()
@@ -88,6 +93,18 @@ export class AuthController {
   async confirmSignUp(@Body() confirmSignUpDto: ConfirmSignUpDto) {
     const res = await this.cognitoService.confirmSignUp(confirmSignUpDto);
     return ResponseObject.create("User's email confirmed", res);
+  }
+
+  @Public()
+  @Post(END_POINTS.AUTH.RESEND_CONFIRMATION_CODE)
+  @ApiOperation({ summary: 'Resend confirmation code' })
+  async resendConfirmationCode(
+    @Body() resendConfirmationCodeDto: ResendConfirmationCodeDto,
+  ) {
+    const res = await this.cognitoService.resendConfirmationCode(
+      resendConfirmationCodeDto,
+    );
+    return ResponseObject.create('Confirmation code resent', res);
   }
 
   @Public()
@@ -113,9 +130,20 @@ export class AuthController {
   @Public()
   @Post(END_POINTS.AUTH.REFRESH_TOKEN)
   @ApiOperation({ summary: 'Refresh access token' })
-  async refreshToken(@Req() req: Request) {
+  async refreshToken(
+    @Req() req: Request,
+    @Body() refreshTokenDto: RefreshTokenDto,
+  ) {
+    const userAgent = req.headers['user-agent'];
+    const isMobile = /mobile/i.test(userAgent);
+    if (isMobile) {
+      const accessToken = await this.cognitoService.refreshAccessToken(
+        refreshTokenDto.refreshToken,
+      );
+      return ResponseObject.create('Access token refreshed', { accessToken });
+    }
     const refreshToken = this.authService.getRefreshToken(req);
-    const { accessToken } =
+    const accessToken =
       await this.cognitoService.refreshAccessToken(refreshToken);
     return ResponseObject.create('Access token refreshed', { accessToken });
   }
@@ -134,8 +162,7 @@ export class AuthController {
     this.authService.setRefreshToken(response, refreshToken);
     return ResponseObject.create('User signed in', { userInfo, accessToken });
   }
-
-  @Public()
+  @ApiBearerAuth()
   @Post(END_POINTS.AUTH.SIGN_OUT)
   @ApiOperation({ summary: 'Sign out a user' })
   async signOut(@UserReq() user: IUser, @Res() response: Response) {

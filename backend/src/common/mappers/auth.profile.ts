@@ -13,15 +13,7 @@ export class AuthProfile extends AutomapperProfile {
 
   override get profile() {
     return (mapper: Mapper) => {
-      createMap(
-        mapper,
-        RegisterAuthDto,
-        RegisterCognitoDto,
-        forMember(
-          (dest) => dest.name,
-          mapFrom((src) => `${src.firstName} ${src.lastName}`),
-        ),
-      );
+      createMap(mapper, RegisterAuthDto, RegisterCognitoDto);
       createMap(mapper, RegisterAuthDto, User);
     };
   }

@@ -14,6 +14,7 @@ import {
 import {
   BadRequestException,
   ForbiddenException,
+  HttpException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -71,7 +72,7 @@ export class CognitoService {
 
   handleError(error: any, action: string) {
     const errorMessage = error.message || 'An unexpected error occurred';
-    throw new BadRequestException(`Failed to ${action}: ${errorMessage}`);
+    throw new HttpException(`Failed to ${action}: ${errorMessage}`, error.code);
   }
 
   async signUp(registerCognitoDto: RegisterCognitoDto) {
@@ -98,6 +99,9 @@ export class CognitoService {
     } catch (error) {
       if (error.code === 'UsernameExistsException') {
         throw new ForbiddenException('Username already exists');
+      }
+      if (error.code === 'EmailExistsException') {
+        throw new ForbiddenException('Email already exists');
       }
       if (error.code === 'InvalidPasswordException') {
         throw new BadRequestException(
@@ -241,6 +245,7 @@ export class CognitoService {
             }),
           ),
       );
+
       return tokenResponse.data.access_token;
     } catch (error) {
       this.handleError(error, 'refresh access token');
@@ -314,9 +319,9 @@ export class CognitoService {
       UserPoolId: this.userPoolId,
       Username: username,
     });
-
     try {
-      return await this.cognitoClient.send(command);
+      await this.cognitoClient.send(command);
+      return 'Sign out successful';
     } catch (error) {
       this.handleError(error, 'sign out');
     }

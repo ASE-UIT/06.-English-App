@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {Body, Controller, Get, Patch, Post} from '@nestjs/common';
 import { UserService } from './user.service';
 
 import { User } from '../../common/decorators/user.decorator';
@@ -39,5 +39,14 @@ export class UserController {
     const userCreated = this.mapper.map(userDto, UserDto, UserEntity);
     const res = await this.authService.create(userCreated, user.userName);
     return ResponseObject.create('User created', res);
+  }
+  @Patch(END_POINTS.USER.UPDATE)
+  @ApiOperation({
+    summary: 'Update a user information',
+  })
+  async updateUser(@User() user: IUser, @Body() userDto: UserDto) {
+    const userUpdated = this.mapper.map(userDto, UserDto, UserEntity);
+    await this.userService.updateUserInfo(user.userAwsId, userUpdated);
+    return ResponseObject.create('User updated', userUpdated);
   }
 }
