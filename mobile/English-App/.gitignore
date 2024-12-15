@@ -38,3 +38,4 @@ yarn-error.*
 src/services/config.ts
 
 android/
+%ProgramData%/
