@@ -15,6 +15,7 @@ import {
   ResetPasswordScreenNavigationProp,
   RootStackParamList,
 } from "../../type";
+import authService from "../../services/auth.service";
 
 type OTPVerificationRouteProp = RouteProp<
   RootStackParamList,
@@ -39,14 +40,29 @@ const OTPVerification = () => {
     const enteredCode = code.join("");
     console.log(enteredCode);
     if (isConfirmSignUp) {
-      // Call confirmSignUp API, if successful navigate to Congrats screen
-      authCongratsNav.navigate("AuthCongrats", { isConfirmSignUp: true });
+      try {
+        const res = await authService.confirmSignUp({
+          username,
+          code: enteredCode,
+        });
+        console.log(res);
+        if (res.statusCode === 201) {
+          authCongratsNav.navigate("AuthCongrats", { isConfirmSignUp: true });
+        } else {
+          console.error("Invalid code");
+        }
+      } catch (err) {
+        console.error(err);
+      }
     } else {
       resetPassNav.navigate("ResetPassword", {
         username,
         confirmationCode: enteredCode,
       });
     }
+  };
+  const handleResendCode = async () => {
+    // Call resendConfirmationCode API
   };
 
   return (
@@ -88,10 +104,7 @@ const OTPVerification = () => {
               color: "#EF5DA8",
               textDecorationLine: "underline",
             }}
-            onPress={
-              // Call resendCode API
-              () => console.log("Resend code")
-            }
+            onPress={handleResendCode}
           >
             Resend
           </Text>

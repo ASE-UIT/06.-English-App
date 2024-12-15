@@ -11,7 +11,11 @@ import { Button, CheckBox } from "@rneui/themed";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import { LoginScreenNavigationProp } from "../../type";
+import {
+  LoginScreenNavigationProp,
+  OTPVerificationScreenNavigationProp,
+} from "../../type";
+import authService from "../../services/auth.service";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -20,8 +24,26 @@ const validationSchema = Yup.object().shape({
 
 const Login = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
+  const otpVerifyNav = useNavigation<OTPVerificationScreenNavigationProp>();
   const [rememberMe, setRememberMe] = useState(false);
-
+  const handleSignIn = async (values: any) => {
+    console.log(values);
+    try {
+      const res = await authService.signIn(values);
+      if (res.statusCode === 201) {
+        navigation.navigate("BottomTabsNavigator");
+      } else if (res.statusCode === 400) {
+        otpVerifyNav.navigate("OTPVerification", {
+          username: values.username,
+          isConfirmSignUp: true,
+        });
+      } else {
+        console.error("Invalid credentials");
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <ImageBackground
       source={require("../../../assets/signupbg.png")}
@@ -130,7 +152,9 @@ const Login = () => {
                   borderRadius: 12,
                   width: 150,
                 }}
-                // onPress={handleSubmit}
+                onPress={() => {
+                  handleSignIn(values);
+                }}
               />
             </View>
           )}
