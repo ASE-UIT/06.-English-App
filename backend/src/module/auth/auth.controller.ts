@@ -23,7 +23,7 @@ import { Public } from '../../common/decorators/public.decorator';
 import { ConfirmSignUpDto } from './dto/confirm-sign-up.dto';
 import { IUser } from '../../common/guards/at.guard';
 import { ResponseObject } from '../../utils/objects';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ConfirmForgotPasswordDto } from './dto/confirm-forgot-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
@@ -158,8 +158,7 @@ export class AuthController {
     this.authService.setRefreshToken(response, refreshToken);
     return ResponseObject.create('User signed in', { userInfo, accessToken });
   }
-
-  @Public()
+  @ApiBearerAuth()
   @Post(END_POINTS.AUTH.SIGN_OUT)
   @ApiOperation({ summary: 'Sign out a user' })
   async signOut(@UserReq() user: IUser, @Res() response: Response) {
