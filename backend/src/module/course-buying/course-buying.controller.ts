@@ -40,7 +40,10 @@ export class CourseBuyingController {
       createCourseBuyingDto.courseId,
       user.userAwsId,
     );
-    return ResponseObject.create('CourseBuying created successfully', result);
+    return ResponseObject.create('CourseBuying created successfully', {
+      courseBuying: result.id,
+      key: result.key,
+    });
   }
   @ApiOperation({ summary: 'Create pay order url' })
   @Post(END_POINTS.COURSE_BUYING.CREATE_PAY_ORDER_URL)
