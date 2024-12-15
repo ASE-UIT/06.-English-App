@@ -12,7 +12,10 @@ import InputField from "./InputField"; // Adjust the import path as needed
 import userService from "../../services/user.service";
 import MainHeader from "../../components/MainHeader";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import authService from "../../services/auth.service";
+import { useNavigation } from "@react-navigation/native";
+import { LoginScreenNavigationProp } from "../../type";
+import * as SecureStore from "expo-secure-store";
 const Profile = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
@@ -23,7 +26,7 @@ const Profile = () => {
   const nameInputRef = useRef<TextInput>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [avatar, setAvatar] = useState();
-
+  const loginNav = useNavigation<LoginScreenNavigationProp>();
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,14 +54,12 @@ const Profile = () => {
     }
   };
 
-  if(!isLoaded) {
+  if (!isLoaded) {
     <SafeAreaView>
       <MainHeader />
       <Text>Loading...</Text>
-    </SafeAreaView>
+    </SafeAreaView>;
   }
-
-
 
   return (
     <SafeAreaView>
@@ -141,7 +142,24 @@ const Profile = () => {
               <Text className="text-white text-xs  font-semibold">Setting</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3">
+            <TouchableOpacity
+              className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3"
+              onPress={async () => {
+                try {
+                  const res = await authService.signOut();
+                  if (res.statusCode === 201) {
+                    console.log("Logged out");
+                    await SecureStore.deleteItemAsync("accessToken");
+                    await SecureStore.deleteItemAsync("refreshToken");
+                    loginNav.navigate("Login");
+                  } else {
+                    console.error(res.message);
+                  }
+                } catch (err) {
+                  console.error(err);
+                }
+              }}
+            >
               <Icon
                 name="logout"
                 type="material-community"
