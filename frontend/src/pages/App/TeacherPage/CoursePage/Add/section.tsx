@@ -86,14 +86,14 @@ export const SectionComp = () => {
           contentType,
         )
       ) {
-        if (lessonData?.data.type === "LISTENING") getPreUrl = await fileApi.getPresignedUrl(contentType, "mp3")
+        if (type === "LISTENING") getPreUrl = await fileApi.getPresignedUrl(contentType, "mp3")
         else {
-          error = "Incorrect file type: Reading lesson only accept image file"
+          error = "Incorrect file type: Reading section only accept image file"
         }
       } else if (["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp"].includes(contentType)) {
-        if (lessonData?.data.type === "READING") getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
+        if (type === "READING") getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
         else {
-          error = "Incorrect file type: Listening lesson only accept audio file"
+          error = "Incorrect file type: Listening section only accept audio file"
         }
       }
       console.log("error", error)
@@ -174,7 +174,7 @@ export const SectionComp = () => {
         </div>
         <div>
           <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
-            Title
+            Media
           </Text>
           <div className="mx-auto min-h-96 w-full rounded-lg border border-dashed border-headerIcon bg-white">
             <FileUpload onChange={handleFileUpload} />

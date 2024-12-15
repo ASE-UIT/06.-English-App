@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import SubmitLogo from "@/assets/submit_icon.svg"
-import { ReadingTestPage } from "../ReadingTestPage/ReadingTestPage"
+// import { ReadingTestPage } from "../ReadingTestPage/ReadingTestPage"
 import { Section } from "@/type/section"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
@@ -36,7 +36,7 @@ export default function ListeningTestPage() {
               </div>
               <div className="w-full rounded-md border-2 border-[#fcddec] p-[20px]">
                 <div className="flex flex-[8] flex-col">
-                  <ReadingTestPage questionGroups={data ? data.questionGroups : []} />
+                  {/* <ReadingTestPage questionGroups={data ? data.questionGroups : []} /> */}
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@ export default function ListeningTestPage() {
               {Array.from({ length: 10 }, (_, i) => (
                 <Button
                   key={i}
-                  className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-inherit hover:bg-[#5d5fef] hover:outline-none focus:outline-none focus:bg-[#5d5fef]" 
+                  className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-[#5d5fef] hover:bg-inherit hover:outline-none focus:bg-[#5d5fef] focus:outline-none"
                 >
                   {i + 1}
                 </Button>

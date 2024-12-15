@@ -42,7 +42,6 @@ export interface LessonCreate {
   name: string
   description: string
   content: string
-  type: string
 }
 
 export interface LessonCreateRes extends Response {

@@ -1,12 +1,11 @@
 import { Button } from "@/components/ui/button"
 import BackIconButton from "../../../../../../assets/back_button_icon.svg"
-import { useAuth } from "@/hooks/useAuth"
+// import { useAuth } from "@/hooks/useAuth"
 import { useDispatch, useSelector } from "react-redux"
 import { selectCourseView, selectLessonView, selectSectionView } from "@/features/course/store/selectors"
 import { useCourseSlice } from "@/features/course/store"
 
 export default function SectionHeader({ children }: { children: React.ReactNode }) {
-  useAuth()
   const lessonView = useSelector(selectLessonView)
   const dispatch = useDispatch()
   const { actions: courseActions } = useCourseSlice()
@@ -60,7 +59,7 @@ export default function SectionHeader({ children }: { children: React.ReactNode 
           </div>
         </div>
       </div>
-      <div className="bg-white ml-[62px]">{children}</div>
+      <div className="ml-[62px] bg-white">{children}</div>
     </div>
   )
 }

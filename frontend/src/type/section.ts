@@ -2,8 +2,8 @@ import { Response } from "."
 
 export const Section = [
   {
-    key: "ROOT",
-    text: "Root",
+    key: "SPEAKING",
+    text: "Speaking",
   },
   {
     key: "LISTENING",
@@ -14,8 +14,8 @@ export const Section = [
     text: "Reading",
   },
   {
-    key: "VOCABULARY",
-    text: "Vocabulary",
+    key: "WRITING",
+    text: "Writing",
   },
 ]
 
@@ -29,7 +29,8 @@ export interface Section {
   sectionMedia: string
   createDate: string
   updateDate: string
-  questionGroups: []
+  questionGroups: QuestionGroup[]
+  questions: Question[]
 }
 
 export interface SectionRes extends Response {
@@ -46,4 +47,35 @@ export interface SectionCreate {
   type: string
   lessonId: string
   sectionMedia: string
+}
+
+export interface QuestionGroup {
+  id: string
+  text: string
+  questionGroupType: string
+  createDate: string
+  questions: Question[]
+}
+
+export interface Question {
+  id: string
+  questionGroup?: QuestionGroup
+  section: Section
+  text: string
+  type: string
+  studentAnswers: StudentAnswer[]
+  answers: Answer[]
+  order: number
+}
+
+export interface StudentAnswer {
+  id: string
+  question: Question
+  // Các thuộc tính khác của StudentAnswer
+}
+
+export interface Answer {
+  id: string
+  question: Question
+  // Các thuộc tính khác của Answer
 }

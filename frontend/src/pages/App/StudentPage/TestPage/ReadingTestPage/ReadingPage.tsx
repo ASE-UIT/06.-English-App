@@ -3,47 +3,37 @@ import LeftNav from "@/assets/left_nav_button.svg"
 import RightNav from "@/assets/right_nav_button.svg"
 import SubmitLogo from "@/assets/submit_icon.svg"
 import { Button } from "@/components/ui/button"
-import { ReadingTestPage } from "@/pages/App/StudentPage/TestPage/ReadingTestPage/ReadingTestPage"
+// import { ReadingTestPage } from "@/pages/App/StudentPage/TestPage/ReadingTestPage/ReadingTestPage"
 import { Section } from "@/type/section"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 
 export default function ReadingPage() {
+  const [data, setData] = useState<Section | null>(null)
 
-  const [data, setData] = useState<Section | null>(null);
-
-  const { id } = useParams();
-  useEffect(
-    () => {
-      if (id) {
-        sectionApi.GetSectionById(id).then((res) => {
-          if (res) {
-            setData(res.data);
-            console.log(res.data)
-          }
-        });
-      }
+  const { id } = useParams()
+  useEffect(() => {
+    if (id) {
+      sectionApi.GetSectionById(id).then((res) => {
+        if (res) {
+          setData(res.data)
+          console.log(res.data)
+        }
+      })
     }
-    , [id]);
+  }, [id])
 
-  const handleNext = () => {
-
-  }
+  const handleNext = () => {}
 
   return (
-    <div className="mx-[16px] mt-[32px] gap-[10px] grid grid-cols-2">
+    <div className="mx-[16px] mt-[32px] grid grid-cols-2 gap-[10px]">
       <div className="flex max-h-[1100px] flex-1 flex-col items-center overflow-scroll overflow-x-hidden rounded-md border-2 border-[#a5a6f6] px-[5px] text-black scrollbar-thin scrollbar-track-gray-300 scrollbar-thumb-gray-400">
-        <h2 className="mb-[25px] mt-[25px] text-2xl font-bold">{data ? data.title : ''}</h2>
-        {data && (
-          <div
-            className="reading-text"
-            dangerouslySetInnerHTML={{ __html: data.content }}
-          ></div>
-        )}
+        <h2 className="mb-[25px] mt-[25px] text-2xl font-bold">{data ? data.title : ""}</h2>
+        {data && <div className="reading-text" dangerouslySetInnerHTML={{ __html: data.content }}></div>}
       </div>
       <div className="flex flex-1 flex-col">
         <div className="w-full rounded-md border-2 border-b-0 border-[#fcddec] p-[20px]">
-          <ReadingTestPage questionGroups={data ? data.questionGroups : []} />
+          {/* <ReadingTestPage questionGroups={data ? data.questionGroups : []} /> */}
         </div>
         <div className="flex h-[60px] justify-between bg-[#fff4f9]">
           <Button className="h-full bg-inherit hover:bg-inherit hover:outline-none focus:outline-none">
@@ -53,7 +43,7 @@ export default function ReadingPage() {
             {Array.from({ length: 10 }, (_, i) => (
               <Button
                 key={i}
-                className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-inherit hover:bg-[#5d5fef] hover:outline-none focus:outline-none focus:bg-[#5d5fef]"
+                className="border-1 h-[40px] w-[40px] rounded-full border-[#5d5fef] bg-inherit text-[#ef5da8] hover:bg-[#5d5fef] hover:bg-inherit hover:outline-none focus:bg-[#5d5fef] focus:outline-none"
               >
                 {i + 1}
               </Button>
