@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import SubmitLogo from "@/assets/submit_icon.svg"
-import { ReadingTestPage } from "../ReadingTestPage/ReadingTestPage"
+// import { ReadingTestPage } from "../ReadingTestPage/ReadingTestPage"
 import { Section } from "@/type/section"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
@@ -33,7 +33,7 @@ export default function ListeningTestPage() {
               </div>
               <div className="w-full rounded-md border-2 border-[#fcddec] p-[20px]">
                 <div className="flex flex-[8] flex-col">
-                  <ReadingTestPage questionGroups={data ? data.questionGroups : []} />
+                  {/* <ReadingTestPage questionGroups={data ? data.questionGroups : []} /> */}
                 </div>
               </div>
             </div>

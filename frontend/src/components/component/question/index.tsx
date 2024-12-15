@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 // import { ComboboxDemo } from "@/components/ui/combobox"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import Question from "@/components/Reading/Components/Question"
+// import Question from "@/components/Reading/Components/Question"
 import { useState } from "react"
 
 const QuestionComponent = () => {
@@ -58,7 +58,7 @@ const QuestionComponent = () => {
               </div>
             </div>
           )}
-          {question.length > 0 && (
+          {/* {question.length > 0 && (
             <div>
               <ul>
                 {question.map((_q, i) => (
@@ -68,7 +68,7 @@ const QuestionComponent = () => {
                 ))}
               </ul>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
