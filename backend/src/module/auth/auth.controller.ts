@@ -27,6 +27,7 @@ import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ConfirmForgotPasswordDto } from './dto/confirm-forgot-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
+import { ResendConfirmationCodeDto } from './dto/resend-confirmation-code.dto';
 
 @ApiTags(DOCUMENTATION.TAGS.AUTH)
 @Controller(END_POINTS.AUTH.BASE)
@@ -97,9 +98,12 @@ export class AuthController {
   @Public()
   @Post(END_POINTS.AUTH.RESEND_CONFIRMATION_CODE)
   @ApiOperation({ summary: 'Resend confirmation code' })
-  async resendConfirmationCode(@Body() registerAuthDto: RegisterAuthDto) {
-    const res =
-      await this.cognitoService.resendConfirmationCode(registerAuthDto);
+  async resendConfirmationCode(
+    @Body() resendConfirmationCodeDto: ResendConfirmationCodeDto,
+  ) {
+    const res = await this.cognitoService.resendConfirmationCode(
+      resendConfirmationCodeDto,
+    );
     return ResponseObject.create('Confirmation code resent', res);
   }
 
