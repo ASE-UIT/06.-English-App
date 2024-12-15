@@ -4,6 +4,7 @@ import { Course, MyCourse, GrammarModel } from "./models";
 import { ScrollView } from "react-native";
 
 export type RootStackParamList = {
+  SplashScreen: undefined;
   Login: undefined;
   SignUp: undefined;
   ForgotPassword: undefined;
@@ -23,6 +24,10 @@ export type RootStackParamList = {
   Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
   BottomTabsNavigator: undefined;
 };
+export type SplashScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "SplashScreen"
+>;
 export type BottomTabsNavigatorRouteProp = RouteProp<
   RootStackParamList,
   "BottomTabsNavigator"

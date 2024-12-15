@@ -20,18 +20,48 @@ import {
   ResetPassword,
   SignUp,
 } from "../screens/Auth";
+import SplashScreen from "../screens/Splash/SplashScreen";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
   const scrollRef = useRef<ScrollView>(null);
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Login" component={Login} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
-      <Stack.Screen name="OTPVerification" component={OTPVerification} />
-      <Stack.Screen name="ResetPassword" component={ResetPassword} />
-      <Stack.Screen name="AuthCongrats" component={AuthCongrats} />
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="OTPVerification"
+        component={OTPVerification}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AuthCongrats"
+        component={AuthCongrats}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         options={{
           headerShown: false,
