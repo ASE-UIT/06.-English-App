@@ -319,9 +319,9 @@ export class CognitoService {
       UserPoolId: this.userPoolId,
       Username: username,
     });
-
     try {
-      return await this.cognitoClient.send(command);
+      await this.cognitoClient.send(command);
+      return 'Sign out successful';
     } catch (error) {
       this.handleError(error, 'sign out');
     }
