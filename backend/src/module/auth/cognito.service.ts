@@ -241,6 +241,7 @@ export class CognitoService {
             }),
           ),
       );
+
       return tokenResponse.data.access_token;
     } catch (error) {
       this.handleError(error, 'refresh access token');
