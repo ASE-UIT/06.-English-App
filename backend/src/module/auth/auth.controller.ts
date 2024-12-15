@@ -26,6 +26,7 @@ import { ResponseObject } from '../../utils/objects';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ConfirmForgotPasswordDto } from './dto/confirm-forgot-password.dto';
+import { RefreshTokenDto } from './dto/refresh-token.dto';
 
 @ApiTags(DOCUMENTATION.TAGS.AUTH)
 @Controller(END_POINTS.AUTH.BASE)
@@ -79,7 +80,10 @@ export class AuthController {
       throw new UnauthorizedException('Email not verified');
     }
     this.authService.setRefreshToken(response, refreshToken);
-    return ResponseObject.create('User signed in', { accessToken });
+    return ResponseObject.create('User signed in', {
+      accessToken,
+      refreshToken,
+    });
   }
 
   @Public()
@@ -122,9 +126,20 @@ export class AuthController {
   @Public()
   @Post(END_POINTS.AUTH.REFRESH_TOKEN)
   @ApiOperation({ summary: 'Refresh access token' })
-  async refreshToken(@Req() req: Request) {
+  async refreshToken(
+    @Req() req: Request,
+    @Body() refreshTokenDto: RefreshTokenDto,
+  ) {
+    const userAgent = req.headers['user-agent'];
+    const isMobile = /mobile/i.test(userAgent);
+    if (isMobile) {
+      const accessToken = await this.cognitoService.refreshAccessToken(
+        refreshTokenDto.refreshToken,
+      );
+      return ResponseObject.create('Access token refreshed', { accessToken });
+    }
     const refreshToken = this.authService.getRefreshToken(req);
-    const { accessToken } =
+    const accessToken =
       await this.cognitoService.refreshAccessToken(refreshToken);
     return ResponseObject.create('Access token refreshed', { accessToken });
   }
