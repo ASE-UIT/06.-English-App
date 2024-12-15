@@ -62,7 +62,20 @@ const OTPVerification = () => {
     }
   };
   const handleResendCode = async () => {
-    // Call resendConfirmationCode API
+    try {
+      let res;
+      if (isConfirmSignUp) {
+        res = await authService.resendConfirmationCode({ username });
+      } else {
+        res = await authService.forgotPassword({ username });
+      }
+      console.log(res);
+      if (res.statusCode !== 201) {
+        console.error("Failed to resend code: ", res.message);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (

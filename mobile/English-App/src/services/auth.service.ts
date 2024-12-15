@@ -26,6 +26,9 @@ class AuthService {
   async signOut() {
     return await http.post(this.getURI("sign-out"), {});
   }
+  async resendConfirmationCode(data: any) {
+    return await http.post(this.getURI("resend-confirmation-code"), data);
+  }
 }
 
 const authService = new AuthService();
