@@ -8,8 +8,13 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { CheckBox, Button } from "@rneui/themed";
-import { Field, Formik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
+import {
+  LoginScreenNavigationProp,
+  OTPVerificationScreenNavigationProp,
+} from "../../type";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -30,13 +35,15 @@ const SignUp = () => {
     setSelection(!isSelected);
     console.log(isSelected);
   };
+  const loginNav = useNavigation<LoginScreenNavigationProp>();
+  const otpVerifyNav = useNavigation<OTPVerificationScreenNavigationProp>();
 
   return (
     <ImageBackground
       source={require("../../../assets/signupbg.png")}
       style={{ width: "100%", height: "100%" }}
     >
-      <View className="flex gap-5 mt-[40px] items-center">
+      <View className="flex gap-5 mt-[10px] items-center">
         <Image
           source={require("../../../assets/avatar.png")}
           className="w-[100px] h-[110px]"
@@ -72,7 +79,13 @@ const SignUp = () => {
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
-            console.log(values);
+            console.log("Form submitted", values);
+            // Call signUp API
+            // if successful navigate to OTPVerification screen
+            otpVerifyNav.navigate("OTPVerification", {
+              username: values.username,
+              isConfirmSignUp: true,
+            });
           }}
         >
           {({
@@ -104,13 +117,6 @@ const SignUp = () => {
               {errors.lastName && touched.lastName && (
                 <Text style={{ color: "red" }}>{errors.lastName}</Text>
               )}
-              {/* <TextInput
-                    placeholder="Birth date"
-                    className="border-2 border-[#EF5DA8] w-[280] h-10 rounded-[10px] items-center px-4"
-                    onChangeText={handleChange("birthDate")}
-                    onBlur={handleBlur("birthDate")}
-                    value={values.birthDate} */}
-
               <TextInput
                 placeholder="Username"
                 className="border-2 border-[#EF5DA8] w-[280] h-10 rounded-[10px] items-center px-4"
@@ -196,6 +202,13 @@ const SignUp = () => {
                   borderRadius: 12,
                   width: 150,
                 }}
+                onPress={() => {
+                  console.log(values);
+                  otpVerifyNav.navigate("OTPVerification", {
+                    username: values.username,
+                    isConfirmSignUp: true,
+                  });
+                }} // Wrap handleSubmit in an arrow function
               />
             </View>
           )}
@@ -205,7 +218,7 @@ const SignUp = () => {
           <Text
             style={{ color: "#EF5DA8", textDecorationLine: "underline" }}
             onPress={() => {
-              console.log("press");
+              loginNav.navigate("Login");
             }}
           >
             Login

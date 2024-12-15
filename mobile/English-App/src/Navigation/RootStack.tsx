@@ -12,7 +12,14 @@ import HeaderRight from "./HeaderRight";
 import { useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import ListeningExerciseScreen from "../screens/Listening/ListeningExercise";
-import { Login, SignUp } from "../screens/Auth";
+import {
+  AuthCongrats,
+  ForgotPassword,
+  Login,
+  OTPVerification,
+  ResetPassword,
+  SignUp,
+} from "../screens/Auth";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
@@ -21,6 +28,10 @@ export default function RootStack() {
     <Stack.Navigator>
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="SignUp" component={SignUp} />
+      <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
+      <Stack.Screen name="OTPVerification" component={OTPVerification} />
+      <Stack.Screen name="ResetPassword" component={ResetPassword} />
+      <Stack.Screen name="AuthCongrats" component={AuthCongrats} />
       <Stack.Screen
         options={{
           headerShown: false,

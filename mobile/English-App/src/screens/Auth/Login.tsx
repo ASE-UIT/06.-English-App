@@ -7,9 +7,11 @@ import {
   TextInput,
 } from "react-native";
 import React, { useState } from "react";
-import { Button } from "@rneui/themed";
+import { Button, CheckBox } from "@rneui/themed";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { useNavigation } from "@react-navigation/native";
+import { LoginScreenNavigationProp } from "../../type";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
@@ -17,6 +19,9 @@ const validationSchema = Yup.object().shape({
 });
 
 const Login = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
+  const [rememberMe, setRememberMe] = useState(false);
+
   return (
     <ImageBackground
       source={require("../../../assets/signupbg.png")}
@@ -86,6 +91,34 @@ const Login = () => {
                 <Text style={{ color: "red" }}>{errors.password}</Text>
               )}
 
+              <View className="flex flex-row justify-between items-center w-[280px]">
+                <CheckBox
+                  title="Remember me"
+                  checked={rememberMe}
+                  onPress={() => setRememberMe(!rememberMe)}
+                  containerStyle={{
+                    backgroundColor: "transparent",
+                    borderWidth: 0,
+                  }}
+                  textStyle={{
+                    color: "#000",
+                  }}
+                  checkedColor="#EF5DA8"
+                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("ForgotPassword")}
+                >
+                  <Text
+                    style={{
+                      color: "#EF5DA8",
+                      textDecorationLine: "underline",
+                    }}
+                  >
+                    Forgot password?
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
               <Button
                 title={"Login"}
                 containerStyle={{
@@ -97,6 +130,7 @@ const Login = () => {
                   borderRadius: 12,
                   width: 150,
                 }}
+                // onPress={handleSubmit}
               />
             </View>
           )}
@@ -105,9 +139,7 @@ const Login = () => {
           Don't have an account?{" "}
           <Text
             style={{ color: "#EF5DA8", textDecorationLine: "underline" }}
-            onPress={() => {
-              console.log("press");
-            }}
+            onPress={() => navigation.navigate("SignUp")}
           >
             Sign Up
           </Text>{" "}
