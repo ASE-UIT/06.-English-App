@@ -22,7 +22,6 @@ import { SectionProgress } from '../course-owning/entities/section-progress.enti
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
 import * as moment from 'moment';
 import * as axios from 'axios';
-
 @Injectable()
 export class CourseBuyingService {
   constructor(
@@ -74,7 +73,7 @@ export class CourseBuyingService {
       courseBuying.key = randomBytes(4).toString('hex');
       const newCourseBuying = await this.dataSource
         .getRepository(CourseBuying)
-        .insert(courseBuying);
+        .save(courseBuying);
       return newCourseBuying;
     } catch (error) {
       console.log(error);
@@ -94,6 +93,12 @@ export class CourseBuyingService {
       if (!courseBuying) {
         throw new HttpException('Course buying not found', 404);
       }
+      // let bankCode = '';
+      // if (courseBuying.paymentMethod === PAYMENT_METHOD.ATM) {
+      //   bankCode = 'VNBANK';
+      // } else if (courseBuying.paymentMethod === PAYMENT_METHOD.QR_CODE) {
+      //   bankCode = 'VNPAYQR';
+      // }
       const vnpReturnurl = this.config.get<string>('vnpayReturnUrl');
       let vnpUrl = this.config.get<string>('vnpayUrl');
       const vnpTmnCode = this.config.get<string>('vnpTmnCode');
@@ -132,6 +137,9 @@ export class CourseBuyingService {
       vnp_Params['vnp_CreateDate'] = vnpCreateDate;
       vnp_Params['vnp_OrderType'] = 'other';
       vnp_Params['vnp_ExpireDate'] = vnpExpireDate;
+      // if (bankCode !== null && bankCode !== '') {
+      //   vnp_Params['vnp_BankCode'] = bankCode;
+      // }
       vnp_Params = sortObject(vnp_Params);
       const signData: string = qs.stringify(vnp_Params);
       const hmac = crypto.createHmac('sha512', vnpHashSecret);
@@ -148,6 +156,7 @@ export class CourseBuyingService {
   }
 
   async ipnVnpayUrl(query: any, res: Response) {
+    console.log(query);
     let vnp_Params = query;
     const secureHash = vnp_Params['vnp_SecureHash'];
     const orderId = vnp_Params['vnp_TxnRef'];
