@@ -1,15 +1,20 @@
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { Course, MyCourse,GrammarModel } from "./models";
+import { Course, MyCourse, GrammarModel } from "./models";
 import { ScrollView } from "react-native";
 
-
-
 export type RootStackParamList = {
+  SplashScreen: undefined;
+  Login: undefined;
+  SignUp: undefined;
+  ForgotPassword: undefined;
+  OTPVerification: { username: string; isConfirmSignUp: boolean };
+  ResetPassword: { username: string; confirmationCode: string };
+  AuthCongrats: { isConfirmSignUp: boolean };
   Learning: undefined;
   Course: { course: MyCourse };
   Reading: { scrollRef?: React.RefObject<ScrollView>; sectionID: string };
-  Grammar: {grammarmodel: GrammarModel};
+  Grammar: { grammarmodel: GrammarModel };
   GrammarDetail: { grammarmodel: GrammarModel };
   CourseDetail: { course: Course };
   CourseHome: { course: Course };
@@ -17,8 +22,40 @@ export type RootStackParamList = {
   PayWithCard: undefined;
   Notification: undefined;
   Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
+  BottomTabsNavigator: undefined;
 };
-
+export type SplashScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "SplashScreen"
+>;
+export type BottomTabsNavigatorRouteProp = RouteProp<
+  RootStackParamList,
+  "BottomTabsNavigator"
+>;
+export type LoginScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Login"
+>;
+export type SignUpScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "SignUp"
+>;
+export type ForgotPasswordScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "ForgotPassword"
+>;
+export type OTPVerificationScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "OTPVerification"
+>;
+export type ResetPasswordScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "ResetPassword"
+>;
+export type AuthCongratsScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "AuthCongrats"
+>;
 export type HeaderNavigationProp = StackNavigationProp<
   RootStackParamList,
   "Notification"

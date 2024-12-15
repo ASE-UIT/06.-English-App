@@ -12,12 +12,56 @@ import HeaderRight from "./HeaderRight";
 import { useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import ListeningExerciseScreen from "../screens/Listening/ListeningExercise";
+import {
+  AuthCongrats,
+  ForgotPassword,
+  Login,
+  OTPVerification,
+  ResetPassword,
+  SignUp,
+} from "../screens/Auth";
+import SplashScreen from "../screens/Splash/SplashScreen";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
   const scrollRef = useRef<ScrollView>(null);
   return (
     <Stack.Navigator>
+      <Stack.Screen
+        name="SplashScreen"
+        component={SplashScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
+        component={SignUp}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="OTPVerification"
+        component={OTPVerification}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ResetPassword"
+        component={ResetPassword}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AuthCongrats"
+        component={AuthCongrats}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         options={{
           headerShown: false,
@@ -47,9 +91,13 @@ export default function RootStack() {
           headerShown: false,
         }}
       />
-      <Stack.Screen name="Listening" component={ListeningExerciseScreen} options={{
-        headerRight: () => <HeaderRight scrollRef={scrollRef} />,
-      }} />
+      <Stack.Screen
+        name="Listening"
+        component={ListeningExerciseScreen}
+        options={{
+          headerRight: () => <HeaderRight scrollRef={scrollRef} />,
+        }}
+      />
     </Stack.Navigator>
   );
 }
