@@ -13,6 +13,7 @@ import { IUser } from 'src/common/guards/at.guard';
 import { VnpayIPNRequest } from './dto/vnpay-ipn.request.dto';
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
 import { CheckKeyDto } from './dto/check-key.dto';
+import { Public } from 'src/common/decorators/public.decorator';
 
 @ApiBearerAuth()
 @ApiTags(DOCUMENTATION.TAGS.COURSE_BUYING)
@@ -68,6 +69,7 @@ export class CourseBuyingController {
       code: validationResult.code,
     });
   }
+  @Public()
   @ApiOperation({ summary: 'IPN Vnpay Url' })
   @Get(END_POINTS.COURSE_BUYING.VNPAY_IPN)
   async ipnVnpayUrl(@Query() query: VnpayIPNRequest, @Res() res: Response) {
