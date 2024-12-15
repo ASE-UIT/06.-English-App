@@ -1,15 +1,41 @@
+import { useCourseSlice } from "@/features/course/store"
+import { selectCourseView } from "@/features/course/store/selectors"
 import { useSectionByLesson } from "@/features/section/hooks"
 import { sectionNameMap } from "@/type/section"
 import _ from "lodash"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router"
 
-export const SectionByLesson = ({ lessonId }: { lessonId: string }) => {
+export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; lessonName: string }) => {
   const { data: sectionData } = useSectionByLesson(lessonId)
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const { actions: courseActions } = useCourseSlice()
+  const { id } = useSelector(selectCourseView)
   return (
     <div className="flex w-full flex-col gap-[23px]">
       {sectionData?.data && sectionData.data.length > 0 ? (
         _.orderBy(sectionData.data, ["createDate"]).map((section) => (
           <div
             key={section.id}
+            onClick={() => {
+              const view = {
+                id: section.id,
+                name: section.title,
+                sectionDetail: false,
+                createQuestion: true,
+                type: section.type,
+              }
+              const lessonView = {
+                id: lessonId,
+                name: lessonName,
+                vocab: false,
+                grammar: false,
+              }
+              dispatch(courseActions.updateSelectedSection(view))
+              dispatch(courseActions.updateSelectedLesson(lessonView))
+              navigate(`/course/${id}/lesson/${lessonId}/${section.id}`)
+            }}
             className="flex h-full w-full cursor-pointer border-[1px] border-headerIcon py-[11px] shadow-sectionCard"
           >
             <div className="flex flex-col px-[26px]">

@@ -2,13 +2,36 @@ import { Button } from "@/components/Layout/Components/ui/Button"
 import { Input } from "@/components/Layout/Components/ui/Input"
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
 import { useGrammar } from "@/features/section/hooks"
-import { BiPlus } from "react-icons/bi"
+import { BiPlus, BiMinus } from "react-icons/bi"
 import _ from "lodash"
 import FroalaViewComponent from "@/components/Layout/Components/ui/FroalaViewComponent"
+import { useState } from "react"
+import { lessonApi } from "@/apis"
+import { useParams } from "react-router"
+import { toast } from "react-toastify"
+import { useGrammarByLesson } from "@/features/lesson/hooks"
 
 export const CreateGrammar = () => {
   const { data: grammarList } = useGrammar()
-
+  const { lessonId } = useParams()
+  const [listGrammar, setListGrammar] = useState<string[]>([])
+  const { data: grammarByLesson } = useGrammarByLesson(lessonId as string)
+  const handleAddGrammar = async () => {
+    const res = await lessonApi.AddGrammarToLesson(lessonId as string, listGrammar)
+    if (res?.message === "Add grammar to lesson successfully") {
+      toast.success("Add grammar to lesson successfully")
+    } else {
+      toast.error(`${res?.message}`)
+    }
+  }
+  function checkGrammarExist(id: string) {
+    if (listGrammar.length > 0 && listGrammar.includes(id)) {
+      return true
+    }
+    const check = grammarByLesson?.data.some((grammar) => grammar.id === id)
+    console.log("checkGrammar", check, id)
+    return check
+  }
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-white px-[66px] py-[64px]">
       <div className="mb-[43px] flex flex-col rounded-md border-2 border-fuschia px-[78px] py-[56px]">
@@ -17,7 +40,10 @@ export const CreateGrammar = () => {
             className="w-[300px] rounded-full border-2 border-fuschia bg-white p-6 text-2xl text-placeHolder"
             placeholder="Search"
           />
-          <Button className="mr-[19px] rounded-full border-2 border-fuschia bg-fuschia px-[12px] py-[9.5px] text-[16px] font-normal text-white">
+          <Button
+            onClick={handleAddGrammar}
+            className="mr-[19px] rounded-full border-2 border-fuschia bg-fuschia px-[12px] py-[9.5px] text-[16px] font-normal text-white"
+          >
             <BiPlus className="mr-[1.5px]" size={20} />
             Add custom point
           </Button>
@@ -25,6 +51,7 @@ export const CreateGrammar = () => {
         <div className="mt-[43px] flex w-full items-center justify-center">
           <Accordion type="single" collapsible className="w-full rounded-none border-[1px] border-fuschia text-2xl">
             {grammarList?.data &&
+              grammarByLesson?.data &&
               _.orderBy(grammarList.data, ["title"], ["asc"]).map((grammar, index) => (
                 <AccordionItem key={grammar.id} value={grammar.id}>
                   <AccordionTrigger className="bg-white px-[41px] py-[22px] font-semibold text-black">
@@ -32,8 +59,34 @@ export const CreateGrammar = () => {
                       <span>
                         {index + 1}. {grammar.title}
                       </span>
-                      <div className="mr-2 flex items-center justify-center rounded-full bg-lessonbg">
-                        <BiPlus fill="#ef5da8" className="m-2 cursor-pointer text-fuschia" size={20} />
+                      <div
+                        onClick={() => {
+                          setListGrammar((prev) => {
+                            if (prev.includes(grammar.id)) {
+                              return prev.filter((id) => id !== grammar.id)
+                            }
+                            if (grammarByLesson?.data.some((grammar) => grammar.id === grammar.id)) {
+                              toast.info("You can not remove grammar which is already in lesson")
+                              return prev
+                            }
+                            return [...prev, grammar.id]
+                          })
+                        }}
+                        className="mr-2 flex items-center justify-center rounded-full bg-lessonbg transition-all hover:bg-fuchsia-300"
+                      >
+                        {!checkGrammarExist(grammar.id) ? (
+                          <BiPlus
+                            fill="#ef5da8"
+                            className="m-2 cursor-pointer text-fuschia hover:text-fuchsia-700"
+                            size={20}
+                          />
+                        ) : (
+                          <BiMinus
+                            fill="#ef5da8"
+                            className="m-2 cursor-pointer text-fuschia hover:text-fuchsia-700"
+                            size={20}
+                          />
+                        )}
                       </div>
                     </div>
                   </AccordionTrigger>

@@ -34,3 +34,38 @@ export interface Pagination {
   page: number
   limit: number
 }
+export const WordType = [
+  {
+    key: "NOUN",
+    text: "Noun",
+  },
+  {
+    key: "VERB",
+    text: "Verb",
+  },
+  {
+    key: "ADJECTIVE",
+    text: "Adjective",
+  },
+  {
+    key: "ADVERB",
+    text: "Adverb",
+  },
+  {
+    key: "PRONOUN",
+    text: "Pronoun",
+  },
+  {
+    key: "PREPOSITION",
+    text: "Preposition",
+  },
+  {
+    key: "CONJUNCTION",
+    text: "Conjunction",
+  },
+  {
+    key: "INTERJECTION",
+    text: "Interjection",
+  },
+]
+export const WordTypeMap = Object.fromEntries(WordType.map(({ key, text }) => [key, text]))

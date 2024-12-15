@@ -17,10 +17,10 @@ export const studentRoutes = {
   Section: "/my-course/:courseId/lesson/:lessonId/section",
   SectionDetail: "/my-course/:courseId/lesson/:lessonId/section/:sectionId",
   SearchVocabulary: "/search-vocabulary",
-  DoTestReading: "/do-test/reading",
-  DoTestListening: "/do-test/listening",
-  DoTestWriting: "/do-test/writing",
-  DoTestSpeaking: "/do-test/speaking",
+  DoTestReading: "/do-test/reading/:sectionId",
+  DoTestListening: "/do-test/listening/:sectionId",
+  DoTestWriting: "/do-test/writing/:sectionId",
+  DoTestSpeaking: "/do-test/speaking/:sectionId",
 }
 export const teacherRoutes = {
   Course: {
@@ -42,7 +42,7 @@ export const teacherRoutes = {
     Detail: "/course/:courseId/lesson/:id",
   },
   Section: {
-    Base: "/course/:courseId/lesson/:lessonId/section",
+    Base: "/course/:courseId/lesson/:lessonId/:sectionId",
     Create: "/course/:courseId/lesson/:lessonId/section/create",
     CreateWriting: "/course/create/writing",
     Edit: "/course/:courseId/lesson/:lessonId/section/:id/edit",

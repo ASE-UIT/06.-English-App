@@ -28,10 +28,16 @@ export interface Section {
   type: string
   sectionMedia: string
   createDate: string
+  updateDate: string
+  questionGroups: []
 }
 
 export interface SectionRes extends Response {
   data: Section[]
+}
+
+export interface SectionDetailRes extends Response {
+  data: Section
 }
 
 export interface SectionCreate {

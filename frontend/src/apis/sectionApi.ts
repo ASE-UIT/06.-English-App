@@ -1,5 +1,5 @@
 import { httpClient } from "@/services"
-import { SectionCreate, SectionRes } from "@/type/section"
+import { SectionCreate, SectionDetailRes, SectionRes } from "@/type/section"
 
 class SectionApi {
   constructor() {
@@ -7,6 +7,8 @@ class SectionApi {
     //   this.logOut()
     //   window.location.href = AUTH_PATH_NAME.DANG_NHAP
     // })
+
+    httpClient.setAuthHeader(localStorage.getItem("accessToken") || "")
   }
   async CreateSection(data: SectionCreate) {
     try {
@@ -16,9 +18,25 @@ class SectionApi {
       console.log(error)
     }
   }
+  async UpdateSection(data: SectionCreate) {
+    try {
+      const res = await httpClient.patch<SectionRes>("/section", data)
+      return res
+    } catch (error) {
+      console.log(error)
+    }
+  }
   async GetSectionByLesson(lessonId: string) {
     try {
       const res = await httpClient.get<SectionRes>(`/section/get-all-section-by-lesson/${lessonId}`)
+      return res
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  async GetSectionById(id: string) {
+    try {
+      const res = await httpClient.get<SectionDetailRes>(`/section/${id}`)
       return res
     } catch (error) {
       console.log(error)
