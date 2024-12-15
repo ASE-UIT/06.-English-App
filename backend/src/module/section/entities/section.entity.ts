@@ -30,7 +30,7 @@ export class Section extends Base {
   })
   @AutoMap()
   sectionMedia?: string;
-  @ManyToOne(() => Lesson, (lesson) => lesson.sections)
+  @ManyToOne(() => Lesson, (lesson) => lesson.sections, { onDelete: 'CASCADE' })
   lesson: Lesson;
   @OneToMany(() => QuestionGroup, (questionGroup) => questionGroup.section, {
     cascade: true,

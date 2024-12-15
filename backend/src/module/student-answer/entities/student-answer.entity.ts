@@ -5,7 +5,9 @@ import { Student } from 'src/module/user/entities/student.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 @Entity()
 export class StudentAnswer extends Base {
-  @ManyToOne(() => Question, (question) => question.studentAnswers)
+  @ManyToOne(() => Question, (question) => question.studentAnswers, {
+    onDelete: 'CASCADE',
+  })
   question: Question;
   @ManyToOne(() => Student, (student) => student.studentAnswers)
   student: Student;

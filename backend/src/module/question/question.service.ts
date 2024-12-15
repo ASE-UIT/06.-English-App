@@ -53,14 +53,18 @@ export class QuestionService {
     try {
       const questionResult = await Promise.all(
         questions.map(async (question) => {
-          const questionGroup = await this.dataSource
-            .getRepository(QuestionGroup)
-            .findOne({ where: { id: sectionId } });
-          const section = await this.dataSource
-            .getRepository(Section)
-            .findOne({ where: { id: questionGroupId } });
-          question.questionGroup = questionGroup;
-          question.section = section;
+          if (questionGroupId) {
+            const questionGroup = await this.dataSource
+              .getRepository(QuestionGroup)
+              .findOne({ where: { id: questionGroupId } });
+            question.questionGroup = questionGroup;
+          }
+          if (sectionId) {
+            const section = await this.dataSource
+              .getRepository(Section)
+              .findOne({ where: { id: sectionId } });
+            question.section = section;
+          }
           return await this.dataSource.getRepository(Question).save(question);
         }),
       );
