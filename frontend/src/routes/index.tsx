@@ -26,6 +26,8 @@ import CourseAddListeningSection from "@/pages/App/TeacherPage/CoursePage/Add/Li
 import TeacherLayout from "@/components/Layout/Teacher"
 import { SectionComp } from "@/pages/App/TeacherPage/CoursePage/Add/section"
 import { Section } from "@/pages/App/TeacherPage/LessonPage/Section"
+//hello
+//test commit
 const publicRoutes = [
   {
     path: routes.LandingPage,
