@@ -26,6 +26,7 @@ import CourseAddListeningSection from "@/pages/App/TeacherPage/CoursePage/Add/Li
 import TeacherLayout from "@/components/Layout/Teacher"
 import { SectionComp } from "@/pages/App/TeacherPage/CoursePage/Add/section"
 import { Section } from "@/pages/App/TeacherPage/LessonPage/Section"
+import StudentHomePage from "@/pages/App/StudentPage/HomePage/StudentHomePage"
 const publicRoutes = [
   {
     path: routes.LandingPage,
@@ -52,6 +53,11 @@ const publicRoutes = [
   },
 ]
 const protectedRoutes = [
+  {
+    path: studentRoutes.Home,
+    layout: Fragment, 
+    component: <StudentHomePage></StudentHomePage>
+  },
   {
     path: studentRoutes.DoTestWriting,
     layout: Fragment,
