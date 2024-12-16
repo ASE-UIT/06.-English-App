@@ -78,7 +78,6 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
           const promises = []
           Object.entries(updateData ?? {}).forEach(([questionGrKey, value]) => {
             const data = {
-              sectionId: sectionId as string,
               questionGroupId: questionGrKey,
               questions: value as question[],
             }
