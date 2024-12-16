@@ -46,7 +46,7 @@ export interface SectionCreate {
   content: string
   type: string
   lessonId: string
-  sectionMedia: string
+  sectionMedia?: string
 }
 
 export interface QuestionGroup {

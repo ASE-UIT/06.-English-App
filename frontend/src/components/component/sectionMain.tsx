@@ -1,4 +1,9 @@
-import { selectSectionChanged, selectSectionCurrent, selectSections } from "@/features/section/store/selectors"
+import {
+  selectSectionChanged,
+  selectSectionCurrent,
+  selectSections,
+  selectSectionUpdate,
+} from "@/features/section/store/selectors"
 import { MdOutlineArrowUpward, MdOutlineArrowDownward, MdOutlineArrowBack, MdOutlineArrowForward } from "react-icons/md"
 import { FiCopy } from "react-icons/fi"
 import { BiTrashAlt } from "react-icons/bi"
@@ -11,6 +16,23 @@ import MultipleChoice from "../Reading/MultipleChoices"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import _ from "lodash"
 import FroalaViewComponent from "../Layout/Components/ui/FroalaViewComponent"
+import { SaveIcon } from "lucide-react"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { sectionApi } from "@/apis"
+import { queryKeys } from "@/config"
+import { toast } from "react-toastify"
+
+interface question {
+  questionGroup?: string
+  section?: string
+  text: string
+  type: string
+  order: number
+  answers?: {
+    text: string
+    isCorrect: boolean
+  }[]
+}
 
 export const SectionMain = () => {
   const dispatch = useDispatch()
@@ -19,14 +41,16 @@ export const SectionMain = () => {
   const currentSection = useSelector(selectSectionCurrent)
   const [open, setOpen] = useState(false)
   const viewChange = useSelector(selectSectionChanged)
-
+  const sectionUpdate = useSelector(selectSectionUpdate)
+  const queryClient = useQueryClient()
+  console.log("sectionUpdate", sectionUpdate)
   const getCurrentData = useMemo(
     () =>
       _.orderBy(section.questionGroups ?? [], ["createDate"]).filter((questionGr) => questionGr.id === currentSection),
     [currentSection, section.questionGroups],
   )
-  console.log("section", section)
-  console.log("getCurrenData", getCurrentData)
+  console.log("section", section, section.type)
+  console.log("getCurrenData", getCurrentData, getCurrentData[0]?.questionGroupType)
   const getCurrentIndex = useMemo(
     () =>
       _.orderBy(section.questionGroups ?? [], ["createDate"]).findIndex(
@@ -53,7 +77,7 @@ export const SectionMain = () => {
   }
 
   const children = useMemo(() => {
-    switch (getCurrentData[0].questionGroupType) {
+    switch (getCurrentData[0]?.questionGroupType) {
       case "MULTIPLE_CHOICE":
         return <MultipleChoice key={getCurrentData[0].id} type="MULTIPLE_CHOICE" />
       case "COMBO_BOX":
@@ -61,9 +85,26 @@ export const SectionMain = () => {
       case "BLANK":
         return <MultipleChoice key={getCurrentData[0].id} type="BLANK" />
       default:
-        return <div />
+        return <MultipleChoice key={section.id} type="BLANK" sectionType={section.type} />
     }
-  }, [getCurrentData])
+  }, [getCurrentData, section.id, section.type])
+
+  const CreateQuestion = useMutation({
+    mutationFn: sectionApi.CreateQuestion,
+    onSuccess: (Res) => {
+      if (Res?.message === "Create successfully") {
+        queryClient.invalidateQueries({
+          queryKey: queryKeys.sectionById.gen(section.id as string),
+        })
+        toast.success(`${Res.message}`)
+      } else {
+        toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
+      }
+    },
+    onError: () => {
+      toast.error("Something error")
+    },
+  })
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -81,7 +122,11 @@ export const SectionMain = () => {
         <div className="flex items-center justify-between bg-sectionHeaderBg px-[43px] pb-[35px] pt-[31px]">
           <div className="flex items-center gap-2">
             <LuStar stroke="black" size={20} />
-            <FroalaViewComponent model={getCurrentData[0].text} />
+            {section.type !== "WRITING" && section.type !== "SPEAKING" ? (
+              <FroalaViewComponent model={getCurrentData[0].text} />
+            ) : (
+              <span className="text-blacks text-base">{section.type}</span>
+            )}
           </div>
           <div className="flex items-center text-headerIcon">
             <MdOutlineArrowUpward
@@ -114,44 +159,69 @@ export const SectionMain = () => {
         </div>
         <div className="px-[31px] py-[40px]">{children}</div>
       </div>
-      <div className="mt-[83px] flex w-full items-center justify-end gap-4 pr-[71px]">
-        <Button
-          onClick={() => {
-            handleMovement("top")
-            if (viewChange) {
-              setOpen(true)
-              return
-            }
-            console.log("CheckDecre", section.questionGroups[getCurrentIndex - 1])
-            dispatch(
-              sectionActions.changeCurrentSection(
-                _.orderBy(section.questionGroups ?? [], ["createDate"])[getCurrentIndex - 1].id,
-              ),
-            )
-          }}
-          className={`${checkPossibleClick("decrement") ? "rounded-lg border-2 border-fuschia bg-white px-[14px] py-3 hover:bg-fuschia" : "pointer-events-none rounded-lg border-2 border-fuschia bg-white px-[14px] py-3"}`}
-        >
-          <MdOutlineArrowBack stroke="black" fill="black" size={20} />
-          <span className="ml-2 text-black">Previous</span>
-        </Button>
-        <Button
-          onClick={() => {
-            if (viewChange) {
-              setOpen(true)
-              return
-            }
-            dispatch(
-              sectionActions.changeCurrentSection(
-                _.orderBy(section.questionGroups ?? [], ["createDate"])[getCurrentIndex + 1].id,
-              ),
-            )
-          }}
-          className={`${checkPossibleClick("increment") ? "rounded-lg bg-fuschia px-[28.5px] py-3" : "pointer-events-none rounded-lg bg-fuschia px-[28.5px] py-3"}`}
-        >
-          <span className="mr-2 text-white">Next</span>
-          <MdOutlineArrowForward stroke="white" size={20} />
-        </Button>
-      </div>
+      {(section.type === "WRITING" || section.type === "SPEAKING") && (
+        <div className="my-[83px] flex w-full items-center justify-center gap-4">
+          <Button
+            onClick={async () => {
+              const promises = []
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              Object.entries(sectionUpdate ?? {}).forEach(([_sectionId, value]) => {
+                const data = {
+                  sectionId: section.id,
+                  questions: value as question[],
+                }
+                promises.push(CreateQuestion.mutateAsync(data))
+              })
+            }}
+            className="rounded-lg border-2 border-fuschia bg-white px-[14px] py-3 hover:bg-fuschia"
+          >
+            <span className="flex items-center justify-center text-base text-black">
+              <SaveIcon size={20} className="mr-1" />
+              Save
+            </span>
+          </Button>
+        </div>
+      )}
+      {section.type !== "WRITING" && section.type !== "SPEAKING" && (
+        <div className="mt-[83px] flex w-full items-center justify-end gap-4 pr-[71px]">
+          <Button
+            onClick={() => {
+              handleMovement("top")
+              if (viewChange) {
+                setOpen(true)
+                return
+              }
+              console.log("CheckDecre", section.questionGroups[getCurrentIndex - 1])
+              dispatch(
+                sectionActions.changeCurrentSection(
+                  _.orderBy(section.questionGroups ?? [], ["createDate"])[getCurrentIndex - 1].id,
+                ),
+              )
+            }}
+            className={`${checkPossibleClick("decrement") ? "rounded-lg border-2 border-fuschia bg-white px-[14px] py-3 hover:bg-fuschia" : "pointer-events-none rounded-lg border-2 border-fuschia bg-white px-[14px] py-3"}`}
+          >
+            <MdOutlineArrowBack stroke="black" fill="black" size={20} />
+            <span className="ml-2 text-black">Previous</span>
+          </Button>
+          <Button
+            onClick={() => {
+              if (viewChange) {
+                setOpen(true)
+                return
+              }
+              dispatch(
+                sectionActions.changeCurrentSection(
+                  _.orderBy(section.questionGroups ?? [], ["createDate"])[getCurrentIndex + 1].id,
+                ),
+              )
+            }}
+            className={`${checkPossibleClick("increment") ? "rounded-lg bg-fuschia px-[28.5px] py-3" : "pointer-events-none rounded-lg bg-fuschia px-[28.5px] py-3"}`}
+          >
+            <span className="mr-2 text-white">Next</span>
+            <MdOutlineArrowForward stroke="white" size={20} />
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

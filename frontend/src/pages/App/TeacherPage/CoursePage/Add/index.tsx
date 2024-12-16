@@ -61,7 +61,7 @@ export default function CourseCreate() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
-      price: 0,
+      price: undefined,
       description: "",
     },
   })

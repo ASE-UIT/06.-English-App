@@ -4,39 +4,47 @@ import { useState } from "react"
 import Question from "../Components/Question"
 import { useDispatch, useSelector } from "react-redux"
 import { useSectionSlice } from "@/features/section/store"
-import { selectSectionCurrent, selectSectionUpdate } from "@/features/section/store/selectors"
+import { selectSectionCurrent, selectSections, selectSectionUpdate } from "@/features/section/store/selectors"
 import { toast, ToastContainer } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css"
 interface question {
   questionGroup?: string
-  section: string
+  section?: string
   text: string
   type: string
   order: number
-  answers: {
+  answers?: {
     text: string
     isCorrect: boolean
   }[]
 }
-const MultipleChoice = ({ type }: { type: string }) => {
+const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: string }) => {
   const [question, setQuestion] = useState<question[]>([])
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
+  const section = useSelector(selectSections)
   const sectionCurrent = useSelector(selectSectionCurrent)
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
   console.log("currentQuestion", currentQuestion, updateData, sectionCurrent)
-  const [questions, setQuestions] = useState<number>(currentQuestion.length ?? 0)
+  const [questions, setQuestions] = useState<number>(currentQuestion?.length ?? 0)
   const update = useSelector(selectSectionUpdate)
   console.log("update", update, question, currentQuestion)
   return (
     <div className="flex w-full flex-col">
-      <ToastContainer/>
+      <ToastContainer />
       {
         <Button
           onClick={() => {
-            const updateQuestionGroup = {
-              [sectionCurrent]: question,
+            let updateQuestionGroup = {}
+            if (!sectionType) {
+              updateQuestionGroup = {
+                [sectionCurrent]: question,
+              }
+            } else {
+              updateQuestionGroup = {
+                [section.id]: question,
+              }
             }
             dispatch(sectionActions.updateQuestion(updateQuestionGroup))
             dispatch(sectionActions.updateViewChanged(false))

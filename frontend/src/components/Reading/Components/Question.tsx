@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { AnimatePresence, motion } from "framer-motion"
 import { useDispatch, useSelector } from "react-redux"
-import { selectSectionCurrent, selectSectionUpdate } from "@/features/section/store/selectors"
+import { selectSectionCurrent, selectSections, selectSectionUpdate } from "@/features/section/store/selectors"
 import { useParams } from "react-router"
 import FroalaEditorComponent from "@/components/Layout/Components/ui/FroalaEditorComponent"
 import generateFroalaConfig from "@/config/froala.config"
@@ -27,11 +27,11 @@ interface Question {
 
 interface question {
   questionGroup?: string
-  section: string
+  section?: string
   text: string
   type: string
   order: number
-  answers: {
+  answers?: {
     text: string
     isCorrect: boolean
   }[]
@@ -63,16 +63,18 @@ const Question = ({
   index: number
   setQuestion: Dispatch<SetStateAction<question[]>>
   type: string
-  }) => {
+}) => {
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
   const { sectionId } = useParams()
   const froalaConfig = useMemo(() => generateFroalaConfig(), [])
+  const section = useSelector(selectSections)
   const sectionCurrent = useSelector(selectSectionCurrent)
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
-  const [question, setQuestion] = useState<string>(currentQuestion[index]?.text ?? "")
-  const [answers, setAnswers] = useState<Answer[]>(currentQuestion[index]?.answers ?? [])
+  console.log("currentQuestion", currentQuestion)
+  const [question, setQuestion] = useState<string>(currentQuestion ? currentQuestion[index]?.text : "")
+  const [answers, setAnswers] = useState<Answer[]>(currentQuestion ? currentQuestion[index]?.answers : [])
   const [newAnswerText, setNewAnswerText] = useState<string>("")
   const handleRemoveAnswer = (index: number) => {
     const newAnswers = [...answers]
@@ -112,39 +114,64 @@ const Question = ({
     dispatch(sectionActions.updateViewChanged(true))
   }
 
+  const noQuestionGroup = useMemo(() => section.type === "WRITING" || section.type === "SPEAKING", [section.type])
+
   useEffect(() => {
-    if (answers.length > 0 && question !== "") {
+    if ((answers.length > 0 || noQuestionGroup) && question !== "") {
       setListQuestion((prev) => {
         if (prev.length > 0) {
           if (prev.some((q) => q.text === question)) {
-            return prev.map((q) =>
-              q.text === question
-                ? {
-                    section: sectionId as string,
-                    questionGroup: sectionCurrent,
-                    text: question,
-                    type: type,
-                    order: index,
-                    answers: answers,
-                  }
-                : q,
-            )
+            if (!noQuestionGroup) {
+              return prev.map((q) =>
+                q.text === question
+                  ? {
+                      section: sectionId as string,
+                      questionGroup: sectionCurrent,
+                      text: question,
+                      type: type,
+                      order: index,
+                      answers: answers,
+                    }
+                  : q,
+              )
+            } else {
+              return prev.map((q) =>
+                q.text === question
+                  ? {
+                      text: question,
+                      type: type,
+                      order: index,
+                    }
+                  : q,
+              )
+            }
           }
         }
-        return [
-          ...prev,
-          {
-            section: sectionId as string,
-            questionGroup: sectionCurrent,
-            text: question,
-            type: type,
-            order: index,
-            answers: answers,
-          },
-        ]
+        if (noQuestionGroup) {
+          return [
+            ...prev,
+            {
+              text: question,
+              type: type,
+              order: index,
+            },
+          ]
+        } else {
+          return [
+            ...prev,
+            {
+              section: sectionId as string,
+              questionGroup: sectionCurrent,
+              text: question,
+              type: type,
+              order: index,
+              answers: answers,
+            },
+          ]
+        }
       })
     }
-  }, [answers, index, question, sectionCurrent, sectionId, setListQuestion, type])
+  }, [answers, index, noQuestionGroup, question, sectionCurrent, sectionId, setListQuestion, type])
   // const handleCheckAnswer = (index: number) => {
   //   const newAnswers = [...answers]
   //   newAnswers[index].isCorrect = !newAnswers[index].isCorrect
@@ -172,74 +199,76 @@ const Question = ({
         />
       </div>
       <hr className="mx-[15px] mt-[36px] bg-backgroundLine" />
-      <div className="ml-[36px] mt-[66px]">
-        <div className="flex flex-col">
-          <div className="flex">
-            <div className="flex w-full flex-col">
-              <div className="mr-[25px] flex items-center justify-between">
-                {type === "MULTIPLE_CHOICE" && (
-                  <div className="mb-[33px] flex min-w-[340px] items-center gap-6">
-                    <span className="text-xl leading-normal text-[#1E1E1E]">Multiple answers</span>
-                  </div>
-                )}
-                {type !== "BLANK" && <span className="text-[#8A8A8A]">Correct</span>}
-              </div>
-              <AnimatePresence>
-                <ul className="mr-[25px] flex flex-col gap-[28px]">
-                  <RadioGroup
-                    defaultValue="comfortable bg-inherit rounded-full"
-                    onValueChange={(value) => handleIsCorrectChange(value)}
-                  >
-                    {answers.map((answer, index) => (
-                      <motion.li
-                        variants={child}
-                        initial="hidden"
-                        animate="visible"
-                        transition={{ duration: 0.5 }}
-                        className="flex items-center justify-between"
-                        key={index}
-                      >
-                        <Answer content={answer.text} index={index} />
-                        <Button
-                          className="h-full border-none bg-transparent text-[#A5A6F6] outline-none hover:bg-transparent hover:text-fuschia"
-                          onClick={() => handleRemoveAnswer(index)}
-                        >
-                          X
-                        </Button>
-                        {type === "MULTIPLE_CHOICE" && (
-                          <Checkbox
-                            id={answer.text}
-                            checked={answer.isCorrect}
-                            onCheckedChange={() => handleIsCorrectChange(answer.text)}
-                            className="mr-3 h-[20px] w-[20px] bg-white"
-                          />
-                        )}
-                        {type === "COMBO_BOX" && (
-                          <div className="mr-3 flex h-[20px] w-[20px] items-center space-x-2">
-                            <RadioGroupItem className="bg-inherit" value={answer.text} id={answer.text} />
-                          </div>
-                        )}
-                      </motion.li>
-                    ))}
-                  </RadioGroup>
-                  <div className="mb-[20px] flex w-full max-w-[780px] justify-center align-middle">
-                    <div className="w-full min-w-[240px] rounded-lg border-[1px] bg-customPink px-[16px] py-2">
-                      <Input
-                        value={newAnswerText}
-                        onChange={(e) => setNewAnswerText(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                        className="border-none bg-inherit text-[#AEAEB2]"
-                        type="text"
-                        placeholder="Type here"
-                      />
+      {section.type !== "WRITING" && section.type !== "SPEAKING" && (
+        <div className="ml-[36px] mt-[66px]">
+          <div className="flex flex-col">
+            <div className="flex">
+              <div className="flex w-full flex-col">
+                <div className="mr-[25px] flex items-center justify-between">
+                  {type === "MULTIPLE_CHOICE" && (
+                    <div className="mb-[33px] flex min-w-[340px] items-center gap-6">
+                      <span className="text-xl leading-normal text-[#1E1E1E]">Multiple answers</span>
                     </div>
-                  </div>
-                </ul>
-              </AnimatePresence>
+                  )}
+                  {type !== "BLANK" && <span className="text-[#8A8A8A]">Correct</span>}
+                </div>
+                <AnimatePresence>
+                  <ul className="mr-[25px] flex flex-col gap-[28px]">
+                    <RadioGroup
+                      defaultValue="comfortable bg-inherit rounded-full"
+                      onValueChange={(value) => handleIsCorrectChange(value)}
+                    >
+                      {answers.map((answer, index) => (
+                        <motion.li
+                          variants={child}
+                          initial="hidden"
+                          animate="visible"
+                          transition={{ duration: 0.5 }}
+                          className="flex items-center justify-between"
+                          key={index}
+                        >
+                          <Answer content={answer.text} index={index} />
+                          <Button
+                            className="h-full border-none bg-transparent text-[#A5A6F6] outline-none hover:bg-transparent hover:text-fuschia"
+                            onClick={() => handleRemoveAnswer(index)}
+                          >
+                            X
+                          </Button>
+                          {type === "MULTIPLE_CHOICE" && (
+                            <Checkbox
+                              id={answer.text}
+                              checked={answer.isCorrect}
+                              onCheckedChange={() => handleIsCorrectChange(answer.text)}
+                              className="mr-3 h-[20px] w-[20px] bg-white"
+                            />
+                          )}
+                          {type === "COMBO_BOX" && (
+                            <div className="mr-3 flex h-[20px] w-[20px] items-center space-x-2">
+                              <RadioGroupItem className="bg-inherit" value={answer.text} id={answer.text} />
+                            </div>
+                          )}
+                        </motion.li>
+                      ))}
+                    </RadioGroup>
+                    <div className="mb-[20px] flex w-full max-w-[780px] justify-center align-middle">
+                      <div className="w-full min-w-[240px] rounded-lg border-[1px] bg-customPink px-[16px] py-2">
+                        <Input
+                          value={newAnswerText}
+                          onChange={(e) => setNewAnswerText(e.target.value)}
+                          onKeyDown={handleKeyDown}
+                          className="border-none bg-inherit text-[#AEAEB2]"
+                          type="text"
+                          placeholder="Type here"
+                        />
+                      </div>
+                    </div>
+                  </ul>
+                </AnimatePresence>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </motion.div>
   )
 }
