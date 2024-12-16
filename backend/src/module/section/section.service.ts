@@ -50,6 +50,7 @@ export class SectionService {
         .leftJoin('section.questionGroups', 'questionGroups')
         .leftJoin('section.questions', 'sectionQuestions')
         .leftJoinAndSelect('questionGroups.questions', 'questions')
+        .leftJoinAndSelect('questions.answers', 'answers')
         .select(['section', 'questionGroups', 'questions', 'sectionQuestions'])
         .where('section.id = :id', { id })
         .getOne();
@@ -57,7 +58,7 @@ export class SectionService {
     } catch (error) {
       console.log(error);
       throw new HttpException(
-        'Internal Server Error',
+        error.message,
         HttpStatusCode.INTERNAL_SERVER_ERROR,
       );
     }

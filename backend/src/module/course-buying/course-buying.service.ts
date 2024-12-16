@@ -7,7 +7,7 @@ import {
 import { CourseBuying } from './entities/course-buying.entity';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import * as crypto from 'crypto';
 import * as qs from 'qs';
 import { Student } from '../user/entities/student.entity';
