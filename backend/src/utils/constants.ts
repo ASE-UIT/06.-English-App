@@ -39,6 +39,7 @@ export const END_POINTS = {
   },
   COURSE_BUYING: {
     BASE: '/course-buying',
+    NORMAL_BUY: '/normal-buy',
     CREATE: '',
     CREATE_PAY_ORDER_URL: '/create-pay-order-url',
     VALIDATE_PAY_ORDER: '/validate-pay-order',
