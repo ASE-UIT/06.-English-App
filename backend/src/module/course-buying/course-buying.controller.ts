@@ -14,6 +14,7 @@ import { VnpayIPNRequest } from './dto/vnpay-ipn.request.dto';
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
 import { CheckKeyDto } from './dto/check-key.dto';
 import { Public } from 'src/common/decorators/public.decorator';
+import { CreateCourseBuyingNormalDto } from './dto/create-course-buying-normal.dto';
 
 @ApiBearerAuth()
 @ApiTags(DOCUMENTATION.TAGS.COURSE_BUYING)
@@ -24,6 +25,27 @@ export class CourseBuyingController {
     private readonly courseBuyingService: CourseBuyingService,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
+
+  @ApiOperation({ summary: 'Normal buy course' })
+  @Post(END_POINTS.COURSE_BUYING.NORMAL_BUY)
+  async normalBuyCourse(
+    @Body() createCourseBuyingDto: CreateCourseBuyingNormalDto,
+    @User() user: IUser,
+  ) {
+    const courseBuying = this.mapper.map(
+      createCourseBuyingDto,
+      CreateCourseBuyingDto,
+      CourseBuying,
+    );
+    const result = await this.courseBuyingService.normalBuyCourse(
+      courseBuying,
+      createCourseBuyingDto.courseId,
+      user.userAwsId,
+    );
+    return ResponseObject.create('CourseBuying created successfully', {
+      courseBuying: result.id,
+    });
+  }
 
   @Post(END_POINTS.COURSE_BUYING.CREATE)
   @ApiOperation({ summary: 'Create course buying' })

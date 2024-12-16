@@ -22,13 +22,71 @@ import { SectionProgress } from '../course-owning/entities/section-progress.enti
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
 import * as moment from 'moment';
 import * as axios from 'axios';
+import HttpStatusCode from 'src/utils/HttpStatusCode';
+import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class CourseBuyingService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly config: ConfigService,
+    private readonly mailService: MailerService,
   ) {}
 
+  async normalBuyCourse(
+    courseBuying: CourseBuying,
+    courseId: string,
+    userAwsId: string,
+  ) {
+    try {
+      const course = await this.dataSource.getRepository(Course).findOneOrFail({
+        where: { id: courseId },
+      });
+      let userEmail = '';
+      const result = await this.dataSource.transaction(
+        async (transactionalEntityManager) => {
+          const user = await transactionalEntityManager
+            .getRepository(User)
+            .findOneOrFail({
+              where: { awsCognitoId: userAwsId },
+            });
+          const student = await transactionalEntityManager
+            .getRepository(Student)
+            .createQueryBuilder('student')
+            .leftJoin('student.userInfo', 'userInfo')
+            .select(['student', 'userInfo'])
+            .where('userInfo.id = :id', { id: user.id })
+            .getOne();
+          console.log(student);
+          if (!student) {
+            throw new HttpException('Student not found', 404);
+          }
+          userEmail = student.userInfo.email;
+          courseBuying.course = course;
+          courseBuying.student = student;
+          courseBuying.key = randomBytes(4).toString('hex');
+          return await transactionalEntityManager
+            .getRepository(CourseBuying)
+            .save(courseBuying);
+        },
+      );
+      if (result) {
+        const mailOptions = {
+          to: userEmail,
+          from: this.config.get<string>('emailUser'),
+          subject: 'Course buying',
+          html: `You have successfully bought the course <strong>${result.course.title}</strong>, please use the key <strong>${result.key}</strong> to unlock the course.`,
+        };
+        await this.mailService.sendMail(mailOptions);
+      }
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        error.message,
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
   async create(
     courseBuying: CourseBuying,
     courseId: string,
