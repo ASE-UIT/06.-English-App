@@ -37,6 +37,24 @@ const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: str
         <Button
           onClick={() => {
             let updateQuestionGroup = {}
+            const checkAnswer = question
+              .filter((item) => item.type !== "BLANK")
+              .every((item) => {
+                return item.answers?.some((answer) => answer.isCorrect === true)
+              })
+            console.log(
+              "checkAnswer",
+              question.filter((item) => item.type !== "BLANK"),
+              question,
+            )
+            if (!checkAnswer) {
+              toast.error("Missing correct answer")
+              return
+            }
+            if (question.length < 1) {
+              toast.error("Missing question text or answer")
+              return
+            }
             if (!sectionType) {
               updateQuestionGroup = {
                 [sectionCurrent]: question,
@@ -46,6 +64,7 @@ const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: str
                 [section.id]: question,
               }
             }
+            console.log("MultipleChoice", question)
             dispatch(sectionActions.updateQuestion(updateQuestionGroup))
             dispatch(sectionActions.updateViewChanged(false))
             toast.success("Save successfully")

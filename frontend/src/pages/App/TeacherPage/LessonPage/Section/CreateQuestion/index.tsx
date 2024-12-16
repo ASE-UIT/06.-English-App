@@ -52,6 +52,7 @@ export const CreateQuestion = () => {
   const isExist = useMemo(() => sectionById && sectionById.questionGroups.length > 0, [sectionById])
 
   useEffect(() => {
+    console.log("isExist", isExist)
     if (!isExist && sectionById.type !== "WRITING" && sectionById.type !== "SPEAKING") {
       setOpen(true)
     }
@@ -88,7 +89,7 @@ export const CreateQuestion = () => {
             </Select>
             <Label className="text-black">Question Group Content</Label>
             <FroalaEditorComponent
-              key={text}
+              key="questionGroupContent"
               tag="textarea"
               config={froalaConfig}
               model={text}

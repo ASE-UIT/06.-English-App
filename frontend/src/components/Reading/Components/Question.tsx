@@ -73,8 +73,8 @@ const Question = ({
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
   console.log("currentQuestion", currentQuestion)
-  const [question, setQuestion] = useState<string>(currentQuestion ? currentQuestion[index]?.text : "")
-  const [answers, setAnswers] = useState<Answer[]>(currentQuestion ? currentQuestion[index]?.answers : [])
+  const [question, setQuestion] = useState<string>(currentQuestion ? (currentQuestion[index]?.text ?? "") : "")
+  const [answers, setAnswers] = useState<Answer[]>(currentQuestion ? (currentQuestion[index]?.answers ?? []) : [])
   const [newAnswerText, setNewAnswerText] = useState<string>("")
   const handleRemoveAnswer = (index: number) => {
     const newAnswers = [...answers]
@@ -218,37 +218,43 @@ const Question = ({
                       defaultValue="comfortable bg-inherit rounded-full"
                       onValueChange={(value) => handleIsCorrectChange(value)}
                     >
-                      {answers.map((answer, index) => (
-                        <motion.li
-                          variants={child}
-                          initial="hidden"
-                          animate="visible"
-                          transition={{ duration: 0.5 }}
-                          className="flex items-center justify-between"
-                          key={index}
-                        >
-                          <Answer content={answer.text} index={index} />
-                          <Button
-                            className="h-full border-none bg-transparent text-[#A5A6F6] outline-none hover:bg-transparent hover:text-fuschia"
-                            onClick={() => handleRemoveAnswer(index)}
+                      {answers.length > 0 ? (
+                        answers.map((answer, index) => (
+                          <motion.li
+                            variants={child}
+                            initial="hidden"
+                            animate="visible"
+                            transition={{ duration: 0.5 }}
+                            className="flex items-center justify-between"
+                            key={index}
                           >
-                            X
-                          </Button>
-                          {type === "MULTIPLE_CHOICE" && (
-                            <Checkbox
-                              id={answer.text}
-                              checked={answer.isCorrect}
-                              onCheckedChange={() => handleIsCorrectChange(answer.text)}
-                              className="mr-3 h-[20px] w-[20px] bg-white"
-                            />
-                          )}
-                          {type === "COMBO_BOX" && (
-                            <div className="mr-3 flex h-[20px] w-[20px] items-center space-x-2">
-                              <RadioGroupItem className="bg-inherit" value={answer.text} id={answer.text} />
-                            </div>
-                          )}
-                        </motion.li>
-                      ))}
+                            <Answer content={answer.text} index={index} />
+                            <Button
+                              className="h-full border-none bg-transparent text-[#A5A6F6] outline-none hover:bg-transparent hover:text-fuschia"
+                              onClick={() => handleRemoveAnswer(index)}
+                            >
+                              X
+                            </Button>
+                            {type === "MULTIPLE_CHOICE" && (
+                              <Checkbox
+                                id={answer.text}
+                                checked={answer.isCorrect}
+                                onCheckedChange={() => handleIsCorrectChange(answer.text)}
+                                className="mr-3 h-[20px] w-[20px] bg-white"
+                              />
+                            )}
+                            {type === "COMBO_BOX" && (
+                              <div className="mr-3 flex h-[20px] w-[20px] items-center space-x-2">
+                                <RadioGroupItem className="bg-inherit" value={answer.text} id={answer.text} />
+                              </div>
+                            )}
+                          </motion.li>
+                        ))
+                      ) : (
+                        <span className="text-sm font-semibold text-red-600">
+                          Please fill your question answer or this question can't be saved!!!
+                        </span>
+                      )}
                     </RadioGroup>
                     <div className="mb-[20px] flex w-full max-w-[780px] justify-center align-middle">
                       <div className="w-full min-w-[240px] rounded-lg border-[1px] bg-customPink px-[16px] py-2">
