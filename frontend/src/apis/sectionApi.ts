@@ -12,7 +12,7 @@ interface CreateQuestion {
   questionGroupId?: string
   questions: {
     questionGroup?: string
-    section: string
+    section?: string
     text: string
     type: string
     order: number

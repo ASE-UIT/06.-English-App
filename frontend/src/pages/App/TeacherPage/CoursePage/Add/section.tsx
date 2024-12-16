@@ -91,7 +91,7 @@ export const SectionComp = () => {
           error = "Incorrect file type: Reading section only accept image file"
         }
       } else if (["image/jpeg", "image/png", "image/gif", "image/bmp", "image/webp"].includes(contentType)) {
-        if (type === "READING") getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
+        if (type === "READING" || type === "WRITING") getPreUrl = await fileApi.getPresignedUrl(contentType, "png")
         else {
           error = "Incorrect file type: Listening section only accept audio file"
         }
@@ -105,12 +105,22 @@ export const SectionComp = () => {
         toast.error(`${error}`)
         return
       }
+
       const data = {
         title: values.title,
         content: values.content,
         type: type,
         lessonId: lessonId as string,
         sectionMedia: sectionMedia,
+      }
+      CreateSection.mutate(data)
+    }
+    if (type === "WRITING" || type === "SPEAKING") {
+      const data = {
+        title: values.title,
+        content: values.content,
+        type: type,
+        lessonId: lessonId as string,
       }
       CreateSection.mutate(data)
     }
@@ -172,14 +182,16 @@ export const SectionComp = () => {
           />
           {errors.content && <p className="text-red-500">{errors.content.message}</p>}
         </div>
-        <div>
-          <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
-            Media
-          </Text>
-          <div className="mx-auto min-h-96 w-full rounded-lg border border-dashed border-headerIcon bg-white">
-            <FileUpload onChange={handleFileUpload} />
+        {type !== "WRITING" && type !== "SPEAKING" && (
+          <div>
+            <Text as="div" size="4" className="mb-2 text-zinc-700" mb="1" weight="bold">
+              Media
+            </Text>
+            <div className="mx-auto min-h-96 w-full rounded-lg border border-dashed border-headerIcon bg-white">
+              <FileUpload onChange={handleFileUpload} />
+            </div>
           </div>
-        </div>
+        )}
         <div className="flex items-center justify-center gap-5">
           <div>
             <Button variant="outline" size="3">

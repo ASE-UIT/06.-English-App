@@ -16,6 +16,7 @@ export const CreateGrammar = () => {
   const { lessonId } = useParams()
   const [listGrammar, setListGrammar] = useState<string[]>([])
   const { data: grammarByLesson } = useGrammarByLesson(lessonId as string)
+  console.log("grammarByLesson", grammarByLesson)
   const handleAddGrammar = async () => {
     const res = await lessonApi.AddGrammarToLesson(lessonId as string, listGrammar)
     if (res?.message === "Add grammar to lesson successfully") {
@@ -65,7 +66,7 @@ export const CreateGrammar = () => {
                             if (prev.includes(grammar.id)) {
                               return prev.filter((id) => id !== grammar.id)
                             }
-                            if (grammarByLesson?.data.some((grammar) => grammar.id === grammar.id)) {
+                            if (grammarByLesson?.data.some((grammarLesson) => grammarLesson.id === grammar.id)) {
                               toast.info("You can not remove grammar which is already in lesson")
                               return prev
                             }

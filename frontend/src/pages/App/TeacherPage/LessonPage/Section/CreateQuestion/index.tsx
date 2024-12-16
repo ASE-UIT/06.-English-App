@@ -52,13 +52,16 @@ export const CreateQuestion = () => {
   const isExist = useMemo(() => sectionById && sectionById.questionGroups.length > 0, [sectionById])
 
   useEffect(() => {
-    if (!isExist) {
+    console.log("isExist", isExist)
+    if (!isExist && sectionById.type !== "WRITING" && sectionById.type !== "SPEAKING") {
       setOpen(true)
     }
-  }, [isExist])
+  }, [isExist, sectionById.type])
 
   return (
-    <div className="mt-5 grid grid-cols-6 gap-12">
+    <div
+      className={`mt-5 gap-12 ${sectionById.type === "WRITING" || sectionById.type === "SPEAKING" ? "flex items-center justify-center" : "grid grid-cols-6"}`}
+    >
       <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogContent className="h-full overflow-y-auto">
           <DialogHeader>
@@ -86,7 +89,7 @@ export const CreateQuestion = () => {
             </Select>
             <Label className="text-black">Question Group Content</Label>
             <FroalaEditorComponent
-              key={text}
+              key="questionGroupContent"
               tag="textarea"
               config={froalaConfig}
               model={text}
@@ -98,10 +101,14 @@ export const CreateQuestion = () => {
           </div>
         </DialogContent>
       </Dialog>
-      <div className="col-span-2">
-        <Section onOpenDialog={() => setOpen(!open)} />
+      {sectionById.type !== "WRITING" && sectionById.type !== "SPEAKING" && (
+        <div className="col-span-2">
+          <Section onOpenDialog={() => setOpen(!open)} />
+        </div>
+      )}
+      <div className={`${sectionById.type === "WRITING" || sectionById.type === "SPEAKING" ? "w-full" : "col-span-4"}`}>
+        {isExist || sectionById.type === "WRITING" || sectionById.type === "SPEAKING" ? <SectionMain /> : null}
       </div>
-      <div className="col-span-4">{isExist ? <SectionMain /> : null}</div>
     </div>
   )
 }

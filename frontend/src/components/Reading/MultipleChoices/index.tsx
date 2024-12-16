@@ -4,40 +4,67 @@ import { useState } from "react"
 import Question from "../Components/Question"
 import { useDispatch, useSelector } from "react-redux"
 import { useSectionSlice } from "@/features/section/store"
-import { selectSectionCurrent, selectSectionUpdate } from "@/features/section/store/selectors"
+import { selectSectionCurrent, selectSections, selectSectionUpdate } from "@/features/section/store/selectors"
 import { toast, ToastContainer } from "react-toastify"
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css"
 interface question {
   questionGroup?: string
-  section: string
+  section?: string
   text: string
   type: string
   order: number
-  answers: {
+  answers?: {
     text: string
     isCorrect: boolean
   }[]
 }
-const MultipleChoice = ({ type }: { type: string }) => {
+const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: string }) => {
   const [question, setQuestion] = useState<question[]>([])
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
+  const section = useSelector(selectSections)
   const sectionCurrent = useSelector(selectSectionCurrent)
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
   console.log("currentQuestion", currentQuestion, updateData, sectionCurrent)
-  const [questions, setQuestions] = useState<number>(currentQuestion.length ?? 0)
+  const [questions, setQuestions] = useState<number>(currentQuestion?.length ?? 0)
   const update = useSelector(selectSectionUpdate)
   console.log("update", update, question, currentQuestion)
   return (
     <div className="flex w-full flex-col">
-      <ToastContainer/>
+      <ToastContainer />
       {
         <Button
           onClick={() => {
-            const updateQuestionGroup = {
-              [sectionCurrent]: question,
+            let updateQuestionGroup = {}
+            const checkAnswer = question
+              .filter((item) => item.type !== "BLANK")
+              .every((item) => {
+                return item.answers?.some((answer) => answer.isCorrect === true)
+              })
+            console.log(
+              "checkAnswer",
+              question.filter((item) => item.type !== "BLANK"),
+              question,
+            )
+            if (!checkAnswer) {
+              toast.error("Missing correct answer")
+              return
             }
+            if (question.length < 1) {
+              toast.error("Missing question text or answer")
+              return
+            }
+            if (!sectionType) {
+              updateQuestionGroup = {
+                [sectionCurrent]: question,
+              }
+            } else {
+              updateQuestionGroup = {
+                [section.id]: question,
+              }
+            }
+            console.log("MultipleChoice", question)
             dispatch(sectionActions.updateQuestion(updateQuestionGroup))
             dispatch(sectionActions.updateViewChanged(false))
             toast.success("Save successfully")
