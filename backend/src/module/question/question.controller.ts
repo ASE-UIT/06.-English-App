@@ -77,17 +77,19 @@ export class QuestionController {
   ) {
     const questions = [];
     createManyQuestionsDto.questions.map((questionDto) => {
-      const answers = this.mapper.mapArray(
-        questionDto.answers,
-        CreateAnswerDto,
-        Answer,
-      );
       const newQuestion = this.mapper.map(
         questionDto,
         CreateQuestionDto,
         Question,
       );
-      newQuestion.answers = answers;
+      if (questionDto.answers) {
+        const answers = this.mapper.mapArray(
+          questionDto.answers,
+          CreateAnswerDto,
+          Answer,
+        );
+        newQuestion.answers = answers;
+      }
       questions.push(newQuestion);
     });
     const result = await this.questionService.createMany(
