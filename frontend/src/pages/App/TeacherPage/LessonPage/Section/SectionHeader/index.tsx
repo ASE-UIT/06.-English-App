@@ -4,6 +4,7 @@ import BackIconButton from "../../../../../../assets/back_button_icon.svg"
 import { useDispatch, useSelector } from "react-redux"
 import { selectCourseView, selectLessonView, selectSectionView } from "@/features/course/store/selectors"
 import { useCourseSlice } from "@/features/course/store"
+import { useNavigate } from "react-router"
 
 export default function SectionHeader({ children }: { children: React.ReactNode }) {
   const lessonView = useSelector(selectLessonView)
@@ -11,13 +12,17 @@ export default function SectionHeader({ children }: { children: React.ReactNode 
   const { actions: courseActions } = useCourseSlice()
   const { name: courseName } = useSelector(selectCourseView)
   const { id, name: sectionName, createQuestion, sectionDetail } = useSelector(selectSectionView)
+  const navigate = useNavigate();
+  const handleBackButton = () => {
+    navigate(-1)
+  }
   const active =
     "border-none rounded-xl bg-fuschia py-3 px-5 text-white font-normal text-base hover:bg-fuschia hover:text-white"
   const inActive = "border-[1px] border-fuschia rounded-xl bg-transparent py-3 px-5 text-black font-normal text-base"
   return (
     <div className="flex flex-col">
       <div className="sticky top-0 z-10 flex gap-[10px] bg-[#fff4f9] py-6 shadow-custom">
-        <Button variant="ghost" className="bg-inherit hover:bg-inherit hover:outline-none focus:outline-none">
+        <Button variant="ghost" className="bg-inherit hover:bg-inherit hover:outline-none focus:outline-none" onClick={handleBackButton}>
           <span className="ml-[14px]">
             <img src={BackIconButton} />
           </span>
