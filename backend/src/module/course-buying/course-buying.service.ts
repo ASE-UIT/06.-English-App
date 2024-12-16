@@ -41,6 +41,20 @@ export class CourseBuyingService {
       const course = await this.dataSource.getRepository(Course).findOneOrFail({
         where: { id: courseId },
       });
+      const courseOwning = await this.dataSource
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .leftJoinAndSelect('student.userInfo', 'userInfo')
+        .where('course.id = :courseId', { courseId })
+        .andWhere('userInfo.awsCognitoId = :awsCognitoId', {
+          awsCognitoId: userAwsId,
+        })
+        .getOne();
+      if (courseOwning) {
+        throw new Error('Course is already owned by user');
+      }
       let userEmail = '';
       const result = await this.dataSource.transaction(
         async (transactionalEntityManager) => {
@@ -61,6 +75,7 @@ export class CourseBuyingService {
             throw new HttpException('Student not found', 404);
           }
           userEmail = student.userInfo.email;
+          courseBuying.active = true;
           courseBuying.course = course;
           courseBuying.student = student;
           courseBuying.key = randomBytes(4).toString('hex');
