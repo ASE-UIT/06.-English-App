@@ -53,9 +53,11 @@ export class CreateQuestionDto {
   @ApiProperty({
     description: 'Answers of the question',
     type: [CreateAnswerDto],
+    required: false,
   })
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CreateAnswerDto)
-  answers: CreateAnswerDto[] = [];
+  answers?: CreateAnswerDto[];
 }
