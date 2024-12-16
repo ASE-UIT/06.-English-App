@@ -17,6 +17,7 @@ import { useParams } from "react-router"
 import { useVocabByLesson } from "@/features/lesson/hooks"
 import _ from "lodash"
 import { queryKeys } from "@/config"
+import LoadingScreen from "@/components/Layout/loadingScreen"
 
 export const formSchema = z.object({
   Term: z.string().min(1, ""),
@@ -85,6 +86,7 @@ export const CreateVocab = () => {
 
   return (
     <div className="flex h-full min-h-screen w-full flex-col gap-5 bg-white px-[66px] py-[64px]">
+      {CreateVocab.isPending ? <LoadingScreen message="Đang cập nhật từ vựng" /> : null}
       <div className="flex w-full flex-wrap gap-5">
         {(vocabByLesson?.data ?? []).length > 0 ? (
           _.orderBy(vocabByLesson?.data ?? [], ["createDate"]).map((vocab) => (

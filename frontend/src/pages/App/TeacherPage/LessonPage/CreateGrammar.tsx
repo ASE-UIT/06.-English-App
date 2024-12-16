@@ -10,6 +10,8 @@ import { lessonApi } from "@/apis"
 import { useParams } from "react-router"
 import { toast } from "react-toastify"
 import { useGrammarByLesson } from "@/features/lesson/hooks"
+import LoadingScreen from "@/components/Layout/loadingScreen"
+import { useMutation } from "@tanstack/react-query"
 
 export const CreateGrammar = () => {
   const { data: grammarList } = useGrammar()
@@ -17,13 +19,22 @@ export const CreateGrammar = () => {
   const [listGrammar, setListGrammar] = useState<string[]>([])
   const { data: grammarByLesson } = useGrammarByLesson(lessonId as string)
   console.log("grammarByLesson", grammarByLesson)
-  const handleAddGrammar = async () => {
-    const res = await lessonApi.AddGrammarToLesson(lessonId as string, listGrammar)
-    if (res?.message === "Add grammar to lesson successfully") {
-      toast.success("Add grammar to lesson successfully")
-    } else {
-      toast.error(`${res?.message}`)
-    }
+  const CreateGrammar = useMutation({
+    mutationFn: ({ lessonId, grammarIds }: { lessonId: string; grammarIds: string[] }) =>
+      lessonApi.AddGrammarToLesson(lessonId, grammarIds),
+    onSuccess: (Res) => {
+      if (Res?.message === "Add grammar to lesson successfully") {
+        toast.success("Add grammar to lesson successfully")
+      } else {
+        toast.error(`${Res?.message}`)
+      }
+    },
+    onError: () => {
+      toast.error("Something error")
+    },
+  })
+  const handleAddGrammar = () => {
+    CreateGrammar.mutate({ lessonId: lessonId as string, grammarIds: listGrammar })
   }
   function checkGrammarExist(id: string) {
     if (listGrammar.length > 0 && listGrammar.includes(id)) {
@@ -35,6 +46,7 @@ export const CreateGrammar = () => {
   }
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-white px-[66px] py-[64px]">
+      {CreateGrammar.isPending ? <LoadingScreen /> : null}
       <div className="mb-[43px] flex flex-col rounded-md border-2 border-fuschia px-[78px] py-[56px]">
         <div className="flex w-full items-center justify-between">
           <Input
