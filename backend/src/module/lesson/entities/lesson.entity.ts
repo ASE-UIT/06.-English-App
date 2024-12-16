@@ -36,7 +36,7 @@ export class Lesson extends Base {
   lessonVocabularies?: LessonVocabulary[];
   @OneToMany(() => Section, (section) => section.lesson, { cascade: true })
   sections?: Section[];
-  @ManyToMany(() => Grammar, (grammar) => grammar.lessons)
+  @ManyToMany(() => Grammar, (grammar) => grammar.lessons, { cascade: true })
   @JoinTable()
   grammars?: Grammar[];
   @ManyToOne(() => Course, (course) => course.lessons, { onDelete: 'CASCADE' })

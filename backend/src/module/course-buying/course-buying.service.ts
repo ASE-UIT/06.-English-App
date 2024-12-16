@@ -7,7 +7,7 @@ import {
 import { CourseBuying } from './entities/course-buying.entity';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import * as crypto from 'crypto';
 import * as qs from 'qs';
 import { Student } from '../user/entities/student.entity';
@@ -155,8 +155,11 @@ export class CourseBuyingService {
     }
   }
 
-  async ipnVnpayUrl(query: any, res: Response) {
-    console.log(query);
+  async ipnVnpayUrl(query: any) {
+    let result = {
+      RspCode: '99',
+      Message: 'Fail',
+    };
     let vnp_Params = query;
     const secureHash = vnp_Params['vnp_SecureHash'];
     const orderId = vnp_Params['vnp_TxnRef'];
@@ -170,6 +173,7 @@ export class CourseBuyingService {
     const signData = qs.stringify(vnp_Params, { encode: false });
     const hmac = crypto.createHmac('sha512', vnpHashSecret);
     const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+    console.log(signed, vnpHashSecret);
 
     const paymentStatus = '0';
     let checkOrderId = true;
@@ -184,33 +188,41 @@ export class CourseBuyingService {
       checkOrderId = false;
     }
     const checkAmount =
-      order.course.price === vnp_Params['vnp_Amout'] / 100 ? true : false;
+      Number(order.course.price) ===
+      Number(Number(vnp_Params['vnp_Amount']) / 100)
+        ? true
+        : false;
     if (secureHash === signed) {
+      console.log('Checksum success');
       if (checkOrderId) {
+        console.log('Order found');
         if (checkAmount) {
+          console.log('Amount valid');
           if (paymentStatus == '0') {
             if (rspCode == '00') {
               order.active = true;
               await this.dataSource.getRepository(CourseBuying).save(order);
-              res.status(200).json({ RspCode: '00', Message: 'Success' });
+              result = { RspCode: '00', Message: 'Success' };
             } else {
-              res.status(200).json({ RspCode: '00', Message: 'Success' });
+              result = { RspCode: '00', Message: 'Success' };
             }
           } else {
-            res.status(200).json({
+            result = {
               RspCode: '02',
               Message: 'This order has been updated to the payment status',
-            });
+            };
           }
         } else {
-          res.status(200).json({ RspCode: '04', Message: 'Amount invalid' });
+          result = { RspCode: '04', Message: 'Amount invalid' };
         }
       } else {
-        res.status(200).json({ RspCode: '01', Message: 'Order not found' });
+        result = { RspCode: '01', Message: 'Order not found' };
       }
     } else {
-      res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
+      result = { RspCode: '97', Message: 'Checksum failed' };
     }
+    console.log(result);
+    return result;
   }
 
   async validatePayOrder(query: any) {
