@@ -16,12 +16,9 @@ import authService from "../../services/auth.service";
 import { useNavigation } from "@react-navigation/native";
 import { LoginScreenNavigationProp } from "../../type";
 import * as SecureStore from "expo-secure-store";
+import { User } from "../../models";
 const Profile = () => {
   const [user, setUser] = useState<User>();
-  const [isEditingName, setIsEditingName] = useState(false);
-  const nameInputRef = useRef<TextInput>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [avatar, setAvatar] = useState();
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
