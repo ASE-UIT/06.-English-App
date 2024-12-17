@@ -1,5 +1,6 @@
 import { RecommendCourseItem } from "@/type/course";
 import { convertToVND } from "@/utils/constants."
+// @ts-ignore
 import ReactStars from "react-rating-stars-component";
 
 type CourseRecommendationItemProps = {

@@ -21,11 +21,18 @@ export const Section = [
 
 export const sectionNameMap = Object.fromEntries(Section.map(({ key, text }) => [key, text]))
 
+export enum SectionType {
+  SPEAKING = "SPEAKING",
+  LISTENING = "LISTENING",
+  READING = "READING",
+  WRITING = "WRITING",
+  ROOT = "ROOT",
+}
 export interface Section {
   id: string
   title: string
   content: string
-  type: string
+  type: SectionType
   sectionMedia: string
   createDate: string
   updateDate: string

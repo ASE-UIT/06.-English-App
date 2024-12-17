@@ -76,7 +76,7 @@ export default function BuyCoursePage() {
                             <MdLocalAtm className="w-[40px] h-[40px]"/>
                             Pay with ATM card
                         </Button> 
-                        <Button className="bg-transparent border-1 border-[black] hover:bg-transparent text-xl font-bold text-black gap-10" onClick={() => handleBuyCourseWithVNPAY(course?.id ?? "", PaymentMethod.VNPAY)}>
+                        <Button className="bg-transparent border-1 border-[black] hover:bg-transparent text-xl font-bold text-black gap-10" onClick={() => handleBuyCourseWithVNPAY(course?.id ?? "")}>
                             <img className="w-[40px] h-[40px]" src="https://stcd02206177151.cloud.edgevnpay.vn/assets/images/logo-icon/logo-primary.svg"></img>
                             Pay with VNPAY
                         </Button> 
