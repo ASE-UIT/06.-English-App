@@ -146,6 +146,25 @@ const Profile = () => {
                     profile.firstName = firstName;
                   }
 
+            <TouchableOpacity
+              className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3"
+              onPress={() => {
+                if (profile) {
+                  if (phoneNumber !== profile.phone && phoneNumber !== "") {
+                    profile.phone = phoneNumber;
+                  }
+                  if (email !== profile.email && email !== "") {
+                    profile.email = email;
+                  }
+
+                  if (date !== profile.birthDate && date !== new Date()) {
+                    profile.birthDate = date;
+                  }
+
+                  if (firstName !== profile.firstName && firstName !== "") {
+                    profile.firstName = firstName;
+                  }
+
                   if (lastName !== profile.lastName && lastName !== "") {
                     profile.lastName = lastName;
                   }
