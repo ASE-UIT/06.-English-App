@@ -55,12 +55,18 @@ export class QuestionService {
         questions.map(async (question) => {
           console.log(question);
           if (questionGroupId) {
+            await this.dataSource
+              .getRepository(Question)
+              .delete({ questionGroup: { id: questionGroupId } });
             const questionGroup = await this.dataSource
               .getRepository(QuestionGroup)
               .findOne({ where: { id: questionGroupId } });
             question.questionGroup = questionGroup;
           }
           if (sectionId) {
+            await this.dataSource
+              .getRepository(Question)
+              .delete({ section: { id: sectionId } });
             const section = await this.dataSource
               .getRepository(Section)
               .findOne({ where: { id: sectionId } });
