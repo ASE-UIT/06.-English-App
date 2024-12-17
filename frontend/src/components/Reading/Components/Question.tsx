@@ -177,6 +177,7 @@ const Question = ({
   //   newAnswers[index].isCorrect = !newAnswers[index].isCorrect
   //   setAnswers(newAnswers)
   // }
+  console.log("answers", answers)
   return (
     <motion.div
       variants={parent}
@@ -215,7 +216,13 @@ const Question = ({
                 <AnimatePresence>
                   <ul className="mr-[25px] flex flex-col gap-[28px]">
                     <RadioGroup
-                      defaultValue="comfortable bg-inherit rounded-full"
+                      defaultValue={
+                        answers.length > 0
+                          ? answers.map((ans) => {
+                              if (ans.isCorrect) return ans.text
+                            })[0]
+                          : ""
+                      }
                       onValueChange={(value) => handleIsCorrectChange(value)}
                     >
                       {answers.length > 0 ? (

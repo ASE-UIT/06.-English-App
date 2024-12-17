@@ -34,7 +34,7 @@ export const CreateGrammar = () => {
     },
   })
   const handleAddGrammar = () => {
-    CreateGrammar.mutate({ lessonId: lessonId as string, grammarIds: listGrammar })
+    CreateGrammar.mutateAsync({ lessonId: lessonId as string, grammarIds: listGrammar })
   }
   function checkGrammarExist(id: string) {
     if (listGrammar.length > 0 && listGrammar.includes(id)) {

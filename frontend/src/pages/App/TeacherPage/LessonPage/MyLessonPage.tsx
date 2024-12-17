@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useEffect, useMemo, useState } from "react"
 import generateFroalaConfig from "@/config/froala.config"
 import { useMutation } from "@tanstack/react-query"
-import { courseApi, lessonApi } from "@/apis"
+import { lessonApi } from "@/apis"
 import { toast } from "react-toastify"
 import { useLessonByCourse } from "@/features/lesson/hooks"
 import _ from "lodash"
@@ -108,24 +108,6 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
     CreateLesson.mutate(data)
   }
 
-  const publishCourse = useMutation({
-    mutationFn: courseApi.PublishCourse,
-    onSuccess: (Res) => {
-      if (Res?.message === "Course published") {
-        toast.success(`${Res.message}`)
-      } else {
-        toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
-      }
-    },
-    onError: () => {
-      toast.error("Something error")
-    },
-  })
-
-  function handlePublishCourse() {
-    publishCourse.mutate(courseId as string)
-  }
-
   return (
     <motion.div
       variants={parent}
@@ -133,13 +115,7 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
       animate="visible"
       className="flex h-full min-h-screen w-full flex-col gap-[28px] bg-white py-[64px]"
     >
-      {isLoading || publishCourse.isPending || CreateLesson.isPending ? <LoadingScreen /> : null}
-      <Button
-        onClick={handlePublishCourse}
-        className="rounded-lg bg-sky-600 px-2 py-1 text-base font-semibold text-white transition-all hover:bg-sky-700"
-      >
-        Publish Your Course
-      </Button>
+      {isLoading || CreateLesson.isPending ? <LoadingScreen /> : null}
       <AnimatePresence>
         {lessonList?.data && lessonList.data.length > 0 ? (
           _.sortBy(lessonList.data, ["createDate"]).map((lesson, index) => (
@@ -257,7 +233,7 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
                   Content
                 </Text>
                 <FroalaEditorComponent
-                  key={content}
+                  key="content"
                   tag="textarea"
                   config={froalaConfig}
                   model={content}
@@ -270,7 +246,7 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
                   Description
                 </Text>
                 <FroalaEditorComponent
-                  key={description}
+                  key="description"
                   tag="textarea"
                   config={froalaConfig}
                   model={description}
