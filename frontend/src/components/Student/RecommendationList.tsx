@@ -26,7 +26,7 @@ export default function RecommendationList(){
     }, [listRecomendCourse])
 
     return (
-        <div className="flex flex-row gap-4 flex-wrap hover:cursor-pointer">
+        <div className="flex flex-row gap-4 flex-wrap hover:cursor-pointer mt-[20px]">
             {listRecomendCourse.map((course) => (
                 <CourseRecommendationItem key={course.id} course={course} onClick={() => handleClickCourse(course.id)} />
             ))}
