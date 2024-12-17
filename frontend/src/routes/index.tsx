@@ -27,6 +27,10 @@ import TeacherLayout from "@/components/Layout/Teacher"
 import { SectionComp } from "@/pages/App/TeacherPage/CoursePage/Add/section"
 import { Section } from "@/pages/App/TeacherPage/LessonPage/Section"
 import StudentHomePage from "@/pages/App/StudentPage/HomePage/StudentHomePage"
+import { CoursePreviewPage } from "@/pages/App/StudentPage/CoursePreviewPage/CoursePreviewPage"
+import DefaultLayout from "@/pages/App/StudentPage/Layouts/DefaultLayout"
+import StudentMyCoursePage from "@/pages/App/StudentPage/MyCoursePage/StudentMyCoursePage"
+import BuyCoursePage from "@/pages/App/StudentPage/BuyCoursePage/BuyCoursePage"
 const publicRoutes = [
   {
     path: routes.LandingPage,
@@ -55,8 +59,18 @@ const publicRoutes = [
 const protectedRoutes = [
   {
     path: studentRoutes.Home,
-    layout: Fragment, 
+    layout: DefaultLayout, 
     component: <StudentHomePage></StudentHomePage>
+  },
+  {
+    path: studentRoutes.MyCourse,
+    layout: DefaultLayout, 
+    component: <StudentMyCoursePage></StudentMyCoursePage>
+  },
+  {
+    path: studentRoutes.BuyCourse,
+    layout: DefaultLayout, 
+    component: <BuyCoursePage></BuyCoursePage>
   },
   {
     path: studentRoutes.DoTestWriting,
@@ -77,6 +91,11 @@ const protectedRoutes = [
     path: studentRoutes.DoTestReading,
     component: <ReadingPage></ReadingPage>,
     layout: DoTestLayout,
+  },
+  {
+    path: studentRoutes.CousePreview,
+    component: <CoursePreviewPage></CoursePreviewPage>,
+    layout: Fragment,
   },
   {
     path: teacherRoutes.Course.Base,

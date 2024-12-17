@@ -1,13 +1,11 @@
 import CategoryList from "@/components/Student/CategoryList";
 import ContinueLearningItem from "@/components/Student/ContinueLearningItem";
-import CourseRecommendationItem from "@/components/Student/CourseRecommendationItem";
-import Header from "@/components/Student/Header";
+import RecommendationList from "@/components/Student/RecommendationList";
 import { DefaultAvatar } from "@/utils/constants.";
 
 export default function StudentHomePage(){ 
     return (
         <> 
-            <Header />
             <CategoryList />
             <div className="p-[20px]">
                 <div className="flex content-center justify-between">
@@ -23,7 +21,7 @@ export default function StudentHomePage(){
                 </div>
                 <div>
                     <h3 className="text-2xl font-sans font-bold text-[#5d5fef]">Recommend for you</h3>
-                    <CourseRecommendationItem />
+                    <RecommendationList />
                 </div>    
             </div>
         </>

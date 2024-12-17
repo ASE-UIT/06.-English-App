@@ -4,12 +4,14 @@ import { Input } from "@/components/ui/input"
 import { DefaultAvatar } from "@/utils/constants.";
 import { FaSearch } from "react-icons/fa";
 import { RiNotification2Line } from "react-icons/ri";
+import { useNavigate } from "react-router";
 
 export default function Header(){ 
+    const navigate = useNavigate();
     return (
         <header className="p-[20px] flex content-center justify-between border-b-[1px] border-[#A5A6F6]">
             <div className="flex content-center">
-                <div className="flex justify-between content-center">
+                <div className="flex justify-between content-center hover:cursor-pointer" onClick={() => navigate("/student-home")}>
                     <img src={Logo} alt="logo" className="w-[36px] h-[36px] mt-[5px]" />
                     <h1 className="text-[#5D5FEF] font-bold font-sans  text-3xl">Engdigo</h1>
                 </div>
@@ -23,7 +25,7 @@ export default function Header(){
                     <Button className="bg-transparent hover:bg-transparent hover:border-transparent">
                         Instructor
                     </Button>
-                    <Button className="bg-transparent hover:bg-transparent hover:border-transparent">
+                    <Button className="bg-transparent hover:bg-transparent hover:border-transparent" onClick={() => navigate("/student/my-course")}>
                         MyLearning
                     </Button>
                     <Button className="bg-transparent hover:bg-transparent hover:border-transparent">
