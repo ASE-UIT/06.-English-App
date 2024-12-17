@@ -11,8 +11,8 @@ const TabName = [
         title: "In progress",
     },
     {
-        id: "Finished",
-        title: "Finished",
+        id: "WaitingActive",
+        title: "Waiting Active",
     },
     {
         id: "Favorite",

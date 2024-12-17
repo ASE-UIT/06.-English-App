@@ -25,6 +25,9 @@ export interface Course {
   ratingAverage: number
   teacherName: string
   categoryName: string
+  finalPrice: number
+  price: number
+  discountPercents: number
   createDate: string
   updateDate: string
 }
