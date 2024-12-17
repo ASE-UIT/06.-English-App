@@ -21,6 +21,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { sectionApi } from "@/apis"
 import { queryKeys } from "@/config"
 import { toast } from "react-toastify"
+import S from "./style.module.css"
 
 interface question {
   questionGroup?: string
@@ -107,7 +108,7 @@ export const SectionMain = () => {
   })
 
   return (
-    <div className="flex h-full w-full flex-col">
+    <div className={`flex ${S.section} w-full flex-col overflow-y-auto`}>
       <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogContent className="h-fit overflow-y-auto">
           <DialogHeader>
@@ -118,7 +119,7 @@ export const SectionMain = () => {
           </div>
         </DialogContent>
       </Dialog>
-      <div className="h-full w-full rounded-md border-2 border-borderContent">
+      <div className="h-fit w-full rounded-md border-2 border-borderContent">
         <div className="flex items-center justify-between bg-sectionHeaderBg px-[43px] pb-[35px] pt-[31px]">
           <div className="flex items-center gap-2">
             <LuStar stroke="black" size={20} />
