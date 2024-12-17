@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, Alert } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Button, Icon } from "@rneui/themed";
 import { BottomSheet } from "@rneui/base";
@@ -7,8 +7,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { CourseDetailScreenRouteProp, PayMentScreenNavigationProp } from "../../type";
 import { Lesson, Section } from "../../models";
 import lessonService from "../../services/lesson.service";
-import courseService from "../../services/course.service";
-
 const LessonItem = ({ lesson }: { lesson: Lesson }) => {
   return (
     <View className="flex gap-1 mt-[10px]">
@@ -262,13 +260,13 @@ const CourseDetail = () => {
                 justifyContent: "center",
                 alignItems: "center",
               }}
-              onPress={() => {
+              onPress={async () => {
                 if (selectedPaymentMethod === 0) {
-                  nav.navigate("PayWithCard")
+                  nav.navigate("PayWithCard", { courseID: course.id });
                   setIsBottomSheetVisible(false);
                 }
                 else if (selectedPaymentMethod === 1) {
-                  nav.navigate("PayWithBank")
+                  nav.navigate("PayWithBank", { courseID: course.id })
                   setIsBottomSheetVisible(false);
                 }
               }}

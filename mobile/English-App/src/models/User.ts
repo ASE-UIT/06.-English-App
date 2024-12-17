@@ -7,7 +7,7 @@ type User = {
     lastName: string;
     email: string;
     phone: string;
-    birthDate: string;
+    birthDate: Date;
     avatarURL: string;
     awsCognitoId: string;
     additionalInfo: {
