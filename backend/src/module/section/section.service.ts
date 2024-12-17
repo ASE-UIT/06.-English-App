@@ -49,9 +49,15 @@ export class SectionService {
         .createQueryBuilder('section')
         .leftJoin('section.questionGroups', 'questionGroups')
         .leftJoin('section.questions', 'sectionQuestions')
-        .leftJoinAndSelect('questionGroups.questions', 'questions')
-        .leftJoinAndSelect('questions.answers', 'answers')
-        .select(['section', 'questionGroups', 'questions', 'sectionQuestions'])
+        .leftJoin('questionGroups.questions', 'questions')
+        .leftJoin('questions.answers', 'answers')
+        .select([
+          'section',
+          'questionGroups',
+          'questions',
+          'sectionQuestions',
+          'answers',
+        ])
         .where('section.id = :id', { id })
         .getOne();
       return section;
