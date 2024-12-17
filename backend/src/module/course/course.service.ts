@@ -147,8 +147,19 @@ export class CourseService {
         .createQueryBuilder('course')
         .leftJoin('course.category', 'category')
         .leftJoin('course.teacher', 'teacher')
+        .leftJoin('course.lessons', 'lessons')
+        .leftJoin('course.courseReviewings', 'courseReviewings')
+        .leftJoin('lessons.sections', 'sections')
         .leftJoin('teacher.userInfo', 'userInfo')
-        .select(['course', 'category.name', 'teacher', 'userInfo'])
+        .select([
+          'course',
+          'category.name',
+          'teacher',
+          'userInfo',
+          'lessons',
+          'sections',
+          'courseReviewings',
+        ])
         .where('course.id = :courseId', { courseId: id })
         .getOne();
       return existingCourse;
