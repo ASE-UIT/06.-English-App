@@ -14,8 +14,8 @@ export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
   Reading: { scrollRef?: React.RefObject<ScrollView>; sectionID: string };
-  Grammar: { grammarmodel: GrammarModel };
-  GrammarDetail: { grammarmodel: GrammarModel };
+  Grammar: {id:string};
+  GrammarDetail: { id: string };
   CourseDetail: { course: Course };
   CourseHome: { course: Course };
   PayWithBank: { courseID: string };
