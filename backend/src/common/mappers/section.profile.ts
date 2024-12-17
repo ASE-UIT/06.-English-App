@@ -46,6 +46,14 @@ export class SectionProfile extends AutomapperProfile {
           (src) => src.lessonId,
           mapFrom((d) => d.lesson.id),
         ),
+        forMember(
+          (src) => src.questions,
+          mapFrom((d) => d.questions),
+        ),
+        forMember(
+          (src) => src.questionGroups,
+          mapFrom((d) => d.questionGroups),
+        )
       );
     };
   }

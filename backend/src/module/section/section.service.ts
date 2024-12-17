@@ -31,7 +31,21 @@ export class SectionService {
       const sections = await this.dataSource
         .getRepository(Section)
         .createQueryBuilder('section')
-        .leftJoinAndSelect('section.lesson', 'lesson')
+        .leftJoin('section.lesson', 'lesson')
+        .leftJoin('section.questions', 'questions')
+        .leftJoin('questions.answers', 'answers')
+        .leftJoin('section.questionGroups', 'questionGroups')
+        .leftJoin('questionGroups.questions', 'questionGroupQuestions')
+        .leftJoin('questionGroupQuestions.answers', 'questionGroupAnswers')
+        .select([
+          'section',
+          'lesson',
+          'questions',
+          'answers',
+          'questionGroups',
+          'questionGroupQuestions',
+          'questionGroupAnswers',
+        ])
         .where('lesson.id = :id', { id: lessonId })
         .getMany();
       return sections;
