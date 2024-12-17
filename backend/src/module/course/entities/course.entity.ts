@@ -43,6 +43,10 @@ export class Course extends Base {
   @AutoMap()
   state: STATE = STATE.DRAFT;
 
+  @AutoMap()
+  @Column({ default: 0 })
+  discountPercents: number;
+
   @ManyToOne(() => CourseCategory, (category) => category.course)
   @JoinColumn({ name: 'categoryId' })
   category: CourseCategory;
