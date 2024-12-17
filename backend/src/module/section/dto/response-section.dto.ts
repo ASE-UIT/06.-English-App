@@ -1,5 +1,5 @@
 import { AutoMap } from '@automapper/classes';
-import { IsEnum, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsString } from 'class-validator';
 import { SECTION_TYPE } from 'src/utils/constants';
 
 export class ResponseSectionDto {
@@ -24,4 +24,10 @@ export class ResponseSectionDto {
   @IsString()
   @AutoMap()
   updatedAt: Date;
+  @IsArray()
+  @AutoMap()
+  questions: any;
+  @IsArray()
+  @AutoMap()
+  questionGroups: any;
 }

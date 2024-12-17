@@ -1,6 +1,6 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { STATE } from 'src/utils/constants';
 
 export class CourseResponseDto {
@@ -36,6 +36,18 @@ export class CourseResponseDto {
     example: 4.5,
     description: 'Average rating of course',
   })
+  @AutoMap()
+  @IsNumber()
+  price: number;
+
+  @AutoMap()
+  @IsNumber()
+  finalPrice: number;
+
+  @AutoMap()
+  @IsNumber()
+  discountPercents: number;
+
   @AutoMap()
   ratingAverage: number;
   @ApiProperty({

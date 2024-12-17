@@ -64,6 +64,12 @@ export class CourseProfile extends AutomapperProfile {
           (dest) => dest.thumbnail_image,
           mapFrom((src) => `${this.cloudFrontUrl}/${src.thumbnail_image}`),
         ),
+        forMember(
+          (dest) => dest.finalPrice,
+          mapFrom(
+            (src) => src.price - (src.discountPercents * src.price) / 100,
+          ),
+        ),
       );
     };
   }
