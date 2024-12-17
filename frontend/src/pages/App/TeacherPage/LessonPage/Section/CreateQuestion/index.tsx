@@ -15,6 +15,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useSelector } from "react-redux"
 import { useParams } from "react-router"
 import { toast } from "react-toastify"
+import S from "./style.module.css"
 
 export const CreateQuestion = () => {
   const queryClient = useQueryClient()
@@ -102,11 +103,13 @@ export const CreateQuestion = () => {
         </DialogContent>
       </Dialog>
       {sectionById.type !== "WRITING" && sectionById.type !== "SPEAKING" && (
-        <div className="col-span-2">
+        <div className={`${S.section} col-span-2`}>
           <Section onOpenDialog={() => setOpen(!open)} />
         </div>
       )}
-      <div className={`${sectionById.type === "WRITING" || sectionById.type === "SPEAKING" ? "w-full" : "col-span-4"}`}>
+      <div
+        className={`${sectionById.type === "WRITING" || sectionById.type === "SPEAKING" ? "w-full" : `col-span-4 overflow-y-auto`}`}
+      >
         {isExist || sectionById.type === "WRITING" || sectionById.type === "SPEAKING" ? <SectionMain /> : null}
       </div>
     </div>

@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { sectionApi } from "@/apis"
 import { toast } from "react-toastify"
 import { queryKeys } from "@/config"
+import S from "./style.module.css"
 interface question {
   questionGroup?: string
   section: string
@@ -49,46 +50,52 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
   Object.entries(section ?? {}).forEach(([key, value]) => console.log("section", key, " ", value))
   return (
     <div className="flex flex-col items-center bg-white">
-      <div className="flex min-h-[625px] min-w-[439px] flex-col rounded-md border-2 border-borderContent bg-white p-[30px]">
-        <p className="w-full border-b-2 border-borderContent pb-3 text-[32px] text-content">Content</p>
-        {sectionById &&
-          _.orderBy(sectionById.questionGroups ?? [], ["createDate"]).map((questionGr, index) => {
-            return (
-              <div
-                key={questionGr.id}
-                className={`${sectionCurrent.toString() === questionGr.id ? "my-2 flex w-full rounded-md bg-currentBg px-4 py-3" : "my-2 flex w-full bg-white px-4 py-3"}`}
-              >
-                <LuStar stroke="black" size={20} />
-                <div className="ml-3 flex flex-col">
-                  <p className="text-2xl text-content">QuestionGroup {index + 1}</p>
-                  <p className="text-sm text-typeContent">{questionGroupNameMap[questionGr.questionGroupType]}</p>
+      <div className="flex min-w-[439px] flex-col rounded-md border-2 border-borderContent bg-white p-[30px]">
+        <div className="flex w-full items-center justify-between border-b-2 border-borderContent">
+          <p className="w-full pb-3 text-[32px] text-content">Content</p>
+          <div className="flex items-center gap-3">
+            <Button
+              onClick={() => onOpenDialog()}
+              className="rounded-lg bg-fuschia px-3 py-1 text-base font-normal text-white hover:bg-pink-600"
+            >
+              + Add
+            </Button>
+            <Button
+              onClick={async () => {
+                const promises = []
+                Object.entries(updateData ?? {}).forEach(([questionGrKey, value]) => {
+                  const data = {
+                    questionGroupId: questionGrKey,
+                    questions: value as question[],
+                  }
+                  promises.push(CreateQuestion.mutateAsync(data))
+                })
+              }}
+              className="rounded-lg bg-green-600 px-3 py-1 text-base font-normal text-white hover:bg-green-700"
+            >
+              <SaveIcon size={20} className="mr-1" />
+              Save
+            </Button>
+          </div>
+        </div>
+        <div className={`flex w-full flex-col overflow-y-auto ${S.questionGroup}`}>
+          {sectionById &&
+            _.orderBy(sectionById.questionGroups ?? [], ["createDate"]).map((questionGr, index) => {
+              return (
+                <div
+                  key={questionGr.id}
+                  className={`${sectionCurrent.toString() === questionGr.id ? "my-2 flex w-full rounded-md bg-currentBg px-4 py-3" : "my-2 flex w-full bg-white px-4 py-3"}`}
+                >
+                  <LuStar stroke="black" size={20} />
+                  <div className="ml-3 flex flex-col">
+                    <p className="text-2xl text-content">QuestionGroup {index + 1}</p>
+                    <p className="text-sm text-typeContent">{questionGroupNameMap[questionGr.questionGroupType]}</p>
+                  </div>
                 </div>
-              </div>
-            )
-          })}
+              )
+            })}
+        </div>
       </div>
-      <Button
-        onClick={() => onOpenDialog()}
-        className="mx-auto my-[43px] rounded-lg bg-fuschia px-10 py-6 text-2xl font-normal text-white"
-      >
-        + Add
-      </Button>
-      <Button
-        onClick={async () => {
-          const promises = []
-          Object.entries(updateData ?? {}).forEach(([questionGrKey, value]) => {
-            const data = {
-              questionGroupId: questionGrKey,
-              questions: value as question[],
-            }
-            promises.push(CreateQuestion.mutateAsync(data))
-          })
-        }}
-        className="mx-auto my-[0px] rounded-lg bg-green-600 px-10 py-6 text-2xl font-normal text-white"
-      >
-        <SaveIcon size={20} className="mr-1" />
-        Save
-      </Button>
     </div>
   )
 }

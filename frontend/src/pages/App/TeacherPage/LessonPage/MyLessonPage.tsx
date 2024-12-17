@@ -115,7 +115,7 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
       animate="visible"
       className="flex h-full min-h-screen w-full flex-col gap-[28px] bg-white py-[64px]"
     >
-      {isLoading ? <LoadingScreen /> : null}
+      {isLoading || CreateLesson.isPending ? <LoadingScreen /> : null}
       <AnimatePresence>
         {lessonList?.data && lessonList.data.length > 0 ? (
           _.sortBy(lessonList.data, ["createDate"]).map((lesson, index) => (
@@ -233,7 +233,7 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
                   Content
                 </Text>
                 <FroalaEditorComponent
-                  key={content}
+                  key="content"
                   tag="textarea"
                   config={froalaConfig}
                   model={content}
@@ -246,7 +246,7 @@ export const MyLessonPage = ({ courseId }: { courseId: string | undefined }) => 
                   Description
                 </Text>
                 <FroalaEditorComponent
-                  key={description}
+                  key="description"
                   tag="textarea"
                   config={froalaConfig}
                   model={description}

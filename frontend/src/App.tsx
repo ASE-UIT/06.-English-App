@@ -3,10 +3,10 @@ import { protectedRoutes, publicRoutes } from "./routes/index"
 import { DefaultLayout } from "./components/Layout"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
 import "@radix-ui/themes/styles.css"
 import { Theme } from "@radix-ui/themes"
 import "regenerator-runtime/runtime"
+import "react-toastify/dist/ReactToastify.css"
 const queryClient = new QueryClient()
 function App() {
   return (

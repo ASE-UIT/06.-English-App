@@ -38,6 +38,12 @@ export const Section = () => {
   console.log("sectionById", sectionById, sectionId, handling)
   const isReady = useMemo(() => !isLoading && handling, [handling, isLoading])
   console.log("isReady", isReady)
+
+  if (performance.navigation.type === 1) {
+    // Nếu trang được reload
+    window.location.href = "/course" // Điều hướng về trang home
+  }
+
   return (
     <SectionHeader>
       {isLoading ? <LoadingScreen /> : null}

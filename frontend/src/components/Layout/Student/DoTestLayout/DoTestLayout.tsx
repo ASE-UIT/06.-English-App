@@ -13,6 +13,12 @@ export default function DoTestLayout({ children }: { children: React.ReactNode }
     () => (lessonView.grammar ? "Grammar" : lessonView.vocab ? "Vocabulary" : ""),
     [lessonView.grammar, lessonView.vocab],
   )
+
+  if (performance.navigation.type === 1) {
+    // Nếu trang được reload
+    window.location.href = "/course" // Điều hướng về trang home
+  }
+
   return (
     <div className="flex flex-col">
       <div className="sticky top-0 z-10 flex gap-[10px] bg-[#fff4f9] py-6 shadow-custom">

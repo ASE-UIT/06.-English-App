@@ -69,6 +69,14 @@ class CouseApi {
       console.log(error)
     }
   }
+  async PublishCourse(id: string) {
+    try {
+      const res = await httpClient.put<Response>(`/course/publish-course/${id}`)
+      return res
+    } catch (error) {
+      console.log(error)
+    }
+  }
   async DeleteCourse(id: string) {
     try {
       const res = await httpClient.delete<Response>(`/course/${id}`)
