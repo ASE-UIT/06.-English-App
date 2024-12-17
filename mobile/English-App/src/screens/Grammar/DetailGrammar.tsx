@@ -22,7 +22,11 @@ export default function DetailGrammar() {
       try {
         const res = await grammarService.getGrammarById(id);
         if (res.data) {
-          setGrammar(res.data);
+          // Preprocess the HTML content to remove \t and \n characters
+          const preprocessedContent = res.data.content
+            .replace(/\t/g, "")
+            .replace(/\n/g, "");
+          setGrammar({ ...res.data, content: preprocessedContent });
         }
       } catch (error) {
         console.error("Error fetching grammar:", error);
@@ -30,32 +34,29 @@ export default function DetailGrammar() {
     };
     fetchGrammarDetail();
   }, [id]);
-  console.log(grammar?.content);
-  
 
   const { width } = Dimensions.get("window");
 
   const customHTMLElementModels = {
     ...defaultHTMLElementModels,
     iframe: HTMLElementModel.fromCustomModel({
-      tagName: 'iframe',
+      tagName: "iframe",
       mixedUAStyles: {
-        width: '100%',
+        width: "100%",
         height: 200,
       },
-      contentModel: 'mixed',
+      contentModel: "block",
       isOpaque: true,
     }),
     video: HTMLElementModel.fromCustomModel({
-      tagName: 'video',
+      tagName: "video",
       mixedUAStyles: {
-        width: '100%',
+        width: "100%",
         height: 200,
       },
-      contentModel: 'block',
+      contentModel: "block",
       isOpaque: true,
     }),
-   
   };
 
   return (
@@ -65,6 +66,7 @@ export default function DetailGrammar() {
           contentWidth={width}
           source={{ html: grammar.content || "" }}
           customHTMLElementModels={customHTMLElementModels}
+          ignoredDomTags={[]} // Ensure iframe is not ignored
         />
       ) : (
         <Text>Loading...</Text>
