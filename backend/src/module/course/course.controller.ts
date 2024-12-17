@@ -32,6 +32,7 @@ import {
   PaginatedResult,
 } from 'src/utils/paginated-response';
 import { CourseResponseDto } from './dto/course-response.dto';
+import { CourseDetailResponseDto } from './dto/course-prevew-response.dto';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE.BASE)
@@ -139,7 +140,7 @@ export class CourseController {
   })
   async findOne(@Param('id') id: string) {
     const course = await this.courseService.findOne(id);
-    const result = this.mapper.map(course, Course, CourseResponseDto);
+    const result = this.mapper.map(course, Course, CourseDetailResponseDto);
     return ResponseObject.create('Course retrieved successfully', result);
   }
 
