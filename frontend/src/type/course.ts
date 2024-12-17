@@ -25,8 +25,12 @@ export interface Course {
   ratingAverage: number
   teacherName: string
   categoryName: string
+  finalPrice: number
+  price: number
+  discountPercents: number
   createDate: string
   updateDate: string
+  lessons: any[]
 }
 
 export interface CourseRes extends Response {
@@ -68,4 +72,27 @@ export interface CourseCreateRes extends Response {
       },
     ]
   }
+}
+
+export interface CourseDetailRes {
+  data: Course
+}
+
+
+export interface RecommendCourseItem {
+  id: string,
+  title: string,
+  description: string,
+  rating: number,
+  ratingAverage: number,
+  teacherName: string,
+  createdAt: string,
+  updatedAt: string,
+  categoryName: string,
+  thumbnail_image: string,
+  price: number,
+  finalPrice: number
+}
+export interface RecommendCourseRes {
+  data: RecommendCourseItem[]
 }

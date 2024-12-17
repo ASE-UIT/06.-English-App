@@ -6,18 +6,21 @@ import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import sectionApi from "@/apis/sectionApi"
 export default function ListeningTestPage() {
-  const [data, setData] = useState<Section | null>(null)
-  const { id } = useParams()
-  useEffect(() => {
-    if (id) {
-      sectionApi.GetSectionById(id).then((res) => {
-        if (res) {
-          setData(res.data)
-          console.log(res.data)
-        }
-      })
+  const [data, setData] = useState<Section | null>(null);
+  const { sectionId } = useParams();
+  console.log(sectionId)
+  useEffect(
+    () => {
+      if (sectionId) {
+        sectionApi.GetSectionById(sectionId).then((res) => {
+          if (res) {
+            setData(res.data);
+            console.log(res.data)
+          }
+        });
+      }
     }
-  }, [id])
+    , [sectionId]);
 
   return (
     <div className="mb-[20px] ml-[75px] mr-[40px] mt-[45px] flex">

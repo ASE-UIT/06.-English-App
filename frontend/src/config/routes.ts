@@ -9,6 +9,8 @@ export const routes = {
 }
 export const studentRoutes = {
   Home: "/student-home",
+  CousePreview: "/student/course-preview/:id",
+  MyCourse: "/student/my-course",
   Course: "/my-course",
   CourseDetail: "/my-course/:id",
   Profile: "/profile",
@@ -21,6 +23,7 @@ export const studentRoutes = {
   DoTestListening: "/do-test/listening/:sectionId",
   DoTestWriting: "/do-test/writing/:sectionId",
   DoTestSpeaking: "/do-test/speaking/:sectionId",
+  BuyCourse: "/student/buy-course/:id",
 }
 export const teacherRoutes = {
   Course: {

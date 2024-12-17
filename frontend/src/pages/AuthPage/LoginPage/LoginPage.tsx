@@ -63,7 +63,6 @@ const LoginPage = () => {
             >
               Log in
             </button>
-
             <button className="flex w-full items-center justify-center rounded-lg bg-white p-[6px] text-[20px] font-normal text-black">
               <FcGoogle className="mr-2 h-6 w-6" />
               Log in with Google

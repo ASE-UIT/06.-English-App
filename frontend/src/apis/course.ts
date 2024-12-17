@@ -1,6 +1,7 @@
+import { Course } from "@/interfaces"
 import { httpClient } from "@/services"
 import { Response } from "@/type"
-import { CategoryByIdRes, CourseCreate, CourseRes, CourseCreateRes, CategoryRes } from "@/type/course"
+import { CategoryByIdRes, CourseCreate, CourseRes, CourseCreateRes, CategoryRes, RecommendCourseRes, CourseDetailRes } from "@/type/course"
 
 class CouseApi {
   constructor() {
@@ -43,6 +44,15 @@ class CouseApi {
       console.log(error)
     }
   }
+  async getRecommendCourse(){
+    try{
+      const res = await httpClient.get<RecommendCourseRes>('/course/get-all-recomendation-courses')
+      return res;
+    }
+    catch(error){ 
+      console.log(error);
+    }
+  }
   async getAllCourseTeacher() {
     try {
       const res = httpClient.get<CourseRes>("/course/teacher/my-course")
@@ -72,6 +82,15 @@ class CouseApi {
       const res = await httpClient.delete<Response>(`/course/${id}`)
       return res
     } catch (error) {
+      console.log(error)
+    }
+  }
+  async GetCourseDetail(id: string){
+    try {
+      const res = await httpClient.get<CourseDetailRes>(`/course/detail/${id}`)
+      return res
+    }
+    catch (error){ 
       console.log(error)
     }
   }
