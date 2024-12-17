@@ -1,4 +1,3 @@
-import { Course } from "@/interfaces"
 import { httpClient } from "@/services"
 import { Response } from "@/type"
 import { CategoryByIdRes, CourseCreate, CourseRes, CourseCreateRes, CategoryRes, RecommendCourseRes, CourseDetailRes } from "@/type/course"

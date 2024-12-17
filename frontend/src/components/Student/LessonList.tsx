@@ -6,6 +6,8 @@ import { TiMicrophoneOutline } from "react-icons/ti";
 import { TfiWrite } from "react-icons/tfi";
 import { FiHeadphones } from "react-icons/fi";
 import { SiRootssage } from "react-icons/si";
+import { Lesson } from "@/type/lesson";
+import { Section, SectionType } from "@/type/section";
 
 
 
@@ -20,10 +22,8 @@ const sectionIcon: { [key in SectionType]: JSX.Element } = {
     ROOT: <SiRootssage />
 }
 
-type SectionType = "READING" | "LISTENING" | "SPEAKING" | "WRITING" | "ROOT";
-
 type LessonListProps = {
-    lessons: any[];
+    lessons: Lesson[];
 }
 
 export default function LessonList({ lessons }: LessonListProps) {
@@ -51,7 +51,7 @@ export default function LessonList({ lessons }: LessonListProps) {
                     </Button>
                 </div>
                 <div>
-                    {lesson.sections.map((section) => (
+                    {lesson.sections.map((section: Section) => (
                         <div key={section.id} className="flex gap-[20px]">
                             <span className="h-100 content-center">
                                 {sectionIcon[section.type]}

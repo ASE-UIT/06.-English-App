@@ -1,5 +1,6 @@
 import { Course } from "./course"
 import { Response } from "."
+import { Section } from "./section"
 
 export const Lesson = [
   {
@@ -19,7 +20,6 @@ export const Lesson = [
     text: "Speaking",
   },
 ]
-
 export interface Lesson {
   id: string
   name: string
@@ -68,4 +68,14 @@ export interface LessonCreateRes extends Response {
     }
     createDate: string
   }
+}
+
+export interface Lesson {
+  id: string
+  name: string
+  description: string
+  content: string
+  sections: Section[]
+  createdDate: string
+  updatedAt: string
 }

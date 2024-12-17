@@ -2,6 +2,7 @@
 import { createSelector } from "@reduxjs/toolkit"
 import _ from "lodash"
 import { Section } from "../interface"
+import { SectionType } from "@/type/section"
 
 export const initialState: Section = {
   handling: false,
@@ -10,7 +11,7 @@ export const initialState: Section = {
     id: "",
     title: "",
     content: "",
-    type: "",
+    type: SectionType.READING,
     sectionMedia: "",
     createDate: "",
     updateDate: "",

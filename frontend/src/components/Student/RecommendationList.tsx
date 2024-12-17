@@ -3,6 +3,7 @@ import CourseRecommendationItem from "./CourseRecommendationItem";
 import { RecommendCourseItem } from "@/type/course";
 import { courseApi } from "@/apis";
 import { useNavigate } from "react-router";
+import { toast } from "react-toastify";
 
 export default function RecommendationList(){
     const [listRecomendCourse, setListRecommendCourse] = useState<RecommendCourseItem[]>([]); 
@@ -13,12 +14,16 @@ export default function RecommendationList(){
     }
     async function fetchRecommendCourse() {
         try{
+            setIsLoading(true);
             const response = await courseApi.getRecommendCourse();
             if(response){
                 setListRecommendCourse(response.data);
+                setIsLoading(false);
             }
         }
         catch(error){
+            setIsLoading(false);
+            toast.error("Error when fetching recommend course");
             console.log(error);
         }
     }
