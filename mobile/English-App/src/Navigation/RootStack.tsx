@@ -12,6 +12,7 @@ import HeaderRight from "./HeaderRight";
 import { useRef } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import ListeningExerciseScreen from "../screens/Listening/ListeningExercise";
+import DetailGrammar from "../screens/Grammar/DetailGrammar";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
@@ -28,7 +29,7 @@ export default function RootStack() {
 
       <Stack.Screen name="CourseDetail" component={CourseDetail} />
       <Stack.Screen name="CourseHome" component={CourseHome} />
-      <Stack.Screen name="GrammarDetail" component={GrammarDetail} />
+      <Stack.Screen name="GrammarDetail" component={DetailGrammar} />
       <Stack.Screen
         name="Reading"
         options={({ route }) => ({
