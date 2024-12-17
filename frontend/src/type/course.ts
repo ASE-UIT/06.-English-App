@@ -30,6 +30,7 @@ export interface Course {
   discountPercents: number
   createDate: string
   updateDate: string
+  lessons: any[]
 }
 
 export interface CourseRes extends Response {

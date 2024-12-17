@@ -20,17 +20,22 @@ import { MdLocalAtm } from "react-icons/md";
 export default function BuyCoursePage() {
     const {id} = useParams()
     const [course, setCourse] = useState<Course>();
+    const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = useState(false);
     async function getCourseDetail(id?: string){
         try {
+            setIsLoading(true);
             if(id){
                 const result = await courseApi.GetCourseDetail(id);
                 if(result && result.data){
                     setCourse(result.data);
+                    setIsLoading(false);
                 }
             }
         }
         catch (error){ 
+            setIsLoading(false);
+            toast.error("Error when fetching course detail");
             console.log(error)
         }
     }
@@ -59,6 +64,8 @@ export default function BuyCoursePage() {
     const navigate = useNavigate();
     return (
         <>
+            {isLoading && <div>Loading...</div>}
+            {!isLoading && course && <>
             <Dialog open={open} onOpenChange={() => setOpen(!open)}>
                 <DialogContent className="overflow-y-auto">
                     <DialogHeader className="flex content-center items-center">
@@ -100,7 +107,7 @@ export default function BuyCoursePage() {
                             </div>
                             <div className="flex items-center justify-center gap-1">
                                 <span><MdPlayLesson /></span>
-                                <span>10 lessons</span>
+                                <span>{course.lessons.length} lessons</span>
                             </div>
                         </div>
                         <img src={course?.thumbnail_image} alt="course-thumbnail" className="w-full max-w-[1000px] h-auto object-cover rounded-md" />
@@ -110,11 +117,13 @@ export default function BuyCoursePage() {
                         </div>
                         <div className="flex flex-col gap-[20px] items-start justify-center">
                             <span className="font-sans font-bold text-2xl">Playlist</span>
-                            <div className="flex items-center justify-between gap-8">
-                                <span className="h-full content-center"><FaVideo size="30px" /></span>
-                                <span className="font-bold font-sans text-xl">Lesson 1</span>
-                                <span className="h-full content-center font-sans"> Introduction to IELTS Reading</span>
-                            </div>
+                            {course.lessons.map((lesson, index) => (
+                                <div key={lesson.id} className="flex items-center justify-between gap-8">
+                                    <span className="h-full content-center"><FaVideo size="30px" /></span>
+                                    <span className="font-bold font-sans text-xl">{`Lesson ${index + 1}`}</span>
+                                    <span className="h-full content-center font-sans">{lesson.name}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
@@ -142,6 +151,8 @@ export default function BuyCoursePage() {
                     </div>
                 </div>
             </div>
+            </>
+            }
         </>
     )
 }

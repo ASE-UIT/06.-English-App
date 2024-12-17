@@ -31,8 +31,8 @@ export default function CourseRecommendationItem({course, onClick} : CourseRecom
                     <p className="h-100 content-center">({course.rating})</p>
                 </div>
                 <div className="flex content-center gap-2">
-                    <p className="text-lg font-bold text-[red]">{convertToVND(299000)}</p>
-                    <p className="text-gray-400 line-through">{convertToVND(500000)}</p>
+                    <p className="text-lg font-bold text-[red]">{convertToVND(course.finalPrice)}</p>
+                    <p className="text-gray-400 line-through">{convertToVND(course.price)}</p>
                 </div>
             </div>
             

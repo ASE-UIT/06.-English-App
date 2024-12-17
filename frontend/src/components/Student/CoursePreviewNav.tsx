@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { Button } from "../ui/button"
 import { FaStar } from "react-icons/fa";
+import { Course } from "@/type/course";
+import FroalaViewComponent from "../Layout/Components/ui/FroalaViewComponent";
 
 
 const NavContent = [
@@ -13,7 +15,10 @@ const NavContent = [
         title: "Rating",
     }
 ]
-export default function CoursePreviewNav(){
+type CoursePreviewNavProps = {
+    course: Course;
+}
+export default function CoursePreviewNav({course}: CoursePreviewNavProps){
     const [tabName, setTabName] = useState("Overview");
     return (
         <div>
@@ -35,10 +40,10 @@ export default function CoursePreviewNav(){
                     <div className="flex gap-[40px] ">
                         <div>
                             <div className="flex gap-[10px]">
-                                <span className="font-bold"> 4.0</span>
+                                <span className="font-bold">{course.ratingAverage}</span>
                                 <span className="h-100 content-center"><FaStar color="#ffff00"/></span>
                             </div>
-                            <span className="text-[#757575]">350 ratings</span>
+                            <span className="text-[#757575]">{course.ratingCount}</span>
                         </div>
                         <div>
                             <div className="flex gap-[10px]">
@@ -48,19 +53,20 @@ export default function CoursePreviewNav(){
                         </div>
                         <div>
                             <div className="flex gap-[10px]">
-                                <span className="font-bold"> 3hrs</span>
+                                <span className="font-bold">3hrs</span>
                             </div>
                             <span className="text-[#757575]">of video</span>
                         </div>
                     </div>
                     <div className="w-full bg-slate-500 h-[1px] mt-[20px]" /> 
                     <h2 className="text-2xl font-sans text-[black] p-[20px] px-0 font-bold">Description</h2>
+                    <FroalaViewComponent model={course.description} />
                     <div className="w-full bg-slate-500 h-[1px] mt-[20px]" /> 
                     <div className="flex flex-col gap-[20px]">
                         <h2 className="text-2xl font-sans text-[black] p-[20px] px-0 font-bold">Instructor</h2>
                         <div className="flex gap-[20px]">
                             <img src="https://www.w3schools.com/howto/img_avatar.png" alt="instructor" className="w-[50px] h-[50px] rounded-full"/>
-                            <span className="h-100 content-center font-bold text-[16px]">Nguyen Thuy Minh</span>
+                            <span className="h-100 content-center font-bold text-[16px]">{course.teacherName}</span>
                         </div>
                     </div>
                 </div>
