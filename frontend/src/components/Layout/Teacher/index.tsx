@@ -35,6 +35,10 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
   const [open, setOpen] = useState(false)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   useAuth()
+  if (performance.navigation.type === 1) {
+    // Nếu trang được reload
+    window.location.href = "/course" // Điều hướng về trang home
+  }
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <div className="flex h-screen max-w-screen-2xl flex-row">
