@@ -1,15 +1,17 @@
 import { courseApi } from "@/apis";
+import { Button } from "@/components/Layout/Components/ui/Button";
 import CoursePreviewNav from "@/components/Student/CoursePreviewNav";
 import { HeaderCourse } from "@/components/Student/HeaderCourse";
 import LessonList from "@/components/Student/LessonList";
 import { Course } from "@/type/course";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 
 
 
 export function CoursePreviewPage(){
     const {id} = useParams();
+    const navigate = useNavigate();
     const [course, setCourse] = useState<Course>();
     async function getCourseDetail(id?: string){
         try {
@@ -39,7 +41,10 @@ export function CoursePreviewPage(){
                     <CoursePreviewNav />
                 </div>
                 <div className="flex flex-col flex-4 p-[20px] py-0">
-                    <h2 className="text-2xl font-sans font-bold text-[#5d5fef] p-[20px] px-0">Course content</h2>
+                    <div className="flex justify-between items-center">
+                        <h2 className="text-2xl font-sans font-bold text-[#5d5fef] p-[20px] px-0">Course content</h2>
+                        <Button className="bg-[#5d5fef] text-white" onClick={() => navigate(`/student/buy-course/${id}`)}>Buy course</Button>
+                    </div>
                     <div className="bg-[#EF5DA8] w-full h-[2px]" />
                     <LessonList />
                 </div>

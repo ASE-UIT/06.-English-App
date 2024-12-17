@@ -24,7 +24,7 @@ export default function BuyCoursePage() {
                     <span><ArrowLeft /></span>
                 </Button>
             </div>
-            <div className="p-[20px] flex flex-[8] items-center justify-start w-full">
+            <div className="p-[20px] flex flex-[8] items-start justify-start w-full">
                 <div className="flex flex-col gap-[20px] items-start justify-center">
                     <span className="font-sans font-bold text-2xl">IELTS Reading: Basic to Advance</span>
                     <div className="flex gap-[50px] items-center justify-center">
@@ -56,7 +56,7 @@ export default function BuyCoursePage() {
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col flex-[3] items-center justify-center w-full gap-[20px] bg-[#f7f9fa]">
+            <div className="flex flex-col flex-[3] items-center justify-center h-[100vh] gap-[20px] bg-[#f7f9fa]">
                 <p className="font-bold text-6xl">{convertToVND(300000)}</p>
                 <Button className="min-w-[300px] bg-transparent border-1 border-[black] hover:bg-transparent text-xl font-bold">Buy now</Button>
                 <p className="font-bold text-xl">This course includes: </p>
