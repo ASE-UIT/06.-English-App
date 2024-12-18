@@ -5,7 +5,6 @@ import { Teacher } from '../user/entities/teacher.entity';
 import { User } from '../user/entities/user.entity';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
 import { STATE } from 'src/utils/constants';
-import { CourseOwning } from '../course-owning/entities/course-owning.entity';
 
 @Injectable()
 export class CourseService {
@@ -101,6 +100,7 @@ export class CourseService {
       if (!teacher) {
         throw new HttpException('Teacher not found', 404);
       }
+      console.log(teacher);
       const courses = await this.dataSource
         .getRepository(Course)
         .createQueryBuilder('course')
