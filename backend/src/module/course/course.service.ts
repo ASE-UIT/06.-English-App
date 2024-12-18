@@ -5,6 +5,7 @@ import { Teacher } from '../user/entities/teacher.entity';
 import { User } from '../user/entities/user.entity';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
 import { STATE } from 'src/utils/constants';
+import { CourseOwning } from '../course-owning/entities/course-owning.entity';
 
 @Injectable()
 export class CourseService {
@@ -55,9 +56,17 @@ export class CourseService {
     }
   }
 
-  async findAllRecommendationCourses() {
+  async findAllRecommendationCourses(userAwsId: string) {
     try {
-      return await this.dataSource
+      const purchasedCoursesSubQuery = this.dataSource
+        .getRepository(Course)
+        .createQueryBuilder('course')
+        .leftJoin('course.courseOwnings', 'courseOwnings')
+        .leftJoin('courseOwnings.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
+        .select('course.id')
+        .where('userInfo.awsCognitoId = :userAwsId', { userAwsId });
+      const courses = await this.dataSource
         .getRepository(Course)
         .createQueryBuilder('course')
         .leftJoin('course.category', 'category')
@@ -66,7 +75,10 @@ export class CourseService {
         .leftJoin('course.courseReviewings', 'courseReviewings')
         .select(['course', 'category.name', 'teacher', 'userInfo'])
         .where('course.state = :state', { state: STATE.PUBLISHED })
+        .andWhere(`course.id NOT IN (${purchasedCoursesSubQuery.getQuery()})`)
+        .setParameters(purchasedCoursesSubQuery.getParameters())
         .getMany();
+      return courses;
     } catch (error) {
       throw new HttpException(error.message, 500);
     }
