@@ -1,3 +1,4 @@
 import LessonType from "./LessonType";
 import SectionType from "./SectionType";
-export { LessonType, SectionType };
+import ImageType from "./ImageType";
+export { LessonType, SectionType , ImageType };
