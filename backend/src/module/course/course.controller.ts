@@ -80,8 +80,10 @@ export class CourseController {
 
   @Get(END_POINTS.COURSE.GET_RECOMMENDATION_COURSES)
   @ApiOperation({ summary: 'Get recommendation course by student' })
-  async findAllRecommendationCourses() {
-    const courses = await this.courseService.findAllRecommendationCourses();
+  async findAllRecommendationCourses(@User() user: IUser) {
+    const courses = await this.courseService.findAllRecommendationCourses(
+      user.userAwsId,
+    );
     const coursesReponse = this.mapper.mapArray(
       courses,
       Course,
