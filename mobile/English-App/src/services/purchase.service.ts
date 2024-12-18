@@ -10,10 +10,9 @@ class PurchaseService {
     }
     async buyCourse(courseId: string) {
         return await http.post(
-            this.getURI(''),
+            this.getURI('normal-buy'),
             {
                 courseId: courseId,
-                paymentMethod: "ATM"
             },
         );
     }
@@ -25,6 +24,15 @@ class PurchaseService {
             },
         );
 
+    }
+    async activeCourse(courseBuyingId: string, key: string) {
+        return await http.post(
+            this.getURI("check-key"),
+            {
+                courseBuyingId: courseBuyingId,
+                key: key,
+            },
+        );
     }
 }
 const purchaseservice = new PurchaseService();

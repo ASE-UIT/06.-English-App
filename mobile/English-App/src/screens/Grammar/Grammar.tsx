@@ -1,4 +1,10 @@
-import { View, Text, TouchableOpacity, SafeAreaView, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  SafeAreaView,
+  FlatList,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
@@ -10,6 +16,7 @@ import MainHeader from "../../components/MainHeader";
 const Grammar = () => {
   const [grammars, setGrammars] = useState<GrammarModel[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const navigation = useNavigation<GrammarScreenNavigationProp>();
 
   const fetchGrammar = async () => {
     try {
@@ -29,11 +36,16 @@ const Grammar = () => {
     fetchGrammar();
   }, []);
 
+
   const renderItem = ({ item }: { item: GrammarModel }) => (
-    <View key={item.id} style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate("GrammarDetail", { id: item.id })}
+      key={item.id}
+      style={{ padding: 10, borderBottomWidth: 1, borderBottomColor: "#ccc" }}
+    >
       <Text style={{ fontSize: 18 }}>{item.title}</Text>
       <Text>{item.description}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -41,7 +53,7 @@ const Grammar = () => {
       <MainHeader title="Grammar" />
       <View style={{ flex: 1, padding: 10 }}>
         {error ? (
-          <Text style={{ color: 'red' }}>{error}</Text>
+          <Text style={{ color: "red" }}>{error}</Text>
         ) : (
           <FlatList
             data={grammars}

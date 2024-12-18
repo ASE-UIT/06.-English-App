@@ -14,14 +14,15 @@ export type RootStackParamList = {
   Learning: undefined;
   Course: { course: MyCourse };
   Reading: { scrollRef?: React.RefObject<ScrollView>; sectionID: string };
-  Grammar: { grammarmodel: GrammarModel };
-  GrammarDetail: { grammarmodel: GrammarModel };
+  Grammar: {id:string};
+  GrammarDetail: { id: string };
   CourseDetail: { course: Course };
   CourseHome: { course: Course };
-  PayWithBank: undefined;
-  PayWithCard: undefined;
+  PayWithBank: { courseID: string };
+  PayWithCard: { courseID: string };
   Notification: undefined;
   Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
+  Validation: { coursebuyingId: string };
   BottomTabsNavigator: undefined;
 };
 export type SplashScreenNavigationProp = StackNavigationProp<
@@ -93,8 +94,7 @@ export type GrammarDetailScreenRouteProp = RouteProp<
   "GrammarDetail"
 >;
 
-export type PayMentScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
-  "PayWithBank",
-  "PayWithCard"
->;
+export type PayMentScreenNavigationProp = StackNavigationProp<RootStackParamList, "PayWithBank" | "PayWithCard">;
+export type PayMentScreenRouteProp = RouteProp<RootStackParamList, "PayWithBank" | "PayWithCard">;
+export type CheckKeyScreenRouteProp = RouteProp<RootStackParamList, "Validation">;
+export type CheckKeyScreenNavigationProp = StackNavigationProp<RootStackParamList, "Validation">;
