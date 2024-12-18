@@ -20,9 +20,9 @@ export class CourseService {
         .getRepository(Course)
         .insert(course);
       await this.recombee.addItem(course.id, {
-        title: course.title || '',
-        description: course.description || '',
-        course: course.category.name || '',
+        title: course?.title || '',
+        description: course?.description || '',
+        course: course?.category?.name || '',
       });
       return newCourse;
     } catch (error) {
@@ -64,7 +64,7 @@ export class CourseService {
     }
   }
 
-  async findAllRecommendationCourses() {
+  async findAllRecommendationCourses(userAwsId: string) {
     try {
       const purchasedCoursesSubQuery = this.dataSource
         .getRepository(Course)
@@ -74,9 +74,8 @@ export class CourseService {
         .leftJoin('student.userInfo', 'userInfo')
         .select('course.id')
         .where('userInfo.awsCognitoId = :userAwsId', { userAwsId });
-      const courses = await this.dataSource
       const user = await this.dataSource.getRepository(User).findOneOrFail({
-        where: { awsCognitoId: awsCognitoId },
+        where: { awsCognitoId: userAwsId },
       });
       const course_ids = await this.recombee.recommendItems(user.id, 5);
       const course_ids_mapped = course_ids.map((course) => course.id);
@@ -95,7 +94,6 @@ export class CourseService {
           course_ids: course_ids_mapped,
         })
         .getMany();
-      return courses;
     } catch (error) {
       throw new HttpException(error.message, 500);
     }

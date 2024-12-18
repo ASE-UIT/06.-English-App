@@ -9,10 +9,10 @@ import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import * as crypto from 'crypto';
+import { randomBytes } from 'crypto';
 import * as qs from 'qs';
 import { Student } from '../user/entities/student.entity';
 import { User } from '../user/entities/user.entity';
-import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
 import { CheckKeyDto } from './dto/check-key.dto';
@@ -24,12 +24,16 @@ import * as moment from 'moment';
 import * as axios from 'axios';
 import HttpStatusCode from 'src/utils/HttpStatusCode';
 import { MailerService } from '@nestjs-modules/mailer';
+import { RecombeeService } from '../recombee/recombee.service';
+import { RECOMBEE_INTERACTION } from '../../utils/constants';
+
 @Injectable()
 export class CourseBuyingService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly config: ConfigService,
     private readonly mailService: MailerService,
+    private readonly recombeeService: RecombeeService,
   ) {}
 
   async normalBuyCourse(
@@ -79,6 +83,11 @@ export class CourseBuyingService {
           courseBuying.course = course;
           courseBuying.student = student;
           courseBuying.key = randomBytes(4).toString('hex');
+          await this.recombeeService.addInteraction(
+            RECOMBEE_INTERACTION.PURCHASE,
+            user.id,
+            course.id,
+          );
           return await transactionalEntityManager
             .getRepository(CourseBuying)
             .save(courseBuying);

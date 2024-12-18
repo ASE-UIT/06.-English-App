@@ -38,6 +38,7 @@ import {
 import { CourseResponseDto } from './dto/course-response.dto';
 import { RecombeeService } from '../recombee/recombee.service';
 import { DataSource } from 'typeorm';
+import { CourseDetailResponseDto } from './dto/course-prevew-response.dto';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE.BASE)
@@ -150,13 +151,13 @@ export class CourseController {
   async findOne(@Param('id') id: string, @User() user: IUser) {
     const course = await this.courseService.findOne(id);
     const user_get = await this.dataSource.getRepository(User).findOne({
-          where: { id: user.userAwsId },
-      });
+      where: { id: user.userAwsId },
+    });
     await this.recombee.addInteraction(
-          RECOMBEE_INTERACTION.VIEW,
-          user_get.id,
-          id,
-      );
+      RECOMBEE_INTERACTION.VIEW,
+      user_get.id,
+      id,
+    );
     const result = this.mapper.map(course, Course, CourseDetailResponseDto);
     return ResponseObject.create('Course retrieved successfully', result);
   }
