@@ -22,7 +22,9 @@ export const Section = () => {
     if (sectionById?.data) {
       // console.log("sectionUseEff",sectionById.data)
       dispatch(sectionActions.loadSections(sectionById.data))
+      console.log("ChayIfThu", sectionById.data)
       if (sectionById.data.questionGroups.length > 0) {
+        console.log("CheckDispatch", _.orderBy(sectionById.data.questionGroups ?? [], ["createDate"])[0].id)
         dispatch(
           sectionActions.setCurrentSection(_.orderBy(sectionById.data.questionGroups ?? [], ["createDate"])[0].id),
         )
@@ -32,6 +34,12 @@ export const Section = () => {
           }
           dispatch(sectionActions.updateQuestion(updateData))
         })
+      }
+      if(sectionById.data.type === "WRITING" || sectionById.data.type === "SPEAKING") {
+        const updateData = {
+            [sectionById.data.id]: sectionById.data.questions,
+          }
+        dispatch(sectionActions.updateQuestion(updateData))
       }
     }
   }, [sectionById?.data, dispatch, sectionActions])

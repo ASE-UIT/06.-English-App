@@ -26,6 +26,7 @@ const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: str
   const sectionCurrent = useSelector(selectSectionCurrent)
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
+  console.log("sectionCurrent",sectionCurrent)
   console.log("currentQuestion", currentQuestion, updateData, sectionCurrent)
   const [questions, setQuestions] = useState<number>(currentQuestion?.length ?? 0)
   const update = useSelector(selectSectionUpdate)

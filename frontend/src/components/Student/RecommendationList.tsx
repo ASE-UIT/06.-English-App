@@ -29,7 +29,7 @@ export default function RecommendationList(){
     }
     useEffect(() => {
         fetchRecommendCourse();
-    }, [listRecomendCourse])
+    }, [])
 
     return (
         <>

@@ -12,7 +12,7 @@ export default function CategoryList(){
             }
         }
         fetchData();
-    }, [categories]);
+    }, []);
     return (
         <div className="flex content-center justify-between mx-4 border-b-2 py-4 shadow-xl border-x-transparent">
             {
