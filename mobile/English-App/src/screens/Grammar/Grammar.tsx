@@ -50,7 +50,7 @@ const Grammar = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <MainHeader title="Grammar" />
+      <MainHeader />
       <View style={{ flex: 1, padding: 10 }}>
         {error ? (
           <Text style={{ color: "red" }}>{error}</Text>

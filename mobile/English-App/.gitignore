@@ -37,5 +37,6 @@ yarn-error.*
 # Ignore the config.ts file
 src/services/config.ts
 
+
 android/
 %ProgramData%/

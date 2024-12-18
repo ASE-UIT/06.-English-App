@@ -22,7 +22,7 @@ export type RootStackParamList = {
   PayWithCard: { courseID: string };
   Notification: undefined;
   Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
-  Validation: { coursebuyingId: string };
+  Validation: { courseBuyingId: string };
   BottomTabsNavigator: undefined;
 };
 export type SplashScreenNavigationProp = StackNavigationProp<
