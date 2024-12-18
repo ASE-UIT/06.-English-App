@@ -5,14 +5,12 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
-  Platform,
 } from "react-native";
 import React, { useState } from "react";
 import { CheckBox, Button } from "@rneui/themed";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigation } from "@react-navigation/native";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import {
   LoginScreenNavigationProp,
   OTPVerificationScreenNavigationProp,
@@ -21,22 +19,21 @@ import authService from "../../services/auth.service";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  birthDate: Yup.date().required("Birth date is required"),
+  // firstName: Yup.string().required("First name is required"),
+  // lastName: Yup.string().required("Last name is required"),
+  // birthDate: Yup.date().required("Birth date is required"),
   email: Yup.string().email().required("Email is required"),
-  phone: Yup.string().required("Phone number is required"),
+  // phone: Yup.string().required("Phone number is required"),
   // password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.
   password: Yup.string().required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), undefined], "Passwords must match")
     .required("Confirm password is required"),
-  schoolName: Yup.string().required("School name is required"),
+  // schoolName: Yup.string().required("School name is required"),
 });
 
 const SignUp = () => {
   const [isSelected, setSelection] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
   const handleCheckBox = () => {
     setSelection(!isSelected);
     console.log(isSelected);
@@ -57,14 +54,14 @@ const SignUp = () => {
     try {
       const res = await authService.signUp({
         username: values.username,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        birthDate: values.birthDate,
+        // firstName: values.firstName,
+        // lastName: values.lastName,
+        // birthDate: values.birthDate,
         email: values.email,
-        phone: values.phone,
+        // phone: values.phone,
         password: values.password,
         role: "STUDENT",
-        schoolName: values.schoolName,
+        // schoolName: values.schoolName,
       });
       console.log(res);
       if (res.statusCode === 201) {
@@ -84,7 +81,7 @@ const SignUp = () => {
       source={require("../../../assets/signupbg.png")}
       style={{ width: "100%", height: "100%" }}
     >
-      <View className="flex gap-1 mt-[2px] items-center">
+      <View className="flex gap-1 mt-[80px] items-center">
         <Image
           source={require("../../../assets/avatar.png")}
           className="w-[100px] h-[105px]"
@@ -110,14 +107,14 @@ const SignUp = () => {
         <Formik
           initialValues={{
             username: "",
-            firstName: "",
-            lastName: "",
-            birthDate: new Date(),
+            // firstName: "",
+            // lastName: "",
+            // birthDate: new Date(),
             email: "",
-            phone: "",
+            // phone: "",
             password: "",
             confirmPassword: "",
-            schoolName: "",
+            // schoolName: "",
           }}
           validationSchema={validationSchema}
           onSubmit={(values) => {
@@ -134,71 +131,12 @@ const SignUp = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            setFieldValue,
+            //setFieldValue,
             values,
             errors,
             touched,
           }) => (
             <View className="flex gap-y-2 mt-2 mx-auto">
-              <TextInput
-                placeholder="First name"
-                className="border-2 border-[#EF5DA8] w-[280] h-10 rounded-[10px] items-center px-4"
-                onChangeText={handleChange("firstName")}
-                onBlur={handleBlur("firstName")}
-                value={values.firstName}
-              />
-              {errors.firstName && touched.firstName && (
-                <Text style={{ color: "red" }}>{errors.firstName}</Text>
-              )}
-              <TextInput
-                placeholder="Last name"
-                className="border-2 border-[#EF5DA8] w-[280] h-10 rounded-[10px] items-center px-4"
-                onChangeText={handleChange("lastName")}
-                onBlur={handleBlur("lastName")}
-                value={values.lastName}
-              />
-              {errors.lastName && touched.lastName && (
-                <Text style={{ color: "red" }}>{errors.lastName}</Text>
-              )}
-              <TouchableOpacity
-                onPress={() => setShowDatePicker(true)}
-                style={{
-                  borderColor: "#EF5DA8",
-                  borderWidth: 2,
-                  borderRadius: 10,
-                  padding: 10,
-                  width: 280,
-                  alignItems: "center",
-                }}
-              >
-                <Text>{values.birthDate.toDateString()}</Text>
-              </TouchableOpacity>
-              {showDatePicker && (
-                <DateTimePicker
-                  value={values.birthDate}
-                  mode="date"
-                  display="default"
-                  onChange={(event, selectedDate) => {
-                    setShowDatePicker(Platform.OS === "ios");
-                    if (selectedDate) {
-                      setFieldValue("birthDate", selectedDate);
-                    }
-                  }}
-                />
-              )}
-              {errors.birthDate && touched.birthDate && (
-                <Text style={{ color: "red" }}>{String(errors.birthDate)}</Text>
-              )}
-              <TextInput
-                placeholder="School name"
-                className="border-2 border-[#EF5DA8] w-[280] h-10 rounded-[10px] items-center px-4"
-                onChangeText={handleChange("schoolName")}
-                onBlur={handleBlur("schoolName")}
-                value={values.schoolName}
-              />
-              {errors.schoolName && touched.schoolName && (
-                <Text style={{ color: "red" }}>{errors.schoolName}</Text>
-              )}
               <TextInput
                 placeholder="Username"
                 className="border-2 border-[#EF5DA8] w-[280] h-10 rounded-[10px] items-center px-4"
@@ -218,16 +156,6 @@ const SignUp = () => {
               />
               {errors.email && touched.email && (
                 <Text style={{ color: "red" }}>{errors.email}</Text>
-              )}
-              <TextInput
-                placeholder="Phone number"
-                className="border-2 border-[#EF5DA8] w-[280] h-10 rounded-[10px] items-center px-4"
-                onChangeText={handleChange("phone")}
-                onBlur={handleBlur("phone")}
-                value={values.phone}
-              />
-              {errors.phone && touched.phone && (
-                <Text style={{ color: "red" }}>{errors.phone}</Text>
               )}
 
               <TextInput
@@ -272,6 +200,10 @@ const SignUp = () => {
                 }
                 checked={isSelected}
                 onPress={handleCheckBox}
+                containerStyle={{
+                  backgroundColor: "transparent",
+                  borderWidth: 0,
+                }}
               />
               <Button
                 title={"Sign Up"}

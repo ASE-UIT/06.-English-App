@@ -50,7 +50,12 @@ class Http {
         await SecureStore.setItemAsync("accessToken", newAccessToken);
         return newAccessToken;
       } else {
-        throw new Error("Failed to refresh token");
+        throw new Error(
+          "Failed to refresh token: " +
+            response.statusCode +
+            " " +
+            response.message
+        );
       }
     } else {
       throw new Error("No refresh token available");

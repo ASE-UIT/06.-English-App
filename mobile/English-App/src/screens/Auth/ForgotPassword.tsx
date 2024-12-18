@@ -26,7 +26,7 @@ const ForgotPassword = () => {
           isConfirmSignUp: false,
         });
       } else {
-        console.error("Invalid username");
+        console.error(res.message);
       }
     } catch (err) {
       console.error(err);

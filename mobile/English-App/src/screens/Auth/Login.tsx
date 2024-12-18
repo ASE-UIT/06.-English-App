@@ -55,7 +55,7 @@ const Login = () => {
       source={require("../../../assets/signupbg.png")}
       style={{ width: "100%", height: "100%" }}
     >
-      <View className="flex gap-5 mt-[40px] items-center">
+      <View className="flex gap-5 mt-[80px] items-center">
         <Image
           source={require("../../../assets/avatar.png")}
           className="w-[100px] h-[110px]"
