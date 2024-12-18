@@ -20,6 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LoginScreenNavigationProp } from "../../type";
 import * as SecureStore from "expo-secure-store";
 import { User } from "../../models";
+import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
 const Profile = () => {
   const [profile, setProfile] = useState({
     id: "",
@@ -38,14 +39,11 @@ const Profile = () => {
     },
   });
   const handleInputChange = (field: string, value: string) => {
-
     setProfile((prev) => ({ ...prev, [field]: value }));
-    console.log(profile);
   };
   const [show, setShow] = useState(false);
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     setShow(false);
-
     if (selectedDate) {
       setProfile((prev) => ({ ...prev, birthDate: selectedDate.toISOString() }));
     }
@@ -76,7 +74,45 @@ const Profile = () => {
       console.error("Error updating profile:", error);
     }
   };
+  const [image, setImage] = useState<string | null>(null);
+  const [imageType, setImageType] = useState<string | null>(null);
+  // Handle Camera
+  const handleCamera = () => {
+    launchCamera(
+      { mediaType: 'photo', cameraType: 'back', quality: 1 },
+      (response: ImagePickerResponse) => {
+        if (response.didCancel) {
+          console.log('User canceled camera picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+        } else {
+          const uri = response.assets?.[0]?.uri;
+          const type = response.assets?.[0]?.type; // MIME type of the image
+          setImage(uri || null);
+          setImageType(type || null);
+        }
+      }
+    );
+  };
 
+  // Handle Image Picker
+  const handleImagePicker = () => {
+    launchImageLibrary(
+      { mediaType: 'photo', quality: 1 },
+      (response: ImagePickerResponse) => {
+        if (response.didCancel) {
+          console.log('User canceled image picker');
+        } else if (response.errorCode) {
+          console.log('ImagePicker Error: ', response.errorMessage);
+        } else {
+          const uri = response.assets?.[0]?.uri;
+          const type = response.assets?.[0]?.type; // MIME type of the image
+          setImage(uri || null);
+          setImageType(type || null);
+        }
+      }
+    );
+  };
   return (
     <SafeAreaView>
       <MainHeader />
@@ -93,6 +129,7 @@ const Profile = () => {
             containerStyle={{ marginTop: 20 }}
             onPress={() => console.log("Works!")}
           />
+          <TouchableOpacity onPress={handleImagePicker}><Text>Change Image</Text></TouchableOpacity>
           <View className="w-[90%] justify-center items-center ">
             <Text className="text-black ml-5 self-start text-base font-semibold leading-none">
               BirthDate
