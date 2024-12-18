@@ -250,15 +250,15 @@ export default function CourseViewer() {
                     >
                       <Icon
                         name={
-                          section.type === "video"
+                          section.type === "VIDEO"
                             ? "play"
-                            : section.type === "speaking"
+                            : section.type === "SPEAKING"
                             ? "mic"
-                            : section.type === "listening"
+                            : section.type === "LISTENING"
                             ? "headphones"
-                            : section.type === "writing"
+                            : section.type === "WRITING"
                             ? "edit-3"
-                            : section.type === "reading"
+                            : section.type === "READING"
                             ? "book-open"
                             : "circle"
                         }

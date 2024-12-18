@@ -7,7 +7,7 @@ export default function More() {
   return (
     <View className="p-[16px]">
       <TouchableOpacity style={styles.menuItem}>
-        <Icon name="info" size={20} color="#666" className="mr-2" />
+        <Icon name="info" size={20} color="#666" style={styles.menuIcon} />
         <Text style={styles.menuText}>About this course</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.menuItem}>
