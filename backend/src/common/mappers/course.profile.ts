@@ -67,9 +67,7 @@ export class CourseProfile extends AutomapperProfile {
         ),
         forMember(
           (dest) => dest.finalPrice,
-          mapFrom(
-            (src) => src.price - (src.discountPercents * src.price) / 100,
-          ),
+          mapFrom((src) => src.price),
         ),
       );
       createMap(
@@ -116,9 +114,7 @@ export class CourseProfile extends AutomapperProfile {
         ),
         forMember(
           (dest) => dest.finalPrice,
-          mapFrom(
-            (src) => src.price - (src.discountPercents * src.price) / 100,
-          ),
+          mapFrom((src) => src.price),
         ),
         forMember(
           (dest) => dest.lessons,
