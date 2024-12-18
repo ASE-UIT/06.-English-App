@@ -22,6 +22,7 @@ import {
 import SplashScreen from "../screens/Splash/SplashScreen";
 import CheckKey from "../screens/CourseDetail/CheckKey";
 import DetailGrammar from "../screens/Grammar/DetailGrammar";
+import SectionRoot from "../screens/SectionRoot";
 
 export default function RootStack() {
   const Stack = createStackNavigator();
@@ -100,6 +101,13 @@ export default function RootStack() {
           headerRight: () => <HeaderRight scrollRef={scrollRef} />,
         }}
       />
+      <Stack.Screen
+      name="SectionRoot"
+      component={SectionRoot}
+      options={{
+        headerShown: false,
+      }}
+    />
     </Stack.Navigator>
   );
 }

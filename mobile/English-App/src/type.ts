@@ -24,6 +24,7 @@ export type RootStackParamList = {
   Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
   Validation: { courseBuyingId: string };
   BottomTabsNavigator: undefined;
+  SectionRoot: { sectionID: string };
 };
 export type SplashScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
