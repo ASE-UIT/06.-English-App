@@ -48,14 +48,20 @@ export class LessonService {
     try {
       const lesson = await this.dataSource
         .getRepository(Lesson)
-        .findOne({ where: { id: lessonId } });
-      const grammars = await Promise.all(
+        .createQueryBuilder('lesson')
+        .leftJoinAndSelect('lesson.grammars', 'grammars')
+        .where('lesson.id = :lessonId', { lessonId })
+        .getOneOrFail();
+      await Promise.all(
         grammarIds.map(async (grammarId) => {
           const grammar = await this.grammarService.findOne(grammarId);
+          if (!grammar) {
+            throw new BadRequestException('Grammar not found');
+          }
+          lesson.grammars.push(grammar);
           return grammar;
         }),
       );
-      grammars.forEach((grammar) => lesson.grammars.push(grammar));
       const updatedLesson = await this.dataSource
         .getRepository(Lesson)
         .save(lesson);

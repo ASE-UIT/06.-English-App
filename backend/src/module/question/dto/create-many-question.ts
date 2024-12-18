@@ -26,7 +26,7 @@ export class CreateManyQuestionDto {
   questionGroupId: string;
 
   @IsArray()
-  @ValidateNested()
+  @ValidateNested({ each: true })
   @IsNotEmpty()
   @ApiProperty({
     type: () => [CreateQuestionDto],

@@ -148,15 +148,16 @@ export class CourseController {
     example: 'd1911740-84e0-4778-9c0d-4465dcb1d13e',
   })
   async findOne(@Param('id') id: string, @User() user: IUser) {
-    const result = await this.courseService.findOne(id);
+    const course = await this.courseService.findOne(id);
     const user_get = await this.dataSource.getRepository(User).findOne({
-      where: { id: user.userAwsId },
-    });
+          where: { id: user.userAwsId },
+      });
     await this.recombee.addInteraction(
-      RECOMBEE_INTERACTION.VIEW,
-      user_get.id,
-      id,
-    );
+          RECOMBEE_INTERACTION.VIEW,
+          user_get.id,
+          id,
+      );
+    const result = this.mapper.map(course, Course, CourseDetailResponseDto);
     return ResponseObject.create('Course retrieved successfully', result);
   }
 

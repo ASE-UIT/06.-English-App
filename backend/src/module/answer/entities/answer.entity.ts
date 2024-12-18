@@ -6,7 +6,9 @@ import { AutoMap } from '@automapper/classes';
 @Entity()
 export class Answer extends Base {
   @AutoMap()
-  @ManyToOne(() => Question, (question) => question.answers)
+  @ManyToOne(() => Question, (question) => question.answers, {
+    onDelete: 'CASCADE',
+  })
   question: Question;
   @AutoMap()
   @Column()

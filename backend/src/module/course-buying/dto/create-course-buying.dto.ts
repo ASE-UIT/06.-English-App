@@ -17,7 +17,6 @@ export class CreateCourseBuyingDto {
   @ApiProperty({
     description: 'Payment method',
     enum: PAYMENT_METHOD,
-    example: PAYMENT_METHOD.QR_CODE,
   })
   paymentMethod: PAYMENT_METHOD;
 }

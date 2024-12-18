@@ -1,9 +1,9 @@
 import { AutoMap } from '@automapper/classes';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEnum, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsEnum, IsNumber, IsString } from 'class-validator';
 import { STATE } from 'src/utils/constants';
 
-export class CourseResponseDto {
+export class CourseDetailResponseDto {
   @ApiProperty({
     example: '14c495aa-83f2-498a-a812-da253eaddf5f',
     description: 'Id of course',
@@ -79,4 +79,10 @@ export class CourseResponseDto {
   @AutoMap()
   @IsString()
   categoryName: string;
+  @AutoMap()
+  @IsArray()
+  lessons: any[];
+  @AutoMap()
+  @IsArray()
+  courseReviewings: any[];
 }

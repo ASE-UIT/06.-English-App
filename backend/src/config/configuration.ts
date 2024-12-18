@@ -42,4 +42,5 @@ export default () => ({
   key2ZaloPay: process.env.KEY2_ZALOPAY,
   endpointZaloPay: process.env.ENDPOINT_ZALOPAY,
   ipn_url_zalopay: process.env.IPN_URL_ZALOPAY,
+  emailUser: process.env.EMAIL_USERNAME,
 });

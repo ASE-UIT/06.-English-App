@@ -13,6 +13,8 @@ import { IUser } from 'src/common/guards/at.guard';
 import { VnpayIPNRequest } from './dto/vnpay-ipn.request.dto';
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
 import { CheckKeyDto } from './dto/check-key.dto';
+import { Public } from 'src/common/decorators/public.decorator';
+import { CreateCourseBuyingNormalDto } from './dto/create-course-buying-normal.dto';
 
 @ApiBearerAuth()
 @ApiTags(DOCUMENTATION.TAGS.COURSE_BUYING)
@@ -23,6 +25,27 @@ export class CourseBuyingController {
     private readonly courseBuyingService: CourseBuyingService,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
+
+  @ApiOperation({ summary: 'Normal buy course' })
+  @Post(END_POINTS.COURSE_BUYING.NORMAL_BUY)
+  async normalBuyCourse(
+    @Body() createCourseBuyingDto: CreateCourseBuyingNormalDto,
+    @User() user: IUser,
+  ) {
+    const courseBuying = this.mapper.map(
+      createCourseBuyingDto,
+      CreateCourseBuyingDto,
+      CourseBuying,
+    );
+    const result = await this.courseBuyingService.normalBuyCourse(
+      courseBuying,
+      createCourseBuyingDto.courseId,
+      user.userAwsId,
+    );
+    return ResponseObject.create('CourseBuying created successfully', {
+      courseBuying: result.id,
+    });
+  }
 
   @Post(END_POINTS.COURSE_BUYING.CREATE)
   @ApiOperation({ summary: 'Create course buying' })
@@ -40,7 +63,10 @@ export class CourseBuyingController {
       createCourseBuyingDto.courseId,
       user.userAwsId,
     );
-    return ResponseObject.create('CourseBuying created successfully', result);
+    return ResponseObject.create('CourseBuying created successfully', {
+      courseBuying: result.id,
+      key: result.key,
+    });
   }
   @ApiOperation({ summary: 'Create pay order url' })
   @Post(END_POINTS.COURSE_BUYING.CREATE_PAY_ORDER_URL)
@@ -65,10 +91,12 @@ export class CourseBuyingController {
       code: validationResult.code,
     });
   }
+  @Public()
   @ApiOperation({ summary: 'IPN Vnpay Url' })
   @Get(END_POINTS.COURSE_BUYING.VNPAY_IPN)
-  async ipnVnpayUrl(@Query() query: VnpayIPNRequest, @Res() res: Response) {
-    return await this.courseBuyingService.ipnVnpayUrl(query, res);
+  async ipnVnpayUrl(@Query() query: any, @Res() res: Response) {
+    const result = await this.courseBuyingService.ipnVnpayUrl(query);
+    return res.json(result);
   }
   @Post(END_POINTS.COURSE_BUYING.CHECK_KEY)
   async checkKey(@Body() body: CheckKeyDto, @User() user: IUser) {

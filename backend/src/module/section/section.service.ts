@@ -31,7 +31,21 @@ export class SectionService {
       const sections = await this.dataSource
         .getRepository(Section)
         .createQueryBuilder('section')
-        .leftJoinAndSelect('section.lesson', 'lesson')
+        .leftJoin('section.lesson', 'lesson')
+        .leftJoin('section.questions', 'questions')
+        .leftJoin('questions.answers', 'answers')
+        .leftJoin('section.questionGroups', 'questionGroups')
+        .leftJoin('questionGroups.questions', 'questionGroupQuestions')
+        .leftJoin('questionGroupQuestions.answers', 'questionGroupAnswers')
+        .select([
+          'section',
+          'lesson',
+          'questions',
+          'answers',
+          'questionGroups',
+          'questionGroupQuestions',
+          'questionGroupAnswers',
+        ])
         .where('lesson.id = :id', { id: lessonId })
         .getMany();
       return sections;
@@ -50,14 +64,21 @@ export class SectionService {
         .leftJoin('section.questionGroups', 'questionGroups')
         .leftJoin('section.questions', 'sectionQuestions')
         .leftJoin('questionGroups.questions', 'questions')
-        .select(['section', 'questionGroups', 'questions', 'sectionQuestions'])
+        .leftJoin('questions.answers', 'answers')
+        .select([
+          'section',
+          'questionGroups',
+          'questions',
+          'sectionQuestions',
+          'answers',
+        ])
         .where('section.id = :id', { id })
         .getOne();
       return section;
     } catch (error) {
       console.log(error);
       throw new HttpException(
-        'Internal Server Error',
+        error.message,
         HttpStatusCode.INTERNAL_SERVER_ERROR,
       );
     }

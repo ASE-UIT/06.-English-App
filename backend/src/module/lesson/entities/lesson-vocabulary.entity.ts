@@ -23,6 +23,8 @@ export class LessonVocabulary extends Base {
   })
   @AutoMap()
   mediaWord: string;
-  @ManyToOne(() => Lesson, (lesson) => lesson.lessonVocabularies)
+  @ManyToOne(() => Lesson, (lesson) => lesson.lessonVocabularies, {
+    onDelete: 'CASCADE',
+  })
   lesson: Lesson;
 }

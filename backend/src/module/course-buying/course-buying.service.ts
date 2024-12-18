@@ -7,12 +7,12 @@ import {
 import { CourseBuying } from './entities/course-buying.entity';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import * as crypto from 'crypto';
-import { randomBytes } from 'crypto';
 import * as qs from 'qs';
 import { Student } from '../user/entities/student.entity';
 import { User } from '../user/entities/user.entity';
+import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
 import { CheckKeyDto } from './dto/check-key.dto';
@@ -22,17 +22,86 @@ import { SectionProgress } from '../course-owning/entities/section-progress.enti
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
 import * as moment from 'moment';
 import * as axios from 'axios';
-import { RecombeeService } from '../recombee/recombee.service';
-import { RECOMBEE_INTERACTION } from '../../utils/constants';
-
+import HttpStatusCode from 'src/utils/HttpStatusCode';
+import { MailerService } from '@nestjs-modules/mailer';
 @Injectable()
 export class CourseBuyingService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly config: ConfigService,
-    private readonly recombeeService: RecombeeService,
+    private readonly mailService: MailerService,
   ) {}
 
+  async normalBuyCourse(
+    courseBuying: CourseBuying,
+    courseId: string,
+    userAwsId: string,
+  ) {
+    try {
+      const course = await this.dataSource.getRepository(Course).findOneOrFail({
+        where: { id: courseId },
+      });
+      const courseOwning = await this.dataSource
+        .getRepository(CourseOwning)
+        .createQueryBuilder('courseOwning')
+        .leftJoinAndSelect('courseOwning.student', 'student')
+        .leftJoinAndSelect('courseOwning.course', 'course')
+        .leftJoinAndSelect('student.userInfo', 'userInfo')
+        .where('course.id = :courseId', { courseId })
+        .andWhere('userInfo.awsCognitoId = :awsCognitoId', {
+          awsCognitoId: userAwsId,
+        })
+        .getOne();
+      if (courseOwning) {
+        throw new Error('Course is already owned by user');
+      }
+      let userEmail = '';
+      const result = await this.dataSource.transaction(
+        async (transactionalEntityManager) => {
+          const user = await transactionalEntityManager
+            .getRepository(User)
+            .findOneOrFail({
+              where: { awsCognitoId: userAwsId },
+            });
+          const student = await transactionalEntityManager
+            .getRepository(Student)
+            .createQueryBuilder('student')
+            .leftJoin('student.userInfo', 'userInfo')
+            .select(['student', 'userInfo'])
+            .where('userInfo.id = :id', { id: user.id })
+            .getOne();
+          console.log(student);
+          if (!student) {
+            throw new HttpException('Student not found', 404);
+          }
+          userEmail = student.userInfo.email;
+          courseBuying.active = true;
+          courseBuying.course = course;
+          courseBuying.student = student;
+          courseBuying.key = randomBytes(4).toString('hex');
+          return await transactionalEntityManager
+            .getRepository(CourseBuying)
+            .save(courseBuying);
+        },
+      );
+      if (result) {
+        const mailOptions = {
+          to: userEmail,
+          from: this.config.get<string>('emailUser'),
+          subject: 'Course buying',
+          html: `You have successfully bought the course <strong>${result.course.title}</strong>, please use the key <strong>${result.key}</strong> to unlock the course.`,
+        };
+        await this.mailService.sendMail(mailOptions);
+      }
+      return result;
+    } catch (error) {
+      console.log(error);
+      throw new HttpException(
+        error.message,
+        HttpStatusCode.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
   async create(
     courseBuying: CourseBuying,
     courseId: string,
@@ -77,7 +146,7 @@ export class CourseBuyingService {
       courseBuying.key = randomBytes(4).toString('hex');
       const newCourseBuying = await this.dataSource
         .getRepository(CourseBuying)
-        .insert(courseBuying);
+        .save(courseBuying);
       return newCourseBuying;
     } catch (error) {
       console.log(error);
@@ -97,6 +166,12 @@ export class CourseBuyingService {
       if (!courseBuying) {
         throw new HttpException('Course buying not found', 404);
       }
+      // let bankCode = '';
+      // if (courseBuying.paymentMethod === PAYMENT_METHOD.ATM) {
+      //   bankCode = 'VNBANK';
+      // } else if (courseBuying.paymentMethod === PAYMENT_METHOD.QR_CODE) {
+      //   bankCode = 'VNPAYQR';
+      // }
       const vnpReturnurl = this.config.get<string>('vnpayReturnUrl');
       let vnpUrl = this.config.get<string>('vnpayUrl');
       const vnpTmnCode = this.config.get<string>('vnpTmnCode');
@@ -135,6 +210,9 @@ export class CourseBuyingService {
       vnp_Params['vnp_CreateDate'] = vnpCreateDate;
       vnp_Params['vnp_OrderType'] = 'other';
       vnp_Params['vnp_ExpireDate'] = vnpExpireDate;
+      // if (bankCode !== null && bankCode !== '') {
+      //   vnp_Params['vnp_BankCode'] = bankCode;
+      // }
       vnp_Params = sortObject(vnp_Params);
       const signData: string = qs.stringify(vnp_Params);
       const hmac = crypto.createHmac('sha512', vnpHashSecret);
@@ -150,7 +228,11 @@ export class CourseBuyingService {
     }
   }
 
-  async ipnVnpayUrl(query: any, res: Response) {
+  async ipnVnpayUrl(query: any) {
+    let result = {
+      RspCode: '99',
+      Message: 'Fail',
+    };
     let vnp_Params = query;
     const secureHash = vnp_Params['vnp_SecureHash'];
     const orderId = vnp_Params['vnp_TxnRef'];
@@ -164,6 +246,7 @@ export class CourseBuyingService {
     const signData = qs.stringify(vnp_Params, { encode: false });
     const hmac = crypto.createHmac('sha512', vnpHashSecret);
     const signed = hmac.update(new Buffer(signData, 'utf-8')).digest('hex');
+    console.log(signed, vnpHashSecret);
 
     const paymentStatus = '0';
     let checkOrderId = true;
@@ -171,46 +254,48 @@ export class CourseBuyingService {
       .getRepository(CourseBuying)
       .createQueryBuilder('courseBuying')
       .leftJoin('courseBuying.course', 'course')
-      .leftJoinAndSelect('courseBuying.student', 'student')
-      .leftJoinAndSelect('student.userInfo', 'userInfo')
       .select(['courseBuying', 'course'])
       .where('courseBuying.id = :id', { id: orderId })
       .getOne();
     if (!order) {
       checkOrderId = false;
     }
-    const checkAmount = order.course.price === vnp_Params['vnp_Amout'] / 100;
+    const checkAmount =
+      Number(order.course.price) ===
+      Number(Number(vnp_Params['vnp_Amount']) / 100)
+        ? true
+        : false;
     if (secureHash === signed) {
+      console.log('Checksum success');
       if (checkOrderId) {
+        console.log('Order found');
         if (checkAmount) {
+          console.log('Amount valid');
           if (paymentStatus == '0') {
             if (rspCode == '00') {
               order.active = true;
               await this.dataSource.getRepository(CourseBuying).save(order);
-              await this.recombeeService.addInteraction(
-                RECOMBEE_INTERACTION.PURCHASE,
-                order.student.userInfo.id,
-                order.course.id,
-              );
-              res.status(200).json({ RspCode: '00', Message: 'Success' });
+              result = { RspCode: '00', Message: 'Success' };
             } else {
-              res.status(200).json({ RspCode: '00', Message: 'Success' });
+              result = { RspCode: '00', Message: 'Success' };
             }
           } else {
-            res.status(200).json({
+            result = {
               RspCode: '02',
               Message: 'This order has been updated to the payment status',
-            });
+            };
           }
         } else {
-          res.status(200).json({ RspCode: '04', Message: 'Amount invalid' });
+          result = { RspCode: '04', Message: 'Amount invalid' };
         }
       } else {
-        res.status(200).json({ RspCode: '01', Message: 'Order not found' });
+        result = { RspCode: '01', Message: 'Order not found' };
       }
     } else {
-      res.status(200).json({ RspCode: '97', Message: 'Checksum failed' });
+      result = { RspCode: '97', Message: 'Checksum failed' };
     }
+    console.log(result);
+    return result;
   }
 
   async validatePayOrder(query: any) {
