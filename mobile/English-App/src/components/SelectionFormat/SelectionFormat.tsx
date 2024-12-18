@@ -24,6 +24,8 @@ type SelectionFormatProps = {
 
 const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
   const { questions } = questionGroup;
+ 
+  
   return (
     <View>
       <View
@@ -47,7 +49,7 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
                 key={question.id}
                 order={question.order}
                 text={question.text}
-                options={options}
+                options={question.answers.map((answer)=>answer.text)}
               />
             </View>
           ))}

@@ -7,6 +7,7 @@ import sectionService from "../../services/section.service";
 import Section from "../../models/Section";
 import SelectionFormat from "../../components/SelectionFormat/SelectionFormat";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { QuestionGroupType } from "../../constants/enums/QuestionGroupType";
 
 type ReadingExerciseProps = {
   scrollRef?: React.RefObject<ScrollView>; // scrollRef is optional
@@ -29,7 +30,7 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
     };
 
     fetchSection();
-  }, [sectionID]);
+  }, []);
 
   const { width } = Dimensions.get("window");
   const questionGroups = section ? section.questionGroups : [];
@@ -53,6 +54,8 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   if (!section) {
     return <Text>Loading...</Text>;
   }
+  console.log(section.id);
+  
 
   return (
     <SafeAreaView className="mb-4 p-5">
@@ -66,7 +69,7 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
             <Text className="text-black text-lg font-bold">
               {section.title}
             </Text>
-            {section.sectionMedia ? (
+            {/* {section.sectionMedia ? (
               <Image
                 source={{ uri: section.sectionMedia }}
                 style={{ height: 240, width: 160 }}
@@ -76,7 +79,7 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
               />
             ) : (
               <Text>No Image Available</Text>
-            )}
+            )} */}
             <RenderHtml
               renderers={customRenderers}
               contentWidth={width}
@@ -90,12 +93,20 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
         >
           {questionGroups ? (
             <>
-              {questionGroups.map((questionGroup) => (
-                <SelectionFormat
-                  key={questionGroup.id}
-                  questionGroup={questionGroup}
-                />
-              ))}
+              {questionGroups.map((questionGroup) => {
+                switch (questionGroup.questionGroupType) {
+                  case QuestionGroupType.COMBOBOX:
+                    return(
+                      <SelectionFormat
+                        key={questionGroup.id}
+                        questionGroup={questionGroup}
+                      />
+                    )
+
+                }
+              }
+            
+              )}
             </>
           ) : (
             <Text>null</Text>
