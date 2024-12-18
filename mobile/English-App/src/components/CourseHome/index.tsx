@@ -79,13 +79,13 @@ export default function CourseViewer() {
   useEffect(() => {
     fetchLessons();
   }, [course]);
-  const handleReplay = () => {
-    if (videoRef.current) {
-      videoRef.current.replayAsync();
-    }
-  };
+  // const handleReplay = () => {
+  //   if (videoRef.current) {
+  //     videoRef.current.replayAsync();
+  //   }
+  // };
 
-  // khi bấm vào section thì gọi hàm này
+  // // khi bấm vào section thì gọi hàm này
   const handleSectionPress = (section: any) => {
     setCurrentSectionId(section.id);
     // nếu section là video thì phát video
@@ -107,28 +107,28 @@ export default function CourseViewer() {
       default:
         break;
     }
-  };
+  }
 
-  // hàm này là logic cho việc khi phát hết video thì section được xem là completed
-  const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
-    if (status.isLoaded && (status as AVPlaybackStatusSuccess).didJustFinish) {
-      setLessons((prevLessons) =>
-        prevLessons.map((lesson) => ({
-          ...lesson,
-          sections: lesson.sections.map((section) =>
-            section.id === currentSectionId
-              ? { ...section, completed: true }
-              : section
-          ),
-        }))
-      );
-    }
-  };
+  // // hàm này là logic cho việc khi phát hết video thì section được xem là completed
+  // const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
+  //   if (status.isLoaded && (status as AVPlaybackStatusSuccess).didJustFinish) {
+  //     setLessons((prevLessons) =>
+  //       prevLessons.map((lesson) => ({
+  //         ...lesson,
+  //         sections: lesson.sections.map((section) =>
+  //           section.id === currentSectionId
+  //             ? { ...section, completed: true }
+  //             : section
+  //         ),
+  //       }))
+  //     );
+  //   }
+  // };
 
   return (
     <View style={styles.container}>
       {/* Video Section */}
-      <View style={styles.videoContainer}>
+      {/* <View style={styles.videoContainer}>
         <View style={styles.videoArea}>
           <Video
             ref={videoRef}
@@ -147,7 +147,7 @@ export default function CourseViewer() {
             <Icon name="refresh-cw" size={20} color="#fff" />
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
 
       {/* Header Section */}
       <View style={styles.header}>
