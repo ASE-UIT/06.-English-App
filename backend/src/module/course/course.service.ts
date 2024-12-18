@@ -5,16 +5,25 @@ import { Teacher } from '../user/entities/teacher.entity';
 import { User } from '../user/entities/user.entity';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
 import { STATE } from 'src/utils/constants';
+import { RecombeeService } from '../recombee/recombee.service';
 
 @Injectable()
 export class CourseService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly recombee: RecombeeService,
+  ) {}
 
   async create(awsId: string, course: Course) {
     try {
       const newCourse = await this.dataSource
         .getRepository(Course)
         .insert(course);
+      await this.recombee.addItem(course.id, {
+        title: course.title || '',
+        description: course.description || '',
+        course: course.category.name || '',
+      });
       return newCourse;
     } catch (error) {
       throw new HttpException(error.message, 500);
@@ -55,8 +64,13 @@ export class CourseService {
     }
   }
 
-  async findAllRecommendationCourses() {
+  async findAllRecommendationCourses(awsCognitoId: string) {
     try {
+      const user = await this.dataSource.getRepository(User).findOneOrFail({
+        where: { awsCognitoId: awsCognitoId },
+      });
+      const course_ids = await this.recombee.recommendItems(user.id, 5);
+      const course_ids_mapped = course_ids.map((course) => course.id);
       return await this.dataSource
         .getRepository(Course)
         .createQueryBuilder('course')
@@ -66,6 +80,9 @@ export class CourseService {
         .leftJoin('course.courseReviewings', 'courseReviewings')
         .select(['course', 'category.name', 'teacher', 'userInfo'])
         .where('course.state = :state', { state: STATE.PUBLISHED })
+        .andWhere('course.id IN (:...course_ids)', {
+          course_ids: course_ids_mapped,
+        })
         .getMany();
     } catch (error) {
       throw new HttpException(error.message, 500);
@@ -151,6 +168,7 @@ export class CourseService {
         .select(['course', 'category.name', 'teacher', 'userInfo'])
         .where('course.id = :courseId', { courseId: id })
         .getOne();
+
       return existingCourse;
     } catch (error) {
       throw new HttpException(error.message, 500);

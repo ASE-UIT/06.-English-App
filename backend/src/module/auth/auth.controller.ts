@@ -28,6 +28,7 @@ import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ConfirmForgotPasswordDto } from './dto/confirm-forgot-password.dto';
 import { RefreshTokenDto } from './dto/refresh-token.dto';
 import { ResendConfirmationCodeDto } from './dto/resend-confirmation-code.dto';
+import { RecombeeService } from '../recombee/recombee.service';
 
 @ApiTags(DOCUMENTATION.TAGS.AUTH)
 @Controller(END_POINTS.AUTH.BASE)
@@ -36,6 +37,7 @@ export class AuthController {
     private readonly authService: AuthService,
     @InjectMapper() private readonly mapper: Mapper,
     private readonly cognitoService: CognitoService,
+    private readonly recombeeService: RecombeeService,
   ) {}
 
   @Public()
@@ -54,6 +56,7 @@ export class AuthController {
       userCreated,
       registerAuthDto.username,
     );
+    await this.recombeeService.addUser(userCreated.id);
     return ResponseObject.create('User created', res);
   }
 

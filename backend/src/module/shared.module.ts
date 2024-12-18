@@ -16,6 +16,7 @@ import { StudentAnswerModule } from './student-answer/student-answer.module';
 import { DiscountModule } from './discount/discount.module';
 import { CourseReviewingModule } from './course-reviewing/course-reviewing.module';
 import { CourseOwningModule } from './course-owning/course-owning.module';
+import { RecombeeModule } from './recombee/recombee.module';
 
 @Module({
   imports: [
@@ -35,6 +36,8 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     CourseBuyingModule,
     StudentAnswerModule,
     DiscountModule,
+    RecombeeModule,
+
     CourseOwningModule,
   ],
   exports: [
@@ -48,9 +51,11 @@ import { CourseOwningModule } from './course-owning/course-owning.module';
     DiscountModule,
     GrammarModule,
     QuestionModule,
+
     QuestionGroupModule,
     SectionModule,
     HttpModule,
+    RecombeeModule,
     CourseBuyingModule,
     StudentAnswerModule,
     LessonDiscussionModule,

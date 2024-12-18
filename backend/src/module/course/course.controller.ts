@@ -12,7 +12,11 @@ import {
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
+import {
+  DOCUMENTATION,
+  END_POINTS,
+  RECOMBEE_INTERACTION,
+} from 'src/utils/constants';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Course } from './entities/course.entity';
@@ -32,6 +36,8 @@ import {
   PaginatedResult,
 } from 'src/utils/paginated-response';
 import { CourseResponseDto } from './dto/course-response.dto';
+import { RecombeeService } from '../recombee/recombee.service';
+import { DataSource } from 'typeorm';
 
 @ApiBearerAuth()
 @Controller(END_POINTS.COURSE.BASE)
@@ -40,6 +46,8 @@ export class CourseController {
   constructor(
     private readonly courseService: CourseService,
     private readonly courseCategoryService: CourseCategoryService,
+    private readonly recombee: RecombeeService,
+    private readonly dataSource: DataSource,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
@@ -79,8 +87,10 @@ export class CourseController {
 
   @Get(END_POINTS.COURSE.GET_RECOMMENDATION_COURSES)
   @ApiOperation({ summary: 'Get recommendation course by student' })
-  async findAllRecommendationCourses() {
-    const courses = await this.courseService.findAllRecommendationCourses();
+  async findAllRecommendationCourses(@User() user: IUser) {
+    const courses = await this.courseService.findAllRecommendationCourses(
+      user.userAwsId,
+    );
     const coursesReponse = this.mapper.mapArray(
       courses,
       Course,
@@ -137,8 +147,16 @@ export class CourseController {
     description: 'Course id',
     example: 'd1911740-84e0-4778-9c0d-4465dcb1d13e',
   })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @User() user: IUser) {
     const result = await this.courseService.findOne(id);
+    const user_get = await this.dataSource.getRepository(User).findOne({
+      where: { id: user.userAwsId },
+    });
+    await this.recombee.addInteraction(
+      RECOMBEE_INTERACTION.VIEW,
+      user_get.id,
+      id,
+    );
     return ResponseObject.create('Course retrieved successfully', result);
   }
 

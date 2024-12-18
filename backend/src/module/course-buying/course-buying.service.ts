@@ -9,10 +9,10 @@ import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { Request, Response } from 'express';
 import * as crypto from 'crypto';
+import { randomBytes } from 'crypto';
 import * as qs from 'qs';
 import { Student } from '../user/entities/student.entity';
 import { User } from '../user/entities/user.entity';
-import { randomBytes } from 'crypto';
 import { Course } from '../course/entities/course.entity';
 import { formatDateToVnpCreateDate, sortObject } from 'src/utils/vnpay.utils';
 import { CheckKeyDto } from './dto/check-key.dto';
@@ -22,12 +22,15 @@ import { SectionProgress } from '../course-owning/entities/section-progress.enti
 import { createPayOrderUrlDto } from './dto/create-pay-order-url.dto';
 import * as moment from 'moment';
 import * as axios from 'axios';
+import { RecombeeService } from '../recombee/recombee.service';
+import { RECOMBEE_INTERACTION } from '../../utils/constants';
 
 @Injectable()
 export class CourseBuyingService {
   constructor(
     private readonly dataSource: DataSource,
     private readonly config: ConfigService,
+    private readonly recombeeService: RecombeeService,
   ) {}
 
   async create(
@@ -168,14 +171,15 @@ export class CourseBuyingService {
       .getRepository(CourseBuying)
       .createQueryBuilder('courseBuying')
       .leftJoin('courseBuying.course', 'course')
+      .leftJoinAndSelect('courseBuying.student', 'student')
+      .leftJoinAndSelect('student.userInfo', 'userInfo')
       .select(['courseBuying', 'course'])
       .where('courseBuying.id = :id', { id: orderId })
       .getOne();
     if (!order) {
       checkOrderId = false;
     }
-    const checkAmount =
-      order.course.price === vnp_Params['vnp_Amout'] / 100 ? true : false;
+    const checkAmount = order.course.price === vnp_Params['vnp_Amout'] / 100;
     if (secureHash === signed) {
       if (checkOrderId) {
         if (checkAmount) {
@@ -183,6 +187,11 @@ export class CourseBuyingService {
             if (rspCode == '00') {
               order.active = true;
               await this.dataSource.getRepository(CourseBuying).save(order);
+              await this.recombeeService.addInteraction(
+                RECOMBEE_INTERACTION.PURCHASE,
+                order.student.userInfo.id,
+                order.course.id,
+              );
               res.status(200).json({ RspCode: '00', Message: 'Success' });
             } else {
               res.status(200).json({ RspCode: '00', Message: 'Success' });

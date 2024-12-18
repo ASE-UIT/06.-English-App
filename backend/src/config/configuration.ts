@@ -31,7 +31,11 @@ export default () => ({
     password: process.env.DATABASE_PASSWORD,
     database: process.env.DATABASE_NAME,
   },
-
+  recombee: {
+    apiKey: process.env.RECOMBEE_API_KEY,
+    databaseId: process.env.RECOMBEE_DATABASE_ID,
+    region: process.env.RECOMBEE_REGION,
+  },
   grpcDiscountUrl: process.env.GRPC_DISCOUNT_URL,
   appIdZaloPay: process.env.APP_ID_ZALOPAY,
   key1ZaloPay: process.env.KEY1_ZALOPAY,
