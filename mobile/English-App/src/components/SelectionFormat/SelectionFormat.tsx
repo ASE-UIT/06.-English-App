@@ -24,8 +24,7 @@ type SelectionFormatProps = {
 
 const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
   const { questions } = questionGroup;
- 
-  
+
   return (
     <View>
       <View
@@ -40,6 +39,7 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
           <RenderHTML
             contentWidth={width}
             source={{ html: questionGroup.text }}
+            ignoredDomTags={["iframe"]}
           />
         )}
         <View className="questions-container">
@@ -49,7 +49,7 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
                 key={question.id}
                 order={question.order}
                 text={question.text}
-                options={question.answers.map((answer)=>answer.text)}
+                options={question.answers.map((answer) => answer.text)}
               />
             </View>
           ))}

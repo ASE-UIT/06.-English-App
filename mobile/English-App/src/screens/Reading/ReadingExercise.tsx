@@ -54,36 +54,27 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   if (!section) {
     return <Text>Loading...</Text>;
   }
-  console.log(section.id);
-  
+  const cleanedHtml = section.content
+    .replace(/\n\s*/g, "") // Remove newlines and surrounding whitespace
+    .replace(/>\s+</g, "><") // Remove spaces between HTML tags
+    .replace(/&nbsp;/g, ""); // Remove &nbsp; or replace with a normal space if needed
+
+  console.log(cleanedHtml);
 
   return (
     <SafeAreaView className="mb-4 p-5">
-      <ScrollView
-        className="reading-exercise flex gap-4"
-        
-        ref={scrollRef}
-      >
+      <ScrollView className="reading-exercise flex gap-4" ref={scrollRef}>
         {section && (
           <View className="reading-content flex gap-2 items-center">
             <Text className="text-black text-lg font-bold">
               {section.title}
             </Text>
-            {/* {section.sectionMedia ? (
-              <Image
-                source={{ uri: section.sectionMedia }}
-                style={{ height: 240, width: 160 }}
-                onError={(error) =>
-                  console.log("Image Load Error:", error.nativeEvent.error)
-                }
-              />
-            ) : (
-              <Text>No Image Available</Text>
-            )} */}
+
             <RenderHtml
               renderers={customRenderers}
               contentWidth={width}
-              source={{ html: section.content || "" }}
+              source={{ html: cleanedHtml || "" }}
+              ignoredDomTags={["iframe"]}
             />
           </View>
         )}
@@ -96,17 +87,14 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
               {questionGroups.map((questionGroup) => {
                 switch (questionGroup.questionGroupType) {
                   case QuestionGroupType.COMBOBOX:
-                    return(
+                    return (
                       <SelectionFormat
                         key={questionGroup.id}
                         questionGroup={questionGroup}
                       />
-                    )
-
+                    );
                 }
-              }
-            
-              )}
+              })}
             </>
           ) : (
             <Text>null</Text>
