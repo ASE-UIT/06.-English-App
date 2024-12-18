@@ -12,7 +12,11 @@ import {
 import { CourseService } from './course.service';
 import { CreateCourseDto } from './dto/create-course.dto';
 import { UpdateCourseDto } from './dto/update-course.dto';
-import { DOCUMENTATION, END_POINTS } from 'src/utils/constants';
+import {
+  DOCUMENTATION,
+  END_POINTS,
+  RECOMBEE_INTERACTION,
+} from 'src/utils/constants';
 import { Mapper } from '@automapper/core';
 import { InjectMapper } from '@automapper/nestjs';
 import { Course } from './entities/course.entity';
@@ -32,6 +36,8 @@ import {
   PaginatedResult,
 } from 'src/utils/paginated-response';
 import { CourseResponseDto } from './dto/course-response.dto';
+import { RecombeeService } from '../recombee/recombee.service';
+import { DataSource } from 'typeorm';
 import { CourseDetailResponseDto } from './dto/course-prevew-response.dto';
 
 @ApiBearerAuth()
@@ -41,6 +47,8 @@ export class CourseController {
   constructor(
     private readonly courseService: CourseService,
     private readonly courseCategoryService: CourseCategoryService,
+    private readonly recombee: RecombeeService,
+    private readonly dataSource: DataSource,
     @InjectMapper() private readonly mapper: Mapper,
   ) {}
 
@@ -140,8 +148,16 @@ export class CourseController {
     description: 'Course id',
     example: 'd1911740-84e0-4778-9c0d-4465dcb1d13e',
   })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string, @User() user: IUser) {
     const course = await this.courseService.findOne(id);
+    const user_get = await this.dataSource.getRepository(User).findOne({
+      where: { id: user.userAwsId },
+    });
+    await this.recombee.addInteraction(
+      RECOMBEE_INTERACTION.VIEW,
+      user_get.id,
+      id,
+    );
     const result = this.mapper.map(course, Course, CourseDetailResponseDto);
     return ResponseObject.create('Course retrieved successfully', result);
   }
@@ -174,21 +190,6 @@ export class CourseController {
     courseUpdated.category = category;
     const result = await this.courseService.update(courseUpdated);
     return ResponseObject.create('Course updated', result);
-  }
-
-  @ApiOperation({
-    summary: 'Update course status for admin to accept',
-  })
-  @ApiParam({
-    name: 'id',
-    type: String,
-    required: true,
-    description: 'Course id',
-  })
-  @Put(END_POINTS.COURSE.PUBLISH_COURSE)
-  async publishCourse(@Param('id') id: string) {
-    const result = await this.courseService.publishCourse(id);
-    return ResponseObject.create('Course published', result);
   }
 
   @Delete(END_POINTS.COURSE.DELETE)

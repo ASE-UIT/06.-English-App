@@ -5,16 +5,25 @@ import { Teacher } from '../user/entities/teacher.entity';
 import { User } from '../user/entities/user.entity';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
 import { STATE } from 'src/utils/constants';
+import { RecombeeService } from '../recombee/recombee.service';
 
 @Injectable()
 export class CourseService {
-  constructor(private readonly dataSource: DataSource) {}
+  constructor(
+    private readonly dataSource: DataSource,
+    private readonly recombee: RecombeeService,
+  ) {}
 
   async create(awsId: string, course: Course) {
     try {
       const newCourse = await this.dataSource
         .getRepository(Course)
         .insert(course);
+      await this.recombee.addItem(course.id, {
+        title: course?.title || '',
+        description: course?.description || '',
+        course: course?.category?.name || '',
+      });
       return newCourse;
     } catch (error) {
       throw new HttpException(error.message, 500);
@@ -65,7 +74,12 @@ export class CourseService {
         .leftJoin('student.userInfo', 'userInfo')
         .select('course.id')
         .where('userInfo.awsCognitoId = :userAwsId', { userAwsId });
-      const courses = await this.dataSource
+      const user = await this.dataSource.getRepository(User).findOneOrFail({
+        where: { awsCognitoId: userAwsId },
+      });
+      const course_ids = await this.recombee.recommendItems(user.id, 5);
+      const course_ids_mapped = course_ids.map((course) => course.id);
+      return await this.dataSource
         .getRepository(Course)
         .createQueryBuilder('course')
         .leftJoin('course.category', 'category')
@@ -76,8 +90,10 @@ export class CourseService {
         .where('course.state = :state', { state: STATE.PUBLISHED })
         .andWhere(`course.id NOT IN (${purchasedCoursesSubQuery.getQuery()})`)
         .setParameters(purchasedCoursesSubQuery.getParameters())
+        .andWhere('course.id IN (:...course_ids)', {
+          course_ids: course_ids_mapped,
+        })
         .getMany();
-      return courses;
     } catch (error) {
       throw new HttpException(error.message, 500);
     }
@@ -100,7 +116,6 @@ export class CourseService {
       if (!teacher) {
         throw new HttpException('Teacher not found', 404);
       }
-      console.log(teacher);
       const courses = await this.dataSource
         .getRepository(Course)
         .createQueryBuilder('course')
@@ -159,19 +174,8 @@ export class CourseService {
         .createQueryBuilder('course')
         .leftJoin('course.category', 'category')
         .leftJoin('course.teacher', 'teacher')
-        .leftJoin('course.lessons', 'lessons')
-        .leftJoin('course.courseReviewings', 'courseReviewings')
-        .leftJoin('lessons.sections', 'sections')
         .leftJoin('teacher.userInfo', 'userInfo')
-        .select([
-          'course',
-          'category.name',
-          'teacher',
-          'userInfo',
-          'lessons',
-          'sections',
-          'courseReviewings',
-        ])
+        .select(['course', 'category.name', 'teacher', 'userInfo'])
         .where('course.id = :courseId', { courseId: id })
         .getOne();
       return existingCourse;
@@ -190,11 +194,7 @@ export class CourseService {
   }
 
   remove(id: string) {
-    try {
-      return this.dataSource.getRepository(Course).delete(id);
-    } catch (error) {
-      throw new HttpException(error.message, 500);
-    }
+    return `This action removes a #${id} course`;
   }
 
   public async findTeacherByAwsId(awsId: string) {
