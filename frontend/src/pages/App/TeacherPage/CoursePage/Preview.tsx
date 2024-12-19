@@ -15,7 +15,7 @@ const CoursePreview = () => {
       <div className="grid grid-cols-5">
         <div className="col-span-3">
           <video className="w-full" controls>
-            <source src="https://w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+            <source src="https://w3schools.com/htœml/mov_bbb.mp4" type="video/mp4" />
             Your browser does not support HTML video.
           </video>
         </div>
@@ -37,7 +37,7 @@ const CoursePreview = () => {
           <div>
             <div className="flex items-center p-2 bg-pink-50 rounded mb-3">
                 <Play />
-                <div className="flex-1 px-2">
+                <div className="flex-1 px-2">œ
                     <div className="text-lg">Video lecture 1</div>
                     <div className="text-sm text-gray-400">3:40</div>
                 </div>

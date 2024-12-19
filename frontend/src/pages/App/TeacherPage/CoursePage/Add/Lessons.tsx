@@ -31,15 +31,15 @@ const CourseAddLessons = () => {
 
   const [lesson, setLesson] = useState<Array<any>>([])
 
-  function onAddLesson () {
+  function onAddLesson() {
     const lessonItem = {
-      key: Date.now()
+      key: Date.now(),
     }
     setLesson([...lesson, lessonItem])
   }
 
   function onRemoveLesson(key: number) {
-    console.log('key', key);
+    console.log("key", key)
 
     setLesson(lesson.filter((item) => item.key !== key))
   }
@@ -61,15 +61,20 @@ const CourseAddLessons = () => {
       </CourseCreateHeader>
       <div className="w-full">
         <MyLessonPage courseId={id} />
-      <div className="px-10">
-        {
-          lesson.map((item, index) => <CourseCreateLesson key={item.key} index={index} onRemove={() => onRemoveLesson(item.key)}></CourseCreateLesson>)
-        }
+        <div className="px-10">
+          {lesson.map((item, index) => (
+            <CourseCreateLesson
+              key={item.key}
+              index={index}
+              onRemove={() => onRemoveLesson(item.key)}
+            ></CourseCreateLesson>
+          ))}
 
-        <Button variant="solid" size="3" className="cursor-pointer bg-pink-500 mt-3" onClick={onAddLesson}>
-          <PlusIcon></PlusIcon>
-          Add lesson
-        </Button>
+          <Button variant="solid" size="3" className="mt-3 cursor-pointer bg-pink-500" onClick={onAddLesson}>
+            <PlusIcon></PlusIcon>
+            Add lesson
+          </Button>
+        </div>
       </div>
     </div>
   )
