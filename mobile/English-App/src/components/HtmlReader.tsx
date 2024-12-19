@@ -2,6 +2,11 @@ import React from 'react';
 import { View, Dimensions } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 import colors from '../../colors';
+import {
+  HTMLElementModel,
+  defaultHTMLElementModels,
+  HTMLContentModel,
+} from 'react-native-render-html';
 
 const { width } = Dimensions.get('window');
 
@@ -16,6 +21,14 @@ const cleanHtmlContent = (html: string) => {
 interface HtmlReaderProps {
   html: string;
 }
+
+const customHTMLElementModels = {
+  ...defaultHTMLElementModels,
+  input: HTMLElementModel.fromCustomModel({
+    tagName: "input",
+    contentModel: HTMLContentModel.block, // Ensure the content model is not set to 'none'
+  }),
+};
 
 const HtmlReader: React.FC<HtmlReaderProps> = ({ html }) => {
   const cleanedHtml = cleanHtmlContent(html);
@@ -50,7 +63,8 @@ const HtmlReader: React.FC<HtmlReaderProps> = ({ html }) => {
             borderRadius: 4,
             padding: 5,
             marginHorizontal: 5,
-            minWidth: 100
+            maxWidth: 60,
+            height: 20,
           },
           ul: {
             marginLeft: 20
@@ -68,6 +82,8 @@ const HtmlReader: React.FC<HtmlReaderProps> = ({ html }) => {
             enableExperimentalPercentWidth: true
           }
         }}
+        customHTMLElementModels={customHTMLElementModels}
+        ignoredDomTags={[]}
       />
     </View>
   );

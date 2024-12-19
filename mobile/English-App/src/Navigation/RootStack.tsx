@@ -20,12 +20,9 @@ import {
   SignUp,
 } from "../screens/Auth";
 import SplashScreen from "../screens/Splash/SplashScreen";
-<<<<<<< HEAD
-=======
 import CheckKey from "../screens/CourseDetail/CheckKey";
 import DetailGrammar from "../screens/Grammar/DetailGrammar";
 import SectionRoot from "../screens/SectionRoot";
->>>>>>> 74d46f818ed44c4cb087dffc8b6355e845beb9be
 
 export default function RootStack() {
   const Stack = createStackNavigator();
@@ -77,7 +74,7 @@ export default function RootStack() {
 
       <Stack.Screen name="CourseDetail" component={CourseDetail} />
       <Stack.Screen name="CourseHome" component={CourseHome} />
-      <Stack.Screen name="GrammarDetail" component={GrammarDetail} />
+      <Stack.Screen name="GrammarDetail" component={DetailGrammar} />
       <Stack.Screen
         name="Reading"
         options={({ route }) => ({
@@ -89,6 +86,7 @@ export default function RootStack() {
       </Stack.Screen>
       <Stack.Screen name="PayWithBank" component={PayWithBank} />
       <Stack.Screen name="PayWithCard" component={PayWithCard} />
+      <Stack.Screen name="Validation" component={CheckKey} />
       <Stack.Screen
         name="Notification"
         component={Notification}

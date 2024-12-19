@@ -19,7 +19,10 @@ import sectionService from "../../services/section.service";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../type";
 import SelectionFormat from "../../components/SelectionFormat/SelectionFormat";
-
+import { useFocusEffect } from '@react-navigation/native';
+import { Button } from 'react-native-paper';
+import { Input } from 'react-native-elements';
+import HtmlReader from '../../components/HtmlReader';
 
 const CONTENT_HEIGHT = 400;
 const BOTTOM_NAV_HEIGHT = 80;
@@ -48,13 +51,16 @@ export default function ListeningExerciseScreen() {
       try {
         const response = await sectionService.getSectionById(sectionID);
         setSection(response.data);
-        if (response.data.questionGroups && response.data.questionGroups[0].questions) {
-          setQuestions(response.data.questionGroups[0].questions.map((q: any) => ({
-            id: q.id,
-            text: q.text,
-            options: q.options,
-            answered: false
-          })));
+        if (response.data.questionGroups) {
+          const allQuestions = response.data.questionGroups.flatMap((group: any) =>
+            group.questions.map((q: any) => ({
+              id: q.id,
+              text: q.text,
+              options: q.options,
+              answered: false
+            }))
+          );
+          setQuestions(allQuestions);
         }
       } catch (err) {
         console.log(err);
@@ -98,6 +104,16 @@ export default function ListeningExerciseScreen() {
       }
     };
   }, [section]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        if (sound) {
+          sound.stopAsync();
+        }
+      };
+    }, [sound])
+  );
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -157,7 +173,6 @@ export default function ListeningExerciseScreen() {
             thumbTintColor="#6b4ce6"
           />
           <Text style={styles.timeText}>{formatTime(duration)}</Text>
-          <Text style={styles.playbackSpeed}>Playback speed</Text>
         </View>
       </View>
 
@@ -171,20 +186,37 @@ export default function ListeningExerciseScreen() {
         >
           {questionGroups ? (
             <>
-              {questionGroups.map((questionGroup) => (
-                <SelectionFormat
-                  key={questionGroup.id}
-                  questionGroup={questionGroup}
-                />
+              {questionGroups.map((questionGroup, groupIndex) => (
+              <ScrollView key={groupIndex} style={styles.readingQuestions}>
+                <HtmlReader html={questionGroup.text} />
+                {questionGroup.questions.map((question, questionIndex) => (
+                    <View key={question.id} style={{ marginBottom: 10 }}>
+                    <Text style={{ fontWeight: 'bold' }}>
+                      {groupIndex + 1}.{questionIndex + 1}. {question.text}
+                    </Text>
+                    <Input
+                      style={styles.input}
+                      underlineColorAndroid="transparent"
+                      inputContainerStyle={{ borderBottomWidth: 0 }} // Remove the underline
+                    />
+                    </View>
+                ))}
+              </ScrollView>
               ))}
             </>
           ) : (
             <Text>No questions available</Text>
           )}
         </View>
+        <TouchableOpacity
+          onPress={() => {}}
+          style={styles.submitButton}
+        >
+          <Text style={styles.submitButtonText}>Submit</Text>
+        </TouchableOpacity>
+
       </ScrollView>
-
-
+     
       <BottomNavigation
         questions={questions}
         answeredQuestions={answeredQuestions}
@@ -255,5 +287,25 @@ const styles = StyleSheet.create({
     gap: 20,
     paddingHorizontal: 16,
   },
+  submitButton: {
+    backgroundColor: colors.pink1,
+    borderRadius: 30,
+    padding: 16,
+    alignSelf: 'center',
+    marginTop: 16,
+  },
+  submitButtonText: {
+    color: 'white',
+    textAlign: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: colors.pink1,
+    borderRadius: 10,
+    padding: 5,
+    marginHorizontal: 5,
+    maxWidth: 100,
+    height: 20,
+  }
 });
 

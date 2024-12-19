@@ -7,6 +7,7 @@ import RenderHTML from "react-native-render-html";
 import {
   HTMLElementModel,
   defaultHTMLElementModels,
+  HTMLContentModel,
 } from "react-native-render-html";
 import { RootStackParamList } from "../../type";
 
@@ -45,7 +46,7 @@ export default function DetailGrammar() {
         width: "100%",
         height: 200,
       },
-      contentModel: "block",
+      contentModel: HTMLContentModel.block,
       isOpaque: true,
     }),
     video: HTMLElementModel.fromCustomModel({
@@ -54,8 +55,12 @@ export default function DetailGrammar() {
         width: "100%",
         height: 200,
       },
-      contentModel: "block",
+      contentModel: HTMLContentModel.block,
       isOpaque: true,
+    }),
+    input: HTMLElementModel.fromCustomModel({
+      tagName: "input",
+      contentModel: HTMLContentModel.block, 
     }),
   };
 
@@ -66,7 +71,7 @@ export default function DetailGrammar() {
           contentWidth={width}
           source={{ html: grammar.content || "" }}
           customHTMLElementModels={customHTMLElementModels}
-          ignoredDomTags={[]} // Ensure iframe is not ignored
+          ignoredDomTags={[]} 
         />
       ) : (
         <Text>Loading...</Text>
