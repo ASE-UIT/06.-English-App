@@ -122,23 +122,9 @@ const Profile = () => {
   };
 
   const handleLogout = async () => {
-    try {
-      // because currently the signOut api is not working (timeout, return HTML instead of JSON), i will just remove the token from the storage and navigate to login screen
-      await SecureStore.deleteItemAsync("accessToken");
-      await SecureStore.deleteItemAsync("refreshToken");
-      loginNav.navigate("Login");
-      const res = await authService.signOut();
-      if (res.statusCode === 201) {
-        console.log("Logged out");
-        await SecureStore.deleteItemAsync("accessToken");
-        await SecureStore.deleteItemAsync("refreshToken");
-        loginNav.navigate("Login");
-      } else {
-        console.error("Failed to log out: ", res.message);
-      }
-    } catch (err) {
-      console.error("Failed to log out: ", err);
-    }
+    await SecureStore.deleteItemAsync("accessToken");
+    await SecureStore.deleteItemAsync("refreshToken");
+    loginNav.navigate("Login");
   };
 
   return (
