@@ -31,7 +31,7 @@ export const formSchema = z.object({
 export const CreateVocab = () => {
   const { lessonId } = useParams()
   const queryClient = useQueryClient()
-  const { data: vocabByLesson, refetch } = useVocabByLesson(lessonId as string)
+  const { data: vocabByLesson } = useVocabByLesson(lessonId as string)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,11 +46,9 @@ export const CreateVocab = () => {
       if (Res?.message === "Add vocabularies to lesson successfully") {
         toast.success(`${Res.message}`)
         form.reset()
-        if (lessonId) {
-          console.log("CheckLessonId", lessonId)
-          queryClient.invalidateQueries({ queryKey: queryKeys.vocabByLessonId.gen(lessonId), })
-          refetch()
-        }
+        console.log("CheckLessonId", lessonId)
+        queryClient.invalidateQueries({ queryKey: queryKeys.vocabByLessonId.gen(lessonId as string) })
+        // refetch()
       } else {
         toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
       }

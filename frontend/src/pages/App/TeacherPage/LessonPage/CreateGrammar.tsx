@@ -59,7 +59,7 @@ export const CreateGrammar = () => {
             className="mr-[19px] rounded-full border-2 border-fuschia bg-fuschia px-[12px] py-[9.5px] text-[16px] font-normal text-white"
           >
             <BiPlus className="mr-[1.5px]" size={20} />
-            Add custom point
+            Add list grammar
           </Button>
         </div>
         <div className="mt-[43px] flex w-full items-center justify-center">
