@@ -41,7 +41,7 @@ export default function TeacherLayout({ children }: { children: React.ReactNode 
   }
   return (
     <div className="flex min-h-screen flex-col bg-white">
-      <div className="flex h-screen max-w-screen-2xl flex-row">
+      <div className="flex h-screen w-screen flex-row">
         <Sidebar open={open} setOpen={setOpen}>
           <SidebarBody className="justify-between gap-10 bg-sideBar shadow-sideBar">
             <div className={`flex flex-1 flex-col overflow-y-auto overflow-x-hidden`}>
