@@ -1,11 +1,11 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
 import { Course } from './entities/course.entity';
 import { Teacher } from '../user/entities/teacher.entity';
 import { User } from '../user/entities/user.entity';
 import { GetAllCourseQuery } from './dto/get-all-course.dto';
-import { STATE } from 'src/utils/constants';
+import { RECOMBEE_INTERACTION, STATE } from 'src/utils/constants';
 import { RecombeeService } from '../recombee/recombee.service';
+import { DataSource } from 'typeorm';
 
 @Injectable()
 export class CourseService {
@@ -159,7 +159,7 @@ export class CourseService {
     }
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userAwsId: string) {
     try {
       const existingCourse = await this.dataSource
         .getRepository(Course)
@@ -170,6 +170,15 @@ export class CourseService {
         .select(['course', 'category.name', 'teacher', 'userInfo'])
         .where('course.id = :courseId', { courseId: id })
         .getOne();
+      const user_get = await this.dataSource.getRepository(User).findOne({
+        where: { awsCognitoId: userAwsId },
+      });
+      await this.recombee.addInteraction(
+        RECOMBEE_INTERACTION.VIEW,
+        user_get.id,
+        id,
+      );
+
       return existingCourse;
     } catch (error) {
       throw new HttpException(error.message, 500);
@@ -210,6 +219,24 @@ export class CourseService {
       });
       course.state = STATE.PUBLISHED;
       await this.dataSource.getRepository(Course).save(course);
+      return course;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
+  }
+
+  async getContinueLearning(userAwsId: string) {
+    try {
+      const course = await this.dataSource
+        .getRepository(Course)
+        .createQueryBuilder('course')
+        .leftJoin('course.courseOwnings', 'courseOwnings')
+        .leftJoin('courseOwnings.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
+        .select(['course', 'userInfo'])
+        .where('userInfo.awsCognitoId = :userAwsId', { userAwsId })
+        .andWhere('course.state = :state', { state: STATE.PUBLISHED })
+        .getMany();
       return course;
     } catch (error) {
       throw new HttpException(error.message, 500);

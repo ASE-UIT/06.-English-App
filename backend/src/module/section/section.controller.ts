@@ -69,19 +69,22 @@ export class SectionController {
             CreateQuestionDto,
             Question,
           );
-          newQuestion.questionGroup = newQuestionGroup;
           if (!newQuestion.answers) {
             newQuestion.answers = [];
           }
-          question.answers.forEach((answer) => {
-            const newAnswer = this.mapper.map(answer, CreateAnswerDto, Answer);
-            newAnswer.question = newQuestion;
-            newQuestion.answers.push(newAnswer);
-          });
+          if (question.answers) {
+            question.answers.forEach((answer) => {
+              const newAnswer = this.mapper.map(
+                answer,
+                CreateAnswerDto,
+                Answer,
+              );
+              newQuestion.answers.push(newAnswer);
+            });
+          }
           newQuestionGroup.questions.push(newQuestion);
         });
 
-        newQuestionGroup.section = section;
         questionGroups.push(newQuestionGroup);
       });
     }
@@ -92,16 +95,15 @@ export class SectionController {
           CreateQuestionDto,
           Question,
         );
-        newQuestion.section = section;
         if (!newQuestion.answers) {
           newQuestion.answers = [];
         }
-        sectionQuestion.answers.forEach((answer) => {
-          const newAnswer = this.mapper.map(answer, CreateAnswerDto, Answer);
-          newAnswer.question = newQuestion;
-          newQuestion.answers.push(newAnswer);
-        });
-
+        if (sectionQuestion.answers) {
+          sectionQuestion.answers.forEach((answer) => {
+            const newAnswer = this.mapper.map(answer, CreateAnswerDto, Answer);
+            newQuestion.answers.push(newAnswer);
+          });
+        }
         questions.push(newQuestion);
       });
     }

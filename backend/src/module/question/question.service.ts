@@ -51,9 +51,9 @@ export class QuestionService {
     questionGroupId?: string,
   ) {
     try {
+      console.log(questions);
       const questionResult = await Promise.all(
         questions.map(async (question) => {
-          console.log(question);
           if (questionGroupId) {
             await this.dataSource
               .getRepository(Question)

@@ -1,26 +1,26 @@
 import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { Lesson } from './entities/lesson.entity';
 import { DataSource } from 'typeorm';
-import { CourseService } from '../course/course.service';
 import { GrammarService } from '../grammar/grammar.service';
 import { Grammar } from '../grammar/entities/grammar.entity';
 import { LessonVocabulary } from './entities/lesson-vocabulary.entity';
+import { Course } from '../course/entities/course.entity';
 
 @Injectable()
 export class LessonService {
   constructor(
     private readonly dataSource: DataSource,
-    private readonly courseService: CourseService,
     private readonly grammarService: GrammarService,
   ) {}
   async create(lesson: Lesson, courseId: string) {
     try {
-      const course = await this.courseService.findOne(courseId);
+      const course = await this.dataSource.getRepository(Course).findOne({
+        where: { id: courseId },
+      });
       if (!course) {
         throw new BadRequestException('Course not found');
       }
       lesson.course = course;
-      console.log(lesson);
       const newLesson = await this.dataSource
         .getRepository(Lesson)
         .save(lesson);

@@ -33,6 +33,7 @@ export const END_POINTS = {
     GET_MY_COURSE_BY_STUDENT: '/student/my-course/',
     GET_DETAIL: '/detail/:id',
     PUBLISH_COURSE: '/publish-course/:id',
+    GET_CONTINUE_LEARNING: '/get-continue-learning',
     CREATE: '',
     UPDATE: '/update-one/:id',
     DELETE: '/delete-one/:id',
