@@ -4,7 +4,7 @@ import {
   selectSections,
   selectSectionUpdate,
 } from "@/features/section/store/selectors"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { LuStar } from "react-icons/lu"
 import { Button } from "../Layout/Components/ui/Button"
 import _ from "lodash"
@@ -16,6 +16,7 @@ import { sectionApi } from "@/apis"
 import { toast } from "react-toastify"
 import { queryKeys } from "@/config"
 import S from "./style.module.css"
+import { useSectionSlice } from "@/features/section/store"
 interface question {
   questionGroup?: string
   section: string
@@ -42,6 +43,8 @@ interface updateData {
   }
 }
 export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
+  const dispatch = useDispatch()
+  const { actions: sectionActions } = useSectionSlice()
   const queryClient = useQueryClient()
   const sectionById = useSelector(selectSections)
   const { sectionId } = useParams()
@@ -128,7 +131,8 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
               return (
                 <div
                   key={questionGr.id}
-                  className={`${sectionCurrent.toString() === questionGr.id ? "my-2 flex w-full rounded-md bg-currentBg px-4 py-3" : "my-2 flex w-full bg-white px-4 py-3"}`}
+                  onClick={() => dispatch(sectionActions.changeCurrentSection(questionGr.id))}
+                  className={`${sectionCurrent.toString() === questionGr.id ? "my-2 flex w-full rounded-md bg-currentBg px-4 py-3 cursor-pointer transition-all" : "my-2 flex w-full bg-white px-4 py-3 cursor-pointer hover:bg-fuchsia-200 transition-all"}`}
                 >
                   <LuStar stroke="black" size={20} />
                   <div className="ml-3 flex flex-col">

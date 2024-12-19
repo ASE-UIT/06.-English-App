@@ -4,13 +4,13 @@ import {
   selectSections,
   selectSectionUpdate,
 } from "@/features/section/store/selectors"
-import { MdOutlineArrowUpward, MdOutlineArrowDownward, MdOutlineArrowBack, MdOutlineArrowForward } from "react-icons/md"
+import { MdOutlineArrowUpward, MdOutlineArrowDownward } from "react-icons/md"
 import { FiCopy } from "react-icons/fi"
 import { BiTrashAlt } from "react-icons/bi"
 import { LuStar } from "react-icons/lu"
 import { useDispatch, useSelector } from "react-redux"
 import { useSectionSlice } from "@/features/section/store"
-import { useCallback, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { Button } from "../Layout/Components/ui/Button"
 import MultipleChoice from "../Reading/MultipleChoices"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
@@ -76,16 +76,16 @@ export const SectionMain = () => {
     [currentSection, section.questionGroups],
   )
   console.log("getCurrentIndex", getCurrentIndex, currentSection)
-  const checkPossibleClick = useCallback(
-    (typeClick: string) => {
-      if (typeClick === "increment") {
-        return getCurrentIndex + 1 < section.questionGroups.length
-      } else if (typeClick === "decrement") {
-        return getCurrentIndex - 1 >= 0
-      }
-    },
-    [getCurrentIndex, section.questionGroups.length],
-  )
+  // const checkPossibleClick = useCallback(
+  //   (typeClick: string) => {
+  //     if (typeClick === "increment") {
+  //       return getCurrentIndex + 1 < section.questionGroups.length
+  //     } else if (typeClick === "decrement") {
+  //       return getCurrentIndex - 1 >= 0
+  //     }
+  //   },
+  //   [getCurrentIndex, section.questionGroups.length],
+  // )
 
   const handleMovement = (type: string) => {
     if (type === "top") {
@@ -208,7 +208,7 @@ export const SectionMain = () => {
           </Button>
         </div>
       )}
-      {section.type !== "WRITING" && section.type !== "SPEAKING" && (
+      {/* {section.type !== "WRITING" && section.type !== "SPEAKING" && (
         <div className="mt-[83px] flex w-full items-center justify-end gap-4 pr-[71px]">
           <Button
             onClick={() => {
@@ -247,7 +247,7 @@ export const SectionMain = () => {
             <MdOutlineArrowForward stroke="white" size={20} />
           </Button>
         </div>
-      )}
+      )} */}
     </div>
   )
 }

@@ -9,7 +9,7 @@ export default function DefaultLayout({ children }: { children: React.ReactNode 
         <span className="text-[40px] font-bold text-black">Emma</span>
       </div>
       <Header></Header>
-      <div className="mb-4 max-w-screen-2xl flex-1">{children}</div>
+      <div className="mb-4 w-screen flex-1">{children}</div>
     </div>
   )
 }
