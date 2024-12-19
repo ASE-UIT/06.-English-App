@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import { Button } from "react-native-elements";
 import CourseItem from "../../components/CourseItem";
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import { LearningScreenNavigationProp } from "../../type";
 import courseService from "../../services/course.service";
@@ -15,24 +15,26 @@ export default function LearningScreen() {
   const nav = useNavigation<LearningScreenNavigationProp>();
   const [buttonSelected, setButtonSelected] = React.useState("All");
   const [studentCourses, setStudentCourses] = useState<MyCourse[]>([]);
-  useEffect(() => {
-    const fetchStudentCourses = async () => {
-      try {
-        const res = await courseService.getStudentCourses();
-        if (res.statusCode === 200) {
-          setStudentCourses(res.data);
-        } else {
-          console.error(
-            "Error fetching student courses, status code: ",
-            res.statusCode
-          );
+  useFocusEffect(
+    useCallback(() => {
+      const fetchStudentCourses = async () => {
+        try {
+          const res = await courseService.getStudentCourses();
+          if (res.statusCode === 200) {
+            setStudentCourses(res.data);
+          } else {
+            console.error(
+              "Error fetching student courses, status code: ",
+              res.statusCode
+            );
+          }
+        } catch (error) {
+          console.error("Error fetching student courses: ", error);
         }
-      } catch (error) {
-        console.error("Error fetching student courses: ", error);
-      }
-    };
-    fetchStudentCourses();
-  }, []);
+      };
+
+      fetchStudentCourses();
+    }, [])) // Empty dependenc
   console.log(studentCourses.map((course) => course.id));
 
   return (

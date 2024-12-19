@@ -93,7 +93,7 @@ const CourseDetail = () => {
               />
               <Text>{course.ratingAverage}</Text>
             </View>
-            <Text className="text-[#5D5FEF] text-3xl">${course.price}</Text>
+            <Text className="text-[#5D5FEF] text-3xl">{new Intl.NumberFormat('de-DE').format(course.price)}đ</Text>
           </View>
 
           <View>
@@ -262,11 +262,11 @@ const CourseDetail = () => {
               }}
               onPress={async () => {
                 if (selectedPaymentMethod === 0) {
-                  nav.navigate("PayWithCard", { courseID: course.id });
+                  nav.navigate("PayWithCard", { courseID: course.id , coursePrice: course.price });
                   setIsBottomSheetVisible(false);
                 }
                 else if (selectedPaymentMethod === 1) {
-                  nav.navigate("PayWithBank", { courseID: course.id })
+                  nav.navigate("PayWithBank", { courseID: course.id , coursePrice: course.price });
                   setIsBottomSheetVisible(false);
                 }
               }}

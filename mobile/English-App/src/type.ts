@@ -18,8 +18,8 @@ export type RootStackParamList = {
   GrammarDetail: { id: string };
   CourseDetail: { course: Course };
   CourseHome: { course: Course };
-  PayWithBank: { courseID: string };
-  PayWithCard: { courseID: string };
+  PayWithBank: { courseID: string; coursePrice: number };
+  PayWithCard: { courseID: string ;coursePrice: number};
   Notification: undefined;
   Listening: { sectionID: any; scrollRef?: React.RefObject<ScrollView> };
   Validation: { courseBuyingId: string };
