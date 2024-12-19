@@ -12,7 +12,7 @@ export default function SectionHeader({ children }: { children: React.ReactNode 
   const { actions: courseActions } = useCourseSlice()
   const { name: courseName } = useSelector(selectCourseView)
   const { id, name: sectionName, createQuestion, sectionDetail } = useSelector(selectSectionView)
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const handleBackButton = () => {
     navigate(-1)
   }
@@ -22,7 +22,11 @@ export default function SectionHeader({ children }: { children: React.ReactNode 
   return (
     <div className="flex h-screen flex-col overflow-y-hidden">
       <div className="sticky top-0 z-10 flex gap-[10px] bg-[#fff4f9] py-6 shadow-custom">
-        <Button variant="ghost" className="bg-inherit hover:bg-inherit hover:outline-none focus:outline-none" onClick={handleBackButton}>
+        <Button
+          variant="ghost"
+          className="bg-inherit hover:bg-inherit hover:outline-none focus:outline-none"
+          onClick={handleBackButton}
+        >
           <span className="ml-[14px]">
             <img src={BackIconButton} />
           </span>

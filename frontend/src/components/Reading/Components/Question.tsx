@@ -13,7 +13,7 @@ import FroalaEditorComponent from "@/components/Layout/Components/ui/FroalaEdito
 import generateFroalaConfig from "@/config/froala.config"
 import { useSectionSlice } from "@/features/section/store"
 
-interface Answer {
+interface AnswerType {
   text: string
   isCorrect: boolean
 }
@@ -21,11 +21,12 @@ interface Answer {
 interface Question {
   index: number
   question: string
-  answers: Answer[]
+  answers: AnswerType[]
   multipleAnswers: boolean
 }
 
 interface question {
+  id: string
   questionGroup?: string
   section?: string
   text: string
@@ -72,14 +73,15 @@ const Question = ({
   const sectionCurrent = useSelector(selectSectionCurrent)
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
-  console.log("currentQuestion", currentQuestion)
   const [question, setQuestion] = useState<string>(currentQuestion ? (currentQuestion[index]?.text ?? "") : "")
-  const [answers, setAnswers] = useState<Answer[]>(currentQuestion ? (currentQuestion[index]?.answers ?? []) : [])
+  console.log("NhapText", question, section)
+  const [answers, setAnswers] = useState<AnswerType[]>(currentQuestion ? (currentQuestion[index]?.answers ?? []) : [])
   const [newAnswerText, setNewAnswerText] = useState<string>("")
   const handleRemoveAnswer = (index: number) => {
     const newAnswers = [...answers]
     newAnswers.splice(index, 1)
     setAnswers(newAnswers)
+    console.log("REMOVE")
     dispatch(sectionActions.updateViewChanged(true))
   }
 
@@ -118,29 +120,63 @@ const Question = ({
 
   useEffect(() => {
     if ((answers.length > 0 || noQuestionGroup) && question !== "") {
-      setListQuestion((prev) => {
+      setListQuestion((prev): question[] => {
+        console.log("Begin", prev, question)
         if (prev.length > 0) {
-          if (prev.some((q) => q.text === question)) {
+          if (
+            prev.some((q) => q.id === currentQuestion[index]?.id) ||
+            prev.some((q) => q.order === currentQuestion[index]?.order)
+          ) {
+            console.log(
+              "CheckIf",
+              prev.some((q) => q.id === currentQuestion[index]?.id),
+              prev.some((q) => q.order === currentQuestion[index]?.order),
+            )
+            if (prev.some((q) => q.order === currentQuestion[index]?.order)) {
+              prev.forEach((q) => {
+                if (q.order === currentQuestion[index]?.order) {
+                  console.log("CheckIfOrder", currentQuestion[index], q)
+                }
+                q.order === currentQuestion[index]?.order
+              })
+            }
             if (!noQuestionGroup) {
+              console.log("QuestionGroupprev", prev)
               return prev.map((q) =>
-                q.text === question
+                q.id === currentQuestion[index]?.id || q.order === currentQuestion[index]?.order
                   ? {
+                      id: q.id,
                       section: sectionId as string,
                       questionGroup: sectionCurrent,
                       text: question,
                       type: type,
-                      order: index,
+                      order: currentQuestion[index]?.order ?? index,
                       answers: answers,
                     }
                   : q,
               )
             } else {
+              console.log(
+                "NoQuestionGroupprev",
+                prev,
+                prev.map((q) =>
+                  q.id === currentQuestion[index]?.id || q.order === currentQuestion[index]?.order
+                    ? {
+                        id: q.id,
+                        text: question,
+                        type: type,
+                        order: currentQuestion[index]?.order ?? index,
+                      }
+                    : q,
+                ),
+              )
               return prev.map((q) =>
-                q.text === question
+                q.id === currentQuestion[index]?.id || q.order === currentQuestion[index]?.order
                   ? {
+                      id: q.id,
                       text: question,
                       type: type,
-                      order: index,
+                      order: currentQuestion[index]?.order ?? index,
                     }
                   : q,
               )
@@ -148,36 +184,34 @@ const Question = ({
           }
         }
         if (noQuestionGroup) {
+          console.log("ElseIfNoQuestionGroupprev", prev, currentQuestion[index])
           return [
             ...prev,
             {
+              id: currentQuestion[index]?.id,
               text: question,
               type: type,
-              order: index,
-            },
-          ]
-        } else {
-          return [
-            ...prev,
-            {
-              section: sectionId as string,
-              questionGroup: sectionCurrent,
-              text: question,
-              type: type,
-              order: index,
-              answers: answers,
+              order: currentQuestion[index]?.order ?? index,
             },
           ]
         }
+        console.log("ReturnQuestionGroupprev", prev)
+        return [
+          ...prev,
+          {
+            id: currentQuestion[index]?.id,
+            section: sectionId as string,
+            questionGroup: sectionCurrent,
+            text: question,
+            type: type,
+            order: currentQuestion[index]?.order ?? index,
+            answers: answers,
+          },
+        ]
       })
     }
-  }, [answers, index, noQuestionGroup, question, sectionCurrent, sectionId, setListQuestion, type])
-  // const handleCheckAnswer = (index: number) => {
-  //   const newAnswers = [...answers]
-  //   newAnswers[index].isCorrect = !newAnswers[index].isCorrect
-  //   setAnswers(newAnswers)
-  // }
-  console.log("answers", answers)
+  }, [answers, currentQuestion, index, noQuestionGroup, question, sectionCurrent, sectionId, setListQuestion, type])
+
   return (
     <motion.div
       variants={parent}
@@ -193,10 +227,13 @@ const Question = ({
           Question
         </Label>
         <FroalaEditorComponent
+          key={index}
           tag="textarea"
           config={froalaConfig}
           model={question}
-          onModelChange={(e: string) => setQuestion(e)}
+          onModelChange={(e: string) => {
+            setQuestion(e)
+          }}
         />
       </div>
       <hr className="mx-[15px] mt-[36px] bg-backgroundLine" />
@@ -218,9 +255,11 @@ const Question = ({
                     <RadioGroup
                       defaultValue={
                         answers.length > 0
-                          ? answers.map((ans) => {
-                              if (ans.isCorrect) return ans.text
-                            })[0]
+                          ? answers
+                              .filter((ans) => ans.isCorrect === true)
+                              .map((ans) => {
+                                return ans.text
+                              })[0]
                           : ""
                       }
                       onValueChange={(value) => handleIsCorrectChange(value)}

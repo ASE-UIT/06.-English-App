@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from "react-redux"
 import { useSectionSlice } from "@/features/section/store"
 import { selectSectionCurrent, selectSections, selectSectionUpdate } from "@/features/section/store/selectors"
 import { toast, ToastContainer } from "react-toastify"
+// import { Question as QuestionType } from "@/type/section"
 import "react-toastify/dist/ReactToastify.css"
 interface question {
+  id: string
   questionGroup?: string
   section?: string
   text: string
@@ -26,11 +28,10 @@ const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: str
   const sectionCurrent = useSelector(selectSectionCurrent)
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
-  console.log("sectionCurrent",sectionCurrent)
-  console.log("currentQuestion", currentQuestion, updateData, sectionCurrent)
   const [questions, setQuestions] = useState<number>(currentQuestion?.length ?? 0)
-  const update = useSelector(selectSectionUpdate)
-  console.log("update", update, question, currentQuestion)
+  console.log("updateData", updateData)
+  console.log("currentQuestion", currentQuestion)
+  console.log("bigBang", question)
   return (
     <div className="flex w-full flex-col">
       <ToastContainer />

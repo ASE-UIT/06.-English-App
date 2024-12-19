@@ -59,18 +59,18 @@ const publicRoutes = [
 const protectedRoutes = [
   {
     path: studentRoutes.Home,
-    layout: DefaultLayout, 
-    component: <StudentHomePage></StudentHomePage>
+    layout: DefaultLayout,
+    component: <StudentHomePage></StudentHomePage>,
   },
   {
     path: studentRoutes.MyCourse,
-    layout: DefaultLayout, 
-    component: <StudentMyCoursePage></StudentMyCoursePage>
+    layout: DefaultLayout,
+    component: <StudentMyCoursePage></StudentMyCoursePage>,
   },
   {
     path: studentRoutes.BuyCourse,
-    layout: DefaultLayout, 
-    component: <BuyCoursePage></BuyCoursePage>
+    layout: DefaultLayout,
+    component: <BuyCoursePage></BuyCoursePage>,
   },
   {
     path: studentRoutes.DoTestWriting,

@@ -1,4 +1,9 @@
-import { selectSectionCurrent, selectSections, selectSectionUpdate } from "@/features/section/store/selectors"
+import {
+  selectSectionChanged,
+  selectSectionCurrent,
+  selectSections,
+  selectSectionUpdate,
+} from "@/features/section/store/selectors"
 import { useSelector } from "react-redux"
 import { LuStar } from "react-icons/lu"
 import { Button } from "../Layout/Components/ui/Button"
@@ -22,6 +27,20 @@ interface question {
     isCorrect: boolean
   }[]
 }
+interface updateData {
+  update: {
+    [key: string]: {
+      id: string
+      text: string
+      type: string
+      order: number
+      answers: {
+        text: string
+        isCorrect: boolean
+      }[]
+    }[]
+  }
+}
 export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
   const queryClient = useQueryClient()
   const sectionById = useSelector(selectSections)
@@ -29,7 +48,7 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
   const section = useSelector(selectSections)
   const sectionCurrent = useSelector(selectSectionCurrent)
   const updateData = useSelector(selectSectionUpdate)
-  console.log("updateData", updateData)
+  const viewChange = useSelector(selectSectionChanged)
   const CreateQuestion = useMutation({
     mutationFn: sectionApi.CreateQuestion,
     onSuccess: (Res) => {
@@ -62,13 +81,37 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
             </Button>
             <Button
               onClick={async () => {
+                if (viewChange) {
+                  toast.error("Save your changes!!!")
+                  return
+                }
                 const promises = []
-                Object.entries(updateData ?? {}).forEach(([questionGrKey, value]) => {
+                const finalData = Object.fromEntries(
+                  Object.entries((updateData as updateData) ?? {}).map(([questionGrKey, value]) => {
+                    console.log("ProccedData", questionGrKey, value)
+                    const finalVual = value.map((item: question) => {
+                      const removeAnswerId = (item.answers ?? []).map((answer) => {
+                        const omit = _.omit(answer, ["id", "createDate", "updateDate"])
+                        return omit
+                      })
+                      const data = {
+                        ...item,
+                        answers: removeAnswerId,
+                      }
+                      const removeItemId = _.omit(data, ["id", "createDate", "updateDate"])
+                      return removeItemId
+                    })
+                    console.log("removeId", finalVual)
+                    return [questionGrKey, finalVual]
+                  }),
+                )
+                console.log("finalData", finalData)
+                Object.entries(finalData ?? {}).forEach(([questionGrKey, value]) => {
                   const data = {
                     questionGroupId: questionGrKey,
                     questions: value as question[],
                   }
-                  promises.push(CreateQuestion.mutateAsync(data))
+                  promises.push(CreateQuestion.mutate(data))
                 })
               }}
               className="rounded-lg bg-green-600 px-3 py-1 text-base font-normal text-white hover:bg-green-700"

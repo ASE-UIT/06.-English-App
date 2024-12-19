@@ -30,6 +30,7 @@ export interface Course {
   discountPercents: number
   createDate: string
   updateDate: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   lessons: any[]
 }
 
@@ -78,19 +79,18 @@ export interface CourseDetailRes {
   data: Course
 }
 
-
 export interface RecommendCourseItem {
-  id: string,
-  title: string,
-  description: string,
-  rating: number,
-  ratingAverage: number,
-  teacherName: string,
-  createdAt: string,
-  updatedAt: string,
-  categoryName: string,
-  thumbnail_image: string,
-  price: number,
+  id: string
+  title: string
+  description: string
+  rating: number
+  ratingAverage: number
+  teacherName: string
+  createdAt: string
+  updatedAt: string
+  categoryName: string
+  thumbnail_image: string
+  price: number
   finalPrice: number
 }
 export interface RecommendCourseRes {

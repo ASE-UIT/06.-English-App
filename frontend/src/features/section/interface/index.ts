@@ -8,6 +8,7 @@ export interface Section {
   changed: boolean
   update: {
     [key: string]: {
+      id: string
       text: string
       type: string
       order: number

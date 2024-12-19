@@ -22,6 +22,7 @@ import { sectionApi } from "@/apis"
 import { queryKeys } from "@/config"
 import { toast } from "react-toastify"
 import S from "./style.module.css"
+import { useParams } from "react-router"
 
 interface question {
   questionGroup?: string
@@ -35,6 +36,20 @@ interface question {
   }[]
 }
 
+interface updateData {
+  [key: string]: {
+    questionGroup?: string
+    section?: string
+    text: string
+    type: string
+    order: number
+    answers?: {
+      text: string
+      isCorrect: boolean
+    }[]
+  }[]
+}
+
 export const SectionMain = () => {
   const dispatch = useDispatch()
   const { actions: sectionActions } = useSectionSlice()
@@ -42,8 +57,9 @@ export const SectionMain = () => {
   const currentSection = useSelector(selectSectionCurrent)
   const [open, setOpen] = useState(false)
   const viewChange = useSelector(selectSectionChanged)
-  const sectionUpdate = useSelector(selectSectionUpdate)
+  const sectionUpdate: updateData = useSelector(selectSectionUpdate)
   const queryClient = useQueryClient()
+  const { sectionId } = useParams()
   console.log("sectionUpdate", sectionUpdate)
   const getCurrentData = useMemo(
     () =>
@@ -164,15 +180,24 @@ export const SectionMain = () => {
         <div className="my-[83px] flex w-full items-center justify-center gap-4">
           <Button
             onClick={async () => {
+              if (viewChange) {
+                toast.error("Save your changes!!!")
+                return
+              }
               const promises = []
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
-              Object.entries(sectionUpdate ?? {}).forEach(([_sectionId, value]) => {
-                const data = {
-                  sectionId: section.id,
-                  questions: value as question[],
-                }
-                promises.push(CreateQuestion.mutateAsync(data))
-              })
+              const finalData = (sectionUpdate[sectionId as string] ?? []).map((value) => {
+                const removeIdValue = _.omit(value, ["id", "createDate", "updateDate"])
+                return removeIdValue
+              }) as question[]
+
+              const data = {
+                sectionId: sectionId as string,
+                questions: finalData,
+              }
+              console.log("createWriting", data)
+              promises.push(CreateQuestion.mutate(data))
+
+              dispatch(sectionActions.updateViewChanged(false))
             }}
             className="rounded-lg border-2 border-fuschia bg-white px-[14px] py-3 hover:bg-fuschia"
           >

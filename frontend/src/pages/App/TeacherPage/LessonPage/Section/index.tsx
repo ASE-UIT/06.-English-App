@@ -35,10 +35,11 @@ export const Section = () => {
           dispatch(sectionActions.updateQuestion(updateData))
         })
       }
-      if(sectionById.data.type === "WRITING" || sectionById.data.type === "SPEAKING") {
+      if (sectionById.data.type === "WRITING" || sectionById.data.type === "SPEAKING") {
         const updateData = {
-            [sectionById.data.id]: sectionById.data.questions,
-          }
+          [sectionById.data.id]: sectionById.data.questions,
+        }
+        dispatch(sectionActions.setCurrentSection(sectionById.data.id))
         dispatch(sectionActions.updateQuestion(updateData))
       }
     }
