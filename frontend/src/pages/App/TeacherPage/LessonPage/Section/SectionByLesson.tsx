@@ -47,7 +47,6 @@ export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; le
                 <span className="text-2xl font-normal text-headerIcon">Section: {section.title}</span>
                 <span className="text-xl font-extralight text-headerIcon">{sectionNameMap[section.type]}</span>
               </div>
-              <span className="text-xl font-extralight text-black">3 questions</span>
             </div>
           </div>
         ))
