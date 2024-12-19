@@ -14,7 +14,6 @@ const Tab = createMaterialBottomTabNavigator();
 export default function BottomTabsNavigator() {
   return (
     <>
-      
       <Tab.Navigator
         initialRouteName="Reading"
         activeColor="#5D5FEF"
@@ -48,7 +47,7 @@ export default function BottomTabsNavigator() {
             ),
           }}
         />
-        <Tab.Screen
+        {/* <Tab.Screen
           name="vocabulary"
           component={Vocabulary} // change this to VocabularyScreen later
           options={{
@@ -57,7 +56,7 @@ export default function BottomTabsNavigator() {
               <Icon name="menu-book" type="material" color={color} />
             ),
           }}
-        />
+        /> */}
         <Tab.Screen
           name="grammar"
           component={Grammar} // change this to GrammarScreen later

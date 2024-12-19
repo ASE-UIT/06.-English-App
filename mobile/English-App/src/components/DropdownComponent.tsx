@@ -12,9 +12,8 @@ type DropdownComponentProps = {
   options: string[];
 };
 
-const DropdownComponent = () => {
-  const hardOptions = ["A", "B", "C", "D"];
-  const data = hardOptions.map((option) => {
+const DropdownComponent = ({ options }: DropdownComponentProps) => {
+  const data = options.map((option) => {
     return { label: option, value: option };
   });
   return (
@@ -31,6 +30,7 @@ const DropdownComponent = () => {
         placeholderStyle={styles.placeholder}
         renderRightIcon={() => <Text></Text>}
         selectedTextStyle={styles.selectedText}
+        itemContainerStyle={styles.itemContainer}
       />
     </View>
   );
@@ -42,25 +42,26 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     borderWidth: 2,
-    borderRadius: 10,
+    borderRadius: 20,
     borderStyle: "solid",
     borderColor: "#F178B6",
     backgroundColor: "white",
-    width: 60,
+    width: 100,
+    alignSelf: "stretch",
   },
   placeholder: {
-    width: 100,
-
+    width: "auto",
     textAlign: "center",
     borderWidth: 1,
     borderRadius: 10,
     borderStyle: "solid",
     borderColor: "#F178B6",
     backgroundColor: "white",
+
     flex: 1,
   },
   selectedText: {
-    width: 100,
+    width: "auto",
     textAlign: "center",
     borderWidth: 2,
     borderRadius: 10,
@@ -68,5 +69,14 @@ const styles = StyleSheet.create({
     borderColor: "#5D5FEF",
     backgroundColor: "#FCDDEC",
     flex: 1,
+  },
+  itemContainer: {
+    flex: 1,
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    flexShrink: 1,
+    backgroundColor: "transparent",
+    width: 80,
   },
 });

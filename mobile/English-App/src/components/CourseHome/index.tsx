@@ -54,7 +54,6 @@ export default function CourseViewer() {
           })
         );
         setLessons(lessonsWithSections);
-        
       } else {
         console.error("Error fetching lessons, status code: ", res.statusCode);
       }
@@ -93,6 +92,7 @@ export default function CourseViewer() {
       setCurrentVideoUri(section.uri);
       setIsPlaying(true);
     }
+    console.log(section.type);
 
     switch (section.type) {
       case "LISTENING":
@@ -101,13 +101,15 @@ export default function CourseViewer() {
         break;
       case "READING":
         navigation.navigate("Reading", { sectionID: section.id });
-
         break;
+        case 'ROOT':
+          navigation.navigate('SectionRoot', { sectionID: section.id });
+          break;
 
       default:
         break;
     }
-  }
+  };
 
   // // hàm này là logic cho việc khi phát hết video thì section được xem là completed
   // const handlePlaybackStatusUpdate = (status: AVPlaybackStatus) => {
@@ -280,9 +282,7 @@ export default function CourseViewer() {
           ))}
 
         {/* content của tab more */}
-        {activeTab === "more" && (
-         <More/>
-        )}
+        {activeTab === "more" && <More />}
       </ScrollView>
     </View>
   );
@@ -409,5 +409,4 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
   },
- 
 });

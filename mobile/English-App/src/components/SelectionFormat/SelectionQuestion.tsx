@@ -13,10 +13,12 @@ type SelectionFormatProps = {
 
 const SelectionQuestion = ({ text, options, order }: SelectionFormatProps) => {
   const [expanded, setExpanded] = React.useState(false);
+  
+  
   return (
     <View className=" flex flex-row  items-start">
       <Text className=" text-primaryLight text-lg">{order}.</Text>
-      <DropdownComponent />
+      <DropdownComponent options={options} />
       <Text className="question flex self-end text-lg flex-shrink mr-2 ">
         {text}
       </Text>

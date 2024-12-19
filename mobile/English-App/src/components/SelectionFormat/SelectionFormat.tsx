@@ -25,6 +25,7 @@ type SelectionFormatProps = {
 
 const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
   const { questions } = questionGroup;
+
   return (
     <View>
       <View
@@ -36,8 +37,15 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
 
         <QuestionSubHeading text="Write the correct letter in boxes 1-5 on your answer sheet"></QuestionSubHeading> */}
         {questionGroup.text && (
+<<<<<<< HEAD
           <HtmlReader
             html={ questionGroup.text }
+=======
+          <RenderHTML
+            contentWidth={width}
+            source={{ html: questionGroup.text }}
+            ignoredDomTags={["iframe"]}
+>>>>>>> 74d46f818ed44c4cb087dffc8b6355e845beb9be
           />
         )}
         <View className="questions-container">
@@ -47,7 +55,7 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
                 key={question.id}
                 order={question.order}
                 text={question.text}
-                options={options}
+                options={question.answers.map((answer) => answer.text)}
               />
             </View>
           ))}

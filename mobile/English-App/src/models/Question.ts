@@ -5,5 +5,6 @@ type Question={
     text: string;
     type: string;
     order: number;
+    answers: Answer[];
 
 }

@@ -14,9 +14,12 @@ export default function PayWithBank() {
     try {
       setLoading(true);
       const res = await purchaseservice.buyCourse(courseID);
+      console.log(res);
       if (res) {
         setLoading(false);
-        nav.navigate("Validation", { coursebuyingId: res.data.courseBuying});
+        
+        
+        nav.navigate("Validation", { courseBuyingId: res.data.courseBuying});
       }
     } catch (error) {
       console.error("Error purchasing course: ", error);

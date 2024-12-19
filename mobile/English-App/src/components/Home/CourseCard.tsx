@@ -9,6 +9,8 @@ import { Course } from "../../models";
 
 export default function CourseCard({ course }: { course: Course }) {
   const nav = useNavigation<CourseDetailScreenNavigationProp>();
+
+  
   return (
     <TouchableOpacity
       className="flex flex-col justify-between w-40"
@@ -17,7 +19,7 @@ export default function CourseCard({ course }: { course: Course }) {
       }}
     >
       <Image
-        source={require("../../../assets/courseCard.jpg")}
+        source={{ uri: course.thumbnail_image }}
         className="w-full h-32"
       />
       <Text

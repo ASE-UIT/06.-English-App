@@ -20,6 +20,12 @@ import {
   SignUp,
 } from "../screens/Auth";
 import SplashScreen from "../screens/Splash/SplashScreen";
+<<<<<<< HEAD
+=======
+import CheckKey from "../screens/CourseDetail/CheckKey";
+import DetailGrammar from "../screens/Grammar/DetailGrammar";
+import SectionRoot from "../screens/SectionRoot";
+>>>>>>> 74d46f818ed44c4cb087dffc8b6355e845beb9be
 
 export default function RootStack() {
   const Stack = createStackNavigator();
@@ -97,6 +103,13 @@ export default function RootStack() {
           headerRight: () => <HeaderRight scrollRef={scrollRef} />,
         }}
       />
+      <Stack.Screen
+      name="SectionRoot"
+      component={SectionRoot}
+      options={{
+        headerShown: false,
+      }}
+    />
     </Stack.Navigator>
   );
 }
