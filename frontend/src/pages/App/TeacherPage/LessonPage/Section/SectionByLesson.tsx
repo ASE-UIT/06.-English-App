@@ -1,6 +1,7 @@
 import { useCourseSlice } from "@/features/course/store"
 import { selectCourseView } from "@/features/course/store/selectors"
 import { useSectionByLesson } from "@/features/section/hooks"
+import { useSectionSlice } from "@/features/section/store"
 import { sectionNameMap } from "@/type/section"
 import _ from "lodash"
 import { useDispatch, useSelector } from "react-redux"
@@ -11,6 +12,7 @@ export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; le
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { actions: courseActions } = useCourseSlice()
+  const { actions: sectionActions } = useSectionSlice()
   const { id: courseId } = useSelector(selectCourseView)
   return (
     <div className="flex w-full flex-col gap-[23px]">
@@ -35,6 +37,7 @@ export const SectionByLesson = ({ lessonId, lessonName }: { lessonId: string; le
               const sectionId = section.id
               dispatch(courseActions.updateSelectedSection(view))
               dispatch(courseActions.updateSelectedLesson(lessonView))
+              dispatch(sectionActions.updateQuestion({}))
               navigate(`/course/${courseId}/lesson/${lessonId}/${sectionId}`)
             }}
             className="flex h-full w-full cursor-pointer border-[1px] border-headerIcon py-[11px] shadow-sectionCard"

@@ -19,7 +19,6 @@ const LoginPage = () => {
       toast.success("Đăng nhập thành công!")
       console.log("Login success")
       navigate(teacherRoutes.Course.Base)
-      toast.success("Đăng nhập thành công")
     } else toast.error("Sai tài khoản hoặc mật khẩu!")
   }
   return (

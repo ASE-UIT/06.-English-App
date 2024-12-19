@@ -26,6 +26,10 @@ const slice = createSlice({
       state.changed = action.payload
     },
     updateQuestion(state, action) {
+      if (Object.keys(action.payload).length === 0) {
+        state.update = {}
+        return
+      }
       Object.entries(action.payload).forEach(([key, value]) => {
         state.update[key as keyof typeof state.update] = value as (typeof state.update)[keyof typeof state.update]
       })

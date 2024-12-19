@@ -74,7 +74,7 @@ const Question = ({
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
   const [question, setQuestion] = useState<string>(currentQuestion ? (currentQuestion[index]?.text ?? "") : "")
-  console.log("NhapText", question, section)
+  console.log("NhapText", question, section, currentQuestion)
   const [answers, setAnswers] = useState<AnswerType[]>(currentQuestion ? (currentQuestion[index]?.answers ?? []) : [])
   const [newAnswerText, setNewAnswerText] = useState<string>("")
   const handleRemoveAnswer = (index: number) => {
@@ -124,7 +124,7 @@ const Question = ({
         console.log("Begin", prev, question)
         if (prev.length > 0) {
           if (
-            prev.some((q) => q.id === currentQuestion[index]?.id) ||
+            prev.some((q) => q.id && q.id === currentQuestion[index]?.id) ||
             prev.some((q) => q.order === currentQuestion[index]?.order)
           ) {
             console.log(
@@ -146,8 +146,6 @@ const Question = ({
                 q.id === currentQuestion[index]?.id || q.order === currentQuestion[index]?.order
                   ? {
                       id: q.id,
-                      section: sectionId as string,
-                      questionGroup: sectionCurrent,
                       text: question,
                       type: type,
                       order: currentQuestion[index]?.order ?? index,
@@ -182,6 +180,34 @@ const Question = ({
               )
             }
           }
+          if (currentQuestion.length === 0) {
+            if (prev.some((q) => q.order === index)) {
+              if (!noQuestionGroup) {
+                return prev.map((q) =>
+                  q.order === index
+                    ? {
+                        id: q.id,
+                        text: question,
+                        type: type,
+                        order: q.order,
+                        answers: answers,
+                      }
+                    : q,
+                )
+              } else {
+                return prev.map((q) =>
+                  q.order === index
+                    ? {
+                        id: q.id,
+                        text: question,
+                        type: type,
+                        order: q.order,
+                      }
+                    : q,
+                )
+              }
+            }
+          }
         }
         if (noQuestionGroup) {
           console.log("ElseIfNoQuestionGroupprev", prev, currentQuestion[index])
@@ -195,13 +221,24 @@ const Question = ({
             },
           ]
         }
+        if (prev.some((q) => !q.id && q.text === question)) {
+          return prev.map((q) =>
+            q.text === question
+              ? {
+                  id: q.id,
+                  text: question,
+                  type: type,
+                  order: currentQuestion[index]?.order ?? index,
+                  answers: answers,
+                }
+              : q,
+          )
+        }
         console.log("ReturnQuestionGroupprev", prev)
         return [
           ...prev,
           {
             id: currentQuestion[index]?.id,
-            section: sectionId as string,
-            questionGroup: sectionCurrent,
             text: question,
             type: type,
             order: currentQuestion[index]?.order ?? index,

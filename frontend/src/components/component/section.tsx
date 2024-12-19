@@ -111,6 +111,7 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
                     questionGroupId: questionGrKey,
                     questions: value as question[],
                   }
+                  console.log("createWriting", data)
                   promises.push(CreateQuestion.mutate(data))
                 })
               }}
