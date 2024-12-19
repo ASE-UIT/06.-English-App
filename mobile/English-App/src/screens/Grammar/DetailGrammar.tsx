@@ -74,7 +74,9 @@ export default function DetailGrammar() {
           ignoredDomTags={[]} 
         />
       ) : (
-        <Text>Loading...</Text>
+        <View className="flex-1 items-center justify-center">
+          <Text className=" text-2xl font-medium">Loading...</Text>
+        </View>
       )}
     </ScrollView>
   );

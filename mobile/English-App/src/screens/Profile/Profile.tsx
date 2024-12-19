@@ -125,8 +125,8 @@ const Profile = () => {
             <Text className="text-black ml-5 self-start text-base font-semibold leading-none">
               BirthDate
             </Text>
-            <TouchableOpacity onPress={() => setShow(true)} className="flex ">
-              <View className="bg-white rounded-[15px] shadow p-3">
+            <TouchableOpacity onPress={() => setShow(true)} className="flex flex-row w-2/3 justify-center items-center ">
+              <View className="bg-white w-2/3  rounded-[15px] shadow p-3">
                 <Text className="text-black ml-[2px] text-base font-semibold leading-none">
                   {new Date(profile.birthDate).toLocaleDateString("vi-VN", {
                     year: "numeric",
