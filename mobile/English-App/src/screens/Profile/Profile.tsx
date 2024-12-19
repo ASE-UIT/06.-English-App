@@ -20,11 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 import { LoginScreenNavigationProp } from "../../type";
 import * as SecureStore from "expo-secure-store";
 import { User } from "../../models";
-import {
-  ImagePickerResponse,
-  launchCamera,
-  launchImageLibrary,
-} from "react-native-image-picker";
+import * as ImagePicker from 'expo-image-picker';
 const Profile = () => {
   const [profile, setProfile] = useState({
     id: "",
@@ -82,45 +78,22 @@ const Profile = () => {
     }
   };
   const [image, setImage] = useState<string | null>(null);
-  const [imageType, setImageType] = useState<string | null>(null);
-  // Handle Camera
-  const handleCamera = () => {
-    launchCamera(
-      { mediaType: "photo", cameraType: "back", quality: 1 },
-      (response: ImagePickerResponse) => {
-        if (response.didCancel) {
-          console.log("User canceled camera picker");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error: ", response.errorMessage);
-        } else {
-          const uri = response.assets?.[0]?.uri;
-          const type = response.assets?.[0]?.type; // MIME type of the image
-          setImage(uri || null);
-          setImageType(type || null);
-        }
-      }
-    );
-  };
+  
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
-  // Handle Image Picker
-  const handleImagePicker = () => {
-    launchImageLibrary(
-      { mediaType: "photo", quality: 1 },
-      (response: ImagePickerResponse) => {
-        if (response.didCancel) {
-          console.log("User canceled image picker");
-        } else if (response.errorCode) {
-          console.log("ImagePicker Error: ", response.errorMessage);
-        } else {
-          const uri = response.assets?.[0]?.uri;
-          const type = response.assets?.[0]?.type; // MIME type of the image
-          setImage(uri || null);
-          setImageType(type || null);
-        }
-      }
-    );
-  };
+    console.log(result);
 
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
   const handleLogout = async () => {
     await SecureStore.deleteItemAsync("accessToken");
     await SecureStore.deleteItemAsync("refreshToken");
@@ -143,7 +116,7 @@ const Profile = () => {
             containerStyle={{ marginTop: 20 }}
             onPress={() => console.log("Works!")}
           />
-          <TouchableOpacity onPress={handleImagePicker}>
+          <TouchableOpacity onPress={() => pickImage()}>
             <Text>Change Image</Text>
           </TouchableOpacity>
           <View className="w-[90%] justify-center items-center ">
