@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { Text, View, TextInput, Alert, StyleSheet } from "react-native";
-import { Button } from "@rneui/themed";
-import { Dropdown } from "react-native-element-dropdown";
-import purchaseservice from "../../services/purchase.service";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { CheckKeyScreenNavigationProp, PayMentScreenRouteProp } from "../../type";
+import { Button } from "@rneui/themed";
+import React, { useState } from "react";
+import { Image, Modal, StyleSheet, Text, TextInput, View } from "react-native";
+import { Dropdown } from "react-native-element-dropdown";
 import Spinner from 'react-native-loading-spinner-overlay';
+import purchaseservice from "../../services/purchase.service";
+import { CheckKeyScreenNavigationProp, PayMentScreenRouteProp } from "../../type";
 export default function PayWithBank() {
   const route = useRoute<PayMentScreenRouteProp>();
   const { courseID } = route.params;
@@ -27,6 +27,17 @@ export default function PayWithBank() {
   }
   //Spinner
   const [loading, setLoading] = useState(false);
+
+
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+
+  const handleCheckout = () => {
+    setIsPopupVisible(true);
+  };
+
+  const closePopup = () => {
+    setIsPopupVisible(false);
+  };
   return (
     <View className="w-full h-full">
       <Spinner
@@ -34,6 +45,22 @@ export default function PayWithBank() {
         textContent={'Loading...'}
         textStyle={styles.spinnerTextStyle}
       />
+      {/* Modal for Success Popup */}
+      <Modal
+        transparent={true}
+        animationType="slide"
+        visible={isPopupVisible}
+        onRequestClose={closePopup} // Handle the back button on Android
+      >
+        <View >
+          <View >
+            <Image
+              source={{ uri: '../../assets/pay_success.png' }} // Replace with your image URL
+            />
+            <Text >Purchase Successful!</Text>
+          </View>
+        </View>
+      </Modal>
       <View className="h-full mt-[50px] mx-[16px] flex flex-col justify-around items-center">
         <Text className="text-[64px] text-blue1">$40</Text>
         <View className="form w-full flex gap-4">
