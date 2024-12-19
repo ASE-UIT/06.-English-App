@@ -223,4 +223,22 @@ export class CourseService {
       throw new HttpException(error.message, 500);
     }
   }
+
+  async getContinueLearning(userAwsId: string) {
+    try {
+      const course = await this.dataSource
+        .getRepository(Course)
+        .createQueryBuilder('course')
+        .leftJoin('course.courseOwnings', 'courseOwnings')
+        .leftJoin('courseOwnings.student', 'student')
+        .leftJoin('student.userInfo', 'userInfo')
+        .select(['course', 'userInfo'])
+        .where('userInfo.awsCognitoId = :userAwsId', { userAwsId })
+        .andWhere('course.state = :state', { state: STATE.PUBLISHED })
+        .getMany();
+      return course;
+    } catch (error) {
+      throw new HttpException(error.message, 500);
+    }
+  }
 }

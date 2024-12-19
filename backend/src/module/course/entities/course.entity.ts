@@ -25,8 +25,7 @@ export class Course extends Base {
   price: number;
 
   @Column({
-    default:
-      'https://study4.com/media/courses/Course/files/2023/10/19/phat_am_giao_tiep_1.webp',
+    default: '948b7f4a-bb98-42cf-8df2-db2b6bfa5703.jpg',
   })
   @AutoMap()
   thumbnail_image: string;

@@ -206,4 +206,18 @@ export class CourseController {
   remove(@Param('id') id: string) {
     return this.courseService.remove(id);
   }
+
+  @ApiOperation({
+    summary: 'Get continue learning course',
+  })
+  @Get(END_POINTS.COURSE.GET_CONTINUE_LEARNING)
+  async getContinueLearningCourse(@User() user: IUser) {
+    const course = await this.courseService.getContinueLearning(user.userAwsId);
+    const result = this.mapper.mapArray(
+      course,
+      Course,
+      CourseDetailResponseDto,
+    );
+    return ResponseObject.create('Course retrieved successfully', result);
+  }
 }
