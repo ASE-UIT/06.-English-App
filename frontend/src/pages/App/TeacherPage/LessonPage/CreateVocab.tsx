@@ -7,7 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Input } from "@/components/Layout/Components/ui/Input"
 import { Button } from "@/components/Layout/Components/ui/Button"
 import { BiPlus } from "react-icons/bi"
-import { GiGlobe } from "react-icons/gi"
 import { WordType, WordTypeMap } from "@/type"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { fileApi, lessonApi } from "@/apis"
@@ -32,7 +31,7 @@ export const formSchema = z.object({
 export const CreateVocab = () => {
   const { lessonId } = useParams()
   const queryClient = useQueryClient()
-  const { data: vocabByLesson } = useVocabByLesson(lessonId as string)
+  const { data: vocabByLesson, refetch } = useVocabByLesson(lessonId as string)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +47,9 @@ export const CreateVocab = () => {
         toast.success(`${Res.message}`)
         form.reset()
         if (lessonId) {
-          queryClient.invalidateQueries({ queryKey: queryKeys.vocabByLessonId.gen(lessonId) })
+          console.log("CheckLessonId", lessonId)
+          queryClient.invalidateQueries({ queryKey: queryKeys.vocabByLessonId.gen(lessonId), })
+          refetch()
         }
       } else {
         toast.error(`Error ${Res?.statusCode}: ${Res?.message}`)
@@ -83,7 +84,7 @@ export const CreateVocab = () => {
     }
     CreateVocab.mutate({ lessonId: lessonId as string, vocabularies: [data] })
   }
-
+  console.log("vocabByLesson", vocabByLesson)
   return (
     <div className="flex h-full min-h-screen w-full flex-col gap-5 bg-white px-[66px] py-[64px]">
       {CreateVocab.isPending ? <LoadingScreen message="Đang cập nhật từ vựng" /> : null}
@@ -167,10 +168,6 @@ export const CreateVocab = () => {
             </div>
           </form>
         </Form>
-        <Button className="mt-5 rounded-full border-2 border-fuschia bg-lessonbg px-[12px] py-[9.5px] text-[16px] font-normal text-fuschia">
-          <GiGlobe className="mr-[1.5px]" size={20} />
-          Add from dictionary
-        </Button>
       </div>
       <div className="mt-[25px]">
         <Button

@@ -44,9 +44,10 @@ export const CreateGrammar = () => {
     console.log("checkGrammar", check, id)
     return check
   }
+  console.log("CreateGrammar", CreateGrammar.isPending)
   return (
     <div className="flex h-full min-h-screen w-full flex-col bg-white px-[66px] py-[64px]">
-      {CreateGrammar.isPending ? <LoadingScreen /> : null}
+      {CreateGrammar.isPending && <LoadingScreen />}
       <div className="mb-[43px] flex flex-col rounded-md border-2 border-fuschia px-[78px] py-[56px]">
         <div className="flex w-full items-center justify-between">
           <Input

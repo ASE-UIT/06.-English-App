@@ -12,14 +12,17 @@ export const useLessonById = (lessonId: string) =>
   useQuery({
     queryKey: queryKeys.lessonById.gen(lessonId),
     queryFn: () => lessonApi.GetLessonById(lessonId),
+    refetchOnMount: 'always',
   })
 export const useGrammarByLesson = (lessonId: string) =>
   useQuery({
     queryKey: queryKeys.grammarByLessonId.gen(lessonId),
     queryFn: () => lessonApi.getGrammarByLesson(lessonId),
+    refetchOnMount: 'always',
   })
 export const useVocabByLesson = (lessonId: string) =>
   useQuery({
     queryKey: queryKeys.vocabByLessonId.gen(lessonId),
     queryFn: () => lessonApi.getVocabByLesson(lessonId),
+    refetchOnMount: 'always',
   })
