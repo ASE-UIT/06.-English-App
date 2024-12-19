@@ -36,7 +36,7 @@ export default function LearningScreen() {
   console.log(studentCourses.map((course) => course.id));
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="w-full h-full flex-1 ">
       <MainHeader />
       <ScrollView className="w-full px-[24px] py-6">
         <Text className="font-semibold text-base text-[#5D5FEF] mb-4">
