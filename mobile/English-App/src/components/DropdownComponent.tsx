@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 
 const data = [
@@ -10,12 +10,21 @@ const data = [
 ];
 type DropdownComponentProps = {
   options: string[];
+  onChange: (value: string) => void;
 };
 
-const DropdownComponent = ({ options }: DropdownComponentProps) => {
+const DropdownComponent = ({ options, onChange }: DropdownComponentProps) => {
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+
   const data = options.map((option) => {
     return { label: option, value: option };
   });
+
+  const handleChange = (item: { label: string; value: string }) => {
+    setSelectedValue(item.value);
+    onChange(item.value);
+  };
+
   return (
     <View className=" w-[80px] pl-3 flex justify-center px-2  ">
       <Dropdown
@@ -24,13 +33,18 @@ const DropdownComponent = ({ options }: DropdownComponentProps) => {
         labelField={"label"}
         valueField={"value"}
         placeholder={""}
-        onChange={(item) => console.log(item)}
+        value={selectedValue}
+        onChange={handleChange}
         search={false}
         containerStyle={styles.container}
         placeholderStyle={styles.placeholder}
         renderRightIcon={() => <Text></Text>}
         selectedTextStyle={styles.selectedText}
         itemContainerStyle={styles.itemContainer}
+        style={[
+          styles.dropdown,
+          selectedValue ? styles.selectedDropdown : styles.unselectedDropdown,
+        ]}
       />
     </View>
   );
@@ -52,22 +66,11 @@ const styles = StyleSheet.create({
   placeholder: {
     width: "auto",
     textAlign: "center",
-    borderWidth: 1,
-    borderRadius: 10,
-    borderStyle: "solid",
-    borderColor: "#F178B6",
-    backgroundColor: "white",
-
     flex: 1,
   },
   selectedText: {
     width: "auto",
     textAlign: "center",
-    borderWidth: 2,
-    borderRadius: 10,
-    borderStyle: "solid",
-    borderColor: "#5D5FEF",
-    backgroundColor: "#FCDDEC",
     flex: 1,
   },
   itemContainer: {
@@ -78,5 +81,18 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     backgroundColor: "transparent",
     width: 80,
+  },
+  dropdown: {
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 5,
+  },
+  selectedDropdown: {
+    borderColor: "#5D5FEF",
+    backgroundColor: "#FCDDEC",
+  },
+  unselectedDropdown: {
+    borderColor: "#F178B6",
+    backgroundColor: "white",
   },
 });

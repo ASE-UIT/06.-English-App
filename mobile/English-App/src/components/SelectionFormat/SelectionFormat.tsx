@@ -21,9 +21,10 @@ const options = ["A", "B", "C", "D"];
 
 type SelectionFormatProps = {
   questionGroup: QuestionGroup;
+  onAnswerChange: (questionId: string, value: string) => void;
 };
 
-const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
+const SelectionFormat = ({ questionGroup, onAnswerChange }: SelectionFormatProps) => {
   const { questions } = questionGroup;
 
   return (
@@ -49,6 +50,7 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
                 order={question.order}
                 text={question.text}
                 options={question.answers.map((answer) => answer.text)}
+                onAnswerChange={(value) => onAnswerChange(question.id, value)}
               />
             </View>
           ))}

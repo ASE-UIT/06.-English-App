@@ -121,10 +121,22 @@ export default function ListeningExerciseScreen() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const estimateContentHeight = (content: string) => {
+    const CHAR_HEIGHT = 0.5; // Estimate height per character
+    return content.length * CHAR_HEIGHT;
+  };
+
+  const estimateQuestionGroupHeight = (questionGroup: any) => {
+    const CHAR_HEIGHT = 0.5; // Estimate height per character
+    return questionGroup.text.length * CHAR_HEIGHT;
+  };
+
   const handleQuestionChange = (questionIndex: number) => {
     setCurrentQuestion(questionIndex + 1);
+    const contentHeight = section ? estimateContentHeight(section.content) : 0;
+    const questionGroupHeight = section ? estimateQuestionGroupHeight(section.questionGroups[0]) : 0;
     scrollViewRef.current?.scrollTo({
-      y: questionIndex * 150, // Adjust the scroll position as needed
+      y: questionIndex * 150 + contentHeight + questionGroupHeight, // Adjust the scroll position as needed
       animated: true,
     });
   };
@@ -137,6 +149,19 @@ export default function ListeningExerciseScreen() {
         await sound.playAsync();
       }
       setIsPlaying(!isPlaying);
+    }
+  };
+
+  const handleInputChange = (questionId: string, value: string) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, answered: !!value } : question
+      )
+    );
+    if (value) {
+      setAnsweredQuestions((prevAnswered) => [...prevAnswered, questionId]);
+    } else {
+      setAnsweredQuestions((prevAnswered) => prevAnswered.filter(id => id !== questionId));
     }
   };
 
@@ -198,6 +223,7 @@ export default function ListeningExerciseScreen() {
                       style={styles.input}
                       underlineColorAndroid="transparent"
                       inputContainerStyle={{ borderBottomWidth: 0 }} // Remove the underline
+                      onChangeText={(value) => handleInputChange(question.id, value)}
                     />
                     </View>
                 ))}

@@ -83,7 +83,7 @@ const HtmlReader: React.FC<HtmlReaderProps> = ({ html }) => {
           }
         }}
         customHTMLElementModels={customHTMLElementModels}
-        ignoredDomTags={[]}
+        ignoredDomTags={["iframe"]}
       />
     </View>
   );

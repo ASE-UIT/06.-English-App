@@ -23,12 +23,37 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
   const [questions, setQuestions] = useState<{ id: string; text: string; options: string[]; answered: boolean }[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
   
+  const estimateContentHeight = (content: string) => {
+    const CHAR_HEIGHT = 0.35; // Estimate height per character
+    return content.length * CHAR_HEIGHT;
+  };
+
+  const estimateQuestionGroupHeight = (questionGroup: any) => {
+    const CHAR_HEIGHT = 0.5; // Estimate height per character
+    return questionGroup.text.length * CHAR_HEIGHT;
+  };
+
   const handleQuestionChange = (questionIndex: number) => {
     setCurrentQuestion(questionIndex + 1);
+    const contentHeight = section ? estimateContentHeight(section.content) : 0;
+    const questionGroupHeight = section ? estimateQuestionGroupHeight(section.questionGroups[0]) : 0;
     scrollViewRef.current?.scrollTo({
-      y: questionIndex * 150, // Adjust the scroll position as needed
+      y: questionIndex * 50 + contentHeight + questionGroupHeight, // Adjust the scroll position as needed
       animated: true,
     });
+  };
+
+  const handleAnswerChange = (questionId: string, value: string) => {
+    setQuestions((prevQuestions) =>
+      prevQuestions.map((question) =>
+        question.id === questionId ? { ...question, answered: !!value } : question
+      )
+    );
+    if (value) {
+      setAnsweredQuestions((prevAnswered) => [...prevAnswered, questionId]);
+    } else {
+      setAnsweredQuestions((prevAnswered) => prevAnswered.filter(id => id !== questionId));
+    }
   };
 
   // Fetch section data from API
@@ -66,28 +91,23 @@ export default function ReadingExercise({ scrollRef }: ReadingExerciseProps) {
     <SafeAreaView style={styles.container}>
       <ScrollView
         className="reading-exercise flex gap-4"
-        ref={scrollRef}
+        ref={scrollViewRef}
       >
-        {section && (
-          <View className="reading-content flex gap-2 items-center">
-            {section.content && (
-              <HtmlReader html={section.content} />
-            )}
-          </View>
-        )}
-        <View
-          className="reading-questions"
-          style={{ display: "flex", gap: 20 }}
-        >
-          {questionGroups ? (
-            <>
-              {questionGroups.map((questionGroup) => (
-                <SelectionFormat
-                  key={questionGroup.id}
-                  questionGroup={questionGroup}
-                />
-              ))}
-            </>
+        {/* Render the main reading content */}
+        <View className="reading-content flex gap-2 items-center">
+          {section.content && <HtmlReader html={section.content} />}
+        </View>
+
+        {/* Render each question group and its questions */}
+        <View className="reading-questions" style={{ display: "flex", gap: 20 }}>
+          {questionGroups.length > 0 ? (
+            questionGroups.map((questionGroup) => (
+              <SelectionFormat
+                key={questionGroup.id}
+                questionGroup={questionGroup}
+                onAnswerChange={handleAnswerChange}
+              />
+            ))
           ) : (
             <Text>No questions available</Text>
           )}
