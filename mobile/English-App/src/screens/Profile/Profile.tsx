@@ -20,7 +20,11 @@ import { useNavigation } from "@react-navigation/native";
 import { LoginScreenNavigationProp } from "../../type";
 import * as SecureStore from "expo-secure-store";
 import { User } from "../../models";
-import { ImagePickerResponse, launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {
+  ImagePickerResponse,
+  launchCamera,
+  launchImageLibrary,
+} from "react-native-image-picker";
 const Profile = () => {
   const [profile, setProfile] = useState({
     id: "",
@@ -45,7 +49,10 @@ const Profile = () => {
   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
     setShow(false);
     if (selectedDate) {
-      setProfile((prev) => ({ ...prev, birthDate: selectedDate.toISOString() }));
+      setProfile((prev) => ({
+        ...prev,
+        birthDate: selectedDate.toISOString(),
+      }));
     }
   };
 
@@ -79,12 +86,12 @@ const Profile = () => {
   // Handle Camera
   const handleCamera = () => {
     launchCamera(
-      { mediaType: 'photo', cameraType: 'back', quality: 1 },
+      { mediaType: "photo", cameraType: "back", quality: 1 },
       (response: ImagePickerResponse) => {
         if (response.didCancel) {
-          console.log('User canceled camera picker');
+          console.log("User canceled camera picker");
         } else if (response.errorCode) {
-          console.log('ImagePicker Error: ', response.errorMessage);
+          console.log("ImagePicker Error: ", response.errorMessage);
         } else {
           const uri = response.assets?.[0]?.uri;
           const type = response.assets?.[0]?.type; // MIME type of the image
@@ -98,12 +105,12 @@ const Profile = () => {
   // Handle Image Picker
   const handleImagePicker = () => {
     launchImageLibrary(
-      { mediaType: 'photo', quality: 1 },
+      { mediaType: "photo", quality: 1 },
       (response: ImagePickerResponse) => {
         if (response.didCancel) {
-          console.log('User canceled image picker');
+          console.log("User canceled image picker");
         } else if (response.errorCode) {
-          console.log('ImagePicker Error: ', response.errorMessage);
+          console.log("ImagePicker Error: ", response.errorMessage);
         } else {
           const uri = response.assets?.[0]?.uri;
           const type = response.assets?.[0]?.type; // MIME type of the image
@@ -113,6 +120,27 @@ const Profile = () => {
       }
     );
   };
+
+  const handleLogout = async () => {
+    try {
+      // because currently the signOut api is not working (timeout, return HTML instead of JSON), i will just remove the token from the storage and navigate to login screen
+      await SecureStore.deleteItemAsync("accessToken");
+      await SecureStore.deleteItemAsync("refreshToken");
+      loginNav.navigate("Login");
+      const res = await authService.signOut();
+      if (res.statusCode === 201) {
+        console.log("Logged out");
+        await SecureStore.deleteItemAsync("accessToken");
+        await SecureStore.deleteItemAsync("refreshToken");
+        loginNav.navigate("Login");
+      } else {
+        console.error("Failed to log out: ", res.message);
+      }
+    } catch (err) {
+      console.error("Failed to log out: ", err);
+    }
+  };
+
   return (
     <SafeAreaView>
       <MainHeader />
@@ -129,7 +157,9 @@ const Profile = () => {
             containerStyle={{ marginTop: 20 }}
             onPress={() => console.log("Works!")}
           />
-          <TouchableOpacity onPress={handleImagePicker}><Text>Change Image</Text></TouchableOpacity>
+          <TouchableOpacity onPress={handleImagePicker}>
+            <Text>Change Image</Text>
+          </TouchableOpacity>
           <View className="w-[90%] justify-center items-center ">
             <Text className="text-black ml-5 self-start text-base font-semibold leading-none">
               BirthDate
@@ -138,9 +168,9 @@ const Profile = () => {
               <View className="bg-white rounded-[15px] shadow p-3">
                 <Text className="text-black ml-[2px] text-base font-semibold leading-none">
                   {new Date(profile.birthDate).toLocaleDateString("vi-VN", {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
                   })}
                 </Text>
               </View>
@@ -164,7 +194,11 @@ const Profile = () => {
             value={profile.lastName}
             onChangeText={(value) => handleInputChange("lastname", value)}
           />
-          <InputField label="Email" value={profile.email} onChangeText={(value) => handleInputChange("email", value)} />
+          <InputField
+            label="Email"
+            value={profile.email}
+            onChangeText={(value) => handleInputChange("email", value)}
+          />
           <InputField
             label="Phone Number"
             value={profile.phone}
@@ -187,31 +221,11 @@ const Profile = () => {
                 color="white"
                 size={25}
               />
-              <Text className="text-white text-xs  font-semibold">
-                Update
-              </Text>
+              <Text className="text-white text-xs  font-semibold">Update</Text>
             </TouchableOpacity>
             <TouchableOpacity
               className="flex-row justify-between items-center bg-secondary rounded-lg shadow p-3"
-              onPress={async () => {
-                try {
-                  // because currently the signOut api is not working (timeout, return HTML instead of JSON), i will just remove the token from the storage and navigate to login screen
-                  await SecureStore.deleteItemAsync("accessToken");
-                  await SecureStore.deleteItemAsync("refreshToken");
-                  loginNav.navigate("Login");
-                  const res = await authService.signOut();
-                  if (res.statusCode === 201) {
-                    console.log("Logged out");
-                    await SecureStore.deleteItemAsync("accessToken");
-                    await SecureStore.deleteItemAsync("refreshToken");
-                    loginNav.navigate("Login");
-                  } else {
-                    console.error("Failed to log out: ", res.message);
-                  }
-                } catch (err) {
-                  console.error("Failed to log out: ", err);
-                }
-              }}
+              onPress={() => handleLogout()}
             >
               <Icon
                 name="logout"
@@ -219,16 +233,13 @@ const Profile = () => {
                 color="white"
                 size={25}
               />
-              <Text className="text-white text-xs  font-semibold">
-                Log out
-              </Text>
+              <Text className="text-white text-xs  font-semibold">Log out</Text>
             </TouchableOpacity>
           </View>
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
   );
-
 };
 
 export default Profile;

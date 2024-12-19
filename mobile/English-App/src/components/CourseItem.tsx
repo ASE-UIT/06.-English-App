@@ -5,7 +5,7 @@ import Card from '@rneui/themed'
 
 export default function CourseItem({ srcImg, title, teacherName, progress, rated = 5, onPressItem }:  { srcImg: string, title: string, teacherName: string, progress: number, rated: number, onPressItem: () => void }) {
   return (
-    <TouchableOpacity onPress={onPressItem} className='flex flex-row max-h-[80px] justify-center h-full container max-w-[320px] gap-1 mx-auto mb-3'>
+    <TouchableOpacity onPress={onPressItem} className='flex flex-row max-h-[80px] justify-center h-full containaer max-w-[320px] gap-1 mx-auto my-3 mb-3'>
         <View className='w-fit mr-[5px]'>
             <Image className='mt-1 aspect-square max-w-[50px] w-full max-h-[50px] h-full object-cover object-center' src={srcImg} />
         </View>
