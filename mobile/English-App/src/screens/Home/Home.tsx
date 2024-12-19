@@ -41,9 +41,9 @@ const Home = () => {
     };
     const fetchRecommendationCourses = async () => {
       try {
-        const res = await courseService.getAllCourses(); // change to getRecommendationCourses later
+        const res = await courseService.getAllRecommendationCourses(); // change to getRecommendationCourses later
         if (res.statusCode === 200) {
-          setRecommendationCourses(res.data.data);
+          setRecommendationCourses(res.data);
         } else {
           console.error(
             "Error fetching recommendation courses, status code: ",

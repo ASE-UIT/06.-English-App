@@ -116,7 +116,9 @@ const Profile = () => {
             containerStyle={{ marginTop: 20 }}
             onPress={() => console.log("Works!")}
           />
-          <TouchableOpacity onPress={() => pickImage()}>
+          <TouchableOpacity onPress={() => {
+            pickImage();
+          }}>
             <Text>Change Image</Text>
           </TouchableOpacity>
           <View className="w-[90%] justify-center items-center ">
