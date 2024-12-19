@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 // import { ComboboxDemo } from "@/components/ui/combobox"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Question from "../Components/Question"
 import { useDispatch, useSelector } from "react-redux"
 import { useSectionSlice } from "@/features/section/store"
@@ -29,9 +29,13 @@ const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: str
   const updateData = useSelector(selectSectionUpdate)
   const currentQuestion = updateData[sectionCurrent]
   const [questions, setQuestions] = useState<number>(currentQuestion?.length ?? 0)
+  useEffect(() => {
+    setQuestions(currentQuestion?.length ?? 0)
+  }, [currentQuestion?.length])
   console.log("updateData", updateData)
   console.log("currentQuestion", currentQuestion)
   console.log("bigBang", question)
+  console.log("questionLength", questions)
   return (
     <div className="flex w-full flex-col">
       <ToastContainer />
@@ -76,9 +80,10 @@ const MultipleChoice = ({ type, sectionType }: { type: string; sectionType?: str
           Save
         </Button>
       }
-      {Array.from({ length: questions }).map((_, index) => (
-        <Question key={index} index={index} setQuestion={setQuestion} type={type} />
-      ))}
+      {currentQuestion &&
+        Array.from({ length: questions }).map((_, index) => (
+          <Question key={index} index={index} setQuestion={setQuestion} type={type} />
+        ))}
       <Button
         onClick={() => {
           dispatch(sectionActions.updateViewChanged(true))

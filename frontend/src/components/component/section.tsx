@@ -117,6 +117,9 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
                   console.log("createWriting", data)
                   promises.push(CreateQuestion.mutate(data))
                 })
+                queryClient.invalidateQueries({
+                  queryKey: queryKeys.sectionById.gen(sectionId as string),
+                })
               }}
               className="rounded-lg bg-green-600 px-3 py-1 text-base font-normal text-white hover:bg-green-700"
             >
@@ -132,7 +135,7 @@ export const Section = ({ onOpenDialog }: { onOpenDialog: () => void }) => {
                 <div
                   key={questionGr.id}
                   onClick={() => dispatch(sectionActions.changeCurrentSection(questionGr.id))}
-                  className={`${sectionCurrent.toString() === questionGr.id ? "my-2 flex w-full rounded-md bg-currentBg px-4 py-3 cursor-pointer transition-all" : "my-2 flex w-full bg-white px-4 py-3 cursor-pointer hover:bg-fuchsia-200 transition-all"}`}
+                  className={`${sectionCurrent.toString() === questionGr.id ? "my-2 flex w-full cursor-pointer rounded-md bg-currentBg px-4 py-3 transition-all" : "my-2 flex w-full cursor-pointer bg-white px-4 py-3 transition-all hover:bg-fuchsia-200"}`}
                 >
                   <LuStar stroke="black" size={20} />
                   <div className="ml-3 flex flex-col">

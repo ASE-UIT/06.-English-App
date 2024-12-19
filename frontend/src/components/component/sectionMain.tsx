@@ -198,6 +198,9 @@ export const SectionMain = () => {
               promises.push(CreateQuestion.mutate(data))
 
               dispatch(sectionActions.updateViewChanged(false))
+              queryClient.invalidateQueries({
+                queryKey: queryKeys.sectionById.gen(sectionId as string),
+              })
             }}
             className="rounded-lg border-2 border-fuschia bg-white px-[14px] py-3 hover:bg-fuschia"
           >
