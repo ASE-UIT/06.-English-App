@@ -7,18 +7,18 @@ type SelectionFormatProps = {
   text: string;
   options: string[];
   order: number;
+  onAnswerChange: (value: string) => void;
 };
 
+const SelectionQuestion = ({ text, options, order, onAnswerChange }: SelectionFormatProps) => {
+  const handleChange = (value: string) => {
+    onAnswerChange(value);
+  };
 
-
-const SelectionQuestion = ({ text, options, order }: SelectionFormatProps) => {
-  const [expanded, setExpanded] = React.useState(false);
-  
-  
   return (
     <View className=" flex flex-row  items-start">
-      <Text className=" text-primaryLight text-lg">{order}.</Text>
-      <DropdownComponent options={options} />
+      <Text className=" text-primaryLight text-lg">{order+1}.</Text>
+      <DropdownComponent options={options} onChange={handleChange} />
       <Text className="question flex self-end text-lg flex-shrink mr-2 ">
         {text}
       </Text>

@@ -5,6 +5,7 @@ import SelectionQuestion from "./SelectionQuestion";
 import QuestionSubHeading from "../QuestionSubHeading";
 import QuestionGroup from "../../models/QuestionGroup";
 import RenderHTML from "react-native-render-html";
+import HtmlReader from "../HtmlReader";
 
 // const data = [
 //   { id: 1, question: "What is the capital of France?" },
@@ -20,9 +21,10 @@ const options = ["A", "B", "C", "D"];
 
 type SelectionFormatProps = {
   questionGroup: QuestionGroup;
+  onAnswerChange: (questionId: string, value: string) => void;
 };
 
-const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
+const SelectionFormat = ({ questionGroup, onAnswerChange }: SelectionFormatProps) => {
   const { questions } = questionGroup;
 
   return (
@@ -36,10 +38,8 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
 
         <QuestionSubHeading text="Write the correct letter in boxes 1-5 on your answer sheet"></QuestionSubHeading> */}
         {questionGroup.text && (
-          <RenderHTML
-            contentWidth={width}
-            source={{ html: questionGroup.text }}
-            ignoredDomTags={["iframe"]}
+          <HtmlReader
+            html={ questionGroup.text }
           />
         )}
         <View className="questions-container">
@@ -50,6 +50,7 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
                 order={question.order}
                 text={question.text}
                 options={question.answers.map((answer) => answer.text)}
+                onAnswerChange={(value) => onAnswerChange(question.id, value)}
               />
             </View>
           ))}
