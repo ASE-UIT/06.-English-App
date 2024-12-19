@@ -6,41 +6,88 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  Image,
+  Dimensions
 } from 'react-native';
 import Slider from '@react-native-community/slider';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Audio } from 'expo-av'; // Import Audio from expo-av
 import BottomNavigation from '../../components/QuestionNavigation';
-import MultipleChoiceQuestion from '../../components/MultipleChoiceFormat/MultipleChoiceQuestion';
-import questionsData from './question.json'; // Import questions from JSON file
 import colors from '../../../colors';
+import Section from "../../models/Section";
+import sectionService from "../../services/section.service";
+import { useRoute, RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../type";
+import SelectionFormat from "../../components/SelectionFormat/SelectionFormat";
 
-const audio_uri = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'
+
+const CONTENT_HEIGHT = 400;
+const BOTTOM_NAV_HEIGHT = 80;
+
+type ListeningExerciseProps = {
+  scrollRef?: React.RefObject<ScrollView>; 
+};
+
 export default function ListeningExerciseScreen() {
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration] = useState(137); // Example duration in seconds
+  const [duration, setDuration] = useState(0); // Initialize duration state
   const [isPlaying, setIsPlaying] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState<string[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const scrollViewRef = useRef<ScrollView>(null);
-  const [questions, setQuestions] = useState<{ id: string; text: string; options: string[]; answered: boolean }[]>(questionsData);
+  const [questions, setQuestions] = useState<{ id: string; text: string; options: string[]; answered: boolean }[]>([]);
   const [sound, setSound] = useState<Audio.Sound | null>(null);
+  const route = useRoute<RouteProp<RootStackParamList, "Reading">>();
+  const { sectionID } = route.params;
+  const [section, setSection] = useState<Section | null>(null);
+  const { width } = Dimensions.get("window");
+  const questionGroups = section ? section.questionGroups : [];
 
   useEffect(() => {
-    const fetchQuestions = async () => {
-      const response = await fetch('./question.json');
-      const data = await response.json();
-      setQuestions(data);
+    const fetchSection = async () => {
+      try {
+        const response = await sectionService.getSectionById(sectionID);
+        setSection(response.data);
+        if (response.data.questionGroups && response.data.questionGroups[0].questions) {
+          setQuestions(response.data.questionGroups[0].questions.map((q: any) => ({
+            id: q.id,
+            text: q.text,
+            options: q.options,
+            answered: false
+          })));
+        }
+      } catch (err) {
+        console.log(err);
+      }
     };
-    fetchQuestions();
-  }, []);
+
+    fetchSection();
+  }, [sectionID]);
 
   useEffect(() => {
     const loadAudio = async () => {
-      const { sound } = await Audio.Sound.createAsync(
-        { uri:  audio_uri} // Online audio URL for testing
-      );
-      setSound(sound);
+      if (section && section.sectionMedia) {
+        const { sound } = await Audio.Sound.createAsync(
+          { uri: section.sectionMedia },
+          { shouldPlay: false }
+        );
+        setSound(sound);
+
+        // Fetch and set the duration of the audio
+        const status = await sound.getStatusAsync();
+        if (status.isLoaded) {
+          if (status.durationMillis !== undefined) {
+            setDuration(status.durationMillis / 1000); // Convert milliseconds to seconds
+          }
+        }
+
+        // Update currentTime as the audio plays
+        sound.setOnPlaybackStatusUpdate((status) => {
+          if (status.isLoaded && status.positionMillis !== undefined) {
+            setCurrentTime(status.positionMillis / 1000); // Convert milliseconds to seconds
+          }
+        });
+      }
     };
 
     loadAudio();
@@ -50,21 +97,12 @@ export default function ListeningExerciseScreen() {
         sound.unloadAsync();
       }
     };
-  }, []);
+  }, [section]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = Math.floor(seconds % 60);
     return `${mins}:${secs.toString().padStart(2, '0')}`;
-  };
-
-  const handleAnswer = (questionId: string) => {
-    if (!answeredQuestions.includes(questionId)) {
-      setAnsweredQuestions([...answeredQuestions, questionId]);
-      setQuestions(questions.map(question => 
-        question.id === questionId ? { ...question, answered: true } : question
-      ));
-    }
   };
 
   const handleQuestionChange = (questionIndex: number) => {
@@ -86,72 +124,73 @@ export default function ListeningExerciseScreen() {
     }
   };
 
+  if (!section) {
+    return <Text>Loading...</Text>;
+  }
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView ref={scrollViewRef} contentContainerStyle={styles.scrollContainer}>
-        {/* Header */}
-        <View style={styles.header}>
-          <TouchableOpacity>
-            <Icon name="chevron-back" size={24} color="#000" />
+
+      <View style={styles.audioPlayer}>
+        <Text style={styles.playAudioText}>Play audio</Text>
+        <View style={styles.playerControls}>
+          <TouchableOpacity onPress={handlePlayPause}>
+            <Icon
+              name={isPlaying ? 'pause' : 'play'}
+              size={24}
+              color={colors.blue1}
+            />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>Section 2</Text>
-          <View style={styles.headerRight}>
-            <Icon name="volume-high-outline" size={24} color="#000" />
-            <Icon name="download-outline" size={24} color="#000" />
-          </View>
+          <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
+          <Slider
+            style={styles.slider}
+            minimumValue={0}
+            maximumValue={duration}
+            value={currentTime}
+            onValueChange={async (value) => {
+              setCurrentTime(value);
+              if (sound) {
+                await sound.setPositionAsync(value * 1000);
+              }
+            }}
+            minimumTrackTintColor="#6b4ce6"
+            maximumTrackTintColor="#ddd"
+            thumbTintColor="#6b4ce6"
+          />
+          <Text style={styles.timeText}>{formatTime(duration)}</Text>
+          <Text style={styles.playbackSpeed}>Playback speed</Text>
         </View>
+      </View>
 
-        {/* Audio Player */}
-        <View style={styles.audioPlayer}>
-          <Text style={styles.playAudioText}>Play audio</Text>
-          <View style={styles.playerControls}>
-            <TouchableOpacity onPress={handlePlayPause}>
-              <Icon
-                name={isPlaying ? 'pause' : 'play'}
-                size={24}
-                color={colors.blue1}
-              />
-            </TouchableOpacity>
-            <Text style={styles.timeText}>{formatTime(currentTime)}</Text>
-            <Slider
-              style={styles.slider}
-              minimumValue={0}
-              maximumValue={duration}
-              value={currentTime}
-              onValueChange={setCurrentTime}
-              minimumTrackTintColor="#6b4ce6"
-              maximumTrackTintColor="#ddd"
-              thumbTintColor="#6b4ce6"
-            />
-            <Text style={styles.timeText}>{formatTime(duration)}</Text>
-            <Text style={styles.playbackSpeed}>Playback speed</Text>
-          </View>
-        </View>
-
-        {/* Questions */}
-        <View style={styles.questionsContainer}>
-          <Text style={styles.questionsTitle}>Questions 1-4</Text>
-          <Text style={styles.questionsInstructions}>
-            Do the following statements agree with the information in the audio?
-          </Text>
-          {questions.map((question, index) => (
-            <MultipleChoiceQuestion
-              key={question.id}
-              number={index + 1}
-              question={question.text}
-              options={question.options}
-              onAnswer={() => handleAnswer(question.id)} // Pass handleAnswer as a callback
-            />
-          ))}
+      <ScrollView
+        className="reading-exercise flex gap-4"
+        ref={scrollViewRef}
+      >
+        <View
+          className="reading-questions"
+          style={{ display: "flex", gap: 20 }}
+        >
+          {questionGroups ? (
+            <>
+              {questionGroups.map((questionGroup) => (
+                <SelectionFormat
+                  key={questionGroup.id}
+                  questionGroup={questionGroup}
+                />
+              ))}
+            </>
+          ) : (
+            <Text>No questions available</Text>
+          )}
         </View>
       </ScrollView>
 
-      {/* Bottom Navigation */}
+
       <BottomNavigation
         questions={questions}
         answeredQuestions={answeredQuestions}
         currentQuestion={currentQuestion}
         onQuestionChange={handleQuestionChange}
+        
       />
     </SafeAreaView>
   );
@@ -163,27 +202,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   scrollContainer: {
-    flexGrow: 1,
+    height: CONTENT_HEIGHT,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
-  headerRight: {
-    flexDirection: 'row',
-    gap: 16,
+  scrollContent: {
+    paddingBottom: BOTTOM_NAV_HEIGHT,
   },
   audioPlayer: {
     padding: 16,
+  },
+  readingContent: {
+    flex: 1,
+    alignItems: 'flex-start', // Changed to flex-start for better text alignment
+    marginVertical: 10,
+    paddingHorizontal: 16,
+    width: '100%'
   },
   playAudioText: {
     fontSize: 16,
@@ -208,46 +240,20 @@ const styles = StyleSheet.create({
     color: '#666',
     marginLeft: 8,
   },
-  questionsContainer: {
-    flex: 1,
-    padding: 16,
-  },
-  questionsTitle: {
+  sectionTitle: {
     fontSize: 18,
-    fontWeight: '600',
-    marginBottom: 8,
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
-  questionsInstructions: {
-    fontSize: 14,
-    color: '#666',
-    marginBottom: 16,
+  sectionImage: {
+    height: 240,
+    width: 160,
+    marginBottom: 10,
   },
-  questionItem: {
-    marginBottom: 24,
-  },
-  questionNumber: {
-    fontSize: 16,
-    fontWeight: '600',
-    marginBottom: 4,
-  },
-  questionText: {
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  optionsContainer: {
-    flexDirection: 'row',
-    gap: 8,
-  },
-  optionButton: {
+  readingQuestions: {
+    display: 'flex',
+    gap: 20,
     paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: colors.pink1,
-  },
-  optionText: {
-    color: colors.pink1,
-    fontSize: 14,
   },
 });
 

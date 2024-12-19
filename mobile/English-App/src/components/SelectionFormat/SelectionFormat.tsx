@@ -5,6 +5,7 @@ import SelectionQuestion from "./SelectionQuestion";
 import QuestionSubHeading from "../QuestionSubHeading";
 import QuestionGroup from "../../models/QuestionGroup";
 import RenderHTML from "react-native-render-html";
+import HtmlReader from "../HtmlReader";
 
 // const data = [
 //   { id: 1, question: "What is the capital of France?" },
@@ -35,9 +36,8 @@ const SelectionFormat = ({ questionGroup }: SelectionFormatProps) => {
 
         <QuestionSubHeading text="Write the correct letter in boxes 1-5 on your answer sheet"></QuestionSubHeading> */}
         {questionGroup.text && (
-          <RenderHTML
-            contentWidth={width}
-            source={{ html: questionGroup.text }}
+          <HtmlReader
+            html={ questionGroup.text }
           />
         )}
         <View className="questions-container">
