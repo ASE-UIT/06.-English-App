@@ -29,6 +29,11 @@ class AuthService {
   async resendConfirmationCode(data: any) {
     return await http.post(this.getURI("resend-confirmation-code"), data);
   }
+
+  async oAuthCallback(data: any) {
+    // data: { code: string }
+    return await http.post(this.getURI("callback"), data);
+  }
 }
 
 const authService = new AuthService();

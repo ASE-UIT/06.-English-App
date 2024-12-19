@@ -17,6 +17,7 @@ import {
 } from "../../type";
 import authService from "../../services/auth.service";
 import * as SecureStore from "expo-secure-store";
+import OAuthLogin from "./OAuthLogin";
 const validationSchema = Yup.object().shape({
   username: Yup.string().required("Username is required"),
   password: Yup.string().required("Password is required"),
@@ -26,6 +27,8 @@ const Login = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const otpVerifyNav = useNavigation<OTPVerificationScreenNavigationProp>();
   const [rememberMe, setRememberMe] = useState(false);
+  const [oauthProvider, setOauthProvider] = useState<string | null>(null);
+
   const handleSignIn = async (values: any) => {
     console.log(values);
     try {
@@ -50,6 +53,9 @@ const Login = () => {
       console.error(err);
     }
   };
+  if (oauthProvider) {
+    return <OAuthLogin provider={oauthProvider} />;
+  }
   return (
     <ImageBackground
       source={require("../../../assets/signupbg.png")}
@@ -64,13 +70,13 @@ const Login = () => {
           Welcome Back
         </Text>
         <View className="flex flex-row">
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setOauthProvider("Google")}>
             <Image
               source={require("../../../assets/google.png")}
               className="w-[40px] h-[40px] mr-12"
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => setOauthProvider("Facebook")}>
             <Image
               source={require("../../../assets/facebook.png")}
               className="w-[40px] h-[40px]"
