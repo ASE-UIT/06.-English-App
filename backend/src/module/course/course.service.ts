@@ -16,15 +16,7 @@ export class CourseService {
 
   async create(awsId: string, course: Course) {
     try {
-      const newCourse = await this.dataSource
-        .getRepository(Course)
-        .insert(course);
-      await this.recombee.addItem(course.id, {
-        title: course?.title || '',
-        description: course?.description || '',
-        course: course?.category?.name || '',
-      });
-      return newCourse;
+      return await this.dataSource.getRepository(Course).insert(course);
     } catch (error) {
       throw new HttpException(error.message, 500);
     }
