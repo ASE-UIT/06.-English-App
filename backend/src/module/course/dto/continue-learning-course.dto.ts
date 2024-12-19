@@ -1,3 +1,2 @@
-export class ContinueLearningCourseResponseDto { 
-    
+export class ContinueLearningCourseResponseDto {
 }
